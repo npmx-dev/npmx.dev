@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vite-plus/test'
 import { computed, nextTick, shallowRef, ref, type Ref } from 'vue'
 import { useColors } from '~/composables/useColors'
 

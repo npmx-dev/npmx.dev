@@ -1,4 +1,5 @@
 import { mapWithConcurrency } from '#shared/utils/async'
+import { parseDependencyVersion } from '#shared/utils/npm'
 import { findMaxSatisfying } from 'verkit'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
@@ -116,6 +117,25 @@ export interface ResolvedPackage {
   deprecated?: string
 }
 
+type DependencyRequest = {
+  name: string
+  range: string
+  optional: boolean
+  path: string[]
+}
+
+function requestKey(name: string, range: string): string {
+  // Match the alias-range extraction used by resolveVersion.
+  if (range.startsWith('npm:')) {
+    const atIndex = range.lastIndexOf('@')
+    if (atIndex > 4) {
+      range = range.slice(atIndex + 1)
+    }
+  }
+
+  return JSON.stringify([name, range])
+}
+
 /**
  * Resolve the entire dependency tree for a package.
  * Uses level-by-level BFS to ensure correct depth assignment when trackDepth is enabled.
@@ -130,24 +150,27 @@ export async function resolveDependencyTree(
 
   // Process level by level for correct depth tracking
   // Each entry includes the path of package names leading to this dependency
-  let currentLevel = new Map<string, { range: string; optional: boolean; path: string[] }>([
-    [rootName, { range: rootVersion, optional: false, path: [] }],
+  let currentLevel = new Map<string, DependencyRequest>([
+    [
+      requestKey(rootName, rootVersion),
+      { name: rootName, range: rootVersion, optional: false, path: [] },
+    ],
   ])
   let level = 0
 
   while (currentLevel.size > 0) {
-    const nextLevel = new Map<string, { range: string; optional: boolean; path: string[] }>()
+    const nextLevel = new Map<string, DependencyRequest>()
 
     // Mark all packages in current level as seen before processing
-    for (const name of currentLevel.keys()) {
-      seen.add(name)
+    for (const key of currentLevel.keys()) {
+      seen.add(key)
     }
 
     // Process current level with concurrency limit
-    const entries = [...currentLevel.entries()]
+    const entries = [...currentLevel.values()]
     await mapWithConcurrency(
       entries,
-      async ([name, { range, optional, path }]) => {
+      async ({ name, range, optional, path }) => {
         const packument = await fetchPackument(name)
         if (!packument) return
 
@@ -182,9 +205,12 @@ export async function resolveDependencyTree(
         const key = `${name}@${version}`
 
         // Build path for this package (path to parent + this package with version)
-        const currentPath = [...path, `${name}@${version}`]
+        const currentPath = [...path, key]
 
-        if (!resolved.has(key)) {
+        const existing = resolved.get(key)
+        if (existing) {
+          if (!optional) existing.optional = false
+        } else {
           const pkg: ResolvedPackage = { name, version, size, tarballUrl, optional }
           if (options.trackDepth) {
             pkg.depth = level === 0 ? 'root' : level === 1 ? 'direct' : 'transitive'
@@ -196,20 +222,41 @@ export async function resolveDependencyTree(
           resolved.set(key, pkg)
         }
 
-        // Collect dependencies for next level
+        // Collect dependencies for next level.
+        // An npm alias ("npm:pkg@range") is resolved against the aliased package, not the dependency key.
         if (versionData.dependencies) {
-          for (const [depName, depRange] of Object.entries(versionData.dependencies)) {
-            if (!seen.has(depName) && !nextLevel.has(depName)) {
-              nextLevel.set(depName, { range: depRange, optional: false, path: currentPath })
+          for (const [depKey, depRange] of Object.entries(versionData.dependencies)) {
+            const depName = parseDependencyVersion(depRange).name ?? depKey
+            const reqKey = requestKey(depName, depRange)
+            const queued = nextLevel.get(reqKey)
+
+            if (queued) {
+              // A required request upgrades a queued optional request.
+              queued.optional = false
+            } else if (!seen.has(reqKey)) {
+              nextLevel.set(reqKey, {
+                name: depName,
+                range: depRange,
+                optional: false,
+                path: currentPath,
+              })
             }
           }
         }
 
         // Collect optional dependencies
         if (versionData.optionalDependencies) {
-          for (const [depName, depRange] of Object.entries(versionData.optionalDependencies)) {
-            if (!seen.has(depName) && !nextLevel.has(depName)) {
-              nextLevel.set(depName, { range: depRange, optional: true, path: currentPath })
+          for (const [depKey, depRange] of Object.entries(versionData.optionalDependencies)) {
+            const depName = parseDependencyVersion(depRange).name ?? depKey
+            const reqKey = requestKey(depName, depRange)
+
+            if (!seen.has(reqKey) && !nextLevel.has(reqKey)) {
+              nextLevel.set(reqKey, {
+                name: depName,
+                range: depRange,
+                optional: true,
+                path: currentPath,
+              })
             }
           }
         }

@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
 import type { AbbreviatedPackument, AbbreviatedPackumentVersion } from '#shared/types'
 
 // Mock Nitro globals before importing the module
@@ -246,6 +246,38 @@ describe('dependency-resolver', () => {
         size: 3000,
         optional: false,
       })
+    })
+
+    it('resolves npm aliases against the aliased package', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [
+            {
+              version: '1.0.0',
+              deps: { vite: 'npm:@scope/vite-fork@^1.0.0' },
+              optionalDeps: { fsevents: 'npm:fsevents-fork@2.0.0' },
+            },
+          ])
+        if (name === '@scope/vite-fork')
+          return makePackument('@scope/vite-fork', [{ version: '1.2.0' }])
+        if (name === 'fsevents-fork') return makePackument('fsevents-fork', [{ version: '2.0.0' }])
+        // The dependency keys are real packages too, with matching versions
+        if (name === 'vite')
+          return makePackument('vite', [{ version: '1.2.0', deps: { unrelated: '^1.0.0' } }])
+        if (name === 'fsevents') return makePackument('fsevents', [{ version: '2.0.0' }])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      expect([...result.keys()].sort()).toEqual([
+        '@scope/vite-fork@1.2.0',
+        'fsevents-fork@2.0.0',
+        'root@1.0.0',
+      ])
+      expect(result.get('fsevents-fork@2.0.0')).toMatchObject({ optional: true })
+      expect(mockAbbreviatedPackument).not.toHaveBeenCalledWith('vite')
+      expect(mockAbbreviatedPackument).not.toHaveBeenCalledWith('fsevents')
     })
 
     it('resolves transitive dependencies (A → B → C)', async () => {
@@ -505,6 +537,115 @@ describe('dependency-resolver', () => {
       // root + a + b + shared (only once)
       expect(result.size).toBe(4)
       expect(result.has('shared@1.0.0')).toBe(true)
+    })
+
+    it('keeps distinct versions requested through aliases of the same package', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [
+            {
+              version: '1.0.0',
+              deps: { 'shared-v1': 'npm:shared@^1.0.0', 'shared-v2': 'npm:shared@^2.0.0' },
+            },
+          ])
+        if (name === 'shared')
+          return makePackument('shared', [
+            { version: '1.0.0', deps: { 'only-v1': '^1.0.0' } },
+            { version: '2.0.0', deps: { 'only-v2': '^1.0.0' } },
+          ])
+        if (name === 'only-v1') return makePackument('only-v1', [{ version: '1.0.0' }])
+        if (name === 'only-v2') return makePackument('only-v2', [{ version: '1.0.0' }])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      expect([...result.keys()].sort()).toEqual([
+        'only-v1@1.0.0',
+        'only-v2@1.0.0',
+        'root@1.0.0',
+        'shared@1.0.0',
+        'shared@2.0.0',
+      ])
+    })
+
+    it('resolves a different version of a package that was already visited', async () => {
+      // root → shared@^1 and root → a → shared@^2
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [
+            { version: '1.0.0', deps: { shared: '^1.0.0', a: '^1.0.0' } },
+          ])
+        if (name === 'a')
+          return makePackument('a', [{ version: '1.0.0', deps: { shared: '^2.0.0' } }])
+        if (name === 'shared')
+          return makePackument('shared', [{ version: '1.0.0' }, { version: '2.0.0' }])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0', { trackDepth: true })
+
+      expect(result.get('shared@1.0.0')).toMatchObject({ depth: 'direct' })
+      expect(result.get('shared@2.0.0')).toMatchObject({
+        depth: 'transitive',
+        path: ['root@1.0.0', 'a@1.0.0', 'shared@2.0.0'],
+      })
+    })
+
+    it('keeps distinct versions requested as optional dependencies', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [
+            { version: '1.0.0', deps: { a: '^1.0.0' }, optionalDeps: { opt: '^1.0.0' } },
+          ])
+        if (name === 'a')
+          return makePackument('a', [{ version: '1.0.0', optionalDeps: { opt: '^2.0.0' } }])
+        if (name === 'opt')
+          return makePackument('opt', [{ version: '1.0.0' }, { version: '2.0.0' }])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      expect(result.get('opt@1.0.0')).toMatchObject({ optional: true })
+      expect(result.get('opt@2.0.0')).toMatchObject({ optional: true })
+    })
+
+    it('resolves different ranges that match the same version once', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [{ version: '1.0.0', deps: { a: '^1.0.0', b: '^1.0.0' } }])
+        if (name === 'a')
+          return makePackument('a', [{ version: '1.0.0', deps: { shared: '^1.0.0' } }])
+        if (name === 'b')
+          return makePackument('b', [{ version: '1.0.0', deps: { shared: '~1.2.0' } }])
+        if (name === 'shared') return makePackument('shared', [{ version: '1.2.3' }])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      expect([...result.keys()].sort()).toEqual([
+        'a@1.0.0',
+        'b@1.0.0',
+        'root@1.0.0',
+        'shared@1.2.3',
+      ])
+    })
+
+    it('terminates cycles between different versions of the same package', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'a')
+          return makePackument('a', [
+            { version: '1.0.0', deps: { a: '^2.0.0' } },
+            { version: '2.0.0', deps: { a: '^1.0.0' } },
+          ])
+        return null
+      })
+
+      const result = await resolveDependencyTree('a', '1.0.0')
+
+      expect([...result.keys()].sort()).toEqual(['a@1.0.0', 'a@2.0.0'])
     })
   })
 })
