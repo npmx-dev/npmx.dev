@@ -26,10 +26,12 @@ export function stripHtmlTags(text: string): string {
     result = result.replace(tagPattern, '')
   } while (result !== previous)
   // Strip unclosed HTML tags left by registry truncation (no closing '>').
-  // Only a bare tag name at the very end, or one followed by an attribute ('=' or a quote), counts,
-  // so plain text like `x<y comparisons` is kept.
+  // Only a bare tag name at the very end that starts a word, or one followed by an attribute ('=' or a quote),
+  // counts, so plain text like `x<y comparisons` or a trailing `a<b` is kept.
   // The match must not cross a backtick, or it would swallow a later code span
-  return result.replace(/<\/?[a-z][a-z0-9-]*(?:$|\s[^>`="']*[="'][^>`]*$)/gi, '').trim()
+  return result
+    .replace(/(?<!\S)<\/?[a-z][a-z0-9-]*$|<\/?[a-z][a-z0-9-]*\s[^>`="']*[="'][^>`]*$/gi, '')
+    .trim()
 }
 /**
  * Generate a GitHub-style slug from heading text.

@@ -274,6 +274,11 @@ describe('useMarkdown', () => {
         'Fast x&lt;y comparisons and sorting',
       )
       expect(useMarkdown({ text: 'compare a <b and c' }).value).toBe('compare a &lt;b and c')
+      expect(useMarkdown({ text: 'Compare x<y' }).value).toBe('Compare x&lt;y')
+    })
+
+    it('strips a bare unclosed tag name at the end', () => {
+      expect(useMarkdown({ text: 'A library <img' }).value).toBe('A library')
     })
 
     it('preserves a backtick code span after an unclosed tag', () => {
