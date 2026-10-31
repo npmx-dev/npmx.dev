@@ -18,14 +18,21 @@ function createVersion(
   options: {
     deprecated?: string
     hasProvenance?: boolean
+    hasStagedPublish?: boolean
   } = {},
 ): SlimVersion {
   return {
     version,
     deprecated: options.deprecated,
     tags: undefined,
-    ...(options.hasProvenance
-      ? { trustStatus: { provenance: true, trustedPublisher: false, stagedPublish: false } }
+    ...(options.hasProvenance || options.hasStagedPublish
+      ? {
+          trustStatus: {
+            provenance: !!options.hasProvenance,
+            trustedPublisher: false,
+            stagedPublish: !!options.hasStagedPublish,
+          },
+        }
       : {}),
   } as SlimVersion
 }
@@ -388,6 +395,32 @@ describe('PackageVersions', () => {
 
       const provenanceBadge = component.findComponent({ name: 'ProvenanceBadge' })
       expect(provenanceBadge.exists()).toBe(false)
+    })
+
+    it('shows staged publishing when a version was approved from staging', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0', {
+              hasProvenance: true,
+              hasStagedPublish: true,
+            }),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2026-08-03T12:00:00.000Z' },
+        },
+      })
+
+      const badge = component.findComponent({ name: 'StagedPublishBadge' })
+      expect(badge.exists()).toBe(true)
+      expect(badge.get('a').attributes()).toMatchObject({
+        href: 'https://docs.npmjs.com/staged-publishing/',
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        title: 'Published through staged publishing with 2FA approval',
+      })
+      expect(component.findComponent({ name: 'ProvenanceBadge' }).exists()).toBe(true)
     })
   })
 

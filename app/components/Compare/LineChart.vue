@@ -8,6 +8,6 @@ const { packages } = defineProps<{
 
 <template>
   <div class="font-mono">
-    <TrendsChart :package-names="packages" :in-modal="false" show-facet-selector />
+    <TrendsChart :package-names="packages" show-facet-selector />
   </div>
 </template>

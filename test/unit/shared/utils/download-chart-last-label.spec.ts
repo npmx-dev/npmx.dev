@@ -8,6 +8,27 @@ const colors = {
 }
 
 describe('createLastDatapointLabelsSvg', () => {
+  it.each([null, 0])('distinguishes a missing endpoint from zero (%s)', value => {
+    const result = createLastDatapointLabelsSvg({
+      series: [
+        {
+          plots: [
+            { x: 10, y: 20, value: 1234 },
+            { x: 30, y: 100, value },
+          ],
+        },
+      ],
+      drawingArea: { top: 0, height: 120 },
+      colors,
+      formatValue: String,
+      missingValueLabel: 'No data',
+      isDarkMode: false,
+    })
+    expect(result).toMatch(value === null ? /No data/ : />\s*0\s*</)
+    expect(result).not.toContain('1234')
+    expect(result).toContain('x="54"')
+  })
+
   it('returns an empty string when there are no series', () => {
     const result = createLastDatapointLabelsSvg({
       series: [],
@@ -218,7 +239,7 @@ describe('createLastDatapointLabelsSvg', () => {
     expect(result).toContain('stroke="#999999"')
   })
 
-  it('supports null plot values from SSR slot data', () => {
+  it('ignores series whose plots only contain nullish values', () => {
     const result = createLastDatapointLabelsSvg({
       series: [{ plots: [{ x: 10, y: 20, value: null }] }],
       drawingArea: { top: 0, height: 100 },
@@ -227,12 +248,38 @@ describe('createLastDatapointLabelsSvg', () => {
       isDarkMode: false,
     })
 
-    expect(result).toContain('formatted:0')
+    expect(result).toBe('')
+  })
+
+  it('uses the last non-null plot when trailing plots have nullish values', () => {
+    const formatValue = vi.fn((value: number) => `value-${value}`)
+
+    const result = createLastDatapointLabelsSvg({
+      series: [
+        {
+          plots: [
+            { x: 10, y: 20, value: 42 },
+            { x: 50, y: 60, value: null },
+            { x: 70, y: 80, value: undefined },
+          ],
+        },
+      ],
+      drawingArea: { top: 0, height: 100 },
+      colors,
+      formatValue,
+      isDarkMode: false,
+    })
+
+    expect(formatValue).toHaveBeenCalledTimes(1)
+    expect(formatValue).toHaveBeenCalledWith(42)
+    expect(result).toContain('x="34"')
+    expect(result).toContain('y="20"')
+    expect(result).toContain('value-42')
   })
 
   it('uses zero defaults when plot coordinates are nullish', () => {
     const result = createLastDatapointLabelsSvg({
-      series: [{ plots: [{ x: null, y: null, value: undefined }] }],
+      series: [{ plots: [{ x: null, y: null, value: 42 }] }],
       drawingArea: { top: 0, height: 100 },
       colors,
       formatValue: value => `value-${value}`,
@@ -241,7 +288,7 @@ describe('createLastDatapointLabelsSvg', () => {
 
     expect(result).toContain('x="24"')
     expect(result).toContain('y="0"')
-    expect(result).toContain('value-0')
+    expect(result).toContain('value-42')
   })
 
   it('uses zero drawing area height when neither height nor bottom is provided', () => {

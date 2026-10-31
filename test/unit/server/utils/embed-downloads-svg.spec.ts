@@ -1,3 +1,4 @@
+import type { createStaticVueUiXy as StaticRenderer } from 'vue-data-ui/ssr/vue-ui-xy'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createDownloadsSvgResponse } from '../../../../server/utils/embed-downloads-svg'
 
@@ -10,6 +11,9 @@ const mocks = vi.hoisted(() => ({
   mergeConfigs: vi.fn(),
   createStaticVueUiXy: vi.fn(),
   generateWatermarkLogo: vi.fn(),
+  nullifyZeroValues: vi.fn(),
+  isMissingDownloadValue: vi.fn(),
+  isLargeDownloadSeries: vi.fn(),
   isLastDayOfMonth: vi.fn(),
   getEffectiveEndDateIso: vi.fn(),
   isLastDayOfYear: vi.fn(),
@@ -25,6 +29,9 @@ vi.mock('#shared/utils/trends-chart', () => ({
   buildNormalisedTrendsDataset: mocks.buildNormalisedTrendsDataset,
   buildTrendsChartConfig: mocks.buildTrendsChartConfig,
   generateWatermarkLogo: mocks.generateWatermarkLogo,
+  nullifyZeroValues: mocks.nullifyZeroValues,
+  isMissingDownloadValue: mocks.isMissingDownloadValue,
+  isLargeDownloadSeries: mocks.isLargeDownloadSeries,
 }))
 
 vi.mock('#shared/utils/embed-chart-colors', () => ({
@@ -81,6 +88,7 @@ beforeEach(() => {
     bg: '#ffffff',
     fgMuted: '#666666',
     fgSubtle: '#999999',
+    border: '#333333',
   })
 
   mocks.buildTrendsChartData.mockReturnValue({
@@ -102,6 +110,11 @@ beforeEach(() => {
   }))
 
   mocks.generateWatermarkLogo.mockReturnValue('<g data-logo="true" />')
+  mocks.nullifyZeroValues.mockImplementation(({ values }: { values: unknown[] }) => values)
+  mocks.isMissingDownloadValue.mockImplementation(
+    (value: unknown) => value === null || value === undefined || Number(value) === 0,
+  )
+  mocks.isLargeDownloadSeries.mockReturnValue(false)
   mocks.getEffectiveEndDateIso.mockReturnValue('2026-05-31')
   mocks.isLastDayOfMonth.mockReturnValue(true)
   mocks.isLastDayOfYear.mockReturnValue(true)
@@ -132,6 +145,49 @@ beforeEach(() => {
 })
 
 describe('downloads SVG embed response', () => {
+  it.each([false, true])('draws hatched gaps with multiple series: %s', async multipleSeries => {
+    mocks.createStaticVueUiXy.mockImplementationOnce(async options => {
+      const overlay = options.additionalSvgContent({
+        drawingArea: { left: 10, right: 90, top: 20, bottom: 300 },
+        series: [
+          ...(multipleSeries ? [{ color: '#ff0000', plots: [] }] : []),
+          {
+            color: '#42b883',
+            plots: [
+              { x: 10, y: 100, value: 100 },
+              { x: 30, y: 300, value: null },
+              { x: 50, y: 100, value: 200 },
+            ],
+          },
+        ],
+      })
+      expect(overlay).not.toContain('<pattern')
+      return `<svg><rect data-background="true"/><g data-layer="line-areas"></g><g data-layer="lines"></g>${overlay}</svg>`
+    })
+    const content = await createDownloadsSvgResponse({ package: 'vue' })
+    expect(content.indexOf('<pattern')).toBeLessThan(content.indexOf('<g data-layer="line-areas"'))
+    expect(content.indexOf('<pattern')).toBeGreaterThan(content.indexOf('data-background'))
+    expect(content).toContain('patternTransform="rotate(45)"')
+    expect(content).toContain('stroke="#333333"')
+    expect(content).toContain('<rect x="10" y="20" width="40" height="280"')
+    const patternId = content.match(/<pattern id="([^"]+)"/)?.[1]
+    expect(patternId).toBeTruthy()
+    expect(content).toContain(`fill="url(#${patternId})" opacity="0.45"`)
+  })
+
+  it('places gaps before data layers in the actual static renderer output', async () => {
+    const { createStaticVueUiXy } = await vi.importActual<{
+      createStaticVueUiXy: typeof StaticRenderer
+    }>('vue-data-ui/ssr/vue-ui-xy')
+    mocks.createStaticVueUiXy.mockImplementationOnce(createStaticVueUiXy)
+    mocks.buildNormalisedTrendsDataset.mockReturnValue(createDataset({ series: [100, null, 200] }))
+    const svg = await createDownloadsSvgResponse({ package: 'vue' })
+    const patternIndex = svg.indexOf('<pattern')
+    expect(patternIndex).toBeGreaterThan(-1)
+    expect(patternIndex).toBeLessThan(svg.indexOf('<g data-layer="lines"'))
+    expect(svg.match(/<pattern /g)).toHaveLength(1)
+  })
+
   it('throws 400 when no valid package name is provided', async () => {
     await expect(createDownloadsSvgResponse({})).rejects.toMatchObject({
       statusCode: 400,
@@ -474,6 +530,105 @@ describe('downloads SVG embed response', () => {
     })
   })
 
+  it('enables zero nullification for large packages before rendering', async () => {
+    mocks.isLargeDownloadSeries.mockReturnValue(true)
+    mocks.buildTrendsChartData.mockReturnValue({
+      dates: ['2026-05-01', '2026-05-02', '2026-05-03'],
+      dataset: createDataset({ series: [10, 0, 20] }),
+    })
+    mocks.buildNormalisedTrendsDataset.mockReturnValue([
+      {
+        name: 'vue',
+        series: [10, 0, 20],
+        dashIndices: undefined,
+      },
+    ])
+    mocks.nullifyZeroValues.mockReturnValue([10, null, 20])
+
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
+
+    expect(mocks.isLargeDownloadSeries).toHaveBeenCalledWith([10, 0, 20], 'weekly')
+    expect(mocks.nullifyZeroValues).toHaveBeenCalledWith({
+      enabled: true,
+      values: [10, 0, 20],
+      keepLastZero: false,
+    })
+    expect(mocks.createStaticVueUiXy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dataset: [
+          expect.objectContaining({
+            series: [10, null, 20],
+          }),
+        ],
+      }),
+    )
+  })
+
+  it('keeps zero values intact for small packages', async () => {
+    mocks.isLargeDownloadSeries.mockReturnValue(false)
+    mocks.buildTrendsChartData.mockReturnValue({
+      dates: ['2026-05-01', '2026-05-02', '2026-05-03'],
+      dataset: createDataset({ series: [10, 0, 20] }),
+    })
+    mocks.buildNormalisedTrendsDataset.mockReturnValue([
+      {
+        name: 'vue',
+        series: [10, 0, 20],
+        dashIndices: undefined,
+      },
+    ])
+
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
+
+    expect(mocks.nullifyZeroValues).toHaveBeenCalledWith({
+      enabled: false,
+      values: [10, 0, 20],
+      keepLastZero: false,
+    })
+    expect(mocks.createStaticVueUiXy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dataset: [
+          expect.objectContaining({
+            series: [10, 0, 20],
+          }),
+        ],
+      }),
+    )
+  })
+
+  it('preserves an explicitly missing final value for small packages', async () => {
+    mocks.isLargeDownloadSeries.mockReturnValue(false)
+    mocks.buildTrendsChartData.mockReturnValue({
+      dates: ['2026-05-01', '2026-05-02'],
+      dataset: createDataset({ series: [10, null] }),
+    })
+    mocks.buildNormalisedTrendsDataset.mockReturnValue([
+      {
+        name: 'vue',
+        series: [10, null],
+        dashIndices: undefined,
+      },
+    ])
+
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
+
+    expect(mocks.createStaticVueUiXy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dataset: [
+          expect.objectContaining({
+            series: [10, null],
+          }),
+        ],
+      }),
+    )
+  })
+
   it('adds a dash index to the last monthly point when the effective end date is not the last day of month', async () => {
     mocks.isLastDayOfMonth.mockReturnValue(false)
     mocks.getEffectiveEndDateIso.mockReturnValue('2026-05-12')
@@ -589,6 +744,140 @@ describe('downloads SVG embed response', () => {
     })
   })
 
+  it('renders a flat no data tail and last valid value with an asterisk for a large package', async () => {
+    mocks.isLargeDownloadSeries.mockReturnValue(true)
+    mocks.buildTrendsChartData.mockReturnValue({
+      dates: ['2026-05-01', '2026-05-02'],
+      dataset: createDataset({ series: [1200, 0] }),
+    })
+
+    await createDownloadsSvgResponse({
+      package: 'vue',
+    })
+
+    const options = mocks.createStaticVueUiXy.mock.calls[0]![0]
+    const content = options.additionalSvgContent({
+      drawingArea: {
+        bottom: 300,
+        right: 700,
+      },
+      series: [
+        {
+          color: '#123456',
+          plots: [
+            {
+              x: 10,
+              y: 20,
+              value: 1200,
+            },
+            {
+              x: 30,
+              y: 200,
+              value: 0,
+            },
+          ],
+        },
+      ],
+    })
+
+    expect(content).toContain('x1="10"')
+    expect(content).toContain('y1="20"')
+    expect(content).toContain('x2="30"')
+    expect(content).toContain('y2="20"')
+    expect(content).toContain('cx="30"')
+    expect(content).toContain('cy="20"')
+    expect(content).toContain('1.2K*')
+  })
+
+  it('renders the last recorded value legend for daily granularity', async () => {
+    await createDownloadsSvgResponse({
+      package: 'vue',
+      granularity: 'day',
+    })
+
+    const options = mocks.createStaticVueUiXy.mock.calls[0]![0]
+    const content = options.additionalSvgContent({
+      drawingArea: {
+        bottom: 300,
+        right: 700,
+      },
+      series: [
+        {
+          plots: [
+            {
+              x: 10,
+              y: 20,
+              value: 1234,
+            },
+          ],
+        },
+      ],
+    })
+
+    expect(content).toContain('* Last recorded value')
+  })
+
+  it('does not render the last recorded value legend outside daily granularity', async () => {
+    await createDownloadsSvgResponse({
+      package: 'vue',
+      granularity: 'week',
+    })
+
+    const options = mocks.createStaticVueUiXy.mock.calls[0]![0]
+    const content = options.additionalSvgContent({
+      drawingArea: {
+        bottom: 300,
+        right: 700,
+      },
+      series: [
+        {
+          plots: [
+            {
+              x: 10,
+              y: 20,
+              value: 1234,
+            },
+          ],
+        },
+      ],
+    })
+
+    expect(content).not.toContain('* Last recorded value')
+  })
+
+  it('does not add the incomplete-period dash index when a large package already has a no-data tail', async () => {
+    mocks.isLargeDownloadSeries.mockReturnValue(true)
+    mocks.isLastDayOfMonth.mockReturnValue(false)
+    mocks.getEffectiveEndDateIso.mockReturnValue('2026-05-12')
+    mocks.buildTrendsChartData.mockReturnValue({
+      dates: ['2026-04-01', '2026-05-01'],
+      dataset: createDataset({ series: [1200, 0] }),
+    })
+    mocks.buildNormalisedTrendsDataset.mockReturnValue([
+      {
+        name: 'vue',
+        series: [1200, null],
+        dashIndices: undefined,
+      },
+    ])
+
+    await createDownloadsSvgResponse({
+      package: 'vue',
+      granularity: 'month',
+      endDate: '2026-05-12',
+    })
+
+    expect(mocks.createStaticVueUiXy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dataset: [
+          expect.objectContaining({
+            dashIndices: undefined,
+          }),
+        ],
+      }),
+    )
+  })
+
   it('falls back to an empty singleEvolution when the first package has no evolution', async () => {
     mocks.fetchDownloadsEvolution.mockImplementation(async (packageName: string) => {
       if (packageName === 'vue') {
@@ -652,7 +941,7 @@ describe('downloads SVG embed response', () => {
     expect(content).toContain('1.2K')
   })
 
-  it('falls back to 0 when the last plot value is missing', async () => {
+  it('renders a no-data label when the plot value is missing', async () => {
     await createDownloadsSvgResponse({
       package: 'vue',
     })
@@ -676,7 +965,8 @@ describe('downloads SVG embed response', () => {
       ],
     })
 
-    expect(content).toContain('0')
+    expect(content).toContain('<g data-logo="true" />')
+    expect(content).toContain('No data')
   })
 
   it('falls back to en when canonical locales returns an empty array', async () => {

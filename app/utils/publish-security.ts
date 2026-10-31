@@ -1,15 +1,8 @@
 import { getTrustLevel, getTrustLevelName, type TrustLevelName } from 'packumeta'
 import { compare, getMajor } from 'verkit'
+import type { PublishSecurityDowngrade } from '#shared/types/npm-registry'
 
-export interface PublishSecurityDowngrade {
-  downgradedVersion: string
-  downgradedPublishedAt?: string
-  downgradedTrustLevel: TrustLevelName
-  /** Recommended trusted version within the same major, if one exists */
-  trustedVersion?: string
-  trustedPublishedAt?: string
-  trustedTrustLevel: TrustLevelName
-}
+export type { PublishSecurityDowngrade }
 
 type VersionWithIndex = PackageVersionInfo & {
   index: number
@@ -48,7 +41,7 @@ function sortByRecency(a: VersionWithIndex, b: VersionWithIndex): number {
  * A version is considered downgraded when it has no provenance and
  * there exists an older trusted release.
  */
-export function detectPublishSecurityDowngradeForVersion(
+export function detectSecurityDowngradeForVersion(
   versions: PackageVersionInfo[],
   viewedVersion: string,
 ): PublishSecurityDowngrade | null {
@@ -102,6 +95,7 @@ export function detectPublishSecurityDowngradeForVersion(
     downgradedVersion: current.version,
     downgradedPublishedAt: current.time,
     downgradedTrustLevel: current.trustLevelName,
+    downgradedTrustedPublisher: current.trustStatus?.trustedPublisher ?? false,
     trustedVersion: recommendation?.version,
     trustedPublishedAt: recommendation?.time,
     trustedTrustLevel: strongestOlder.trustLevelName,
