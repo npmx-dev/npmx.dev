@@ -181,10 +181,7 @@ defineOgImage(
 
       <!-- error handling -->
       <template v-else-if="!changelogPending">
-        <div
-          v-if="changelogError?.statusText == ERROR_UNGH_API_KEY_EXHAUSTED"
-          class="items-center flex flex-col"
-        >
+        <div v-if="isUnghRateLimitError(changelogError)" class="items-center flex flex-col">
           <p class="mt-5">{{ $t('changelog.ungh.rate_limit') }}</p>
           <p>{{ $t('changelog.ungh.hint') }}</p>
           <LinkBase
