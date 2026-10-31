@@ -205,9 +205,12 @@ export async function resolveDependencyTree(
         const key = `${name}@${version}`
 
         // Build path for this package (path to parent + this package with version)
-        const currentPath = [...path, `${name}@${version}`]
+        const currentPath = [...path, key]
 
-        if (!resolved.has(key)) {
+        const existing = resolved.get(key)
+        if (existing) {
+          if (!optional) existing.optional = false
+        } else {
           const pkg: ResolvedPackage = { name, version, size, tarballUrl, optional }
           if (options.trackDepth) {
             pkg.depth = level === 0 ? 'root' : level === 1 ? 'direct' : 'transitive'
