@@ -36,9 +36,9 @@ export default defineNuxtModule({
           })
         } catch (e) {
           // Always throw in local dev.
-          // In CI, only throw if building for production.
+          // In CI, only throw if building for production or canary.
           const { env } = await getEnv(!isCI)
-          if (env === 'dev' || env === 'release') {
+          if (env === 'dev' || env === 'canary' || env === 'release') {
             throw e
           } else {
             console.error(e)
