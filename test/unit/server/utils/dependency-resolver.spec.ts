@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
 import type { AbbreviatedPackument, AbbreviatedPackumentVersion } from '#shared/types'
 
 // Mock Nitro globals before importing the module
@@ -246,6 +246,38 @@ describe('dependency-resolver', () => {
         size: 3000,
         optional: false,
       })
+    })
+
+    it('resolves npm aliases against the aliased package', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [
+            {
+              version: '1.0.0',
+              deps: { vite: 'npm:@scope/vite-fork@^1.0.0' },
+              optionalDeps: { fsevents: 'npm:fsevents-fork@2.0.0' },
+            },
+          ])
+        if (name === '@scope/vite-fork')
+          return makePackument('@scope/vite-fork', [{ version: '1.2.0' }])
+        if (name === 'fsevents-fork') return makePackument('fsevents-fork', [{ version: '2.0.0' }])
+        // The dependency keys are real packages too, with matching versions
+        if (name === 'vite')
+          return makePackument('vite', [{ version: '1.2.0', deps: { unrelated: '^1.0.0' } }])
+        if (name === 'fsevents') return makePackument('fsevents', [{ version: '2.0.0' }])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      expect([...result.keys()].sort()).toEqual([
+        '@scope/vite-fork@1.2.0',
+        'fsevents-fork@2.0.0',
+        'root@1.0.0',
+      ])
+      expect(result.get('fsevents-fork@2.0.0')).toMatchObject({ optional: true })
+      expect(mockAbbreviatedPackument).not.toHaveBeenCalledWith('vite')
+      expect(mockAbbreviatedPackument).not.toHaveBeenCalledWith('fsevents')
     })
 
     it('resolves transitive dependencies (A → B → C)', async () => {

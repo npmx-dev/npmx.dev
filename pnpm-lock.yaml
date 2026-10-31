@@ -45,9 +45,6 @@ catalogs:
     vite-plus:
       specifier: 1.3.0
       version: 1.3.0
-    vitest:
-      specifier: 5.0.5
-      version: 5.0.5
 
 overrides:
   '@types/node': 24.13.3
@@ -66,7 +63,7 @@ packageExtensionsChecksum: sha256-MLpDvxkp40Q0pRGkcNzUeHJyjDQFfGfxm/iGkXRnXJg=
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': 24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832
-  '@nuxt/test-utils@4.1.0': 962b491d08124918382d72a83a0d24a3eb74fd5eb64c495c8df85a8b37ffdb25
+  '@nuxt/test-utils@4.1.0': 4d2cabf584203c6c78562f11807d6eba8d406729574fec2e8cd0a091a9b6165f
 
 importers:
 
@@ -128,7 +125,7 @@ importers:
         version: 1.3.5(@nuxt/schema@4.5.2)(@oxc-project/types@0.154.0)(@unhead/vue@3.3.1)(@upstash/redis@1.38.2)(@voidzero-dev/vite-plus-core@1.3.0)(confbox@0.2.4)(db0@0.3.4)(dotenv@17.4.2)(esbuild@0.28.1)(giget@3.3.0)(ioredis@5.11.1)(jiti@2.7.0)(mlly@1.8.2)(rolldown@1.2.4)(rollup@4.62.2)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vue@3.5.42)(webpack@5.108.4)
       '@nuxt/test-utils':
         specifier: 4.1.0
-        version: 4.1.0(patch_hash=962b491d08124918382d72a83a0d24a3eb74fd5eb64c495c8df85a8b37ffdb25)(@playwright/test@1.62.1)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0)(@vue/test-utils@2.4.11)(esbuild@0.28.1)(h3@2.0.1-rc.26)(magicast@0.5.5)(playwright-core@1.62.1)(rolldown@1.2.4)(rollup@4.62.2)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vitest@5.0.5)(webpack@5.108.4)
+        version: 4.1.0(patch_hash=4d2cabf584203c6c78562f11807d6eba8d406729574fec2e8cd0a091a9b6165f)(@playwright/test@1.62.1)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0)(@vue/test-utils@2.4.11)(esbuild@0.28.1)(h3@2.0.1-rc.26)(magicast@0.5.5)(playwright-core@1.62.1)(rolldown@1.2.4)(rollup@4.62.2)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vitest@5.0.5)(webpack@5.108.4)
       '@nuxtjs/color-mode':
         specifier: 4.0.1
         version: 4.0.1(@nuxt/schema@4.5.2)(confbox@0.2.4)(dotenv@17.4.2)(giget@3.3.0)(jiti@2.7.0)(magic-string@1.4.3)(mlly@1.8.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(unplugin@3.4.0)
@@ -277,8 +274,8 @@ importers:
         specifier: 3.5.42
         version: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
       vue-data-ui:
-        specifier: 3.28.1
-        version: 3.28.1(vue@3.5.42)
+        specifier: 3.28.7
+        version: 3.28.7(vue@3.5.42)
       vue-router:
         specifier: 5.2.0
         version: 5.2.0(@voidzero-dev/vite-plus-core@1.3.0)(@vue/compiler-sfc@3.5.42)(esbuild@0.28.1)(rolldown@1.2.4)(rollup@4.62.2)(vue@3.5.42)(webpack@5.108.4)
@@ -382,9 +379,6 @@ importers:
       vite:
         specifier: catalog:vite-plus
         version: '@voidzero-dev/vite-plus-core@1.3.0(@types/node@24.13.3)(@volar/typescript@2.4.28)(@vue/language-core@3.3.13)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vue-tsc@3.3.10)(yaml@2.9.1)'
-      vitest:
-        specifier: catalog:vite-plus
-        version: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@24.13.3)(@vitest/browser-playwright@5.0.5)(@vitest/browser-preview@5.0.5)(@vitest/coverage-v8@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0)(msw@3.0.2)
       vue-i18n-extract:
         specifier: 2.0.7
         version: 2.0.7
@@ -10738,8 +10732,8 @@ packages:
   vue-component-type-helpers@3.3.12:
     resolution: {integrity: sha512-HwCqmgTfLFskQc4P5TRnbduCMyPat2Ezu0elLWOGn0dD/6BKHP15B5bxce6aDi+E4kblPtru8amIBQzu0Di3qQ==}
 
-  vue-data-ui@3.28.1:
-    resolution: {integrity: sha512-7SKMg08iolo/yXh+Hp6a5eXlWKDPogiMo+Eb9F4xgZEsNHvbk8M6kosmroBV+BlTz9PPe5FRhmwNBoCwBfRLAg==}
+  vue-data-ui@3.28.7:
+    resolution: {integrity: sha512-QZP0SYW/7RoKVdvER1hDcQSnXfkIIpqde3zc6X6m0c8mP0UNS5MwP+/VJtDtsfnijhWz8BTDUZG7ij6Rwx+M+A==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: 3.5.42
@@ -14074,7 +14068,7 @@ snapshots:
       rc9: 3.1.0
       std-env: 4.2.0
 
-  '@nuxt/test-utils@4.1.0(patch_hash=962b491d08124918382d72a83a0d24a3eb74fd5eb64c495c8df85a8b37ffdb25)(@playwright/test@1.62.1)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0)(@vue/test-utils@2.4.11)(esbuild@0.28.1)(h3@2.0.1-rc.26)(magicast@0.5.5)(playwright-core@1.62.1)(rolldown@1.2.4)(rollup@4.62.2)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vitest@5.0.5)(webpack@5.108.4)':
+  '@nuxt/test-utils@4.1.0(patch_hash=4d2cabf584203c6c78562f11807d6eba8d406729574fec2e8cd0a091a9b6165f)(@playwright/test@1.62.1)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0)(@vue/test-utils@2.4.11)(esbuild@0.28.1)(h3@2.0.1-rc.26)(magicast@0.5.5)(playwright-core@1.62.1)(rolldown@1.2.4)(rollup@4.62.2)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vitest@5.0.5)(webpack@5.108.4)':
     dependencies:
       '@clack/prompts': 1.7.0
       '@nuxt/devtools-kit': 2.7.0(@voidzero-dev/vite-plus-core@1.3.0)(magicast@0.5.5)
@@ -23663,7 +23657,7 @@ snapshots:
 
   vitest-environment-nuxt@2.0.0(@playwright/test@1.62.1)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0)(@vue/test-utils@2.4.11)(esbuild@0.28.1)(h3@2.0.1-rc.26)(magicast@0.5.5)(playwright-core@1.62.1)(rolldown@1.2.4)(rollup@4.62.2)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vitest@5.0.5)(webpack@5.108.4):
     dependencies:
-      '@nuxt/test-utils': 4.1.0(patch_hash=962b491d08124918382d72a83a0d24a3eb74fd5eb64c495c8df85a8b37ffdb25)(@playwright/test@1.62.1)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0)(@vue/test-utils@2.4.11)(esbuild@0.28.1)(h3@2.0.1-rc.26)(magicast@0.5.5)(playwright-core@1.62.1)(rolldown@1.2.4)(rollup@4.62.2)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vitest@5.0.5)(webpack@5.108.4)
+      '@nuxt/test-utils': 4.1.0(patch_hash=4d2cabf584203c6c78562f11807d6eba8d406729574fec2e8cd0a091a9b6165f)(@playwright/test@1.62.1)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0)(@vue/test-utils@2.4.11)(esbuild@0.28.1)(h3@2.0.1-rc.26)(magicast@0.5.5)(playwright-core@1.62.1)(rolldown@1.2.4)(rollup@4.62.2)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vitest@5.0.5)(webpack@5.108.4)
     transitivePeerDependencies:
       - '@cucumber/cucumber'
       - '@farmfe/core'
@@ -23733,7 +23727,7 @@ snapshots:
 
   vue-component-type-helpers@3.3.12: {}
 
-  vue-data-ui@3.28.1(vue@3.5.42):
+  vue-data-ui@3.28.7(vue@3.5.42):
     dependencies:
       vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
 

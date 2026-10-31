@@ -681,6 +681,7 @@
       "date_range_multiline": "{start}\nau {end}",
       "download_file": "Télécharger {fileType}",
       "toggle_annotator": "Afficher/Masquer l'annotateur",
+      "toggle_fullscreen": "Activer/désactiver le plein écran",
       "toggle_stack_mode": "Basculer le mode empilé",
       "open_options": "Ouvrir les options",
       "close_options": "Fermer les options",
