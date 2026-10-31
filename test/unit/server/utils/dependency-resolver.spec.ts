@@ -573,7 +573,9 @@ describe('dependency-resolver', () => {
       // root → shared@^1 and root → a → shared@^2
       mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'root')
-          return makePackument('root', [{ version: '1.0.0', deps: { shared: '^1.0.0', a: '^1.0.0' } }])
+          return makePackument('root', [
+            { version: '1.0.0', deps: { shared: '^1.0.0', a: '^1.0.0' } },
+          ])
         if (name === 'a')
           return makePackument('a', [{ version: '1.0.0', deps: { shared: '^2.0.0' } }])
         if (name === 'shared')
@@ -598,7 +600,8 @@ describe('dependency-resolver', () => {
           ])
         if (name === 'a')
           return makePackument('a', [{ version: '1.0.0', optionalDeps: { opt: '^2.0.0' } }])
-        if (name === 'opt') return makePackument('opt', [{ version: '1.0.0' }, { version: '2.0.0' }])
+        if (name === 'opt')
+          return makePackument('opt', [{ version: '1.0.0' }, { version: '2.0.0' }])
         return null
       })
 
