@@ -1030,8 +1030,7 @@
   "badges": {
     "provenance": {
       "verified": "verifiziert",
-      "verified_title": "Verifizierter Herkunftsnachweis",
-      "verified_via": "Verifiziert: veröffentlicht via {provider}"
+      "verified_title": "Verifizierter Herkunftsnachweis"
     },
     "jsr": {
       "title": "auch auf JSR verfügbar"

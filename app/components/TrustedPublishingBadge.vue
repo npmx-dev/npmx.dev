@@ -13,9 +13,16 @@ const props = withDefaults(
 
 const trustedPublishingDocs = 'https://docs.npmjs.com/trusted-publishers'
 
+const providerLabels: Record<string, string> = {
+  github: 'GitHub Actions',
+  gitlab: 'GitLab CI',
+}
+
 const title = computed(() =>
   props.provider
-    ? $t('badges.trusted_publishing.title_via', { provider: getCiProviderLabel(props.provider) })
+    ? $t('badges.trusted_publishing.title_via', {
+        provider: providerLabels[props.provider] ?? props.provider,
+      })
     : $t('badges.trusted_publishing.title'),
 )
 </script>

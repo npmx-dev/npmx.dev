@@ -1165,8 +1165,7 @@
   "badges": {
     "provenance": {
       "verified": "подтверждено",
-      "verified_title": "Подтвержденное происхождение",
-      "verified_via": "Подтверждено: опубликовано через {provider}"
+      "verified_title": "Подтвержденное происхождение"
     },
     "jsr": {
       "title": "также доступно на JSR"

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{
-  /** Provider ID (e.g., "github", "gitlab") */
-  provider?: string
+defineProps<{
   /** Package name for linking to npmjs.com provenance page */
   packageName?: string
   /** Package version for linking */
@@ -11,12 +9,6 @@ const props = defineProps<{
   /** Whether to render as a link (defaults to true when packageName and version are provided) */
   linked?: boolean
 }>()
-
-const title = computed(() =>
-  props.provider
-    ? $t('badges.provenance.verified_via', { provider: getCiProviderLabel(props.provider) })
-    : $t('badges.provenance.verified_title'),
-)
 </script>
 
 <template>
@@ -26,7 +18,7 @@ const title = computed(() =>
     target="_blank"
     rel="noopener noreferrer"
     class="inline-flex items-center justify-center gap-1 text-xs font-mono text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
-    :title="title"
+    :title="$t('badges.provenance.verified_title')"
   >
     <span
       class="i-lucide:fingerprint shrink-0"
@@ -40,7 +32,7 @@ const title = computed(() =>
   <span
     v-else
     class="inline-flex items-center gap-1 text-xs font-mono text-fg-muted"
-    :title="title"
+    :title="$t('badges.provenance.verified_title')"
   >
     <span
       class="i-lucide:fingerprint shrink-0"

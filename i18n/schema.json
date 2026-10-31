@@ -3567,9 +3567,6 @@
             },
             "verified_title": {
               "type": "string"
-            },
-            "verified_via": {
-              "type": "string"
             }
           },
           "additionalProperties": false

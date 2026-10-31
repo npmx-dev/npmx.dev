@@ -854,8 +854,7 @@
   "badges": {
     "provenance": {
       "verified": "सत्यापित",
-      "verified_title": "सत्यापित प्रोवेनेंस",
-      "verified_via": "सत्यापित: {provider} के माध्यम से प्रकाशित"
+      "verified_title": "सत्यापित प्रोवेनेंस"
     },
     "jsr": {
       "title": "JSR पर भी उपलब्ध"

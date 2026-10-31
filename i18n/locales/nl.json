@@ -1186,8 +1186,7 @@
   "badges": {
     "provenance": {
       "verified": "geverifieerd",
-      "verified_title": "geverifieerde herkomstgegevens",
-      "verified_via": "Geverifieerd: gepubliceerd via {provider}"
+      "verified_title": "geverifieerde herkomstgegevens"
     },
     "staged_publish": {
       "label": "Gefaseerde publicatie",

@@ -1187,8 +1187,7 @@
   "badges": {
     "provenance": {
       "verified": "verified",
-      "verified_title": "Verified provenance",
-      "verified_via": "Verified: published via {provider}"
+      "verified_title": "Verified provenance"
     },
     "staged_publish": {
       "label": "staged publish",

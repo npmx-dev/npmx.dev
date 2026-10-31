@@ -1073,8 +1073,7 @@
   "badges": {
     "provenance": {
       "verified": "ověřeno",
-      "verified_title": "Ověřený původ",
-      "verified_via": "Ověřeno: publikováno přes {provider}"
+      "verified_title": "Ověřený původ"
     },
     "jsr": {
       "title": "také dostupné na JSR"

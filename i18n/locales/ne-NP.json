@@ -1160,8 +1160,7 @@
   "badges": {
     "provenance": {
       "verified": "प्रमाणित",
-      "verified_title": "प्रमाणित प्रोभेनेन्स",
-      "verified_via": "प्रमाणित: {provider} मार्फत प्रकाशित"
+      "verified_title": "प्रमाणित प्रोभेनेन्स"
     },
     "jsr": {
       "title": "JSR मा पनि उपलब्ध"

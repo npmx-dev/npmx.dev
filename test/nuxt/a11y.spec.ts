@@ -1067,7 +1067,6 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with link', async () => {
       const component = await mountSuspended(ProvenanceBadge, {
         props: {
-          provider: 'github',
           packageName: 'vue',
           version: '3.0.0',
         },
@@ -1079,7 +1078,6 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations in compact mode', async () => {
       const component = await mountSuspended(ProvenanceBadge, {
         props: {
-          provider: 'github',
           packageName: 'vue',
           version: '3.0.0',
           compact: true,
@@ -5198,7 +5196,7 @@ describe('background theme accessibility', () => {
       name: 'ProvenanceBadge',
       mount: () =>
         mountSuspended(ProvenanceBadge, {
-          props: { provider: 'github', packageName: 'vue', version: '3.0.0' },
+          props: { packageName: 'vue', version: '3.0.0' },
         }),
     },
     {

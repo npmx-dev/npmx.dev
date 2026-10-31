@@ -1109,8 +1109,7 @@
   "badges": {
     "provenance": {
       "verified": "검증됨",
-      "verified_title": "검증된 출처",
-      "verified_via": "검증됨: {provider}를 통해 게시됨"
+      "verified_title": "검증된 출처"
     },
     "jsr": {
       "title": "JSR에서도 사용 가능"

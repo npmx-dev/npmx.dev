@@ -1083,8 +1083,7 @@
   "badges": {
     "provenance": {
       "verified": "যাচাইকৃত",
-      "verified_title": "যাচাইকৃত প্রোভেন্স",
-      "verified_via": "যাচাইকৃত: {provider} এর মাধ্যমে প্রকাশিত"
+      "verified_title": "যাচাইকৃত প্রোভেন্স"
     },
     "jsr": {
       "title": "JSR-এও উপলব্ধ"

@@ -1077,8 +1077,7 @@
   "badges": {
     "provenance": {
       "verified": "vérifié",
-      "verified_title": "Provenance vérifiée",
-      "verified_via": "Vérifié : publié via {provider}"
+      "verified_title": "Provenance vérifiée"
     },
     "jsr": {
       "title": "aussi disponible sur JSR"

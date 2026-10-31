@@ -1019,8 +1019,7 @@
   "badges": {
     "provenance": {
       "verified": "verificat",
-      "verified_title": "Provenanță verificată",
-      "verified_via": "Verificat: publicat via {provider}"
+      "verified_title": "Provenanță verificată"
     },
     "jsr": {
       "title": "disponibil și pe JSR"

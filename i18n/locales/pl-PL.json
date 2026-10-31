@@ -837,8 +837,7 @@
   "badges": {
     "provenance": {
       "verified": "zweryfikowane",
-      "verified_title": "Zweryfikowane pochodzenie",
-      "verified_via": "Zweryfikowane: opublikowane przez {provider}"
+      "verified_title": "Zweryfikowane pochodzenie"
     },
     "jsr": {
       "title": "dostępne także na JSR"
