@@ -12,16 +12,9 @@ const props = defineProps<{
   linked?: boolean
 }>()
 
-const providerLabels: Record<string, string> = {
-  github: 'GitHub Actions',
-  gitlab: 'GitLab CI',
-}
-
 const title = computed(() =>
   props.provider
-    ? $t('badges.provenance.verified_via', {
-        provider: providerLabels[props.provider] ?? props.provider,
-      })
+    ? $t('badges.provenance.verified_via', { provider: getCiProviderLabel(props.provider) })
     : $t('badges.provenance.verified_title'),
 )
 </script>
@@ -35,7 +28,11 @@ const title = computed(() =>
     class="inline-flex items-center justify-center gap-1 text-xs font-mono text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
     :title="title"
   >
-    <span class="i-lucide:shield-check shrink-0" :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'" />
+    <span
+      class="i-lucide:fingerprint shrink-0"
+      :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'"
+      aria-hidden="true"
+    />
     <span v-if="!compact" class="sr-only sm:not-sr-only">{{
       $t('badges.provenance.verified')
     }}</span>
@@ -45,7 +42,11 @@ const title = computed(() =>
     class="inline-flex items-center gap-1 text-xs font-mono text-fg-muted"
     :title="title"
   >
-    <span class="i-lucide:shield-check shrink-0" :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'" />
+    <span
+      class="i-lucide:fingerprint shrink-0"
+      :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'"
+      aria-hidden="true"
+    />
     <span v-if="!compact" class="sr-only sm:not-sr-only">{{
       $t('badges.provenance.verified')
     }}</span>

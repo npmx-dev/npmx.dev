@@ -302,6 +302,7 @@ import {
   ProgressBar,
   ProvenanceBadge,
   StagedPublishBadge,
+  TrustedPublishingBadge,
   Readme,
   ReadmeTocDropdown,
   SearchProviderToggle,
@@ -1105,6 +1106,32 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('TrustedPublishingBadge', () => {
+    it('should have no accessibility violations with link', async () => {
+      const component = await mountSuspended(TrustedPublishingBadge, {
+        props: { provider: 'github' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations without link', async () => {
+      const component = await mountSuspended(TrustedPublishingBadge, {
+        props: { provider: 'github', linked: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in compact mode', async () => {
+      const component = await mountSuspended(TrustedPublishingBadge, {
+        props: { compact: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('PackageSkeleton', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(PackageSkeleton)
@@ -1213,6 +1240,22 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations showing publisher', async () => {
       const component = await mountSuspended(PackageCard, {
         props: { result: mockResult, showPublisher: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with a trusted publisher', async () => {
+      const component = await mountSuspended(PackageCard, {
+        props: {
+          result: {
+            ...mockResult,
+            package: {
+              ...mockResult.package,
+              publisher: { ...mockResult.package.publisher, trustedPublisher: { id: 'github' } },
+            },
+          },
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -5157,6 +5200,10 @@ describe('background theme accessibility', () => {
         mountSuspended(ProvenanceBadge, {
           props: { provider: 'github', packageName: 'vue', version: '3.0.0' },
         }),
+    },
+    {
+      name: 'TrustedPublishingBadge',
+      mount: () => mountSuspended(TrustedPublishingBadge, { props: { provider: 'github' } }),
     },
     {
       name: 'LicenseDisplay',

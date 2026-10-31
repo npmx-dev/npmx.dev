@@ -3586,6 +3586,21 @@
           },
           "additionalProperties": false
         },
+        "trusted_publishing": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "title_via": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "jsr": {
           "type": "object",
           "properties": {
