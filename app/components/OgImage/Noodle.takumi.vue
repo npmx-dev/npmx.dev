@@ -23,7 +23,7 @@ const BRAND_WIDTH = 142
           :style="{ width: `${BRAND_WIDTH}px`, height: `${BRAND_HEIGHT}px` }"
         />
         <div
-          class="text-6xl tracking-tighter font-mono leading-tight"
+          class="text-6xl tracking-tighter font-ogmono leading-tight"
           :style="{ lineClamp: 2, textOverflow: 'ellipsis' }"
         >
           {{ title }}

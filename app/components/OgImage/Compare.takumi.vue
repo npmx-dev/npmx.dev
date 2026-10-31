@@ -122,7 +122,7 @@ const summaryRemainder = computed(() =>
       <OgBrand :height="48" />
 
       <div class="flex items-baseline gap-3">
-        <h1 class="text-7xl font-mono tracking-tighter leading-none">
+        <h1 class="text-7xl font-ogmono tracking-tighter leading-none">
           <span class="opacity-50">./</span>compare
         </h1>
       </div>
@@ -137,7 +137,7 @@ const summaryRemainder = computed(() =>
         <div v-for="pkg in stats" :key="pkg.name" class="flex flex-col gap-1">
           <div class="flex items-center gap-3">
             <span
-              class="text-2xl font-semibold tracking-tight font-mono"
+              class="text-2xl font-semibold tracking-tight font-ogmono"
               :style="{
                 color: pkg.color,
                 maxWidth: '400px',
@@ -150,7 +150,7 @@ const summaryRemainder = computed(() =>
             </span>
             <span
               v-if="pkg.version"
-              class="text-lg px-2 py-0.5 rounded-md border font-mono"
+              class="text-lg px-2 py-0.5 rounded-md border font-ogmono"
               :style="{
                 color: pkg.color,
                 backgroundColor: pkg.color + '10',
@@ -178,7 +178,7 @@ const summaryRemainder = computed(() =>
         <div v-for="pkg in stats" :key="pkg.name" class="flex flex-col gap-0.5">
           <div class="flex items-center gap-2">
             <span
-              class="text-xl font-semibold tracking-tight font-mono"
+              class="text-xl font-semibold tracking-tight font-ogmono"
               :style="{
                 color: pkg.color,
                 maxWidth: '300px',
@@ -191,7 +191,7 @@ const summaryRemainder = computed(() =>
             </span>
             <span
               v-if="pkg.version"
-              class="text-sm px-1.5 py-0.5 rounded border font-mono"
+              class="text-sm px-1.5 py-0.5 rounded border font-ogmono"
               :style="{
                 color: pkg.color,
                 backgroundColor: pkg.color + '10',
@@ -233,7 +233,7 @@ const summaryRemainder = computed(() =>
           }"
         >
           <span
-            class="font-semibold tracking-tight font-mono"
+            class="font-semibold tracking-tight font-ogmono"
             :style="{
               fontSize: '18px',
               maxWidth: '220px',
@@ -261,7 +261,7 @@ const summaryRemainder = computed(() =>
           <span
             v-for="(name, i) in summaryTopNames"
             :key="name"
-            class="text-xl font-semibold font-mono"
+            class="text-xl font-semibold font-ogmono"
             :style="{
               color: ACCENT_COLORS[i % ACCENT_COLORS.length],
               maxWidth: '280px',

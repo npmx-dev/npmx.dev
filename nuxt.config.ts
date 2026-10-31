@@ -7,7 +7,6 @@ const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORY
 export default defineNuxtConfig({
   modules: [
     '@unocss/nuxt',
-    ...(isStorybook ? [] : ['@nuxt/fonts']),
     'nuxt-og-image',
     '@nuxtjs/html-validator',
     '@nuxt/scripts',
@@ -17,6 +16,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/color-mode',
+    ...(isStorybook ? [] : ['@nuxt/fonts']),
   ],
 
   $test: {
@@ -331,9 +331,6 @@ export default defineNuxtConfig({
   },
 
   fonts: {
-    defaults: {
-      formats: ['woff2', 'ttf'],
-    },
     local: {
       dirs: ['assets/fonts'],
     },
@@ -352,6 +349,16 @@ export default defineNuxtConfig({
       {
         name: 'Geist Mono',
         provider: 'local',
+        global: true,
+      },
+      {
+        name: 'Geist OG',
+        provider: 'none',
+        global: true,
+      },
+      {
+        name: 'Geist Mono OG',
+        provider: 'none',
         global: true,
       },
       {
