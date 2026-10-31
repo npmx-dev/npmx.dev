@@ -1,5 +1,5 @@
-import type { ProviderId } from '../utils/git-providers'
-import type { TocItem } from './readme'
+import type { ProviderId } from '../utils/git-providers.ts'
+import type { TocItem } from './readme.ts'
 
 export interface ChangelogReleaseInfo {
   type: 'release'

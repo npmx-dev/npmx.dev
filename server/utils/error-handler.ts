@@ -1,4 +1,4 @@
-import { isError, createError } from 'h3'
+import { createError, isNuxtError } from 'nuxt/server'
 import { FetchError } from 'ofetch'
 import * as v from 'valibot'
 import type { ErrorOptions } from '#shared/types/error'
@@ -8,21 +8,22 @@ import type { ErrorOptions } from '#shared/types/error'
  * Handles H3 errors, Valibot, and fallbacks in that order
  */
 export function handleApiError(error: unknown, fallback: ErrorOptions): never {
-  // If already a known Nuxt/H3 Error, apply fallback only when the error has a generic 500 status
-  if (isError(error)) {
-    if (error.statusCode === 500 && fallback.statusCode) {
-      error.statusCode = fallback.statusCode
+  // If already a known Nuxt error, apply fallback only when the error has a generic 500 status
+  if (isNuxtError(error)) {
+    const nuxtError = error as typeof error & { status: number; statusText?: string }
+    if (nuxtError.status === 500 && fallback.status) {
+      nuxtError.status = fallback.status
     }
-    if (error.statusMessage === 'Server Error' && fallback.statusMessage) {
-      error.statusMessage = fallback.statusMessage
+    if (nuxtError.statusText === 'Server Error' && fallback.statusText) {
+      nuxtError.statusText = fallback.statusText
     }
     throw error
   }
 
   if (error instanceof FetchError && error.statusCode) {
     throw createError({
-      statusCode: error.statusCode,
-      statusMessage: error.statusMessage,
+      status: error.statusCode,
+      statusText: error.statusMessage,
       message: error.message,
     })
   }
@@ -31,15 +32,15 @@ export function handleApiError(error: unknown, fallback: ErrorOptions): never {
   if (v.isValiError(error)) {
     throw createError({
       // TODO: throwing 404 rather than 400 as it's cacheable
-      statusCode: 404,
+      status: 404,
       message: error.issues[0].message,
     })
   }
 
   // Generic fallback
   throw createError({
-    statusCode: fallback.statusCode ?? 502,
-    statusMessage: fallback.statusMessage,
+    status: fallback.status ?? 502,
+    statusText: fallback.statusText,
     message: fallback.message,
   })
 }

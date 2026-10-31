@@ -1,5 +1,6 @@
-import { getQuery, getRouterParam } from 'h3'
+import { createError, defineEventHandler, getQuery, getRouterParam } from 'nuxt/server'
 import { IdentityUtils } from '#server/utils/atproto/utils/identity'
+import { PackageLikesUtils } from '#server/utils/atproto/utils/likes'
 
 export default defineEventHandler(async event => {
   const identifier = getRouterParam(event, 'identifier')

@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('API Documentation Pages', () => {
   test('docs page loads and shows content for a package', async ({ page, goto }) => {

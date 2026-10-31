@@ -1,3 +1,4 @@
+import type * as Ofetch from 'ofetch'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { EvolutionOptions } from '~/types/chart'
 import {
@@ -7,6 +8,7 @@ import {
   buildYearlyEvolution,
 } from '~/utils/chart-data-buckets'
 import { fetchDownloadsEvolution } from '#server/utils/download-evolution'
+import { $fetch } from 'ofetch'
 
 vi.mock('~/utils/chart-data-buckets', () => ({
   buildDailyEvolution: vi.fn(),
@@ -20,21 +22,25 @@ const buildMonthlyEvolutionMock = vi.mocked(buildMonthlyEvolution)
 const buildWeeklyEvolutionMock = vi.mocked(buildWeeklyEvolution)
 const buildYearlyEvolutionMock = vi.mocked(buildYearlyEvolution)
 
+const $fetchMock = vi.hoisted(() => vi.fn())
+
+vi.mock('ofetch', async importOriginal => ({
+  ...(await importOriginal<typeof Ofetch>()),
+  $fetch: $fetchMock,
+}))
+
 beforeEach(() => {
   vi.clearAllMocks()
   vi.useFakeTimers()
   vi.setSystemTime(new Date('2026-06-01T12:00:00.000Z'))
 
-  vi.stubGlobal(
-    '$fetch',
-    vi.fn(async () => ({
-      downloads: [
-        { day: '2026-05-30', downloads: 30 },
-        { day: '2026-05-29', downloads: 20 },
-        { day: '2026-05-31', downloads: 40 },
-      ],
-    })),
-  )
+  $fetchMock.mockResolvedValue({
+    downloads: [
+      { day: '2026-05-30', downloads: 30 },
+      { day: '2026-05-29', downloads: 20 },
+      { day: '2026-05-31', downloads: 40 },
+    ],
+  })
 
   buildDailyEvolutionMock.mockReturnValue('daily-result' as never)
   buildWeeklyEvolutionMock.mockReturnValue('weekly-result' as never)

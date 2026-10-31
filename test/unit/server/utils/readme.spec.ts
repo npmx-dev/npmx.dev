@@ -1,21 +1,30 @@
+import type * as NuxtServer from 'nuxt/server'
 import type { RepositoryInfo } from '#shared/utils/git-providers'
+import type * as ShikiModule from '#server/utils/shiki'
 import { describe, expect, it, vi, beforeAll } from 'vitest'
+
+const runtimeConfigMock = vi.hoisted(() => vi.fn())
+const shikiHighlighterMock = vi.hoisted(() => vi.fn())
+
+vi.mock('#server/utils/shiki', async importOriginal => ({
+  ...(await importOriginal<typeof ShikiModule>()),
+  getShikiHighlighter: shikiHighlighterMock,
+}))
+
+vi.mock('nuxt/server', async importOriginal => ({
+  ...(await importOriginal<typeof NuxtServer>()),
+  useRuntimeConfig: runtimeConfigMock,
+}))
 
 // Mock the global Nuxt auto-imports before importing the module
 beforeAll(() => {
-  vi.stubGlobal(
-    'getShikiHighlighter',
-    vi.fn().mockResolvedValue({
-      getLoadedLanguages: () => [],
-      codeToHtml: (code: string) => `<pre><code>${code}</code></pre>`,
-    }),
-  )
-  vi.stubGlobal(
-    'useRuntimeConfig',
-    vi.fn().mockReturnValue({
-      imageProxySecret: 'test-secret-for-readme-tests',
-    }),
-  )
+  shikiHighlighterMock.mockResolvedValue({
+    getLoadedLanguages: () => [],
+    codeToHtml: (code: string) => `<pre><code>${code}</code></pre>`,
+  })
+  runtimeConfigMock.mockReturnValue({
+    imageProxySecret: 'test-secret-for-readme-tests',
+  })
 })
 
 // Import after mock is set up

@@ -1,5 +1,5 @@
 import { afterAll, afterEach, describe, expect, it, vi } from 'vitest'
-import { createError } from 'h3'
+import { createError } from 'nitro/h3'
 
 vi.stubGlobal('encodePackageName', (name: string) => {
   if (name.startsWith('@')) return `@${encodeURIComponent(name.slice(1))}`

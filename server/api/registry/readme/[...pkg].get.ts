@@ -1,5 +1,7 @@
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
 import { resolvePackageReadmeSource } from '#server/utils/readme-loaders'
+import { getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 /**
  * Returns rendered README HTML for a package.
@@ -23,7 +25,7 @@ export default defineCachedEventHandler(
       return await renderReadmeHtml(markdown, packageName, repoInfo)
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: ERROR_NPM_FETCH_FAILED,
       })
     }

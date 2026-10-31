@@ -11,7 +11,7 @@ import type {
   PackumentVersion as PackumentVersionWithoutAttestations,
   Contact,
 } from '@npm/types'
-import type { ReadmeResponse } from './readme'
+import type { ReadmeResponse } from './readme.ts'
 import type { TrustLevelName, TrustStatus } from 'packumeta'
 
 // Re-export official npm types for packument/manifest

@@ -12,6 +12,7 @@ import type { DenoDocNode, DenoDocResult, DocEntry } from '#shared/types/deno-do
 import { mapWithConcurrency } from '#shared/utils/async'
 import { encodePackageName } from '#shared/utils/npm'
 import { isBuiltin } from 'node:module'
+import { $fetch } from 'ofetch'
 
 // =============================================================================
 // Configuration

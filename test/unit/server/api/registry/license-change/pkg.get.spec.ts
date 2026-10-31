@@ -1,17 +1,32 @@
+import type * as NuxtServer from 'nuxt/server'
 import { describe, expect, it, vi, beforeEach, afterAll } from 'vitest'
-import { createError, type H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import type { Packument, PackumentLicense, PackumentVersion } from '#shared/types/npm-registry'
 
-const fetchNpmPackageMock = vi.fn()
-vi.stubGlobal('fetchNpmPackage', fetchNpmPackageMock)
-vi.stubGlobal('defineCachedEventHandler', (fn: Function) => fn)
+const handleApiErrorMock = vi.hoisted(() =>
+  vi.fn((_error: unknown, fallback: { status: number; message: string }) => {
+    throw Object.assign(new Error(fallback.message), fallback)
+  }),
+)
 
-let routerParam: string | undefined
-let queryParams: Record<string, string | number> = {}
+const mocks = vi.hoisted(() => ({
+  fetchNpmPackage: vi.fn(),
+  routerParam: undefined as string | undefined,
+  queryParams: {} as Record<string, string | number>,
+}))
 
-vi.stubGlobal('getRouterParam', (_event: unknown, _name: string) => routerParam)
-vi.stubGlobal('getQuery', () => queryParams)
-vi.stubGlobal('createError', createError)
+vi.mock('#server/utils/npm', () => ({ fetchNpmPackage: mocks.fetchNpmPackage }))
+vi.mock('#server/utils/cached-handler', () => ({
+  defineCachedEventHandler: (fn: Function) => fn,
+}))
+vi.mock('#server/utils/error-handler', () => ({
+  handleApiError: handleApiErrorMock,
+}))
+vi.mock('nuxt/server', async importOriginal => ({
+  ...(await importOriginal<typeof NuxtServer>()),
+  getRouterParam: () => mocks.routerParam,
+  getQuery: () => mocks.queryParams,
+}))
 
 const handler = (await import('#server/api/registry/license-change/[...pkg].get')).default
 
@@ -40,19 +55,19 @@ afterAll(() => {
 describe('license-change API', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    routerParam = undefined
-    queryParams = {}
+    mocks.routerParam = undefined
+    mocks.queryParams = {}
   })
 
   it('throws 400 when package name param is missing', async () => {
-    routerParam = undefined
-    await expect(handler(fakeEvent)).rejects.toMatchObject({ statusCode: 400 })
+    mocks.routerParam = undefined
+    await expect(handler(fakeEvent)).rejects.toMatchObject({ status: 400 })
   })
 
   it('reports no change for a new package with a single version (issue #2720)', async () => {
-    routerParam = 'vsxtools'
+    mocks.routerParam = 'vsxtools'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: { '0.0.1': { license: 'MIT' } },
         time: { '0.0.1': '2024-01-01T00:00:00Z' },
@@ -64,9 +79,9 @@ describe('license-change API', () => {
   })
 
   it('reports a change when the license changed between versions', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { license: 'MIT' },
@@ -84,9 +99,9 @@ describe('license-change API', () => {
   })
 
   it('reports no change when the license is unchanged between versions', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { license: 'MIT' },
@@ -104,9 +119,9 @@ describe('license-change API', () => {
   })
 
   it('extracts license string from object format', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { license: { type: 'MIT' } },
@@ -124,10 +139,10 @@ describe('license-change API', () => {
   })
 
   it('defaults to the latest (chronologically newest) version', async () => {
-    routerParam = 'my-pkg'
-    queryParams = {}
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = {}
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { license: 'MIT' },
@@ -147,10 +162,10 @@ describe('license-change API', () => {
   })
 
   it('compares the requested version against its predecessor', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { version: '2.0.0' }
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { version: '2.0.0' }
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { license: 'MIT' },
@@ -170,10 +185,10 @@ describe('license-change API', () => {
   })
 
   it('reports no change when the requested version is the oldest', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { version: '1.0.0' }
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { version: '1.0.0' }
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { license: 'MIT' },
@@ -191,10 +206,10 @@ describe('license-change API', () => {
   })
 
   it('reports no change when the requested version is not found', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { version: '9.9.9' }
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { version: '9.9.9' }
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { license: 'MIT' },

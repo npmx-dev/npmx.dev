@@ -1,4 +1,6 @@
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
+import { createError } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 const REPO = 'npmx-dev/npmx.dev'
 const GITHUB_HEADERS = {
@@ -46,7 +48,7 @@ async function fetchPageCount(url: string): Promise<number> {
   const response = await fetch(url, { headers: GITHUB_HEADERS })
 
   if (!response.ok) {
-    throw createError({ statusCode: response.status, message: `Failed to fetch ${url}` })
+    throw createError({ status: response.status, message: `Failed to fetch ${url}` })
   }
 
   const link = response.headers.get('link')
@@ -72,7 +74,7 @@ async function fetchSearchCount(type: 'issues', query: string): Promise<number> 
   )
 
   if (!response.ok) {
-    throw createError({ statusCode: response.status, message: `Failed to fetch ${type} count` })
+    throw createError({ status: response.status, message: `Failed to fetch ${type} count` })
   }
 
   const data = (await response.json()) as GitHubSearchResponse

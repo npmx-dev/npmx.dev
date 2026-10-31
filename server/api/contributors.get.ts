@@ -1,3 +1,5 @@
+import { createError, useRuntimeConfig } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 export type Role = 'steward' | 'maintainer' | 'contributor' | 'core'
 
 export interface GitHubContributor {
@@ -148,7 +150,7 @@ export default defineCachedEventHandler(
 
       if (!response.ok) {
         throw createError({
-          statusCode: response.status,
+          status: response.status,
           message: 'Failed to fetch contributors',
         })
       }

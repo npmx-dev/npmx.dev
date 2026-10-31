@@ -1,3 +1,5 @@
+import { useKV } from 'nitro/kv'
+import type { CacheAdapter } from '#server/utils/cache/shared'
 /**
  * Local cache data entry
  */
@@ -23,7 +25,7 @@ function isCacheEntryStale(entry: LocalCachedEntry): boolean {
  * Local implementation of a cache to be used during development
  */
 export class LocalCacheAdapter implements CacheAdapter {
-  private readonly storage = useStorage('atproto:generic')
+  private readonly storage = useKV('atproto:generic')
 
   async get<T>(key: string): Promise<T | undefined> {
     const result = await this.storage.getItem<LocalCachedEntry<T>>(key)

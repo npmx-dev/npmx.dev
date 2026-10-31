@@ -1,9 +1,16 @@
+import type * as Ofetch from 'ofetch'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 
-// Mock Nitro globals before importing the module
-vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
-const $fetchMock = vi.fn()
-vi.stubGlobal('$fetch', $fetchMock)
+const $fetchMock = vi.hoisted(() => vi.fn())
+
+vi.mock('nitro/cache', () => ({
+  defineCachedFunction: (fn: Function) => fn,
+}))
+
+vi.mock('ofetch', async importOriginal => ({
+  ...(await importOriginal<typeof Ofetch>()),
+  $fetch: $fetchMock,
+}))
 
 // Import module under test
 const { analyzeDependencyTree } = await import('#server/utils/dependency-analysis')

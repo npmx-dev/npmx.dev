@@ -2,6 +2,11 @@ import process from 'node:process'
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
 import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { createFetch } from 'ofetch'
+import type { $fetch as OfetchType } from 'ofetch'
+import { createError } from 'nuxt/server'
+import { definePlugin } from 'nitro'
+import type { H3Event } from 'nitro/h3'
+import { useKV } from 'nitro/kv'
 
 /**
  * Test fixtures plugin for CI environments.
@@ -209,7 +214,7 @@ function getMockForUrl(url: string): MockResult | null {
  */
 async function processSingleFastNpmMeta(
   packageQuery: string,
-  storage: ReturnType<typeof useStorage>,
+  storage: ReturnType<typeof useKV>,
   metadata: boolean,
 ): Promise<Record<string, unknown>> {
   let packageName = packageQuery
@@ -283,7 +288,7 @@ async function processSingleFastNpmMeta(
  */
 async function processSingleVersionsMeta(
   packageQuery: string,
-  storage: ReturnType<typeof useStorage>,
+  storage: ReturnType<typeof useKV>,
   metadata: boolean,
 ): Promise<Record<string, unknown>> {
   let packageName = packageQuery
@@ -340,7 +345,7 @@ async function processSingleVersionsMeta(
 
 async function handleFastNpmMeta(
   url: string,
-  storage: ReturnType<typeof useStorage>,
+  storage: ReturnType<typeof useKV>,
 ): Promise<MockResult | null> {
   const urlObj = URL.parse(url)
   if (!urlObj) return null
@@ -381,7 +386,7 @@ async function handleFastNpmMeta(
  */
 async function handleGitHubApi(
   url: string,
-  storage: ReturnType<typeof useStorage>,
+  storage: ReturnType<typeof useKV>,
 ): Promise<MockResult | null> {
   const urlObj = URL.parse(url)
   if (!urlObj) return null
@@ -518,7 +523,7 @@ function logUnmockedRequest(type: string, detail: string, url: string): void {
 
 async function handleJsdelivrDataApi(
   url: string,
-  storage: ReturnType<typeof useStorage>,
+  storage: ReturnType<typeof useKV>,
 ): Promise<MockResult | null> {
   const urlObj = URL.parse(url)
   if (!urlObj) return null
@@ -558,7 +563,7 @@ async function handleJsdelivrDataApi(
  */
 async function fetchFromFixtures<T>(
   url: string,
-  storage: ReturnType<typeof useStorage>,
+  storage: ReturnType<typeof useKV>,
 ): Promise<CachedFetchResult<T>> {
   // Check for mock responses (OSV, JSR)
   const mockResult = getMockForUrl(url)
@@ -592,8 +597,8 @@ async function fetchFromFixtures<T>(
   if (!match) {
     logUnmockedRequest('NO FIXTURE PATTERN', 'URL does not match any known fixture pattern', url)
     throw createError({
-      statusCode: 404,
-      statusMessage: 'No test fixture available',
+      status: 404,
+      statusText: 'No test fixture available',
       message: `No fixture pattern matches URL: ${url}`,
     })
   }
@@ -615,8 +620,8 @@ async function fetchFromFixtures<T>(
     // For org packages without fixtures, return 404
     if (match.type === 'org') {
       throw createError({
-        statusCode: 404,
-        statusMessage: 'Org not found',
+        status: 404,
+        statusText: 'Org not found',
         message: `No fixture for org: ${match.name}`,
       })
     }
@@ -628,8 +633,8 @@ async function fetchFromFixtures<T>(
       // This allows tests to verify 404 behavior for nonexistent packages
       if (match.name.includes('does-not-exist') || match.name.includes('nonexistent')) {
         throw createError({
-          statusCode: 404,
-          statusMessage: 'Package not found',
+          status: 404,
+          statusText: 'Package not found',
           message: `Package ${match.name} does not exist`,
         })
       }
@@ -692,8 +697,8 @@ async function fetchFromFixtures<T>(
     }
 
     throw createError({
-      statusCode: 404,
-      statusMessage: 'Not found',
+      status: 404,
+      statusText: 'Not found',
       message: `No fixture for ${match.type}: ${match.name}`,
     })
   }
@@ -723,8 +728,8 @@ async function fetchFromFixtures<T>(
           `[test-fixtures] Version not found: ${match.name}@${resolvedVersion}\n`,
         )
       throw createError({
-        statusCode: 404,
-        statusMessage: 'Version not found',
+        status: 404,
+        statusText: 'Version not found',
         message: `No version ${resolvedVersion} in fixture for ${match.name}`,
       })
     }
@@ -741,7 +746,7 @@ async function fetchFromFixtures<T>(
 async function handleEsmShFetch(
   urlStr: string,
   init: RequestInit | undefined,
-  storage: ReturnType<typeof useStorage>,
+  storage: ReturnType<typeof useKV>,
 ): Promise<Response> {
   const method = init?.method?.toUpperCase() || 'GET'
   const urlObj = new URL(urlStr)
@@ -817,15 +822,15 @@ export interface StubInterface {
   return new Response(null, { status: 200 })
 }
 
-export default defineNitroPlugin(nitroApp => {
-  const storage = useStorage('fixtures')
+export default definePlugin(nitroApp => {
+  const storage = useKV('fixtures')
 
   if (VERBOSE) {
     process.stdout.write('[test-fixtures] Test mode active (verbose logging enabled)\n')
   }
 
   const originalFetch = globalThis.fetch
-  const original$fetch = globalThis.$fetch
+  const original$fetch = (globalThis as typeof globalThis & { $fetch: typeof OfetchType }).$fetch
 
   // Override native fetch for esm.sh requests and to inject test fixture responses
   globalThis.fetch = async (input: URL | RequestInfo, init?: RequestInit): Promise<Response> => {
@@ -878,9 +883,9 @@ export default defineNitroPlugin(nitroApp => {
     options?: Parameters<typeof $fetch>[1],
   ): Promise<T> => {
     if (typeof url === 'string' && !url.startsWith('/')) {
-      return $fetch<T>(url, options as any)
+      return (await $fetch(url, options as any)) as T
     }
-    return original$fetch<T>(url, options as any) as any
+    return (await original$fetch(url, options as any)) as T
   }
 
   // Copy .raw and .create from the created $fetch instance to the wrapper
@@ -895,7 +900,8 @@ export default defineNitroPlugin(nitroApp => {
 
   // Per-request: set up cachedFetch on the event context
   nitroApp.hooks.hook('request', event => {
-    event.context.cachedFetch = async (url: string, options?: any) => {
+    const h3Event = event as H3Event
+    h3Event.context.cachedFetch = async (url: string, options?: any) => {
       return {
         data: await fetchWrapper(url, options),
         isStale: false,

@@ -16,6 +16,11 @@ import {
   ERROR_CHANGELOG_FILE_FAILED,
   ERROR_THROW_INCOMPLETE_PARAM,
 } from '~~/shared/utils/constants'
+import { $fetch } from 'ofetch'
+import { setHeader } from 'nitro/h3'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { changelogRenderer } from '#server/utils/changelog/markdown'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 export default defineCachedEventHandler(
   async event => {
@@ -37,7 +42,7 @@ export default defineCachedEventHandler(
     if (!repo || !provider || !owner || !path) {
       throw createError({
         status: 404,
-        statusMessage: ERROR_THROW_INCOMPLETE_PARAM,
+        statusText: ERROR_THROW_INCOMPLETE_PARAM,
       })
     }
 
@@ -53,7 +58,7 @@ export default defineCachedEventHandler(
       if (!baseUrl || !mdRepoInfo) {
         throw createError({
           status: 404,
-          statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+          statusText: ERROR_CHANGELOG_NOT_FOUND,
         })
       }
       const data = await $fetch(resolveURL(baseUrl.raw, path), {
@@ -70,7 +75,7 @@ export default defineCachedEventHandler(
       return (await changelogRenderer(mdRepoInfo))(markdown)
     } catch (error) {
       handleApiError(error, {
-        statusCode: 500,
+        status: 500,
         message: ERROR_CHANGELOG_FILE_FAILED,
       })
     }
@@ -97,7 +102,7 @@ export default defineCachedEventHandler(
 
       return key.join(':')
     },
-    shouldBypassCache: () => import.meta.dev,
+    shouldBypassCache: () => !!import.meta.dev,
   },
 )
 

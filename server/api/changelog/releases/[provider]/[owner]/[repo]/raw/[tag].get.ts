@@ -9,6 +9,10 @@ import {
   GitlabReleaseSchame,
 } from '~~/shared/schemas/changelog/release'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
+import { $fetch } from 'ofetch'
+import { setHeader } from 'nitro/h3'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 const TIMEOUT_TIME = 15_000
 
@@ -25,7 +29,7 @@ export default defineCachedEventHandler(
     if (!repo || !provider || !owner || !tag) {
       throw createError({
         status: 404,
-        statusMessage: ERROR_THROW_INCOMPLETE_PARAM,
+        statusText: ERROR_THROW_INCOMPLETE_PARAM,
       })
     }
     // nuxt does decode a tag except for `/`
@@ -51,12 +55,12 @@ export default defineCachedEventHandler(
         default:
           throw createError({
             status: 404,
-            statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+            statusText: ERROR_CHANGELOG_NOT_FOUND,
           })
       }
     } catch (error) {
       handleApiError(error, {
-        statusCode: 500,
+        status: 500,
         message: ERROR_CHANGELOG_RELEASES_FAILED,
       })
     }
@@ -76,7 +80,7 @@ export default defineCachedEventHandler(
       }
       return key.join(':')
     },
-    shouldBypassCache: () => import.meta.dev,
+    shouldBypassCache: () => !!import.meta.dev,
   },
 )
 
@@ -124,7 +128,7 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string, e
 
   throw createError({
     status: 404,
-    statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+    statusText: ERROR_CHANGELOG_NOT_FOUND,
   })
 }
 

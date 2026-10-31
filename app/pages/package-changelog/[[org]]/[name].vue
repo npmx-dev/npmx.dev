@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { assertValidPackageName } from '~/utils/npm-validation'
 import { useProviderIcon } from '~/composables/useProviderIcon'
 /// routing
 

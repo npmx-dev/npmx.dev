@@ -1,4 +1,4 @@
-import * as dev from '../types/lexicons/dev'
+import * as dev from '../types/lexicons/dev.ts'
 
 // Duration
 export const CACHE_MAX_AGE_ONE_MINUTE = 60

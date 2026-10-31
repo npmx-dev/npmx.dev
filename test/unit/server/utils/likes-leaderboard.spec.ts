@@ -1,3 +1,4 @@
+import type * as NuxtServer from 'nuxt/server'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { fetchNpmPackage } from '#server/utils/npm'
 import { getHomepageMetadata } from '#server/utils/npm-homepage'
@@ -10,6 +11,13 @@ import {
   getTopLikedRank,
   normalizeLikesLeaderboardPayload,
 } from '#server/utils/likes-leaderboard'
+
+const runtimeConfigMock = vi.hoisted(() => vi.fn())
+
+vi.mock('nuxt/server', async importOriginal => ({
+  ...(await importOriginal<typeof NuxtServer>()),
+  useRuntimeConfig: runtimeConfigMock,
+}))
 
 vi.mock('#server/utils/npm', () => ({
   fetchNpmPackage: vi.fn(),
@@ -58,9 +66,9 @@ function cachedResult(data: unknown) {
 
 beforeEach(() => {
   vi.clearAllMocks()
-  vi.stubGlobal('useRuntimeConfig', () => ({
+  runtimeConfigMock.mockReturnValue({
     imageProxySecret: 'image-proxy-secret',
-  }))
+  })
 })
 
 describe('extractPackageNameFromSubjectRef', () => {

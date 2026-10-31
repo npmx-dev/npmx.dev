@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test'
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 /**
  * Dev/types/run/create commands live in the "additional commands" panel, which is

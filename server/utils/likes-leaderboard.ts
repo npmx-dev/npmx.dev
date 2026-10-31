@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { RequestEvent } from 'nuxt/server'
 import * as v from 'valibot'
 import type { LikesLeaderboardEntry } from '#shared/types/social'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
@@ -148,7 +148,9 @@ async function getLeaderboardEntryMetadata(
   }
 }
 
-export async function getLikesLeaderboard(event: H3Event): Promise<LikesLeaderboardEntry[] | null> {
+export async function getLikesLeaderboard(
+  event: RequestEvent,
+): Promise<LikesLeaderboardEntry[] | null> {
   const cachedFetch = event.context.cachedFetch as CachedFetchFunction | undefined
   if (!cachedFetch) {
     console.error('[likes-leaderboard] Missing cachedFetch in request context')
@@ -182,7 +184,7 @@ export async function getLikesLeaderboard(event: H3Event): Promise<LikesLeaderbo
 }
 
 export async function enrichLikesLeaderboardEntries(
-  event: H3Event,
+  event: RequestEvent,
   leaderboardEntries: LikesLeaderboardEntry[],
 ): Promise<LikesLeaderboardEntry[]> {
   const cachedFetch = event.context.cachedFetch as CachedFetchFunction | undefined
@@ -215,7 +217,10 @@ export async function enrichLikesLeaderboardEntries(
   )
 }
 
-export async function getTopLikedRank(event: H3Event, subjectRef: string): Promise<number | null> {
+export async function getTopLikedRank(
+  event: RequestEvent,
+  subjectRef: string,
+): Promise<number | null> {
   const leaderboard = await getLikesLeaderboard(event)
   return leaderboard?.find(entry => entry.subjectRef === subjectRef)?.rank ?? null
 }

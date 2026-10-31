@@ -19,6 +19,10 @@ import {
   createGithubRepoInfo,
 } from '~~/server/utils/changelog/mdRepoInfo'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
+import { $fetch } from 'ofetch'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { createGitLabRepoInfo, createGiteeRepoInfo } from '#server/utils/changelog/mdRepoInfo'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 const TIMEOUT_TIME = 15_000
 
@@ -31,7 +35,7 @@ export default defineCachedEventHandler(
     if (!repo || !provider || !owner) {
       throw createError({
         status: 404,
-        statusMessage: ERROR_THROW_INCOMPLETE_PARAM,
+        statusText: ERROR_THROW_INCOMPLETE_PARAM,
       })
     }
     const rawQuery = getQuery(event)
@@ -55,12 +59,12 @@ export default defineCachedEventHandler(
         default:
           throw createError({
             status: 404,
-            statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+            statusText: ERROR_CHANGELOG_NOT_FOUND,
           })
       }
     } catch (error) {
       handleApiError(error, {
-        statusCode: 500,
+        status: 500,
         message: ERROR_CHANGELOG_RELEASES_FAILED,
       })
     }
@@ -81,7 +85,7 @@ export default defineCachedEventHandler(
       }
       return key.join(':')
     },
-    shouldBypassCache: () => import.meta.dev,
+    shouldBypassCache: () => !!import.meta.dev,
   },
 )
 

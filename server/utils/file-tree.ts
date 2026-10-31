@@ -1,6 +1,8 @@
 import { getLatestVersion } from 'fast-npm-meta'
 import { flattenFileTree } from '#server/utils/import-resolver'
 import type { ExtendedPackageJson, TypesPackageInfo } from '#shared/utils/package-analysis'
+import { createError } from 'nuxt/server'
+import { $fetch } from 'ofetch'
 
 /**
  * Fetch the file tree from jsDelivr API.
@@ -16,9 +18,9 @@ export async function fetchFileTree(
 
   if (!response.ok) {
     if (response.status === 404) {
-      throw createError({ statusCode: 404, message: 'Package or version not found' })
+      throw createError({ status: 404, message: 'Package or version not found' })
     }
-    throw createError({ statusCode: 502, message: 'Failed to fetch file list from jsDelivr' })
+    throw createError({ status: 502, message: 'Failed to fetch file list from jsDelivr' })
   }
 
   return response.json()

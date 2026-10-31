@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 function toLocalUrl(baseURL: string | undefined, path: string): string {
   if (!baseURL) return path

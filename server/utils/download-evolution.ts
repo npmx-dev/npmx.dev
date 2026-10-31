@@ -15,6 +15,7 @@ import {
   mergeDailyPoints,
   splitIsoRangeIntoChunksInclusive,
 } from '../../shared/utils/download-ranges'
+import { $fetch } from 'ofetch'
 
 type DailyDownloadPoint = {
   day: string

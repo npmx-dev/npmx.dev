@@ -1,5 +1,4 @@
 import { getLatestVersion } from 'fast-npm-meta'
-import { createError } from 'h3'
 import validatePackageName from 'validate-npm-package-name'
 import type { PackumentLicense } from '#shared/types/npm-registry'
 
@@ -32,19 +31,14 @@ export async function fetchLatestVersion(name: string): Promise<string | null> {
 }
 
 /**
- * Validate an npm package name and throw an HTTP error if invalid.
- * Uses validate-npm-package-name to check against npm naming rules.
+ * Validate an npm package name against npm naming rules.
+ * Returns the validation error message, or undefined when valid.
  */
-export function assertValidPackageName(name: string): void {
+export function getPackageNameValidationError(name: string): string | undefined {
   const result = validatePackageName(name)
-  if (!result.validForNewPackages && !result.validForOldPackages) {
-    const errors = [...(result.errors ?? []), ...(result.warnings ?? [])]
-    throw createError({
-      // TODO: throwing 404 rather than 400 as it's cacheable
-      statusCode: 404,
-      message: `Invalid package name: ${errors[0] ?? 'unknown error'}`,
-    })
-  }
+  if (result.validForNewPackages || result.validForOldPackages) return
+  const errors = [...(result.errors ?? []), ...(result.warnings ?? [])]
+  return `Invalid package name: ${errors[0] ?? 'unknown error'}`
 }
 
 /** Parsed result of an npm dependency version value */

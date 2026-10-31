@@ -45,11 +45,13 @@ strictPeerDependencies: true
 
 minimumReleaseAgeExclude:
   - '@iconify-json/simple-icons@1.2.93'
-  - 'nuxt@4.5.2'
-  - '@nuxt/kit@4.5.2'
-  - '@nuxt/nitro-server@4.5.2'
-  - '@nuxt/schema@4.5.2'
-  - '@nuxt/vite-builder@4.5.2'
+  - '@nuxt/kit-nightly@5.0.0-2610292252-da55a91'
+  - '@nuxt/nitro-server-nightly@5.0.0-2610292252-da55a91'
+  - '@nuxt/schema-nightly@5.0.0-2610292252-da55a91'
+  - '@nuxt/vite-builder-nightly@5.0.0-2610292252-da55a91'
+  - '@nuxt/vite-server-nightly@5.0.0-2610292252-da55a91'
+  - nitro@3.0.261029-rc
+  - nuxt-nightly@5.0.0-2610292252-da55a91
   - vue-data-ui@3.28.7
 
 minimumReleaseAgeExcludePrune: true
@@ -74,7 +76,6 @@ packageExtensions:
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
-  '@nuxt/test-utils@4.1.0': patches/@nuxt__test-utils@4.1.0.patch
 
 savePrefix: ''
 

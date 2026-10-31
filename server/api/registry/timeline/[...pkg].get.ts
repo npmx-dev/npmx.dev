@@ -1,6 +1,11 @@
 import { compare, tryParse } from 'verkit'
 import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { CACHE_MAX_AGE_FIVE_MINUTES } from '#shared/utils/constants'
+import { fetchNpmPackage } from '#server/utils/npm'
+import { handleApiError } from '#server/utils/error-handler'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 const DEFAULT_LIMIT = 25
 
@@ -59,14 +64,14 @@ export default defineCachedEventHandler(
   async event => {
     const pkgParam = getRouterParam(event, 'pkg')
     if (!pkgParam) {
-      throw createError({ statusCode: 404, message: 'Package name is required' })
+      throw createError({ status: 404, message: 'Package name is required' })
     }
 
     let packageName: string
     try {
       packageName = decodeURIComponent(pkgParam)
     } catch {
-      throw createError({ statusCode: 400, message: 'Invalid package name encoding' })
+      throw createError({ status: 400, message: 'Invalid package name encoding' })
     }
 
     const query = getQuery(event)
@@ -129,7 +134,7 @@ export default defineCachedEventHandler(
       } satisfies TimelineResponse
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: `Failed to fetch timeline for ${packageName}`,
       })
     }

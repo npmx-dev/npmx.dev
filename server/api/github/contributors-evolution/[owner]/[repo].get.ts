@@ -1,4 +1,7 @@
 import { CACHE_MAX_AGE_ONE_DAY } from '#shared/utils/constants'
+import { createError, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { fetchGitHubWithRetries } from '#server/utils/github'
 
 type GitHubContributorWeek = {
   w: number

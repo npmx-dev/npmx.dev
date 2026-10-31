@@ -5,6 +5,9 @@ import {
   parseStableOnly,
   isStableVersion,
 } from '~~/server/api/registry/timeline/[...pkg].get'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { calculateInstallSize } from '#server/utils/install-size'
 
 const DEFAULT_LIMIT = 25
 
@@ -48,14 +51,14 @@ export default defineCachedEventHandler(
   async event => {
     const pkgParam = getRouterParam(event, 'pkg')
     if (!pkgParam) {
-      throw createError({ statusCode: 404, message: 'Package name is required' })
+      throw createError({ status: 404, message: 'Package name is required' })
     }
 
     let packageName: string
     try {
       packageName = decodeURIComponent(pkgParam)
     } catch {
-      throw createError({ statusCode: 400, message: 'Invalid package name encoding' })
+      throw createError({ status: 400, message: 'Invalid package name encoding' })
     }
 
     const query = getQuery(event)
@@ -101,7 +104,7 @@ export default defineCachedEventHandler(
       return { sizes } satisfies TimelineSizeResponse
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: `Failed to fetch install sizes for ${packageName}`,
       })
     }

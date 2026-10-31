@@ -211,6 +211,7 @@ export default defineConfig({
         test: {
           name: 'unit',
           include: ['test/unit/**/*.{test,spec}.ts'],
+          setupFiles: [`${rootDir}/test/unit/setup.ts`],
           environment: 'node',
         },
       },
@@ -240,8 +241,8 @@ export default defineConfig({
                     runtimeCompiler: true,
                   },
                   experimental: {
+                    nitroViteEnvironment: false,
                     payloadExtraction: false,
-                    viteEnvironmentApi: false,
                   },
                   pwa: {
                     pwaAssets: { disabled: true },

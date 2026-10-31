@@ -1,4 +1,6 @@
 import type { JsrPackageMeta, JsrPackageInfo } from '#shared/types/jsr'
+import { $fetch } from 'ofetch'
+import { defineCachedFunction } from 'nitro/cache'
 
 const JSR_REGISTRY = 'https://jsr.io'
 

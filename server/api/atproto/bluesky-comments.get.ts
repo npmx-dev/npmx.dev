@@ -7,6 +7,8 @@ import {
   BLUESKY_API,
   BSKY_POST_AT_URI_REGEX,
 } from '#shared/utils/constants'
+import { createError, getQuery } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 const blueskyClient = new Client({ service: BLUESKY_API })
 
@@ -21,8 +23,8 @@ export default defineCachedEventHandler(
 
     if (typeof uri !== 'string' || !isAtUriString(uri)) {
       throw createError({
-        statusCode: 400,
-        statusMessage: `Invalid URI format: Must be a valid at:// URI`,
+        status: 400,
+        statusText: `Invalid URI format: Must be a valid at:// URI`,
       })
     }
 

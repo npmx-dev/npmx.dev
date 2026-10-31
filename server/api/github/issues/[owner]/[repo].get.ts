@@ -1,4 +1,7 @@
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
+import { createError, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { fetchGitHubWithRetries } from '#server/utils/github'
 
 interface GitHubSearchResponse {
   total_count: number
@@ -17,8 +20,8 @@ export default defineCachedEventHandler(
 
     if (!owner || !repo) {
       throw createError({
-        statusCode: 400,
-        statusMessage: 'Owner and repo are required parameters.',
+        status: 400,
+        statusText: 'Owner and repo are required parameters.',
       })
     }
 
@@ -37,8 +40,8 @@ export default defineCachedEventHandler(
       }
     } catch {
       throw createError({
-        statusCode: 500,
-        statusMessage: 'Failed to fetch issue count from GitHub',
+        status: 500,
+        statusText: 'Failed to fetch issue count from GitHub',
       })
     }
   },

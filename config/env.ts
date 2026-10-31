@@ -1,10 +1,10 @@
 // TODO(serhalp): Extract most of this module to https://github.com/unjs/std-env.
 
-import Git from 'simple-git'
+import { simpleGit } from 'simple-git'
 import * as process from 'node:process'
 
-import { version as packageVersion } from '../package.json'
-import { getNextVersion } from '../scripts/next-version'
+import packageJson from '../package.json' with { type: 'json' }
+import { getNextVersion } from '../scripts/next-version.ts'
 
 /**
  * Environment variable `PULL_REQUEST` provided by Netlify.
@@ -115,7 +115,7 @@ export const getProductionUrl = () =>
         : undefined
     : undefined
 
-const git = Git()
+const git = simpleGit()
 async function getGitInfo() {
   let branch
   try {
@@ -170,7 +170,7 @@ export async function getVersion() {
     const { next } = await getNextVersion()
     return next
   } catch {
-    return packageVersion
+    return packageJson.version
   }
 }
 

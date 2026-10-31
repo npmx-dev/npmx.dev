@@ -1,5 +1,8 @@
 import { Client, isAtIdentifierString } from '@atproto/lex'
 import * as blue from '#shared/types/lexicons/blue'
+import { createError } from 'nuxt/server'
+import { getCacheAdapter } from '#server/utils/cache/adapter'
+import type { CacheAdapter } from '#server/utils/cache/shared'
 
 const HEADERS = { 'User-Agent': 'npmx' }
 

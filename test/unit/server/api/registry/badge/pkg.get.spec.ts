@@ -1,7 +1,8 @@
+import type * as NitroH3 from 'nitro/h3'
+import type * as NuxtServer from 'nuxt/server'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import type { Packument } from '#shared/types/npm-registry'
-import { parsePackageParams } from '#server/utils/parse-package-params'
 
 const fetchNpmPackageMock = vi.hoisted(() => vi.fn())
 const getRouterParamMock = vi.hoisted(() => vi.fn())
@@ -12,15 +13,20 @@ vi.mock('#server/utils/npm', () => ({
   fetchNpmPackage: fetchNpmPackageMock,
 }))
 
-vi.mock('h3', () => ({
-  createError: vi.fn((options: unknown) => options),
+vi.mock('nuxt/server', async importOriginal => ({
+  ...(await importOriginal<typeof NuxtServer>()),
   getRouterParam: getRouterParamMock,
   getQuery: getQueryMock,
+}))
+
+vi.mock('nitro/h3', async importOriginal => ({
+  ...(await importOriginal<typeof NitroH3>()),
   setHeader: setHeaderMock,
 }))
 
-vi.stubGlobal('defineCachedEventHandler', (fn: Function) => fn)
-vi.stubGlobal('parsePackageParams', parsePackageParams)
+vi.mock('#server/utils/cached-handler', () => ({
+  defineCachedEventHandler: (fn: Function) => fn,
+}))
 
 const handler = (await import('#server/api/registry/badge/[type]/[...pkg].get')).default
 
