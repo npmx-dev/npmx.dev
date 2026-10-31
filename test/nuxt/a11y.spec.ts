@@ -1111,6 +1111,9 @@ describe('component accessibility audits', () => {
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
+      expect(component.find('a').attributes('title')).toBe(
+        'Published with trusted publishing via GitHub Actions',
+      )
     })
 
     it('should have no accessibility violations without link', async () => {
@@ -1257,6 +1260,7 @@ describe('component accessibility audits', () => {
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
+      expect(component.findComponent(TrustedPublishingBadge).exists()).toBe(true)
     })
   })
 
