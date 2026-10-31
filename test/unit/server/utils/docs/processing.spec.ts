@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { buildSymbolLookup } from '#server/utils/docs/processing'
 import type { DenoDocNode } from '#shared/types/deno-doc'
 
