@@ -15,12 +15,15 @@ import type { ReadmeResponse } from './readme'
 import type { TrustLevelName, TrustStatus } from 'packumeta'
 
 // Re-export official npm types for packument/manifest
-export type { Manifest, ManifestVersion, PackageJSON } from '@npm/types'
 
 type NpmTrustedPublisherEvidence = NpmSearchTrustedPublisher | NpmTrustedPublisher | true
 
 export interface PackumentVersion extends PackumentVersionWithoutAttestations {
-  _npmUser?: Contact & { trustedPublisher?: NpmTrustedPublisherEvidence }
+  _npmUser?: Contact & {
+    trustedPublisher?: NpmTrustedPublisherEvidence
+    /** Present when the version was released through staged publishing. */
+    approver?: Contact
+  }
   dist: PackumentVersionWithoutAttestations['dist'] & { attestations?: NpmVersionAttestations }
 }
 
@@ -160,7 +163,7 @@ export interface PackageVersionInfo {
  * Person/contact type extracted from @npm/types Contact interface
  * Used for maintainers, authors, publishers
  */
-export interface NpmPerson {
+interface NpmPerson {
   name?: string
   email?: string
   url?: string
@@ -201,7 +204,7 @@ export interface NpmSearchResult {
  * Trusted publisher info from search API
  * Present when package was published via OIDC (e.g., GitHub Actions)
  */
-export interface NpmSearchTrustedPublisher {
+interface NpmSearchTrustedPublisher {
   /** OIDC provider identifier (e.g., "github", "gitlab") */
   id: string
   /** OIDC config ID */
@@ -211,7 +214,7 @@ export interface NpmSearchTrustedPublisher {
 /**
  * Publisher info with optional trusted publisher and actor details
  */
-export interface NpmSearchPublisher extends NpmPerson {
+interface NpmSearchPublisher extends NpmPerson {
   /** Trusted publisher info (present if published via OIDC) */
   trustedPublisher?: NpmSearchTrustedPublisher
   /** Actor who triggered the publish (for trusted publishing) */
@@ -222,7 +225,7 @@ export interface NpmSearchPublisher extends NpmPerson {
   }
 }
 
-export interface NpmSearchPackage {
+interface NpmSearchPackage {
   name: string
   scope?: string
   version: string
@@ -248,7 +251,7 @@ export interface NpmSearchPackage {
  * Present when package was published with provenance
  * Note: Not covered by @npm/types
  */
-export interface NpmVersionAttestations {
+interface NpmVersionAttestations {
   /** URL to fetch full attestation details */
   url: string
   /** Provenance info */
@@ -311,41 +314,11 @@ export interface NpmDownloadCount {
   package: string
 }
 
-export interface NpmDownloadRange {
-  downloads: Array<{
-    downloads: number
-    day: string
-  }>
-  start: string
-  end: string
-  package: string
-}
-
-/**
- * Organization API types
- * These require authentication
- * Note: Not covered by @npm/types
- */
-export interface NpmOrgMember {
-  user: string
-  role: 'developer' | 'admin' | 'owner'
-}
-
-export interface NpmTeam {
-  name: string
-  description?: string
-  members?: string[]
-}
-
-export interface NpmPackageAccess {
-  permissions: 'read-only' | 'read-write'
-}
-
 /**
  * Trusted Publishing types
  * Note: Not covered by @npm/types
  */
-export interface NpmTrustedPublisher {
+interface NpmTrustedPublisher {
   type: 'github-actions' | 'gitlab-ci'
   // GitHub Actions specific
   repository?: string
@@ -431,19 +404,6 @@ export interface PackageFileContentResponse {
   html: string
   lines: number
   markdownHtml?: ReadmeResponse
-}
-
-/**
- * Minimal packument data needed for package cards
- */
-export interface MinimalPackument {
-  'name': string
-  'description'?: string
-  'keywords'?: string[]
-  // `dist-tags` can be missing in some later unpublished packages
-  'dist-tags'?: Record<string, string>
-  'time': Record<string, string>
-  'maintainers'?: NpmPerson[]
 }
 
 /**

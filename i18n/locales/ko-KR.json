@@ -1762,18 +1762,10 @@
     "p2": "시작하기 전에 번역 프로세스와 참여 방법을 알아보려면 {guide}를 읽어 주세요.",
     "guide": "현지화(i18n) 가이드",
     "by_locale": "로케일별 번역 진행률",
-    "by_file": "파일별 번역 진행률",
     "complete_text": "이 번역은 완료되었습니다. 훌륭합니다!",
     "missing_text": "누락",
     "missing_keys": "누락된 번역이 없습니다 | 누락된 번역 | 누락된 번역",
-    "progress_label": "{locale} 진행 상태",
-    "table": {
-      "file": "파일",
-      "status": "상태",
-      "error": "파일 목록을 불러오는 중 에러가 발생했습니다.",
-      "empty": "파일을 찾을 수 없습니다",
-      "file_link": "GitHub에서 {file}({lang}) 편집"
-    }
+    "progress_label": "{locale} 진행 상태"
   },
   "vacations": {
     "title": "휴가 중",

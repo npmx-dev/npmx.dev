@@ -26,7 +26,7 @@ const PACKAGE_VERSION_PATTERN = /^(@[\w.-]+\/[\w.-]+|[\w.-]+)(?:@(.+))?$/
  * @param scripts - The scripts object from package.json
  * @returns Record of package name to version (or "latest" if none specified)
  */
-export function extractNpxDependencies(
+function extractNpxDependencies(
   scripts: Record<string, string> | undefined,
 ): Record<string, string> {
   if (!scripts) return {}

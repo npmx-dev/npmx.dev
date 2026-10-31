@@ -65,6 +65,23 @@
       "view_org_packages": "عرض حزم هذه المؤسسة"
     }
   },
+  "command_palette": {
+    "keyboard_shortcuts": {},
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "الصفحة الرئيسية",
     "popular_packages": "الحزم الشائعة",
@@ -77,9 +94,20 @@
     "links": "روابط",
     "tap_to_search": "اضغط للبحث"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "author": {},
     "atproto": {}
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "الإعدادات",
@@ -117,7 +145,8 @@
     "translation_progress": "تقدم الترجمة",
     "background_themes": {
       "label": "درجة خلفية الصفحة"
-    }
+    },
+    "foreground_themes": {}
   },
   "i18n": {
     "missing_keys": "{count} ترجمات مفقودة | ترجمة واحدة مفقودة | ترجمتان مفقودتان | {count} ترجمات مفقودة | {count} ترجمة مفقودة | {count} ترجمة مفقودة",
@@ -171,6 +200,7 @@
       "no_reason": "لم يتم تقديم سبب"
     },
     "size_increase": {},
+    "size_decrease": {},
     "replacement": {
       "title": "قد لا تحتاج إلى هذه التبعية.",
       "native": "يمكن استبدالها بـ {replacement}، المتوفرة منذ Node {nodeVersion}.",
@@ -245,6 +275,7 @@
       "title": "تشغيل",
       "locally": "تشغيل محليًا"
     },
+    "command": {},
     "readme": {
       "title": "README (إقرأني)",
       "no_readme": "لا يتوفر README.",
@@ -315,6 +346,11 @@
       "no_matches": "لا توجد إصدارات تطابق هذا النطاق",
       "copy_alt": {}
     },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
+      }
+    },
     "dependencies": {
       "title": "التبعيات ({count})",
       "list_label": "تبعيات الحزمة",
@@ -351,6 +387,7 @@
       "show_less": "(عرض أقل)"
     },
     "trends": {
+      "chart_assistive_text": {},
       "granularity": "مستوى التفصيل",
       "granularity_daily": "يومي",
       "granularity_weekly": "أسبوعي",
@@ -374,7 +411,13 @@
         "likes": "الإعجابات",
         "contributors": "المساهمون"
       },
-      "copy_alt": {}
+      "copy_alt": {},
+      "embedding": {},
+      "sparkline_zoom_reset": {},
+      "downloads_heatmap": {
+        "legend": {},
+        "copy_alt": {}
+      }
     },
     "downloads": {
       "title": "التنزيلات الأسبوعية",
@@ -469,6 +512,9 @@
       "mb": "{size} ميجابايت"
     },
     "download": {}
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -848,6 +894,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "اتصال",
     "account": "الحساب",
@@ -919,6 +984,9 @@
       "remove_package": "إزالة {package}",
       "packages_selected": "{count}/{max} حزمة محددة.",
       "add_hint": "أضف حزمتين على الأقل للمقارنة."
+    },
+    "scatter_chart": {
+      "copy_alt": {}
     },
     "no_dependency": {
       "label": "(بدون تبعية)",
@@ -994,7 +1062,11 @@
         "vulnerabilities": {
           "label": "الثغرات",
           "description": "ثغرات أمنية معروفة"
-        }
+        },
+        "githubStars": {},
+        "githubForks": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "أي من",
@@ -1130,8 +1202,24 @@
       "link": "مستودع GitHub"
     }
   },
-  "translation_status": {
-    "table": {}
+  "translation_status": {},
+  "vacations": {
+    "what": {},
+    "meantime": {},
+    "return": {},
+    "stats": {
+      "subtitle": {}
+    }
   },
-  "action_bar": {}
+  "action_bar": {},
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
+  },
+  "changelog": {
+    "error": {}
+  }
 }

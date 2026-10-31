@@ -74,6 +74,7 @@
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "command_palette": {
+    "keyboard_shortcuts": {},
     "state": {},
     "groups": {},
     "actions": {},
@@ -101,6 +102,14 @@
     "links": "Keçidlər",
     "tap_to_search": "Axtarmaq üçün toxunun"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "title": "Bloq",
     "heading": "bloq",
@@ -125,6 +134,9 @@
       "repost_count": "{count} yenidən paylaşım",
       "more_replies": "daha {count} cavab... | daha {count} cavab..."
     }
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "tənzimləmələr",
@@ -166,6 +178,7 @@
     "background_themes": {
       "label": "Fon tonu"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Klaviatura qısayollarını aktivləşdir",
     "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər"
   },
@@ -326,6 +339,7 @@
       "title": "İşə sal",
       "locally": "Lokal işə sal"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README mövcud deyil.",
@@ -498,6 +512,12 @@
         "compare": "Paket endirmə müqayisəsi xətt diaqramı: {packages}.",
         "single_package": "{package} paketi üçün endirmə xətt diaqramı.",
         "general_description": "Y oxu endirmələrin sayını təmsil edir. X oxu tarix aralığını təmsil edir, {start_date}-dən {end_date}-ə, {granularity} zaman dövrü ilə.{estimation_notice} {packages_analysis}. {watermark}."
+      },
+      "embedding": {},
+      "sparkline_zoom_reset": {},
+      "downloads_heatmap": {
+        "legend": {},
+        "copy_alt": {}
       }
     },
     "downloads": {
@@ -985,6 +1005,25 @@
       }
     }
   },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
+    }
+  },
   "account_menu": {
     "connect": "qoşul",
     "account": "Hesab",
@@ -1138,6 +1177,7 @@
           "description": "Məlum təhlükəsizlik zəiflikləri"
         },
         "githubStars": {},
+        "githubForks": {},
         "githubIssues": {},
         "createdAt": {}
       },
@@ -1327,9 +1367,7 @@
       "link": "GitHub repozitoriyası"
     }
   },
-  "translation_status": {
-    "table": {}
-  },
+  "translation_status": {},
   "vacations": {
     "what": {},
     "meantime": {},

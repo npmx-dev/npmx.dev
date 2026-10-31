@@ -85,7 +85,7 @@ export async function fetchLatestVersionWithFallback(name: string): Promise<stri
  * By default, excludes prerelease versions unless the constraint explicitly
  * includes a prerelease tag (e.g., "^1.0.0-beta").
  */
-export async function resolveVersionConstraint(
+async function resolveVersionConstraint(
   packageName: string,
   constraint: string,
 ): Promise<string | null> {

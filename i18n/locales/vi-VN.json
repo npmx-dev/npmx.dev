@@ -1433,18 +1433,10 @@
     "p2": "Trước khi bắt đầu, bạn hãy đọc qua {guide} để hiểu thêm về quy trình dịch và cách đóng góp.",
     "guide": "Hướng dẫn dịch (i18n)",
     "by_locale": "Tiến độ dịch theo ngôn ngữ",
-    "by_file": "Tiến độ dịch theo tệp",
     "complete_text": "Bản dịch đã hoàn chỉnh, tuyệt vời!",
     "missing_text": "thiếu",
     "missing_keys": "Không thiếu bản dịch | Thiếu bản dịch | Thiếu bản dịch",
-    "progress_label": "Tiến độ cho {locale}",
-    "table": {
-      "file": "Tệp",
-      "status": "Trạng thái",
-      "error": "Lỗi trong quá trình tải tệp",
-      "empty": "Không tìm thấy tệp nào",
-      "file_link": "Chỉnh sửa {file} ({lang}) tại GitHub"
-    }
+    "progress_label": "Tiến độ cho {locale}"
   },
   "vacations": {
     "title": "đang nghỉ lễ",

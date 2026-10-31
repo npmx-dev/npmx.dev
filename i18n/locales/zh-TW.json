@@ -1545,18 +1545,10 @@
     "p2": "開始之前，請先閱讀我們的 {guide}，瞭解翻譯流程以及參與方式。",
     "guide": "在地化（i18n）指南",
     "by_locale": "依語言的翻譯進度",
-    "by_file": "依檔案的翻譯進度",
     "complete_text": "這個翻譯已經完成，超棒的！",
     "missing_text": "缺少",
     "missing_keys": "沒有缺少的翻譯 | 缺少 1 處翻譯 | 缺少 {count} 處翻譯",
-    "progress_label": "{locale} 的翻譯進度狀態",
-    "table": {
-      "file": "檔案",
-      "status": "狀態",
-      "error": "載入檔案清單時發生錯誤。",
-      "empty": "找不到任何檔案",
-      "file_link": "在 GitHub 上編輯 {file}（{lang}）"
-    }
+    "progress_label": "{locale} 的翻譯進度狀態"
   },
   "vacations": {
     "title": "休假中",

@@ -2371,6 +2371,9 @@
             "toggle_annotator": {
               "type": "string"
             },
+            "toggle_fullscreen": {
+              "type": "string"
+            },
             "toggle_stack_mode": {
               "type": "string"
             },
@@ -3571,6 +3574,18 @@
           },
           "additionalProperties": false
         },
+        "staged_publish": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "jsr": {
           "type": "object",
           "properties": {
@@ -4541,6 +4556,9 @@
               "type": "string"
             },
             "add_hint": {
+              "type": "string"
+            },
+            "version_hint": {
               "type": "string"
             }
           },
@@ -5521,9 +5539,6 @@
         "by_locale": {
           "type": "string"
         },
-        "by_file": {
-          "type": "string"
-        },
         "complete_text": {
           "type": "string"
         },
@@ -5535,27 +5550,6 @@
         },
         "progress_label": {
           "type": "string"
-        },
-        "table": {
-          "type": "object",
-          "properties": {
-            "file": {
-              "type": "string"
-            },
-            "status": {
-              "type": "string"
-            },
-            "error": {
-              "type": "string"
-            },
-            "empty": {
-              "type": "string"
-            },
-            "file_link": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
         }
       },
       "additionalProperties": false

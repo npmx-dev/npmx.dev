@@ -1666,18 +1666,10 @@
     "p2": "Før du begynner, vennligst les vår {guide} for å lære om oversettelsesprosessen vår og hvordan du kan bli involvert.",
     "guide": "lokaliseringsguide (i18n)",
     "by_locale": "Oversettelsesfremdrift etter språk",
-    "by_file": "Oversettelsesfremdrift etter fil",
     "complete_text": "Denne oversettelsen er fullført, fantastisk jobb!",
     "missing_text": "mangler",
     "missing_keys": "Det er ingen manglende oversettelser | Manglende oversettelse | Manglende oversettelser",
-    "progress_label": "Fremdriftsstatus for {locale}",
-    "table": {
-      "file": "Fil",
-      "status": "Status",
-      "error": "Feil ved lasting av filliste.",
-      "empty": "Ingen filer funnet",
-      "file_link": "Rediger {file} ({lang}) på GitHub"
-    }
+    "progress_label": "Fremdriftsstatus for {locale}"
   },
   "vacations": {
     "title": "på ferie",
