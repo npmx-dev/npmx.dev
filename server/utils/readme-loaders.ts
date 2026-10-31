@@ -79,6 +79,16 @@ export async function fetchReadmeFromJsdelivr(
   return null
 }
 
+/**
+ * The commit a published version was built from, which its README and its files
+ * came from. npm records it as `gitHead`, and omits it for many versions, so a
+ * caller that has no revision links to the default branch instead.
+ */
+export function publishedRevision(packageData: Packument, version?: string): string | undefined {
+  const resolved = version ?? packageData['dist-tags']?.latest
+  return resolved ? packageData.versions[resolved]?.gitHead : undefined
+}
+
 export const resolvePackageReadmeSource = defineCachedFunction(
   async (packagePath: string) => {
     const pkgParamSegments = packagePath.split('/')
@@ -142,6 +152,7 @@ export const resolvePackageReadmeSource = defineCachedFunction(
         version,
         markdown: undefined,
         repoInfo: undefined,
+        revision: undefined,
       }
     }
 
@@ -152,6 +163,7 @@ export const resolvePackageReadmeSource = defineCachedFunction(
       version,
       markdown: readmeContent,
       repoInfo,
+      revision: publishedRevision(packageData, version),
     }
   },
   {

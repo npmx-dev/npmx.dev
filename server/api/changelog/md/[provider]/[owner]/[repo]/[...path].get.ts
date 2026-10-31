@@ -1,16 +1,6 @@
-import { resolveURL } from 'ufo'
 import * as v from 'valibot'
-import { getBaseFileUrl } from '~~/server/utils/changelog/baseFileUrl'
-import {
-  createBitbucketRepoInfo,
-  createForgejoRepoInfo,
-  createGiteaRepoInfo,
-  createGiteeRepoInfo,
-  createGithubRepoInfo,
-  createGitLabRepoInfo,
-  createSourcehutRepoInfo,
-  createTangledRepoInfo,
-} from '~~/server/utils/changelog/mdRepoInfo'
+import { getFileUrls } from '~~/server/utils/changelog/baseFileUrl'
+import { createRepoInfo } from '~~/server/utils/changelog/mdRepoInfo'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
 import {
   ERROR_CHANGELOG_FILE_FAILED,
@@ -21,7 +11,8 @@ export default defineCachedEventHandler(
   async event => {
     const provider = getRouterParam(event, 'provider') as ProviderId
     const repo = getRouterParam(event, 'repo')
-    const owner = getRouterParam(event, 'owner')
+    // A GitLab subgroup owner arrives encoded as one segment (`group%2Fsub`).
+    const owner = getRouterParam(event, 'owner', { decode: true })
     const path = getRouterParam(event, 'path')
 
     const rawQuery = getQuery(event)
@@ -42,21 +33,17 @@ export default defineCachedEventHandler(
     }
 
     try {
-      const baseUrl = getBaseFileUrl({
-        owner,
-        provider: provider as ProviderId,
-        repo,
-        host,
-      })
-      const mdRepoInfo = getRepoInfo(provider, owner, repo, host, path)
+      const ref = { provider: provider as ProviderId, owner, repo, host }
+      const urls = getFileUrls(ref, path)
+      const mdRepoInfo = createRepoInfo(ref, path)
 
-      if (!baseUrl || !mdRepoInfo) {
+      if (!urls || !mdRepoInfo) {
         throw createError({
           status: 404,
           statusMessage: ERROR_CHANGELOG_NOT_FOUND,
         })
       }
-      const data = await $fetch(resolveURL(baseUrl.raw, path), {
+      const data = await $fetch(urls.raw, {
         headers: {
           'User-Agent': 'npmx.dev',
         },
@@ -100,32 +87,3 @@ export default defineCachedEventHandler(
     shouldBypassCache: () => import.meta.dev,
   },
 )
-
-function getRepoInfo(
-  provider: ProviderId,
-  owner: string,
-  repo: string,
-  host: string | undefined,
-  path?: string,
-) {
-  switch (provider) {
-    case 'github':
-      return createGithubRepoInfo(owner, repo, path)
-    case 'codeberg':
-      return createForgejoRepoInfo('codeberg.org', owner, repo, path)
-    case 'forgejo':
-      return createForgejoRepoInfo(host ?? 'codeberg.org', owner, repo, path)
-    case 'gitlab':
-      return createGitLabRepoInfo(host ?? 'gitlab.com', owner, repo, path)
-    case 'tangled':
-      return createTangledRepoInfo(owner, repo, path)
-    case 'gitea':
-      return createGiteaRepoInfo(host ?? 'gitea.com', owner, repo, path)
-    case 'bitbucket':
-      return createBitbucketRepoInfo(owner, repo, path)
-    case 'sourcehut':
-      return createSourcehutRepoInfo(owner, repo, path)
-    case 'gitee':
-      return createGiteeRepoInfo(owner, repo, path)
-  }
-}
