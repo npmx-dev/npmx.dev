@@ -89,4 +89,5 @@ peerDependencyRules:
     vite-plus: 1.3.0
     '@vite-pwa/assets-generator': 2.0.0
     cac: 7.0.0
+    devframe>cac: 6.7.14
     better-sqlite3: 13.0.3

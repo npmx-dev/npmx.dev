@@ -338,8 +338,8 @@ importers:
         specifier: 6.0.0
         version: 6.0.0
       eslint-plugin-regexp:
-        specifier: 3.3.1
-        version: 3.3.1(eslint@10.6.0)
+        specifier: 3.3.2
+        version: 3.3.2(eslint@10.6.0)
       fast-check:
         specifier: 4.9.0
         version: 4.9.0
@@ -350,8 +350,8 @@ importers:
         specifier: npm:h3@2.0.1-rc.26
         version: h3@2.0.1-rc.26(crossws@0.4.15)
       knip:
-        specifier: 6.42.1
-        version: 6.42.1
+        specifier: 6.44.0
+        version: 6.44.0
       markdown-it-anchor:
         specifier: 10.0.0
         version: 10.0.0(@types/markdown-it@14.1.2)(markdown-it@14.3.0)
@@ -6714,8 +6714,8 @@ packages:
     engines: {node: '>=6.0'}
     hasBin: true
 
-  eslint-plugin-regexp@3.3.1:
-    resolution: {integrity: sha512-58bGUci/AaWAo1ETj6Lsnmy6QXwnSyVONRA805828nnqp7vrTwdaQMc02vtowmYB3A5OB3SLr3r5HgmfxX4dLg==}
+  eslint-plugin-regexp@3.3.2:
+    resolution: {integrity: sha512-hdkHQVDUtP3+U66PMZSQxw++mburJyJbFY8fu8lryMvJ2glo7xjq1Ov8A/uczxNU+IS87TFXUUBIJ7dxqgcJwg==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     peerDependencies:
       eslint: '>=9.38.0'
@@ -7819,8 +7819,8 @@ packages:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
 
-  knip@6.42.1:
-    resolution: {integrity: sha512-gKJVsiT4LJQ0lfc8uSHOCzkOY8adAXNFGarIeODZbJOkBnQRVsG3e0UZFnO4LMwjA82A5tBWX/VgoeTYcjdKiQ==}
+  knip@6.44.0:
+    resolution: {integrity: sha512-mT0fl71Mqrko91azUO2Jw/uhYKwldORKT4liRq6yV0ZAtt6G2eYusdnvx8eBSQJDjvhRGKkpKUUx+vUG6syV4w==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -10149,8 +10149,8 @@ packages:
   ultramatter@0.0.4:
     resolution: {integrity: sha512-1f/hO3mR+/Hgue4eInOF/Qm/wzDqwhYha4DxM0hre9YIUyso3fE2XtrAU6B4njLqTC8CM49EZaYgsVSa+dXHGw==}
 
-  unbash@6.0.0:
-    resolution: {integrity: sha512-vD5CvvFLVQDhXdNyNEPPa/tHPCK3HLySddOine+OZLDYIH1cMImGNgnw9+NkizToaPsFsQlwiyPGMiK+uwtYVw==}
+  unbash@6.0.2:
+    resolution: {integrity: sha512-UhcFfg9u8OpFPnUqdXSKgbGHwk2iEHaEePfpHylako6i4rpdmfoOgCVBBlou4WugaFfNunIHby01mKssJzVTCA==}
     engines: {node: '>=14'}
 
   unbox-primitive@1.1.0:
@@ -18371,7 +18371,7 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-plugin-regexp@3.3.1(eslint@10.6.0):
+  eslint-plugin-regexp@3.3.2(eslint@10.6.0):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.6.0)
       '@eslint-community/regexpp': 4.12.2
@@ -19684,7 +19684,7 @@ snapshots:
 
   klona@2.0.6: {}
 
-  knip@6.42.1:
+  knip@6.44.0:
     dependencies:
       formatly: 0.11.4
       get-tsconfig: 4.14.3
@@ -19695,7 +19695,7 @@ snapshots:
       smol-toml: 1.9.1
       strip-json-comments: 5.0.3
       tinyglobby: 0.2.17
-      unbash: 6.0.0
+      unbash: 6.0.2
       yaml: 2.9.1
       zod: 4.6.5
 
@@ -23063,7 +23063,7 @@ snapshots:
 
   ultramatter@0.0.4: {}
 
-  unbash@6.0.0: {}
+  unbash@6.0.2: {}
 
   unbox-primitive@1.1.0:
     dependencies:
