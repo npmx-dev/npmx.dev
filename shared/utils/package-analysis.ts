@@ -1,11 +1,5 @@
+import type { ModuleFormat } from 'npmeta'
 import { detectModuleFormat, hasBuiltInTypes } from 'npmeta'
-
-/**
- * Package analysis utilities for detecting module format and TypeScript support
- */
-
-// TODO(Roman): replace once exported from `npmeta`
-export type ModuleFormat = ReturnType<typeof detectModuleFormat>
 
 export type TypesStatus =
   | { kind: 'included' }
