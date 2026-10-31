@@ -1,5 +1,5 @@
 export interface ErrorOptions {
   message: string
-  statusCode?: number
-  statusMessage?: string
+  status?: number
+  statusText?: string
 }

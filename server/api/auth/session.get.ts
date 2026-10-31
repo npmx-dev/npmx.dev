@@ -1,5 +1,6 @@
 import { PublicUserSessionSchema } from '#shared/schemas/publicUserSession'
 import { safeParse } from 'valibot'
+import { eventHandlerWithOAuthSession } from '#server/utils/atproto/oauth'
 
 export default eventHandlerWithOAuthSession(async (event, _, serverSession) => {
   const result = safeParse(PublicUserSessionSchema, serverSession.data.public)

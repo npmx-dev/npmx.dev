@@ -1,6 +1,7 @@
 import type { ForgeProvider, RepoRef as ForgeRepoRef } from 'forges'
 import type { RepoRef } from '~~/shared/utils/git-providers'
 import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
+import { createError, useRuntimeConfig } from 'nuxt/server'
 
 export type Role = 'steward' | 'maintainer' | 'contributor' | 'core'
 
@@ -95,7 +96,7 @@ export default defineCachedEventHandler(
     const provider = await createForgeProvider(repoRef, { token: githubToken })
 
     if (!provider) {
-      throw createError({ statusCode: 500, message: 'Failed to read contributors' })
+      throw createError({ status: 500, message: 'Failed to read contributors' })
     }
 
     // Without a token, only the fallback stewards are known.

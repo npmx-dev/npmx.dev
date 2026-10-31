@@ -15,6 +15,8 @@ import { mapWithConcurrency } from '#shared/utils/async'
 import { resolveDependencyTree, resolveVersion } from './dependency-resolver'
 import { isExcludedByLastKnownAffectedRange, parseRangeIntervals } from './osv'
 import { compare, isGreaterOrEqual, isLess } from 'verkit'
+import { $fetch } from 'ofetch'
+import { defineCachedFunction } from 'nitro/cache'
 
 /** Maximum concurrent requests for fetching vulnerability details */
 const OSV_DETAIL_CONCURRENCY = 25

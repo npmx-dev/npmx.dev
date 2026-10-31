@@ -1,5 +1,6 @@
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
 import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
+import { createError, getRouterParam } from 'nuxt/server'
 
 export interface GithubIssueCountResponse {
   owner: string
@@ -14,8 +15,8 @@ export default defineCachedEventHandler(
 
     if (!owner || !repo) {
       throw createError({
-        statusCode: 400,
-        statusMessage: 'Owner and repo are required parameters.',
+        status: 400,
+        statusText: 'Owner and repo are required parameters.',
       })
     }
 
@@ -24,8 +25,8 @@ export default defineCachedEventHandler(
 
     if (!provider) {
       throw createError({
-        statusCode: 500,
-        statusMessage: 'Failed to fetch issue count from GitHub',
+        status: 500,
+        statusText: 'Failed to fetch issue count from GitHub',
       })
     }
 
@@ -43,8 +44,8 @@ export default defineCachedEventHandler(
       return { owner, repo, issues: page.total ?? null }
     } catch {
       throw createError({
-        statusCode: 500,
-        statusMessage: 'Failed to fetch issue count from GitHub',
+        status: 500,
+        statusText: 'Failed to fetch issue count from GitHub',
       })
     }
   },

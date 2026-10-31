@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('Package Replacement Suggestions', () => {
   test('/package/strip-ansi shows a replacement suggestion with a link to e18e docs', async ({

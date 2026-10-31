@@ -1,6 +1,7 @@
 import { mapWithConcurrency } from '#shared/utils/async'
 import { parseDependencyVersion } from '#shared/utils/npm'
 import { findMaxSatisfying, findMinSatisfying, isGreater, isStable } from 'verkit'
+import { fetchNpmPackageVersionsMeta } from '#server/utils/npm'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
 const PACKUMENT_FETCH_CONCURRENCY = 20

@@ -3,6 +3,7 @@ import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 import type { ProviderId, RepoRef } from '#shared/utils/git-providers'
 import { GIT_PROVIDER_API_ORIGINS } from '#shared/utils/git-providers'
 import { createForgeProvider, forgeWeb, toForgeRepoRef } from '#shared/utils/forges'
+import type { $fetch } from 'ofetch'
 
 // TTL for git repo metadata (10 minutes - repo stats don't change frequently)
 const REPO_META_TTL = 60 * 10

@@ -1,5 +1,6 @@
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
 import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
+import { createError } from 'nuxt/server'
 
 const REPO = 'npmx-dev/npmx.dev'
 
@@ -15,7 +16,7 @@ export default defineCachedEventHandler(
     const provider = await createForgeProvider(ref)
 
     if (!provider) {
-      throw createError({ statusCode: 500, message: `Failed to read ${REPO}` })
+      throw createError({ status: 500, message: `Failed to read ${REPO}` })
     }
 
     const target = toForgeRepoRef(ref)

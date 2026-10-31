@@ -2,6 +2,7 @@ import { setTimeout } from 'node:timers/promises'
 import type { RuntimeLock } from '@atproto/oauth-client-node'
 import { requestLocalLock } from '@atproto/oauth-client-node'
 import { Redis } from '@upstash/redis'
+import { useRuntimeConfig } from 'nuxt/server'
 
 type Awaitable<T> = T | PromiseLike<T>
 

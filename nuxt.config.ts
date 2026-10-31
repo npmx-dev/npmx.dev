@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { currentLocales } from './config/i18n'
+import { currentLocales } from './config/i18n.ts'
 import { isCI, isTest, provider } from 'std-env'
 
 const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORYBOOK === 'true'
@@ -272,33 +272,14 @@ export default defineNuxtConfig({
     entryImportMap: false,
     payloadExtraction: 'client',
     typescriptPlugin: true,
-    viteEnvironmentApi: !isStorybook,
     typedPages: true,
   },
 
   compatibilityDate: '2026-01-31',
 
   nitro: {
-    externals: {
-      inline: [
-        'shiki',
-        '@shikijs/langs',
-        '@shikijs/themes',
-        '@shikijs/types',
-        '@shikijs/engine-javascript',
-        '@shikijs/core',
-      ],
-      external: ['@deno/doc'],
-    },
-    esbuild: {
-      options: {
-        target: 'es2024',
-        // HACK: Excluding node_modules is the default. Here, we exempt
-        // .cache/nuxt/.nuxt/blog/posts.ts from that so that #blog/posts can be
-        // imported, parsed and executed as TS in server/utils/feeds.ts by esbuild
-        exclude: /node_modules\/(?!\.cache\/nuxt\/\.nuxt\/blog\/posts\.ts)/,
-      },
-    },
+    // `site.standard.publication` is a route path segment, not a file suffix
+    scanSuffixes: ['publication'],
     rollupConfig: {
       output: {
         paths: {
@@ -306,9 +287,9 @@ export default defineNuxtConfig({
         },
       },
     },
-    // Storage configuration for local development
+    // KV configuration for local development
     // In production (Vercel), this is overridden by modules/cache.ts
-    storage: {
+    kv: {
       'fetch-cache': {
         driver: 'fsLite',
         base: './.cache/fetch',
@@ -318,13 +299,8 @@ export default defineNuxtConfig({
         base: './.cache/atproto',
       },
     },
-    typescript: {
-      tsConfig: {
-        include: ['../test/unit/server/**/*.ts'],
-      },
-    },
     replace: {
-      'import.meta.test': isTest,
+      'import.meta.test': String(isTest),
     },
   },
 
@@ -365,7 +341,12 @@ export default defineNuxtConfig({
   htmlValidator: {
     enabled: !isCI || (provider !== 'vercel' && !!process.env.VALIDATE_HTML),
     options: {
-      rules: { 'meta-refresh': 'off' },
+      rules: {
+        'meta-refresh': 'off',
+        // Nuxt 5 renders inert prefetch links as <link rel="prefetch" data-href>,
+        // adding href client-side, so required-attribute checks false-positive.
+        'element-required-attributes': 'off',
+      },
     },
     failOnError: true,
   },
@@ -437,6 +418,15 @@ export default defineNuxtConfig({
     },
     sharedTsConfig: {
       include: ['../test/unit/shared/**/*.ts'],
+    },
+    serverTsConfig: {
+      compilerOptions: {
+        paths: {
+          '~/*': ['../app/*'],
+          '~~/*': ['../*'],
+        },
+      },
+      include: ['../test/unit/server/**/*.ts'],
     },
     nodeTsConfig: {
       compilerOptions: {

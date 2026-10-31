@@ -7,10 +7,10 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-import { presetRtl } from './uno-preset-rtl'
-import { presetA11y } from './uno-preset-a11y'
-import { theme } from './uno.theme'
-import customIcons from './assets/media/custom-icons.json'
+import { presetRtl } from './uno-preset-rtl.ts'
+import { presetA11y } from './uno-preset-a11y.ts'
+import { theme } from './uno.theme.ts'
+import customIcons from './assets/media/custom-icons.json' with { type: 'json' }
 
 export default defineConfig({
   // og-image uses hardcoded classes we don't want bundled into main app

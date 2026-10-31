@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('npmjs.com URL Compatibility', () => {
   test.describe('Package Pages', () => {

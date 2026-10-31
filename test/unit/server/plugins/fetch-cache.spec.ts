@@ -1,9 +1,12 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
-const { fetchMock } = vi.hoisted(() => ({ fetchMock: vi.fn() }))
+const { fetchMock, state } = vi.hoisted(() => ({
+  fetchMock: vi.fn(),
+  state: { storage: undefined as unknown },
+}))
 vi.mock('ofetch', () => ({ $fetch: fetchMock }))
-
-vi.stubGlobal('defineNitroPlugin', (setup: Function) => setup)
+vi.mock('nitro', () => ({ definePlugin: (setup: Function) => setup }))
+vi.mock('nitro/kv', () => ({ useKV: () => state.storage }))
 
 const plugin = (await import('#server/plugins/fetch-cache')).default
 
@@ -24,7 +27,7 @@ function bootstrap() {
       store.set(key, value)
     }),
   }
-  vi.stubGlobal('useStorage', () => storage)
+  state.storage = storage
 
   let requestHook: ((event: unknown) => void) | undefined
   plugin({

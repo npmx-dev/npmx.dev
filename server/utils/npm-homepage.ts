@@ -1,9 +1,10 @@
-import type { H3Event } from 'h3'
+import type { RequestEvent } from 'nuxt/server'
 import * as v from 'valibot'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 import { isAllowedImageUrl, toProxiedImageUrl } from '#server/utils/image-proxy'
 import { fetchNpmPackage } from '#server/utils/npm'
 import { CACHE_MAX_AGE_ONE_DAY, MICROLINK_API } from '#shared/utils/constants'
+import { useRuntimeConfig } from 'nuxt/server'
 
 const MICROLINK_FETCH_TIMEOUT_MS = 1500
 
@@ -30,7 +31,7 @@ export type HomepageMetadata = {
   homepageLogoHeight: number | null
 }
 
-export function emptyHomepageMetadata(homepageUrl: string | null = null): HomepageMetadata {
+function emptyHomepageMetadata(homepageUrl: string | null = null): HomepageMetadata {
   return {
     homepageUrl,
     homepagePreviewUrl: null,
@@ -42,15 +43,15 @@ export function emptyHomepageMetadata(homepageUrl: string | null = null): Homepa
   }
 }
 
-function getDisplayImageUrl(event: H3Event, url: string): string | null {
+function getDisplayImageUrl(event: RequestEvent, url: string): string | null {
   if (!isAllowedImageUrl(url)) return null
 
-  const imageProxySecret = useRuntimeConfig(event).imageProxySecret
+  const imageProxySecret = useRuntimeConfig().imageProxySecret
   return imageProxySecret ? toProxiedImageUrl(url, imageProxySecret) : url
 }
 
 export async function getHomepageMetadata(
-  event: H3Event,
+  event: RequestEvent,
   homepageUrl: string | null | undefined,
 ): Promise<HomepageMetadata> {
   if (!homepageUrl) return emptyHomepageMetadata()
@@ -98,7 +99,7 @@ export async function getHomepageMetadata(
 }
 
 export async function getPackageHomepageMetadata(
-  event: H3Event,
+  event: RequestEvent,
   packageName: string,
 ): Promise<HomepageMetadata> {
   try {

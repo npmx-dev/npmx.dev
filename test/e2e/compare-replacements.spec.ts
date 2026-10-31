@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('Compare page - replacement suggestions', () => {
   test('shows "Consider no dep?" box for packages with native/simple replacements', async ({

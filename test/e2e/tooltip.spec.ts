@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('Tooltip', () => {
   test('stays hidden when focus returns to a trigger that was clicked', async ({ page, goto }) => {

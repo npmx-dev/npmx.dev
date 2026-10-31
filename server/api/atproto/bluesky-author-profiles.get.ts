@@ -5,6 +5,8 @@ import { AuthorSchema } from '#shared/schemas/blog'
 import { Client } from '@atproto/lex'
 import type { Author, ResolvedAuthor } from '#shared/schemas/blog'
 import * as app from '#shared/types/lexicons/app'
+import { createError, getQuery } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 export default defineCachedEventHandler(
   async event => {
@@ -13,8 +15,8 @@ export default defineCachedEventHandler(
 
     if (!authorsParam || typeof authorsParam !== 'string') {
       throw createError({
-        statusCode: 400,
-        statusMessage: 'authors query parameter is required (JSON array)',
+        status: 400,
+        statusText: 'authors query parameter is required (JSON array)',
       })
     }
 
@@ -25,13 +27,13 @@ export default defineCachedEventHandler(
     } catch (error) {
       if (error instanceof v.ValiError) {
         throw createError({
-          statusCode: 400,
-          statusMessage: `Invalid authors format: ${error.message}`,
+          status: 400,
+          statusText: `Invalid authors format: ${error.message}`,
         })
       }
       throw createError({
-        statusCode: 400,
-        statusMessage: 'authors must be valid JSON',
+        status: 400,
+        statusText: 'authors must be valid JSON',
       })
     }
 

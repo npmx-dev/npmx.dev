@@ -2,6 +2,9 @@ import * as v from 'valibot'
 import { PackageNameSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_JSR_FETCH_FAILED } from '#shared/utils/constants'
 import type { JsrPackageInfo } from '#shared/types/jsr'
+import { getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { fetchJsrPackageInfo } from '#server/utils/jsr'
 
 /**
  * Check if an npm package exists on JSR.
@@ -11,8 +14,8 @@ import type { JsrPackageInfo } from '#shared/types/jsr'
  * @example GET /api/jsr/@std/fs → { exists: true, scope: "std", name: "fs", ... }
  * @example GET /api/jsr/lodash → { exists: false }
  */
-export default defineCachedEventHandler<Promise<JsrPackageInfo>>(
-  async event => {
+export default defineCachedEventHandler(
+  async (event): Promise<JsrPackageInfo> => {
     const pkgPath = getRouterParam(event, 'pkg')
 
     try {
@@ -21,7 +24,7 @@ export default defineCachedEventHandler<Promise<JsrPackageInfo>>(
       return await fetchJsrPackageInfo(packageName)
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: ERROR_JSR_FETCH_FAILED,
       })
     }

@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('security headers', () => {
   // @TODO meta tag currently not added for tests, remove guard or update test

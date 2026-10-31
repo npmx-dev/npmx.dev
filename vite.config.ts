@@ -12,17 +12,19 @@ const rootDir = import.meta.dirname
  * has to resolve the global on every call for those stubs to be visible to application code.
  */
 function liveDollarFetch() {
-  const SNAPSHOT_RE = /export const \$fetch = globalThis\.\$fetch/
+  const SNAPSHOT_RE = /export const \$fetch = import\.meta\.test \? [^\n]+/
   return {
     name: 'npmx:test:live-dollar-fetch',
     transform(code: string, id: string) {
-      if (!id.startsWith('virtual:nuxt:') || !SNAPSHOT_RE.test(code)) return
+      if (!id.startsWith('virtual:nuxt:') || !id.includes('fetch.client.mjs')) return
+      if (!SNAPSHOT_RE.test(code)) return
       return code.replace(
         SNAPSHOT_RE,
-        `export const $fetch = new Proxy(function () {}, {
-  apply: (_target, _thisArg, args) => globalThis.$fetch(...args),
-  get: (_target, property) => Reflect.get(globalThis.$fetch, property),
-  has: (_target, property) => Reflect.has(globalThis.$fetch, property),
+        `const __fallbackFetch = _$fetch.create({ baseURL: baseURL() })
+export const $fetch = new Proxy(function () {}, {
+  apply: (_target, _thisArg, args) => (globalThis.$fetch || __fallbackFetch)(...args),
+  get: (_target, property) => Reflect.get(globalThis.$fetch || __fallbackFetch, property),
+  has: (_target, property) => Reflect.has(globalThis.$fetch || __fallbackFetch, property),
 })`,
       )
     },
@@ -228,6 +230,7 @@ export default defineConfig({
         test: {
           name: 'unit',
           include: ['test/unit/**/*.{test,spec}.ts'],
+          setupFiles: [`${rootDir}/test/unit/setup.ts`],
           environment: 'node',
         },
       },
@@ -254,11 +257,12 @@ export default defineConfig({
                 rootDir,
                 overrides: {
                   vue: {
+                    optionsApi: true,
                     runtimeCompiler: true,
                   },
                   experimental: {
+                    nitroViteEnvironment: false,
                     payloadExtraction: false,
-                    viteEnvironmentApi: false,
                   },
                   pwa: {
                     pwaAssets: { disabled: true },

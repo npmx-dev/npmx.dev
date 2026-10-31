@@ -13,6 +13,7 @@ import {
   MICROLINK_API,
   SLINGSHOT_HOST,
 } from './constants'
+import type { $fetch } from 'ofetch'
 
 /**
  * Domains that should have their fetch responses cached.

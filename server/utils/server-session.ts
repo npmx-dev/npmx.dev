@@ -1,20 +1,21 @@
 // This is for getting the session on the npmx server and differs from the OAuthSession
-import type { H3Event } from 'h3'
+import type { RequestEvent, SessionData } from 'nuxt/server'
 import type { UserServerSession } from '#shared/types/userSession'
+import { useRuntimeConfig, useSession } from 'nuxt/server'
 
 /**
  * Get's the user's session that is stored on the server
  * @param event
  * @returns
  */
-export const useServerSession = async (event: H3Event) => {
-  const config = useRuntimeConfig(event)
+export const useServerSession = async (event: RequestEvent) => {
+  const config = useRuntimeConfig()
 
   if (!config.sessionPassword) {
     throw new Error('Session password is not configured')
   }
 
-  const serverSession = await useSession<UserServerSession>(event, {
+  const serverSession = await useSession<UserServerSession & SessionData>(event, {
     password: config.sessionPassword,
     maxAge: CACHE_MAX_AGE_ONE_DAY * 179,
   })

@@ -1,3 +1,4 @@
+import { defineEventHandler, getRequestURL, setHeader } from 'nitro/h3'
 export default defineEventHandler(event => {
   const url = getRequestURL(event)
   const origin = url.origin

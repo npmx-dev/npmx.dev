@@ -1,3 +1,5 @@
+import { createError, defineEventHandler, getRouterParam } from 'nuxt/server'
+import { ProfileUtils } from '#server/utils/atproto/utils/profile'
 export default defineEventHandler(async event => {
   const identifier = getRouterParam(event, 'identifier')
   if (!identifier) {

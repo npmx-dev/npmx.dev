@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { getDownloadChartGaps } from '#shared/utils/download-chart-gaps'
-import { createError } from 'h3'
+import { createError } from 'nuxt/server'
 import { createStaticVueUiXy } from 'vue-data-ui/ssr/vue-ui-xy'
 import { mergeConfigs } from 'vue-data-ui/utils'
 import {
@@ -240,8 +240,8 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
 
   if (!packageNames.length) {
     throw createError({
-      statusCode: 400,
-      statusMessage: 'Missing package name. Use ?package=nuxt or ?packages=vite,rolldown',
+      status: 400,
+      statusText: 'Missing package name. Use ?package=nuxt or ?packages=vite,rolldown',
     })
   }
 
@@ -266,8 +266,8 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
 
   if (metric !== 'downloads') {
     throw createError({
-      statusCode: 501,
-      statusMessage: 'Only the downloads metric is currently supported by the SVG endpoint',
+      status: 501,
+      statusText: 'Only the downloads metric is currently supported by the SVG endpoint',
     })
   }
 
@@ -347,15 +347,15 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
 
   if (!chartData.dataset?.length) {
     throw createError({
-      statusCode: 404,
-      statusMessage: 'No chart dataset generated',
+      status: 404,
+      statusText: 'No chart dataset generated',
     })
   }
 
   if (!dataset.length) {
     throw createError({
-      statusCode: 404,
-      statusMessage: 'No normalized dataset generated',
+      status: 404,
+      statusText: 'No normalized dataset generated',
     })
   }
 

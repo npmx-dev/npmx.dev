@@ -1,6 +1,10 @@
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_CALC_INSTALL_SIZE_FAILED } from '#shared/utils/constants'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { fetchLatestVersionWithFallback } from '#server/utils/npm'
+import { calculateInstallSize, parseFrozenHistory } from '#server/utils/install-size'
 
 /**
  * GET /api/registry/install-size/:name or /api/registry/install-size/:name/v/:version
@@ -27,7 +31,7 @@ export default defineCachedEventHandler(
         const latestVersion = await fetchLatestVersionWithFallback(packageName)
         if (!latestVersion) {
           throw createError({
-            statusCode: 404,
+            status: 404,
             message: 'No latest version found',
           })
         }
@@ -43,7 +47,7 @@ export default defineCachedEventHandler(
       return await calculateInstallSize(packageName, requestedVersion, before)
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: ERROR_CALC_INSTALL_SIZE_FAILED,
       })
     }

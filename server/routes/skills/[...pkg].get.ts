@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { SkillNameSchema } from '#shared/schemas/skills'
@@ -11,6 +11,15 @@ import {
   ERROR_SKILL_FILE_NOT_FOUND,
 } from '#shared/utils/constants'
 import { parsePackageParam } from '#shared/utils/parse-package-param'
+import { createError, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { setHeader } from 'nitro/h3'
+import {
+  fetchSkillContent,
+  fetchSkillFile,
+  fetchSkillsList,
+  findSkillDirs,
+} from '#server/utils/skills'
 
 const CACHE_VERSION = 1
 
@@ -27,7 +36,7 @@ export default defineCachedEventHandler(
   async event => {
     const pkgParam = getRouterParam(event, 'pkg')
     if (!pkgParam) {
-      throw createError({ statusCode: 404, message: 'Package name is required' })
+      throw createError({ status: 404, message: 'Package name is required' })
     }
 
     const { packageName, version: rawVersion, rest } = parsePackageParam(pkgParam)
@@ -41,7 +50,7 @@ export default defineCachedEventHandler(
         const packument = await fetchNpmPackageAbbreviated(validated.packageName)
         version = packument['dist-tags']?.latest
         if (!version) {
-          throw createError({ statusCode: 404, message: 'No latest version found' })
+          throw createError({ status: 404, message: 'No latest version found' })
         }
       }
 
@@ -63,7 +72,7 @@ export default defineCachedEventHandler(
       const filePath = rest.slice(1).join('/')
       return await handleSkillFile(event, validated.packageName, version, skillName, filePath)
     } catch (error) {
-      handleApiError(error, { statusCode: 502, message: ERROR_SKILLS_FETCH_FAILED })
+      handleApiError(error, { status: 502, message: ERROR_SKILLS_FETCH_FAILED })
     }
   },
   {
@@ -98,7 +107,7 @@ async function handleSkillContent(
     return { package: packageName, version, skill: skillName, frontmatter, content }
   } catch (error) {
     if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
-      throw createError({ statusCode: 404, message: ERROR_SKILL_NOT_FOUND })
+      throw createError({ status: 404, message: ERROR_SKILL_NOT_FOUND })
     }
     throw error
   }
@@ -113,14 +122,14 @@ async function handleSkillFile(
 ): Promise<string> {
   // Validate file path to prevent directory traversal
   if (filePath.includes('..') || filePath.startsWith('/')) {
-    throw createError({ statusCode: 400, message: 'Invalid file path' })
+    throw createError({ status: 400, message: 'Invalid file path' })
   }
 
   // Only allow files within skill subdirectories (scripts/, references/, assets/)
   const allowedPrefixes = ['scripts/', 'references/', 'assets/', 'refs/']
   if (!allowedPrefixes.some(p => filePath.startsWith(p))) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'File must be in scripts/, references/, or assets/ subdirectory',
     })
   }
@@ -143,7 +152,7 @@ async function handleSkillFile(
     return content
   } catch (error) {
     if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
-      throw createError({ statusCode: 404, message: ERROR_SKILL_FILE_NOT_FOUND })
+      throw createError({ status: 404, message: ERROR_SKILL_FILE_NOT_FOUND })
     }
     throw error
   }

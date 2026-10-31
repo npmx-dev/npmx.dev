@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('Settings reset', () => {
   test('is disabled while all settings are default', async ({ page, goto }) => {

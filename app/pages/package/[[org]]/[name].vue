@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { assertValidPackageName } from '#shared/utils/npm'
+import { assertValidPackageName } from '~/utils/npm-validation'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
 const readmeHeader = useTemplateRef('readmeHeader')

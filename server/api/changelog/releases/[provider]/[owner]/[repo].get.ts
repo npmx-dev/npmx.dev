@@ -2,7 +2,7 @@ import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
 import type { ReleaseData } from '~~/shared/types/changelog'
 import * as v from 'valibot'
 import { ForgeApiError } from 'forges'
-import { FetchError } from 'ofetch'
+import { $fetch, FetchError } from 'ofetch'
 import {
   ERROR_CHANGELOG_RELEASES_FAILED,
   ERROR_THROW_INCOMPLETE_PARAM,
@@ -12,6 +12,7 @@ import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 import { changelogRenderer } from '~~/server/utils/changelog/markdown'
 import { createRepoInfo } from '~~/server/utils/changelog/mdRepoInfo'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
 
 const TIMEOUT_MS = 15_000
 
@@ -25,7 +26,7 @@ export default defineCachedEventHandler(
     if (!repo || !provider || !owner) {
       throw createError({
         status: 404,
-        statusMessage: ERROR_THROW_INCOMPLETE_PARAM,
+        statusText: ERROR_THROW_INCOMPLETE_PARAM,
       })
     }
     const rawQuery = getQuery(event)
@@ -42,7 +43,7 @@ export default defineCachedEventHandler(
       return await getReleasesViaForges(provider, owner, repo, host || undefined)
     } catch (error) {
       handleApiError(error, {
-        statusCode: 500,
+        status: 500,
         message: ERROR_CHANGELOG_RELEASES_FAILED,
       })
     }
@@ -63,7 +64,7 @@ export default defineCachedEventHandler(
       }
       return key.join(':')
     },
-    shouldBypassCache: () => import.meta.dev,
+    shouldBypassCache: () => !!import.meta.dev,
   },
 )
 
@@ -88,7 +89,7 @@ async function getReleasesFromGithub(owner: string, repo: string) {
     if (!repoInfo) {
       throw createError({
         status: 404,
-        statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+        statusText: ERROR_CHANGELOG_NOT_FOUND,
       })
     }
     const render = await changelogRenderer(repoInfo)
@@ -111,9 +112,9 @@ async function getReleasesFromGithub(owner: string, repo: string) {
   } catch (error) {
     if (error instanceof FetchError && (error.statusCode == 403 || error.statusCode == 429)) {
       throw createError({
-        statusCode: 502,
+        status: 502,
         message: ERROR_UNGH_API_KEY_EXHAUSTED,
-        statusMessage: ERROR_UNGH_API_KEY_EXHAUSTED,
+        statusText: ERROR_UNGH_API_KEY_EXHAUSTED,
       })
     }
     throw error
@@ -131,7 +132,7 @@ async function getReleasesViaForges(
   if (!forgeProvider?.can('releases.list')) {
     throw createError({
       status: 404,
-      statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+      statusText: ERROR_CHANGELOG_NOT_FOUND,
     })
   }
 
@@ -139,7 +140,7 @@ async function getReleasesViaForges(
   if (!repoInfo) {
     throw createError({
       status: 404,
-      statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+      statusText: ERROR_CHANGELOG_NOT_FOUND,
     })
   }
 
@@ -151,7 +152,7 @@ async function getReleasesViaForges(
       if (error instanceof ForgeApiError && error.status === 404) {
         throw createError({
           status: 404,
-          statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+          statusText: ERROR_CHANGELOG_NOT_FOUND,
         })
       }
       throw error

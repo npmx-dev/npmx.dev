@@ -2,6 +2,10 @@ import * as v from 'valibot'
 import { PackageFileDiffQuerySchema } from '#shared/schemas/package'
 import { countDiffStats, createDiff, insertSkipBlocks, truncateDiffHunks } from '#shared/utils/diff'
 import type { DiffHunk, DiffSkipBlock } from '#shared/types/compare'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { getShikiHighlighter } from '#server/utils/shiki'
+import { parseVersionRange } from '#server/utils/compare'
 
 const CACHE_VERSION = 3
 const DIFF_TIMEOUT = 15000 // 15 sec
@@ -72,7 +76,7 @@ async function fetchFileContentForDiff(
     if (!response.ok) {
       if (response.status === 404) return null
       throw createError({
-        statusCode: response.status >= 500 ? 502 : response.status,
+        status: response.status >= 500 ? 502 : response.status,
         message: `Failed to fetch file (${response.status})`,
       })
     }
@@ -80,7 +84,7 @@ async function fetchFileContentForDiff(
     const contentLength = response.headers.get('content-length')
     if (contentLength && parseInt(contentLength, 10) > maxBytes) {
       throw createError({
-        statusCode: 413,
+        status: 413,
         message: `File too large to diff (${(parseInt(contentLength, 10) / 1024).toFixed(0)}KB). Maximum is ${maxBytes / 1024}KB.`,
       })
     }
@@ -89,7 +93,7 @@ async function fetchFileContentForDiff(
 
     if (byteLength(content) > maxBytes) {
       throw createError({
-        statusCode: 413,
+        status: 413,
         message: `File too large to diff (${(byteLength(content) / 1024).toFixed(0)}KB). Maximum is ${maxBytes / 1024}KB.`,
       })
     }
@@ -101,12 +105,12 @@ async function fetchFileContentForDiff(
     }
     if ((error as Error)?.name === 'AbortError') {
       throw createError({
-        statusCode: 504,
+        status: 504,
         message: 'Diff request timed out while fetching file',
       })
     }
     throw createError({
-      statusCode: 502,
+      status: 502,
       message: 'Failed to fetch file for diff',
     })
   } finally {
@@ -135,7 +139,7 @@ export default defineCachedEventHandler(
 
     if (versionSegments.length < 2) {
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'Version range and file path are required',
       })
     }
@@ -148,7 +152,7 @@ export default defineCachedEventHandler(
     const range = parseVersionRange(rawVersionRange)
     if (!range) {
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'Invalid version range format. Use from...to (e.g., 1.0.0...2.0.0)',
       })
     }
@@ -203,7 +207,7 @@ export default defineCachedEventHandler(
         let type: 'add' | 'delete' | 'modify'
         if (fromContent === null && toContent === null) {
           throw createError({
-            statusCode: 404,
+            status: 404,
             message: 'File not found in either version',
           })
         } else if (fromContent === null) {
@@ -220,7 +224,7 @@ export default defineCachedEventHandler(
 
         if (type !== 'modify' && largestSize > MAX_SINGLE_SIDED_DIFF_INPUT_BYTES) {
           throw createError({
-            statusCode: 413,
+            status: 413,
             message: `File too large to diff (${(largestSize / 1024).toFixed(0)}KB). Maximum is ${MAX_SINGLE_SIDED_DIFF_INPUT_BYTES / 1024}KB for added or removed files.`,
           })
         }
@@ -308,7 +312,7 @@ export default defineCachedEventHandler(
         // Check if it was a timeout
         if (error instanceof Error && error.name === 'AbortError') {
           throw createError({
-            statusCode: 504,
+            status: 504,
             message: 'Diff computation timed out',
           })
         }
@@ -317,7 +321,7 @@ export default defineCachedEventHandler(
       }
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: 'Failed to compute file diff',
       })
     }

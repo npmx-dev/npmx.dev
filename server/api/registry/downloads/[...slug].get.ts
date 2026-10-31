@@ -1,6 +1,9 @@
 import * as v from 'valibot'
 import { hash } from 'ohash'
 import { fetchNpmVersionDownloadsFromApi } from '#server/utils/npm-website-versions'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { groupVersionDownloads } from '#server/utils/version-downloads'
 
 /**
  * Raw response from npm downloads API
@@ -58,7 +61,7 @@ export default defineCachedEventHandler(
     const lastSegment = pkgParamSegments.at(-1)
     if (!lastSegment || lastSegment !== 'versions') {
       throw createError({
-        statusCode: 404,
+        status: 404,
         message: 'Invalid endpoint. Expected /versions',
       })
     }
@@ -91,14 +94,14 @@ export default defineCachedEventHandler(
           }
         } catch (error: unknown) {
           handleApiError(error, {
-            statusCode: 502,
+            status: 502,
             message: 'Failed to fetch version download data from npm API',
           })
         }
       }
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: 'Failed to fetch version download data from npm API',
       })
     }
@@ -109,7 +112,7 @@ export default defineCachedEventHandler(
 
     if (!rawPackageName) {
       throw createError({
-        statusCode: 404,
+        status: 404,
         message: 'Package name is required',
       })
     }
@@ -127,12 +130,12 @@ export default defineCachedEventHandler(
       if (!npmResponse.ok) {
         if (npmResponse.status === 404) {
           throw createError({
-            statusCode: 404,
+            status: 404,
             message: 'Package not found',
           })
         }
         throw createError({
-          statusCode: 502,
+          status: 502,
           message: 'Failed to fetch version download data from npm API',
         })
       }
@@ -182,7 +185,7 @@ export default defineCachedEventHandler(
       return apiResponse
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: 'Failed to fetch version download distribution',
       })
     }

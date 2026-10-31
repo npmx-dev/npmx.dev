@@ -1,5 +1,6 @@
 import { CACHE_MAX_AGE_ONE_DAY } from '#shared/utils/constants'
 import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
+import { createError, getRouterParam } from 'nuxt/server'
 
 type GitHubContributorWeek = {
   w: number
@@ -20,7 +21,7 @@ export default defineCachedEventHandler(
 
     if (!owner || !repo) {
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'repository not provided',
       })
     }
@@ -47,8 +48,8 @@ export default defineCachedEventHandler(
       // Throw instead of returning `[]`: a cached handler never stores an error, so
       // an outage, or stats GitHub is still computing, does not stick for a day.
       throw createError({
-        statusCode: 502,
-        statusMessage: 'Failed to fetch contributor statistics from GitHub',
+        status: 502,
+        statusText: 'Failed to fetch contributor statistics from GitHub',
       })
     }
   },
