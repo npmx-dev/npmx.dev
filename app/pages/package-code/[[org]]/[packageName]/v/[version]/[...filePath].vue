@@ -2,8 +2,8 @@
 import type { RouteLocationRaw } from 'vue-router'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
-// Maximum file size we'll try to load (500KB) - must match server
-const MAX_FILE_SIZE = 500 * 1024
+// Maximum file size we'll try to load (1MB) - must match server
+const MAX_FILE_SIZE = 1024 * 1024
 
 definePageMeta({
   name: 'code',

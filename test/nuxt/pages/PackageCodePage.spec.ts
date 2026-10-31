@@ -31,33 +31,86 @@ mockNuxtImport('useCommandPalettePackageVersions', () => {
   })
 })
 
+// Must match the package-code page and the file API.
+const MAX_FILE_SIZE = 1024 * 1024
+const HIGHLIGHTED_HTML = '<pre><code><span class="line">export {}</span></code></pre>'
+const RAW_FILE_URL = 'https://cdn.jsdelivr.net/npm/@types/vscode@1.118.0/index.d.ts'
+
+function registerPackageFile(size: number, fileHandler: () => unknown) {
+  registerEndpoint('/api/registry/files/@types/vscode/v/1.118.0', () => ({
+    package: '@types/vscode',
+    version: '1.118.0',
+    tree: [{ name: 'index.d.ts', path: 'index.d.ts', type: 'file', size }],
+  }))
+
+  registerEndpoint('/api/registry/file/@types/vscode/v/1.118.0/index.d.ts', fileHandler)
+}
+
+function fileResponse(lines: number) {
+  return {
+    content: 'export {}',
+    html: HIGHLIGHTED_HTML,
+    lines,
+    contentType: 'text/plain',
+  }
+}
+
+async function mountPackageFile() {
+  return mountSuspended(PackageCodePage, {
+    route: '/package-code/@types/vscode/v/1.118.0/index.d.ts',
+    shallow: true,
+  })
+}
+
 describe('package code page', () => {
   beforeEach(() => {
     clearNuxtData()
     fetchFileContent.mockClear()
   })
 
-  it('shows the raw-file fallback instead of loading forever for large files', async () => {
-    registerEndpoint('/api/registry/files/@types/vscode/v/1.118.0', () => ({
-      package: '@types/vscode',
-      version: '1.118.0',
-      tree: [{ name: 'index.d.ts', path: 'index.d.ts', type: 'file', size: 720 * 1024 }],
-    }))
-
-    registerEndpoint('/api/registry/file/@types/vscode/v/1.118.0/index.d.ts', () => {
+  it('renders a 720KB file instead of treating it as too large', async () => {
+    registerPackageFile(720 * 1024, () => {
       fetchFileContent()
-      return {
-        content: '',
-        html: '',
-        lines: 0,
-        contentType: 'text/plain',
-      }
+      return fileResponse(12)
     })
 
-    const component = await mountSuspended(PackageCodePage, {
-      route: '/package-code/@types/vscode/v/1.118.0/index.d.ts',
-      shallow: true,
+    const component = await mountPackageFile()
+
+    await vi.waitFor(() => {
+      expect(component.text()).toContain('12 lines')
     })
+
+    expect(fetchFileContent).toHaveBeenCalled()
+    expect(component.text()).not.toContain('File too large')
+    expect(component.text()).not.toContain('Loading file')
+    expect(component.text()).toContain('737.3 kB')
+    expect(component.findComponent({ name: 'CodeViewer' }).props('html')).toBe(HIGHLIGHTED_HTML)
+  })
+
+  it('loads a file that is exactly the maximum size', async () => {
+    registerPackageFile(MAX_FILE_SIZE, () => {
+      fetchFileContent()
+      return fileResponse(1)
+    })
+
+    const component = await mountPackageFile()
+
+    await vi.waitFor(() => {
+      expect(fetchFileContent).toHaveBeenCalled()
+    })
+
+    expect(component.text()).not.toContain('File too large')
+    expect(component.text()).toContain('1 line')
+    expect(component.findComponent({ name: 'CodeViewer' }).props('html')).toBe(HIGHLIGHTED_HTML)
+  })
+
+  it('shows the raw-file fallback instead of loading forever for large files', async () => {
+    registerPackageFile(MAX_FILE_SIZE + 1, () => {
+      fetchFileContent()
+      return fileResponse(0)
+    })
+
+    const component = await mountPackageFile()
 
     await vi.waitFor(() => {
       expect(component.text()).toContain('File too large')
@@ -67,8 +120,22 @@ describe('package code page', () => {
     expect(fetchFileContent).not.toHaveBeenCalled()
 
     const rawFileLink = component.findComponent({ name: 'LinkBase' })
-    expect(rawFileLink.props('to')).toBe(
-      'https://cdn.jsdelivr.net/npm/@types/vscode@1.118.0/index.d.ts',
-    )
+    expect(rawFileLink.props('to')).toBe(RAW_FILE_URL)
+  })
+
+  it('shows the file fetch error for a file within the size limit', async () => {
+    registerPackageFile(720 * 1024, () => {
+      fetchFileContent()
+      throw new Error('Failed to fetch file content')
+    })
+
+    const component = await mountPackageFile()
+
+    await vi.waitFor(() => {
+      expect(component.text()).toContain('Failed to load file')
+    })
+
+    expect(fetchFileContent).toHaveBeenCalled()
+    expect(component.text()).not.toContain('File too large')
   })
 })

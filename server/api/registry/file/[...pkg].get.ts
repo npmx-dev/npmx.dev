@@ -9,8 +9,9 @@ import {
 
 const CACHE_VERSION = 3
 
-// Maximum file size to fetch and highlight (500KB)
-const MAX_FILE_SIZE = 500 * 1024
+// Maximum file size to fetch and highlight (1MB).
+// The previous 500KB cap returned 413 for confirmed sources around 720KB.
+const MAX_FILE_SIZE = 1024 * 1024
 
 // Languages that benefit from import linking
 const IMPORT_LANGUAGES = new Set([
