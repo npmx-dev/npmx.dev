@@ -1,5 +1,4 @@
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
-import { defu } from 'defu'
 
 /**
  * Get the cachedFetch function from the current request context.
@@ -30,19 +29,18 @@ import { defu } from 'defu'
  * ```
  */
 export function useCachedFetch(): CachedFetchFunction {
+  const defaultFetch: CachedFetchFunction =async <T = unknown>(
+    url: string,
+    options: Parameters<typeof $fetch>[1] = {},
+    _ttl: number = FETCH_CACHE_DEFAULT_TTL,
+  ): Promise<CachedFetchResult<T>> => {
+    const data = (await $fetch<T>(url, options)) as T
+    return { data, isStale: false, cachedAt: null }
+  }
+
   // On client, return a function that just uses $fetch (no caching, not stale)
   if (import.meta.client) {
-    return async <T = unknown>(
-      url: string,
-      options: Parameters<typeof $fetch>[1] = {},
-      _ttl: number = FETCH_CACHE_DEFAULT_TTL,
-    ): Promise<CachedFetchResult<T>> => {
-      const defaultFetchOptions: Parameters<typeof $fetch>[1] = {
-        cache: 'force-cache',
-      }
-      const data = (await $fetch<T>(url, defu(options, defaultFetchOptions))) as T
-      return { data, isStale: false, cachedAt: null }
-    }
+    return defaultFetch
   }
 
   // On server, get the cachedFetch from request context
@@ -56,15 +54,5 @@ export function useCachedFetch(): CachedFetchFunction {
 
   // Fallback: return a function that uses regular $fetch
   // (shouldn't happen in normal operation)
-  return async <T = unknown>(
-    url: string,
-    options: Parameters<typeof $fetch>[1] = {},
-    _ttl: number = FETCH_CACHE_DEFAULT_TTL,
-  ): Promise<CachedFetchResult<T>> => {
-    const defaultFetchOptions: Parameters<typeof $fetch>[1] = {
-      cache: 'force-cache',
-    }
-    const data = (await $fetch<T>(url, defu(options, defaultFetchOptions))) as T
-    return { data, isStale: false, cachedAt: null }
-  }
+  return defaultFetch
 }
