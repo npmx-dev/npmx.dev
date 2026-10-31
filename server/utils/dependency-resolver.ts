@@ -231,7 +231,12 @@ export async function resolveDependencyTree(
               // A required request upgrades a queued optional request.
               queued.optional = false
             } else if (!seen.has(reqKey)) {
-              nextLevel.set(reqKey, { name: depName, range: depRange, optional: false, path: currentPath })
+              nextLevel.set(reqKey, {
+                name: depName,
+                range: depRange,
+                optional: false,
+                path: currentPath,
+              })
             }
           }
         }
@@ -243,7 +248,12 @@ export async function resolveDependencyTree(
             const reqKey = requestKey(depName, depRange)
 
             if (!seen.has(reqKey) && !nextLevel.has(reqKey)) {
-              nextLevel.set(reqKey, { name: depName, range: depRange, optional: true, path: currentPath })
+              nextLevel.set(reqKey, {
+                name: depName,
+                range: depRange,
+                optional: true,
+                path: currentPath,
+              })
             }
           }
         }
