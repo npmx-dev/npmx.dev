@@ -10,7 +10,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { assert, describe, it } from 'vitest'
+import { assert, describe, it } from 'vite-plus/test'
 
 /**
  * Components explicitly skipped from a11y testing with reasons.
@@ -60,7 +60,6 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Button/Group.vue': "Wrapper component, tests wouldn't make much sense here",
   'Changelog/Releases.vue': 'Requires API calls & only renders ChangelogCard components in a list',
   'Changelog/Markdown.vue': 'Requires API call & mostly renders markdown html',
-  'Translation/StatusByFile.unused.vue': 'Unused component, might be needed in the future',
   'ColorScheme/Img.vue': 'Image component, basic ui',
   'VideoPlayer.vue': 'Atproto video component, basic ui',
 }

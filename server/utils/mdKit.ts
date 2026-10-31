@@ -198,7 +198,7 @@ export const USER_CONTENT_PREFIX = 'user-content-'
 // README h1 always becomes h3
 // For deeper levels, ensure sequential order
 // Don't allow jumping more than 1 level deeper than previous
-export function calculateSemanticDepth(
+function calculateSemanticDepth(
   depth: number,
   lastSemanticLevel: number,
   minSemanticLevel: number,
@@ -208,15 +208,21 @@ export function calculateSemanticDepth(
   return Math.min(depth + minSemanticLevel, maxAllowed)
 }
 
-export function getHeadingPlainText(text: string): string {
+function getHeadingPlainText(text: string): string {
   return decodeHtmlEntities(stripHtmlTags(text).trim())
 }
 
-export function getHeadingSlugSource(text: string): string {
+function getHeadingSlugSource(text: string): string {
   return stripHtmlTags(text).trim()
 }
 
+export function isMarkdownFileUrl(url: string): boolean {
+  return /\.(?:md|markdown)$/i.test(url.split('?')[0]?.split('#')[0] ?? '')
+}
+
 const htmlAnchorRe = /<a(\s[^>]*?)href=(["'])([^"']*)\2([^>]*)>([\s\S]*?)<\/a>/gi
+const anchorTokenOpenRe = /^<a(?:\s.+)?\/?>$/is
+const anchorTokenCloseRe = /^<\/a>$/i
 
 export type ToUserContentIdFn = (id: string) => string
 
@@ -241,7 +247,11 @@ export function createHeading(options: {
     this: Renderer<string, string>,
     { tokens, depth },
   ) {
-    const displayHtml = this.parser.parseInline(tokens)
+    const isWrappedInSingleAnchor =
+      anchorTokenOpenRe.test(tokens[0]?.raw ?? '') &&
+      anchorTokenCloseRe.test(tokens[tokens.length - 1]?.raw ?? '')
+    const headingTokens = isWrappedInSingleAnchor ? tokens.slice(1, -1) : tokens
+    const displayHtml = this.parser.parseInline(headingTokens)
     const plainText = getHeadingPlainText(displayHtml)
     const slugSource = getHeadingSlugSource(displayHtml)
     return processHeading(depth, displayHtml, plainText, slugSource)
@@ -284,7 +294,7 @@ export function createHeading(options: {
 // html
 
 // Extract and preserve allowed attributes from HTML heading tags
-export function extractHeadingAttrs(attrsString: string): string {
+function extractHeadingAttrs(attrsString: string): string {
   if (!attrsString) return ''
   const preserved: string[] = []
   const alignMatch = /\balign=(["']?)([^"'\s>]+)\1/i.exec(attrsString)
@@ -389,7 +399,7 @@ export const ALLOWED_ATTR: Record<string, string[]> = {
 
 // allow h1-h6, but replace h1-h2 later since we shift README headings down by 2 levels
 // (page h1 = package name, h2 = "Readme" section, so README h1 → h3)
-export const ALLOWED_TAGS = [
+const ALLOWED_TAGS = [
   'h1',
   'h2',
   'h3',

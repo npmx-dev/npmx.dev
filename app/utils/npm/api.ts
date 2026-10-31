@@ -53,9 +53,9 @@ export async function fetchAllPackageVersions(packageName: string): Promise<Pack
         version,
         time: meta.time,
         trustStatus: {
-          provenance: meta.provenance ?? false,
-          trustedPublisher: meta.trustedPublisher ?? false,
-          stagedPublish: meta.staged ?? false,
+          provenance: !!meta.provenance,
+          trustedPublisher: !!meta.trustedPublisher,
+          stagedPublish: !!meta.staged,
         },
         deprecated: meta.deprecated,
       }))

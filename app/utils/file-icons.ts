@@ -160,61 +160,18 @@ export const FILENAME_ICONS: Record<string, string> = {
   'jsconfig.json': 'vscode-icons-file-type-jsconfig',
 
   // Build tools
-  'vite.config.ts': 'vscode-icons-file-type-vite',
-  'vite.config.js': 'vscode-icons-file-type-vite',
-  'vite.config.mts': 'vscode-icons-file-type-vite',
-  'vite.config.mjs': 'vscode-icons-file-type-vite',
-  'webpack.config.js': 'vscode-icons-file-type-webpack',
-  'webpack.config.ts': 'vscode-icons-file-type-webpack',
-  'rollup.config.js': 'vscode-icons-file-type-rollup',
-  'rollup.config.ts': 'vscode-icons-file-type-rollup',
-  'rollup.config.mjs': 'vscode-icons-file-type-rollup',
-  'esbuild.config.js': 'vscode-icons-file-type-esbuild',
   'turbo.json': 'vscode-icons-file-type-turbo',
   'nx.json': 'vscode-icons-file-type-nx',
 
   // Framework configs
-  'nuxt.config.ts': 'vscode-icons-file-type-nuxt',
-  'nuxt.config.js': 'vscode-icons-file-type-nuxt',
-  'next.config.js': 'vscode-icons-file-type-next',
-  'next.config.mjs': 'vscode-icons-file-type-next',
-  'next.config.ts': 'vscode-icons-file-type-next',
-  'svelte.config.js': 'vscode-icons-file-type-svelte',
-  'astro.config.mjs': 'vscode-icons-file-type-astro',
-  'astro.config.ts': 'vscode-icons-file-type-astro',
-  'remix.config.js': 'vscode-icons-file-type-js-official',
   'angular.json': 'vscode-icons-file-type-angular',
   'nest-cli.json': 'vscode-icons-file-type-nestjs',
 
   // Linting/Formatting
-  '.eslintrc': 'vscode-icons-file-type-eslint',
-  '.eslintrc.js': 'vscode-icons-file-type-eslint',
-  '.eslintrc.cjs': 'vscode-icons-file-type-eslint',
-  '.eslintrc.json': 'vscode-icons-file-type-eslint',
-  '.eslintrc.yml': 'vscode-icons-file-type-eslint',
-  'eslint.config.js': 'vscode-icons-file-type-eslint',
-  'eslint.config.mjs': 'vscode-icons-file-type-eslint',
-  'eslint.config.ts': 'vscode-icons-file-type-eslint',
-  '.prettierrc': 'vscode-icons-file-type-prettier',
-  '.prettierrc.js': 'vscode-icons-file-type-prettier',
-  '.prettierrc.json': 'vscode-icons-file-type-prettier',
-  'prettier.config.js': 'vscode-icons-file-type-prettier',
-  'prettier.config.mjs': 'vscode-icons-file-type-prettier',
   '.prettierignore': 'vscode-icons-file-type-prettier',
   'biome.json': 'vscode-icons-file-type-biome',
   '.stylelintrc': 'vscode-icons-file-type-stylelint',
   '.stylelintrc.json': 'vscode-icons-file-type-stylelint',
-
-  // Testing
-  'jest.config.js': 'vscode-icons-file-type-jest',
-  'jest.config.ts': 'vscode-icons-file-type-jest',
-  'vitest.config.ts': 'vscode-icons-file-type-vitest',
-  'vitest.config.js': 'vscode-icons-file-type-vitest',
-  'vitest.config.mts': 'vscode-icons-file-type-vitest',
-  'playwright.config.ts': 'vscode-icons-file-type-playwright',
-  'playwright.config.js': 'vscode-icons-file-type-playwright',
-  'cypress.config.ts': 'vscode-icons-file-type-cypress',
-  'cypress.config.js': 'vscode-icons-file-type-cypress',
 
   // Git
   '.gitignore': 'vscode-icons-file-type-git',
@@ -237,39 +194,12 @@ export const FILENAME_ICONS: Record<string, string> = {
   'docker-compose.yaml': 'vscode-icons-file-type-docker',
   '.dockerignore': 'vscode-icons-file-type-docker',
 
-  // Environment
-  '.env': 'vscode-icons-file-type-dotenv',
-  '.env.local': 'vscode-icons-file-type-dotenv',
-  '.env.development': 'vscode-icons-file-type-dotenv',
-  '.env.production': 'vscode-icons-file-type-dotenv',
-  '.env.test': 'vscode-icons-file-type-dotenv',
-  '.env.example': 'vscode-icons-file-type-dotenv',
-
   // Editor configs
   '.editorconfig': 'vscode-icons-file-type-editorconfig',
   '.vscode': 'vscode-icons-file-type-vscode',
   'settings.json': 'vscode-icons-file-type-vscode',
   'launch.json': 'vscode-icons-file-type-vscode',
   'extensions.json': 'vscode-icons-file-type-vscode',
-
-  // Documentation
-  'README': 'vscode-icons-file-type-markdown',
-  'README.md': 'vscode-icons-file-type-markdown',
-  'readme.md': 'vscode-icons-file-type-markdown',
-  'README.markdown': 'vscode-icons-file-type-markdown',
-  'readme.markdown': 'vscode-icons-file-type-markdown',
-  'CHANGELOG': 'vscode-icons-file-type-markdown',
-  'CHANGELOG.md': 'vscode-icons-file-type-markdown',
-  'changelog.md': 'vscode-icons-file-type-markdown',
-  'CONTRIBUTING.md': 'vscode-icons-file-type-markdown',
-  'contributing.md': 'vscode-icons-file-type-markdown',
-  'CODE_OF_CONDUCT.md': 'vscode-icons-file-type-markdown',
-  'LICENSE': 'custom-license-minified',
-  'LICENSE.md': 'custom-license-minified',
-  'LICENSE.txt': 'custom-license-minified',
-  'license': 'custom-license-minified',
-  'license.md': 'custom-license-minified',
-  'license.txt': 'custom-license-minified',
 
   // Node
   '.npmrc': 'vscode-icons-file-type-npm',
@@ -282,14 +212,109 @@ export const FILENAME_ICONS: Record<string, string> = {
   '.browserslistrc': 'vscode-icons-file-type-browserslist',
   'browserslist': 'vscode-icons-file-type-browserslist',
   '.babelrc': 'vscode-icons-file-type-babel',
-  'babel.config.js': 'vscode-icons-file-type-babel',
-  'tailwind.config.js': 'vscode-icons-file-type-tailwind',
-  'tailwind.config.ts': 'vscode-icons-file-type-tailwind',
-  'postcss.config.js': 'vscode-icons-file-type-postcss',
-  'postcss.config.cjs': 'vscode-icons-file-type-postcss',
-  'uno.config.ts': 'vscode-icons-file-type-unocss',
-  'unocss.config.ts': 'vscode-icons-file-type-unocss',
 }
+
+// Patterns for filenames that match via RegExp
+export const FILENAME_ICON_PATTERNS: readonly { pattern: RegExp; icon: string }[] = [
+  // ESLint configs
+  {
+    pattern:
+      /^(?:\.eslintrc(?:\.(?:json|js|cjs|yml|yaml))?|eslint\.config\.(?:js|cjs|mjs|ts|mts|cts))$/,
+    icon: 'vscode-icons-file-type-eslint',
+  },
+
+  // Prettier configs
+  {
+    pattern:
+      /^(?:\.prettierrc(?:\.(?:json|js|cjs|yml|yaml|toml))?|prettier\.config\.(?:js|cjs|mjs|ts|mts|cts))$/,
+    icon: 'vscode-icons-file-type-prettier',
+  },
+
+  // Tailwind configs
+  {
+    pattern: /^tailwind\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-tailwind',
+  },
+
+  // UnoCSS configs
+  {
+    pattern: /^(?:uno|unocss)\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-unocss',
+  },
+
+  // PostCSS configs
+  {
+    pattern: /^postcss\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-postcss',
+  },
+
+  // Babel configs
+  { pattern: /^babel\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-babel' },
+
+  // Vite configs
+  { pattern: /^vite\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-vite' },
+
+  // Vitest configs
+  { pattern: /^vitest\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-vitest' },
+
+  // Playwright configs
+  {
+    pattern: /^playwright\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-playwright',
+  },
+
+  // Jest configs
+  { pattern: /^jest\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-jest' },
+
+  // Cypress configs
+  {
+    pattern: /^cypress\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-cypress',
+  },
+
+  // Webpack configs
+  {
+    pattern: /^webpack\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-webpack',
+  },
+
+  // Rollup configs
+  { pattern: /^rollup\.config\.(?:js|cjs|mjs|ts|mts|cts)$/, icon: 'vscode-icons-file-type-rollup' },
+
+  // Esbuild configs
+  {
+    pattern: /^esbuild\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+    icon: 'vscode-icons-file-type-esbuild',
+  },
+
+  // Nuxt configs
+  { pattern: /^nuxt\.config\.(?:js|ts|mjs|mts)$/, icon: 'vscode-icons-file-type-nuxt' },
+
+  // Next configs
+  { pattern: /^next\.config\.(?:js|mjs|ts)$/, icon: 'vscode-icons-file-type-next' },
+
+  // Svelte configs
+  { pattern: /^svelte\.config\.js$/, icon: 'vscode-icons-file-type-svelte' },
+
+  // Astro configs
+  { pattern: /^astro\.config\.(?:js|ts|mjs|mts)$/, icon: 'vscode-icons-file-type-astro' },
+
+  // Remix configs
+  { pattern: /^remix\.config\.js$/, icon: 'vscode-icons-file-type-js-official' },
+
+  // Environment files (.env, .env.local, .env.production, etc.)
+  { pattern: /^\.env(?:\..*)?$/, icon: 'vscode-icons-file-type-dotenv' },
+
+  // Documentation / Changelogs / Licenses
+  {
+    pattern: /^(?:readme|changelog|contributing|code_of_conduct)(?:\.(?:md|markdown|txt))?$/i,
+    icon: 'vscode-icons-file-type-markdown',
+  },
+  {
+    pattern: /^(?:license|licence)(?:\.(?:md|txt))?$/i,
+    icon: 'custom-license-minified',
+  },
+]
 
 // Patterns for .d.ts and similar compound extensions
 export const COMPOUND_EXTENSIONS: Record<string, string> = {
@@ -332,6 +357,13 @@ export function getFileIcon(filename: string): string {
   // Check for compound extensions (e.g., .d.ts, .test.ts)
   for (const [suffix, icon] of Object.entries(COMPOUND_EXTENSIONS)) {
     if (filename.endsWith(suffix)) {
+      return icon
+    }
+  }
+
+  // Check regex-based filename patterns
+  for (const { pattern, icon } of FILENAME_ICON_PATTERNS) {
+    if (pattern.test(filename)) {
       return icon
     }
   }

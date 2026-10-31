@@ -16,16 +16,25 @@ import type {
 import { DATE_INPUT_MAX } from '~/utils/input'
 import { endDateOnlyToUtcMs } from '~/utils/chart-data-prediction'
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
-import { copyAltTextForTrendLineChart, sanitise, applyEllipsis } from '~/utils/charts'
+import {
+  CHART_ANNOTATOR_SLOTS,
+  copyAltTextForTrendLineChart,
+  sanitise,
+  applyEllipsis,
+} from '~/utils/charts'
 import {
   buildNormalisedTrendsDataset,
   buildTrendsChartConfig,
   buildTrendsChartData,
   isWeeklyDataset,
   getTrendsDatetimeFormatterOptions,
+  isMissingDownloadValue,
+  isLargeDownloadSeries,
+  MULTI_PACKAGE_MODE_TOP_PADDING,
 } from '#shared/utils/trends-chart'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
+import { getDownloadChartGaps } from '#shared/utils/download-chart-gaps'
 import { createLastDatapointLabelsSvg } from '#shared/utils/download-chart-last-label'
 
 import('vue-data-ui/style.css')
@@ -34,7 +43,6 @@ const props = withDefaults(
   defineProps<{
     // For single package downloads history
     weeklyDownloads?: WeeklyDataPoint[]
-    inModal?: boolean
 
     /**
      * Backward compatible single package mode.
@@ -69,14 +77,42 @@ const { copy, copied } = useClipboard()
 
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
+const gapPatternId = useId()
 const rootEl = shallowRef<HTMLElement | null>(null)
 const isZoomed = shallowRef(false)
+const zoomStartIndex = shallowRef(0)
+const zoomEndIndex = shallowRef<number | null>(null)
 
 const chartRef = useTemplateRef('chartRef')
 const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 
-function setIsZoom({ isZoom }: { isZoom: boolean }) {
-  isZoomed.value = isZoom
+type ZoomRangeEvent = {
+  index: number
+  isZoom: boolean
+}
+
+function updateZoomState() {
+  const endIndex = zoomEndIndex.value ?? maxDatapoints.value
+  isZoomed.value =
+    zoomStartIndex.value > 0 || (maxDatapoints.value > 0 && endIndex < maxDatapoints.value)
+}
+
+function setZoomStart({ index }: ZoomRangeEvent) {
+  if (!Number.isFinite(index)) return
+  zoomStartIndex.value = index
+  updateZoomState()
+}
+
+function setZoomEnd({ index }: ZoomRangeEvent) {
+  if (!Number.isFinite(index)) return
+  zoomEndIndex.value = index
+  updateZoomState()
+}
+
+function resetZoomTracking() {
+  zoomStartIndex.value = 0
+  zoomEndIndex.value = null
+  isZoomed.value = false
 }
 
 const { width } = useElementSize(rootEl)
@@ -157,15 +193,60 @@ const chartData = computed(() =>
   }),
 )
 
-const normalisedDataset = computed(() =>
-  buildNormalisedTrendsDataset({
+const normalisedDataset = computed(() => {
+  const data = buildNormalisedTrendsDataset({
     dataset: chartData.value.dataset,
     dates: chartData.value.dates,
     granularity: displayedGranularity.value,
     selectedMetric: selectedMetric.value,
     chartFilter: settings.value.chartFilter,
     endDateMs: endDate.value ? endDateOnlyToUtcMs(endDate.value) : null,
-  }),
+  })
+
+  data.forEach((item, index) => {
+    const packageName = getPackageNameForSeriesIndex(index)
+
+    if (selectedMetric.value !== DEFAULT_METRIC_ID || !item.series.length) return
+
+    const rawLastValue = chartData.value.dataset?.[index]?.series?.at(-1)
+
+    if (!isLargePackage.value[packageName] && rawLastValue === 0) {
+      const series = item.series as Array<number | null>
+      series[series.length - 1] = 0
+    }
+  })
+
+  return data
+})
+
+function getPackageNameForSeriesIndex(index: number): string {
+  return (
+    effectivePackageNamesForMetric.value[index] ??
+    effectivePackageNames.value[index] ??
+    `series-${index}`
+  )
+}
+
+// Package size is evaluated independently for each package.
+const isLargePackage = computed<Record<string, boolean>>(() => {
+  if (selectedMetric.value !== DEFAULT_METRIC_ID) return {}
+
+  const largePackages: Record<string, boolean> = {}
+
+  for (const [index, dataset] of (chartData.value.dataset ?? []).entries()) {
+    largePackages[getPackageNameForSeriesIndex(index)] = isLargeDownloadSeries(
+      (dataset.series ?? []) as number[],
+      displayedGranularity.value,
+    )
+  }
+
+  return largePackages
+})
+
+const largePackageSeries = computed<boolean[]>(() =>
+  (chartData.value.dataset ?? []).map(
+    (_, index) => isLargePackage.value[getPackageNameForSeriesIndex(index)] === true,
+  ),
 )
 
 const datetimeFormatterOptions = computed(() =>
@@ -273,8 +354,18 @@ const supportsEstimation = computed(
     selectedMetric.value !== 'contributors',
 )
 
-const hasDownloadAnomalies = computed(() =>
-  normalisedDataset.value?.some(datapoint => !!datapoint?.dashIndices?.length),
+const hasDashedSegments = computed(() =>
+  normalisedDataset.value.some((datapoint, index) => {
+    if (datapoint.dashIndices?.length) return true
+
+    return (
+      selectedMetric.value === DEFAULT_METRIC_ID &&
+      isLargePackage.value[getPackageNameForSeriesIndex(index)] === true &&
+      datapoint.series.length > 1 &&
+      isMissingDownloadValue(datapoint.series.at(-1)) &&
+      datapoint.series.slice(0, -1).some(value => !isMissingDownloadValue(value))
+    )
+  }),
 )
 
 const shouldRenderEstimationOverlay = computed(() => !pending.value && supportsEstimation.value)
@@ -909,6 +1000,89 @@ const granularityItems = computed(() =>
  * @returns A string containing SVG elements to be injected, or an empty string
  * when no estimation overlay should be rendered.
  */
+function getNoDataTailGeometries(svg: Record<string, any>) {
+  if (selectedMetric.value !== DEFAULT_METRIC_ID) return []
+
+  const data = Array.isArray(svg?.data) ? svg.data : []
+  if (!data.length) return []
+
+  return data.flatMap((serie: Record<string, any>, seriesIndex: number) => {
+    const renderedName = String(serie?.name ?? '').trim()
+    const packageName =
+      renderedName && isLargePackage.value[renderedName] !== undefined
+        ? renderedName
+        : getPackageNameForSeriesIndex(seriesIndex)
+
+    if (!isLargePackage.value[packageName]) return []
+
+    const plots = Array.isArray(serie?.plots) ? serie.plots : []
+    if (plots.length < 2) return []
+
+    const endpointPlot = plots.at(-1)
+    if (!endpointPlot || !isMissingDownloadValue(endpointPlot.value)) return []
+
+    const x2 = Number(endpointPlot.x)
+    if (!Number.isFinite(x2)) return []
+
+    // Ignore null plots when locating the previous validpoint. Its rendered y is used for the horizontal no-data tail
+    const lastValidPlot = [...plots]
+      .slice(0, -1)
+      .toReversed()
+      .find(plot => {
+        if (isMissingDownloadValue(plot?.value)) return false
+
+        const value = Number(plot?.value)
+        const x = Number(plot?.x)
+        const y = Number(plot?.y)
+        return Number.isFinite(value) && Number.isFinite(x) && Number.isFinite(y)
+      })
+
+    if (!lastValidPlot) return []
+
+    const x1 = Number(lastValidPlot.x)
+    const y = Number(lastValidPlot.y)
+    if (!Number.isFinite(x1) || !Number.isFinite(y)) return []
+
+    return [
+      {
+        seriesIndex,
+        x1,
+        x2,
+        y,
+        value: Number(lastValidPlot.value),
+        color: String(serie?.color ?? colors.value.fg),
+      },
+    ]
+  })
+}
+
+function drawNoDataTail(svg: Record<string, any>) {
+  return getNoDataTailGeometries(svg)
+    .map(
+      geometry => `
+        <line
+          x1="${geometry.x1}"
+          y1="${geometry.y}"
+          x2="${geometry.x2}"
+          y2="${geometry.y}"
+          stroke="${geometry.color}"
+          stroke-width="3"
+          stroke-dasharray="4 8"
+          stroke-linecap="round"
+        />
+        <circle
+          cx="${geometry.x2}"
+          cy="${geometry.y}"
+          r="4"
+          fill="${geometry.color}"
+          stroke="${colors.value.bg}"
+          stroke-width="2"
+        />
+      `,
+    )
+    .join('\n')
+}
+
 function drawEstimationLine(svg: Record<string, any>) {
   if (!shouldRenderEstimationOverlay.value) return ''
 
@@ -917,14 +1091,19 @@ function drawEstimationLine(svg: Record<string, any>) {
 
   // Collect per-series estimates and a global max candidate for the y-axis
   const lines: string[] = []
+  const visibleNoDataSeriesIndices = new Set(
+    getNoDataTailGeometries(svg).map(({ seriesIndex }) => seriesIndex),
+  )
 
-  for (const serie of data) {
+  for (const [seriesIndex, serie] of data.entries()) {
+    if (visibleNoDataSeriesIndices.has(seriesIndex)) continue
+
     const plots = serie?.plots
     if (!Array.isArray(plots) || plots.length < 2) continue
 
     const previousPoint = plots.at(-2)
     const lastPoint = plots.at(-1)
-    if (!previousPoint || !lastPoint) continue
+    if (previousPoint?.value == null || lastPoint?.value == null) continue
 
     const stroke = String(serie?.color ?? colors.value.fg)
 
@@ -994,21 +1173,63 @@ function drawEstimationLine(svg: Record<string, any>) {
  * no labels should be rendered.
  */
 function drawLastDatapointLabel(svg: VueUiXySvgSlotProps['svg']) {
+  const data = Array.isArray(svg?.data) ? svg.data : []
+  if (!data.length) return ''
+
+  // Keep all end labels in one call so `createLastDatapointLabelsSvg` can resolve
+  // collisions across regular values and missing-endpoint labels together.
+  const noDataGeometries = getNoDataTailGeometries(svg)
+  const labelSeries = data.slice()
+  const missingEndpointLabels = new Map<number, string>()
+
+  for (const geometry of noDataGeometries) {
+    const serie = data[geometry.seriesIndex]
+    if (!serie || !Array.isArray(serie.plots) || !serie.plots.length) continue
+
+    const plots = serie.plots.slice()
+    const endpointIndex = plots.length - 1
+    const endpointPlot = plots[endpointIndex]
+    if (!endpointPlot) continue
+
+    // Use a unique synthetic value only for the label formatter. The endpoint
+    // remains positioned at the final x index and at the previous valid y.
+    const labelValueSentinel = Number.MIN_SAFE_INTEGER + geometry.seriesIndex
+    missingEndpointLabels.set(
+      labelValueSentinel,
+      `${compactNumberFormatter.value.format(geometry.value)}*`,
+    )
+
+    const labelEndpointPlot = Object.assign({}, endpointPlot)
+    labelEndpointPlot.x = geometry.x2
+    labelEndpointPlot.y = geometry.y
+    labelEndpointPlot.value = labelValueSentinel
+
+    plots[endpointIndex] = labelEndpointPlot
+
+    const labelSerie = Object.assign({}, serie)
+    labelSerie.plots = plots
+
+    labelSeries[geometry.seriesIndex] = labelSerie
+  }
+
   return createLastDatapointLabelsSvg({
-    series: Array.isArray(svg?.data) ? svg.data : [],
+    series: labelSeries,
+    missingValueLabel: isDownloadsMetric.value ? $t('package.trends.no_data_short') : undefined,
     drawingArea: svg.drawingArea,
     svgWidth: svg.width,
-    fontSize: isMultiPackageMode.value ? 20 : 24,
+    fontSize: 20,
     labelOffset: isMultiPackageMode.value ? 24 : 16,
     colors: {
       foreground: colors.value.fg!,
       background: colors.value.bg!,
       fallbackSerieColor: colors.value.fg!,
     },
-    formatValue: value => compactNumberFormatter.value.format(value),
+    formatValue: value =>
+      missingEndpointLabels.get(value) ?? compactNumberFormatter.value.format(value),
     isDarkMode: isDarkMode.value,
   })
 }
+
 /**
  * Build and return a legend to be injected during the SVG export only, since the custom legend is
  * displayed as an independent div, content has to be injected within the chart's viewBox.
@@ -1050,7 +1271,7 @@ function drawSvgPrintLegend(svg: Record<string, any>) {
   // Inject the estimation legend item when necessary
   if (
     (supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value) ||
-    hasDownloadAnomalies.value
+    hasDashedSegments.value
   ) {
     seriesNames.push(`
         <line
@@ -1088,10 +1309,13 @@ const chartHeight = computed(() => {
   if (isMobile.value) {
     return 950
   }
+
+  const additionalHeight = isMultiPackageMode.value ? MULTI_PACKAGE_MODE_TOP_PADDING : 0
+
   if (props.hideControls) {
-    return 460
+    return 460 + additionalHeight
   }
-  return showCorrectionControls.value && props.inModal ? 494 : 600
+  return 600 + additionalHeight
 })
 
 const { start } = useTimeoutFn(
@@ -1142,7 +1366,6 @@ const chartConfig = computed<VueUiXyConfig>(() => {
     pending: pending.value,
     locale: locale.value,
     chartHeight: chartHeight.value,
-    inModal: props.inModal,
     chartFilter: settings.value.chartFilter,
     t: $t,
     compactNumberFormatter: compactNumberFormatter.value,
@@ -1212,12 +1435,28 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           }
 
           const rows = items
-            .map((datapoint: Record<string, any>) => {
+            .map((datapoint: Record<string, any>, itemIndex: number) => {
               const label = String(datapoint?.name ?? '').trim()
-              const rawValue = Number(datapoint?.value ?? 0)
-              const value = compactNumberFormatter.value.format(
-                Number.isFinite(rawValue) ? rawValue : 0,
+              const matchingSeriesIndex = normalisedDataset.value.findIndex(
+                serie => String((serie as Record<string, any>)?.name ?? '').trim() === label,
               )
+              const seriesIndex = matchingSeriesIndex >= 0 ? matchingSeriesIndex : itemIndex
+              const packageName = getPackageNameForSeriesIndex(seriesIndex)
+              const rawSeries = chartData.value.dataset?.[seriesIndex]?.series ?? []
+              const absoluteDataIndex =
+                absoluteIndex !== undefined ? Number(absoluteIndex) : Number.NaN
+              const rawDataValue = Number.isInteger(absoluteDataIndex)
+                ? rawSeries[absoluteDataIndex]
+                : datapoint?.value
+              const isNoDataValue =
+                selectedMetric.value === DEFAULT_METRIC_ID &&
+                (rawDataValue == null ||
+                  (isLargePackage.value[packageName] === true &&
+                    isMissingDownloadValue(rawDataValue)))
+              const rawValue = Number(datapoint?.value ?? 0)
+              const value = isNoDataValue
+                ? $t('package.trends.no_data_short')
+                : compactNumberFormatter.value.format(Number.isFinite(rawValue) ? rawValue : 0)
 
               if (!hasMultipleItems) {
                 return `<div>
@@ -1265,6 +1504,15 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           strokeWidth: 1,
           strokeDasharray: 3,
         },
+        dragToZoom: {
+          show: true,
+          selection: {
+            fill: accent.value,
+            fillOpacity: isDarkMode.value ? 0.05 : 0.08,
+            stroke: accent.value,
+            strokeDasharray: 3,
+          },
+        },
       },
     },
   }
@@ -1311,6 +1559,7 @@ const { start: resetZoomState } = useTimeoutFn(
 
 async function resetZoom() {
   keepZoomState.value = false
+  resetZoomTracking()
   await nextTick()
   chartRef.value?.resetZoom?.()
   resetZoomState()
@@ -1574,11 +1823,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                   class="text-2xs font-mono text-fg-subtle tracking-wide uppercase flex items-center justify-between"
                 >
                   {{ $t('package.trends.known_anomalies') }}
-                  <TooltipApp
-                    interactive
-                    :to="inModal ? '#chart-modal' : undefined"
-                    v-if="showCorrectionControls"
-                  >
+                  <TooltipApp interactive v-if="showCorrectionControls">
                     <button
                       type="button"
                       class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
@@ -1661,19 +1906,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
     </h2>
 
     <!-- Chart panel (active metric) -->
-    <div
-      role="region"
-      aria-labelledby="trends-chart-title"
-      :class="
-        isSparklineLayout || !inModal
-          ? undefined
-          : isMobile === false && width > 0
-            ? showCorrectionControls
-              ? 'h-[491px]'
-              : 'h-[567px]'
-            : 'min-h-[260px]'
-      "
-    >
+    <div role="region" aria-labelledby="trends-chart-title">
       <ClientOnly v-if="chartData.dataset">
         <div
           v-if="isSparklineLayout"
@@ -1686,6 +1919,8 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             :dates="chartData.dates"
             :datetimeFormatterOptions
             :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
+            :granularity="selectedGranularity"
+            :large-package-series="largePackageSeries"
           />
         </div>
 
@@ -1705,9 +1940,9 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
               '[direction:ltr]': true,
               'no-transition': isResizing,
             }"
-            @zoomStart="setIsZoom"
-            @zoomEnd="setIsZoom"
-            @zoomReset="isZoomed = false"
+            @zoomStart="setZoomStart"
+            @zoomEnd="setZoomEnd"
+            @zoomReset="resetZoomTracking"
           >
             <!-- Keyboard navigation hint -->
             <template #hint="{ isVisible }">
@@ -1716,13 +1951,73 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
               </p>
             </template>
 
-            <!-- Injecting custom svg elements -->
+            <!-- Injecting custom svg elements on the bottom layer -->
+            <template #svg-underlayer="{ svg }">
+              <g v-if="!pending && isDownloadsMetric" pointer-events="none" aria-hidden="true">
+                <template v-for="(gap, index) in getDownloadChartGaps(svg)" :key="index">
+                  <defs>
+                    <pattern
+                      :id="`${gapPatternId}-${index}`"
+                      width="6"
+                      height="6"
+                      patternUnits="userSpaceOnUse"
+                      patternTransform="rotate(45)"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        :stroke="colors.borderHover"
+                        stroke-width="5"
+                      />
+                    </pattern>
+                  </defs>
+                  <rect
+                    :x="gap.x"
+                    :y="gap.y"
+                    :width="gap.width"
+                    :height="gap.height"
+                    :fill="`url(#${gapPatternId}-${index})`"
+                    opacity="0.45"
+                  />
+                  <line
+                    v-for="x in [gap.x, gap.x + gap.width]"
+                    :key="x"
+                    :x1="x"
+                    :x2="x"
+                    :y1="gap.y"
+                    :y2="gap.y + gap.height"
+                    :stroke="colors.borderHover"
+                    stroke-width="0.5"
+                  />
+                </template>
+              </g>
+            </template>
+
+            <!-- Injecting custom svg elements on the top layer -->
             <template #svg="{ svg }">
               <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
               <g
                 v-if="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd && !isZoomed"
                 v-html="drawEstimationLine(svg)"
               />
+
+              <!-- Flat dashed tail for large packages when the final downloads bucket has no data -->
+              <g v-if="!pending && isDownloadsMetric" v-html="drawNoDataTail(svg)" />
+
+              <!-- Asterisk explaination for the last label value when the last value is null -->
+              <g v-if="!pending && isDownloadsMetric && selectedGranularity === 'daily'">
+                <text
+                  :x="svg.drawingArea.left"
+                  :y="svg.height - 12"
+                  :fill="colors.fgSubtle"
+                  :font-size="16"
+                  text-anchor="start"
+                >
+                  {{ $t('package.trends.last_recorded_value') }}
+                </text>
+              </g>
 
               <!-- Last value label for all other cases -->
               <g v-if="!pending" v-html="drawLastDatapointLabel(svg)" />
@@ -1809,7 +2104,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                 <!-- Estimation extra legend item -->
                 <div
                   class="flex shrink-0 items-center gap-1 whitespace-nowrap"
-                  v-if="supportsEstimation || hasDownloadAnomalies"
+                  v-if="supportsEstimation || hasDashedSegments"
                 >
                   <svg viewBox="0 0 20 2" width="20" class="shrink-0">
                     <line
@@ -1856,6 +2151,9 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
                 @click="copyChartPng"
               />
             </template>
+            <template #optionFullscreen="{ isFullscreen }">
+              <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+            </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
             </template>
@@ -1875,72 +2173,8 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
               />
             </template>
 
-            <template #annotator-action-close>
-              <span
-                class="i-lucide:x w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-color="{ color }">
-              <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
-            </template>
-            <template #annotator-action-draw="{ mode }">
-              <span
-                v-if="mode === 'arrow'"
-                class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'text'"
-                class="i-lucide:type text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'line'"
-                class="i-lucide:pen-line text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'draw'"
-                class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-undo>
-              <span
-                class="i-lucide:undo-2 w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-redo>
-              <span
-                class="i-lucide:redo-2 w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-delete>
-              <span
-                class="i-lucide:trash w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #optionAnnotator="{ isAnnotator }">
-              <span
-                v-if="isAnnotator"
-                class="i-lucide:pen-off w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-              <span
-                v-else
-                class="i-lucide:pen w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
+            <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
+              <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
             </template>
             <template #optionAltCopy>
               <span
@@ -2013,7 +2247,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
             <TooltipApp
               :text="$t('package.trends.embedding.tip')"
               interactive
-              :to="inModal ? '#chart-modal' : undefined"
+              :to="undefined"
               position="top"
             >
               <span
