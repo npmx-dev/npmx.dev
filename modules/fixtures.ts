@@ -29,8 +29,8 @@ export default defineNuxtModule({
       addServerPlugin(resolver.resolve('./runtime/server/cache.ts'))
 
       nuxt.hook('nitro:config', nitroConfig => {
-        nitroConfig.storage ||= {}
-        nitroConfig.storage['fixtures'] = {
+        nitroConfig.kv ||= {}
+        nitroConfig.kv['fixtures'] = {
           driver: 'fsLite',
           base: resolver.resolve('../test/fixtures'),
         }

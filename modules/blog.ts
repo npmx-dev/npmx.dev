@@ -12,9 +12,9 @@ import {
   type Author,
   type BlogPostFrontmatter,
   type ResolvedAuthor,
-} from '../shared/schemas/blog'
-import { isProduction } from '../config/env'
-import { BLUESKY_API } from '../shared/utils/constants'
+} from '../shared/schemas/blog.ts'
+import { isProduction } from '../config/env.ts'
+import { BLUESKY_API } from '../shared/utils/constants.ts'
 import { glob, mkdir, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import crypto from 'node:crypto'

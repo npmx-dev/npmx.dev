@@ -1,4 +1,4 @@
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import type { CachedFetchEntry, CachedFetchResult } from '#shared/utils/fetch-cache-config'
 import { $fetch } from 'ofetch'
 import {
@@ -9,6 +9,8 @@ import {
   isCacheEntryStale,
   resolveRequestUrl,
 } from '#shared/utils/fetch-cache-config'
+import { definePlugin } from 'nitro'
+import { useKV } from 'nitro/kv'
 
 /**
  * Simple hash function for cache keys.
@@ -52,8 +54,8 @@ function generateFetchCacheKey(url: string | URL, method: string = 'GET', body?:
  * - Stale cache hit: Return stale data immediately + revalidate in background via waitUntil
  * - Cache miss: Fetch data, return immediately, cache in background via waitUntil
  */
-export default defineNitroPlugin(nitroApp => {
-  const storage = useStorage(FETCH_CACHE_STORAGE_BASE)
+export default definePlugin(nitroApp => {
+  const storage = useKV(FETCH_CACHE_STORAGE_BASE)
 
   /**
    * Factory that creates a cachedFetch function bound to a specific request event.
@@ -178,13 +180,20 @@ export default defineNitroPlugin(nitroApp => {
 
   // Attach to event context for access in composables via useRequestEvent()
   nitroApp.hooks.hook('request', event => {
-    event.context.cachedFetch ||= createCachedFetch(event)
+    const h3Event = event as H3Event
+    h3Event.context.cachedFetch ||= createCachedFetch(h3Event)
   })
 })
 
 // Extend the H3EventContext type
 declare module 'h3' {
   interface H3EventContext {
+    cachedFetch?: CachedFetchFunction
+  }
+}
+
+declare module 'nuxt/schema' {
+  interface RequestEventContext {
     cachedFetch?: CachedFetchFunction
   }
 }

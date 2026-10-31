@@ -1,3 +1,4 @@
+import { defineCachedFunction } from 'nitro/cache'
 /**
  * Calculate the total install size for a package.
  *

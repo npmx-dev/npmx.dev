@@ -23,6 +23,7 @@ import { decodeHtmlEntities, slugify } from '#shared/utils/html'
 import { convertToEmoji } from '#shared/utils/emoji'
 import { toProxiedImageUrl } from '#server/utils/image-proxy'
 import { escapeHtml } from './docs/text'
+import { useRuntimeConfig } from 'nuxt/server'
 
 /**
  * Playground provider configuration

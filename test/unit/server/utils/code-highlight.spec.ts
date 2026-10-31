@@ -5,11 +5,14 @@ import {
   linkifyModuleSpecifiers,
 } from '#server/utils/code-highlight'
 
-const mockGetShikiHighlighter = vi.fn()
+const mockGetShikiHighlighter = vi.hoisted(() => vi.fn())
+
+vi.mock('#server/utils/shiki', () => ({
+  getShikiHighlighter: mockGetShikiHighlighter,
+}))
 
 beforeAll(() => {
   vi.stubGlobal('escapeRawGt', (html: string) => html)
-  vi.stubGlobal('getShikiHighlighter', mockGetShikiHighlighter)
 })
 
 describe('linkifyModuleSpecifiers', () => {

@@ -1,4 +1,5 @@
-import { createError, getQuery, setResponseHeaders, sendStream } from 'h3'
+import { createError, getQuery, useRuntimeConfig } from 'nuxt/server'
+import { defineEventHandler, sendStream, setResponseHeaders } from 'nitro/h3'
 import { Readable } from 'node:stream'
 import { CACHE_MAX_AGE_ONE_DAY } from '#shared/utils/constants'
 import {
@@ -43,14 +44,14 @@ export default defineEventHandler(async event => {
 
   if (!url) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Missing required "url" query parameter.',
     })
   }
 
   if (!sig) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Missing required "sig" query parameter.',
     })
   }
@@ -59,7 +60,7 @@ export default defineEventHandler(async event => {
   const { imageProxySecret } = useRuntimeConfig()
   if (!imageProxySecret || !verifyImageUrl(url, sig, imageProxySecret)) {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: 'Invalid signature.',
     })
   }
@@ -67,7 +68,7 @@ export default defineEventHandler(async event => {
   // Validate URL syntactically
   if (!isAllowedImageUrl(url)) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Invalid or disallowed image URL.',
     })
   }
@@ -76,7 +77,7 @@ export default defineEventHandler(async event => {
   // This prevents DNS rebinding attacks where a hostname resolves to a private IP.
   if (!(await resolveAndValidateHost(url))) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Invalid or disallowed image URL.',
     })
   }
@@ -113,14 +114,14 @@ export default defineEventHandler(async event => {
       // Validate the redirect target before following it
       if (!isAllowedImageUrl(redirectUrl)) {
         throw createError({
-          statusCode: 400,
+          status: 400,
           message: 'Redirect to disallowed URL.',
         })
       }
 
       if (!(await resolveAndValidateHost(redirectUrl))) {
         throw createError({
-          statusCode: 400,
+          status: 400,
           message: 'Redirect to disallowed URL.',
         })
       }
@@ -132,7 +133,7 @@ export default defineEventHandler(async event => {
 
     if (!response) {
       throw createError({
-        statusCode: 502,
+        status: 502,
         message: 'Failed to fetch image.',
       })
     }
@@ -141,7 +142,7 @@ export default defineEventHandler(async event => {
     if (REDIRECT_STATUSES.has(response.status)) {
       await response.body?.cancel()
       throw createError({
-        statusCode: 502,
+        status: 502,
         message: 'Too many redirects.',
       })
     }
@@ -149,7 +150,7 @@ export default defineEventHandler(async event => {
     if (!response.ok) {
       await response.body?.cancel()
       throw createError({
-        statusCode: response.status === 404 ? 404 : 502,
+        status: response.status === 404 ? 404 : 502,
         message: `Failed to fetch image: ${response.status}`,
       })
     }
@@ -167,7 +168,7 @@ export default defineEventHandler(async event => {
     if (!contentType?.startsWith('image/') && !isImageLike) {
       await response.body?.cancel()
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'URL does not point to an allowed image type.',
       })
     }
@@ -177,14 +178,14 @@ export default defineEventHandler(async event => {
     if (contentLength && Number.parseInt(contentLength, 10) > MAX_SIZE) {
       await response.body?.cancel()
       throw createError({
-        statusCode: 413,
+        status: 413,
         message: 'Image too large.',
       })
     }
 
     if (!response.body) {
       throw createError({
-        statusCode: 502,
+        status: 502,
         message: 'No response body from upstream.',
       })
     }
@@ -227,7 +228,7 @@ export default defineEventHandler(async event => {
     upstream.on('end', () => limited.push(null))
     upstream.on('error', (err: Error) => limited.destroy(err))
 
-    return sendStream(event, limited)
+    return sendStream(event, Readable.toWeb(limited) as ReadableStream<Uint8Array>)
   } catch (error: unknown) {
     // Re-throw H3 errors
     if (error && typeof error === 'object' && 'statusCode' in error) {
@@ -235,7 +236,7 @@ export default defineEventHandler(async event => {
     }
 
     throw createError({
-      statusCode: 502,
+      status: 502,
       message: 'Failed to proxy image.',
     })
   }

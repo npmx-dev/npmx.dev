@@ -6,6 +6,9 @@ import {
   CACHE_MAX_AGE_ONE_YEAR,
   ERROR_PACKAGE_VERSION_AND_FILE_FAILED,
 } from '#shared/utils/constants'
+import { createError, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { resolveDependencyVersions } from '#server/utils/npm'
 
 const CACHE_VERSION = 3
 
@@ -59,10 +62,10 @@ async function fetchFileContent(
 
   if (!response.ok) {
     if (response.status === 404) {
-      throw createError({ statusCode: 404, message: 'File not found' })
+      throw createError({ status: 404, message: 'File not found' })
     }
     throw createError({
-      statusCode: 502,
+      status: 502,
       message: 'Failed to fetch file from jsDelivr',
     })
   }
@@ -73,7 +76,7 @@ async function fetchFileContent(
   const contentLength = response.headers.get('content-length')
   if (contentLength && parseInt(contentLength, 10) > MAX_FILE_SIZE) {
     throw createError({
-      statusCode: 413,
+      status: 413,
       message: `File too large (${(parseInt(contentLength, 10) / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_FILE_SIZE / 1024}KB.`,
     })
   }
@@ -83,7 +86,7 @@ async function fetchFileContent(
   // Double-check size after fetching (in case content-length wasn't set)
   if (content.length > MAX_FILE_SIZE) {
     throw createError({
-      statusCode: 413,
+      status: 413,
       message: `File too large (${(content.length / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_FILE_SIZE / 1024}KB.`,
     })
   }
@@ -112,7 +115,7 @@ export default defineCachedEventHandler(
     if (versionSegments.length < 2) {
       throw createError({
         // TODO: throwing 404 rather than 400 as it's cacheable
-        statusCode: 404,
+        status: 404,
         message: ERROR_PACKAGE_VERSION_AND_FILE_FAILED,
       })
     }
@@ -205,7 +208,7 @@ export default defineCachedEventHandler(
       }
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: 'Failed to fetch file content',
       })
     }

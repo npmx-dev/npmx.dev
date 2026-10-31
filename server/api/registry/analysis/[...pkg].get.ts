@@ -19,6 +19,9 @@ import { parseRepositoryInfo } from '#shared/utils/git-providers'
 import { encodePackageName } from '#shared/utils/npm'
 import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { getLatestVersionBatch } from 'fast-npm-meta'
+import { $fetch } from 'ofetch'
+import { getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 export default defineCachedEventHandler(
   async event => {
@@ -50,7 +53,7 @@ export default defineCachedEventHandler(
       } satisfies PackageAnalysisResponse
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: ERROR_PACKAGE_ANALYSIS_FAILED,
       })
     }

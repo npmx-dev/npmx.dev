@@ -1,4 +1,5 @@
 import { setTimeout } from 'node:timers/promises'
+import { $fetch } from 'ofetch'
 
 export interface GitHubFetchOptions extends NonNullable<Parameters<typeof $fetch.raw>[1]> {
   maxAttempts?: number

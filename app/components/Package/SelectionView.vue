@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { NpmSearchResult } from '#shared/types/npm-registry'
 defineProps<{
   viewMode?: ViewMode
 }>()
@@ -9,9 +10,9 @@ const { data, pending } = useAsyncData(
   async () => {
     const results = await Promise.all(
       selectedPackages.value.map(name =>
-        $fetch(`/api/registry/package-meta/${encodeURIComponent(name)}`)
-          .then(response => ({ package: response }))
-          .catch(() => null),
+        $fetch<NpmSearchResult>(`/api/registry/package-meta/${encodeURIComponent(name)}`).catch(
+          () => null,
+        ),
       ),
     )
     return results.filter(result => result !== null)

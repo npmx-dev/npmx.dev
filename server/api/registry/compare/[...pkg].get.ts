@@ -1,5 +1,8 @@
 import * as v from 'valibot'
 import { PackageCompareQuerySchema } from '#shared/schemas/package'
+import { createError, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { buildCompareResponse, parseVersionRange } from '#server/utils/compare'
 
 const CACHE_VERSION = 1
 const COMPARE_TIMEOUT = 8000 // 8 seconds
@@ -39,7 +42,7 @@ export default defineCachedEventHandler(
 
     if (!rawVersionRange) {
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'Version range is required (e.g., 1.0.0...2.0.0)',
       })
     }
@@ -48,7 +51,7 @@ export default defineCachedEventHandler(
     const range = parseVersionRange(rawVersionRange)
     if (!range) {
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'Invalid version range format. Use from...to (e.g., 1.0.0...2.0.0)',
       })
     }
@@ -94,7 +97,7 @@ export default defineCachedEventHandler(
         // Check if it was a timeout
         if (error instanceof Error && error.name === 'AbortError') {
           throw createError({
-            statusCode: 504,
+            status: 504,
             message: 'Comparison timed out. Try comparing fewer files.',
           })
         }
@@ -103,7 +106,7 @@ export default defineCachedEventHandler(
       }
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: 'Failed to compare package versions',
       })
     }

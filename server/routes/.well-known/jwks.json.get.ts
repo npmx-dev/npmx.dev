@@ -1,4 +1,5 @@
 import { loadJWKs } from '#server/utils/atproto/oauth'
+import { defineEventHandler } from 'nuxt/server'
 
 export default defineEventHandler(async () => {
   const keys = await loadJWKs()

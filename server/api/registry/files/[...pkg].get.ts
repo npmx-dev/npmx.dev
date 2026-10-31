@@ -1,5 +1,7 @@
 import * as v from 'valibot'
 import { PackageVersionQuerySchema } from '#shared/schemas/package'
+import { getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 /**
  * Returns the file tree for a package version.
@@ -33,7 +35,7 @@ export default defineCachedEventHandler(
       } satisfies PackageFileTreeResponse
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: ERROR_FILE_LIST_FETCH_FAILED,
       })
     }

@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 // TODO(serhalp): The nuxt@3.20.2 fixture has no stars. Update fixture to have stars coverage here.
 

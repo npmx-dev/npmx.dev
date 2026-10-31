@@ -1,6 +1,8 @@
 import * as v from 'valibot'
 import { SearchQuerySchema } from '#shared/schemas/package'
 import { NPM_REGISTRY } from '#shared/utils/constants'
+import { $fetch } from 'ofetch'
+import { defineEventHandler, getQuery } from 'nuxt/server'
 
 export default defineEventHandler(async event => {
   const query = getQuery(event)
@@ -19,7 +21,7 @@ export default defineEventHandler(async event => {
     return [q, suggestions]
   } catch (error: unknown) {
     handleApiError(error, {
-      statusCode: 502,
+      status: 502,
       message: ERROR_SUGGESTIONS_FETCH_FAILED,
     })
   }

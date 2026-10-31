@@ -1,8 +1,8 @@
 import process from 'node:process'
-import type { BuildInfo, EnvType } from '../shared/types'
+import type { BuildInfo, EnvType } from '../shared/types/index.ts'
 import { createResolver, defineNuxtModule } from 'nuxt/kit'
 import { isCI } from 'std-env'
-import { getEnv, getFileLastUpdated } from '../config/env'
+import { getEnv, getFileLastUpdated } from '../config/env.ts'
 
 const { resolve } = createResolver(import.meta.url)
 

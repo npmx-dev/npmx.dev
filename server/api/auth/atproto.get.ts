@@ -1,7 +1,16 @@
-import type { OAuthSession } from '@atproto/oauth-client-node'
+import type { NodeOAuthClient, OAuthSession } from '@atproto/oauth-client-node'
 import { OAuthCallbackError } from '@atproto/oauth-client-node'
-import { createError, getQuery, sendRedirect, setCookie, getCookie, deleteCookie } from 'h3'
-import type { H3Event } from 'h3'
+import {
+  createError,
+  getQuery,
+  sendRedirect,
+  setCookie,
+  getCookie,
+  deleteCookie,
+  defineEventHandler,
+  useRuntimeConfig,
+} from 'nuxt/server'
+import type { RequestEvent } from 'nuxt/server'
 import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
 import { handleApiError } from '#server/utils/error-handler'
@@ -19,7 +28,7 @@ const OAUTH_REQUEST_COOKIE_PREFIX = 'atproto_oauth_req'
 const slingshotClient = new Client({ service: `https://${SLINGSHOT_HOST}` })
 
 export default defineEventHandler(async event => {
-  const config = useRuntimeConfig(event)
+  const config = useRuntimeConfig()
   if (!config.sessionPassword) {
     throw createError({
       status: 500,
@@ -37,7 +46,7 @@ export default defineEventHandler(async event => {
       (!query.handle.startsWith('https://') && !isAtIdentifierString(query.handle))
     ) {
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'Invalid handle parameter',
       })
     }
@@ -56,23 +65,26 @@ export default defineEventHandler(async event => {
     }
 
     try {
-      const redirectUrl = await event.context.oauthClient.authorize(query.handle, {
-        scope,
-        prompt: query.create ? 'create' : undefined,
-        // TODO: I do not believe this is working as expected on
-        // an unsupported locale on the PDS. Gives Invalid at body.ui_locales
-        // Commenting out for now
-        // ui_locales: query.locale?.toString(),
-        state: encodeOAuthState(event, { redirectPath }),
-      })
+      const redirectUrl = await (event.context.oauthClient as NodeOAuthClient).authorize(
+        query.handle,
+        {
+          scope,
+          prompt: query.create ? 'create' : undefined,
+          // TODO: I do not believe this is working as expected on
+          // an unsupported locale on the PDS. Gives Invalid at body.ui_locales
+          // Commenting out for now
+          // ui_locales: query.locale?.toString(),
+          state: encodeOAuthState(event, { redirectPath }),
+        },
+      )
 
       return sendRedirect(event, redirectUrl.toString())
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to initiate authentication.'
 
       return handleApiError(error, {
-        statusCode: 401,
-        statusMessage: 'Unauthorized',
+        status: 401,
+        statusText: 'Unauthorized',
         message: `${message}. Please login and try again.`,
       })
     }
@@ -80,7 +92,7 @@ export default defineEventHandler(async event => {
     // Handle callback
     try {
       const params = new URLSearchParams(query as Record<string, string>)
-      const result = await event.context.oauthClient.callback(params)
+      const result = await (event.context.oauthClient as NodeOAuthClient).callback(params)
       try {
         const state = decodeOAuthState(event, result.state)
         const profile = await getMiniProfile(result.session)
@@ -113,8 +125,8 @@ export default defineEventHandler(async event => {
 
       const message = error instanceof Error ? error.message : 'Authentication failed.'
       return handleApiError(error, {
-        statusCode: 401,
-        statusMessage: 'Unauthorized',
+        status: 401,
+        statusText: 'Unauthorized',
         message: `${message}. Please login and try again.`,
       })
     }
@@ -140,7 +152,7 @@ type OAuthStateData = {
  * @param state The original OAuth state to encode
  * @returns A JSON string encapsulating the original state and the generated SID
  */
-function encodeOAuthState(event: H3Event, data: OAuthStateData): string {
+function encodeOAuthState(event: RequestEvent, data: OAuthStateData): string {
   const id = generateRandomHexString()
   // This uses an ephemeral cookie instead of useSession() to avoid polluting
   // the session with ephemeral OAuth-specific data. The cookie is set with a
@@ -161,7 +173,7 @@ function encodeOAuthState(event: H3Event, data: OAuthStateData): string {
     // secure only if NOT in dev mode
     secure: !import.meta.dev,
     sameSite: 'lax',
-    path: event.path.split('?', 1)[0],
+    path: event.url.pathname,
   })
 
   return JSON.stringify({ data, id })
@@ -182,13 +194,13 @@ function generateRandomHexString(byteLength: number = 16): string {
  * @returns The original OAuth state if the id is valid
  * @throws An error if the id is missing or invalid, indicating a potential issue with cookies or expired state
  */
-function decodeOAuthState(event: H3Event, state: string | null): OAuthStateData {
+function decodeOAuthState(event: RequestEvent, state: string | null): OAuthStateData {
   if (!state) {
     // May happen during transition period (if a user initiated auth flow before
     // the release with the new state handling, then tries to complete it after
     // the release).
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Missing state parameter',
     })
   }
@@ -206,11 +218,11 @@ function decodeOAuthState(event: H3Event, state: string | null): OAuthStateData 
       httpOnly: true,
       secure: !import.meta.dev,
       sameSite: 'lax',
-      path: event.path.split('?', 1)[0],
+      path: event.url.pathname,
     })
   } else {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Missing authentication state. Please enable cookies and try again.',
     })
   }

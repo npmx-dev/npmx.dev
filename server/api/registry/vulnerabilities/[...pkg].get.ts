@@ -1,6 +1,9 @@
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
+import { createError, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { fetchLatestVersionWithFallback } from '#server/utils/npm'
 
 /**
  * GET /api/registry/vulnerabilities/:name or /api/registry/vulnerabilities/:name/v/:version
@@ -25,7 +28,7 @@ export default defineCachedEventHandler(
         const latestVersion = await fetchLatestVersionWithFallback(packageName)
         if (!latestVersion) {
           throw createError({
-            statusCode: 404,
+            status: 404,
             message: 'No latest version found',
           })
         }
@@ -35,7 +38,7 @@ export default defineCachedEventHandler(
       return await analyzeDependencyTree(packageName, version)
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: 'Failed to analyze vulnerabilities',
       })
     }

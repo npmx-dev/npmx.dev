@@ -1,5 +1,17 @@
+import type * as Ofetch from 'ofetch'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createLoader, createResolver, getModules } from '#server/utils/docs/client'
+
+const fetchMocks = vi.hoisted(() => {
+  const fn = vi.fn()
+  const raw = vi.fn()
+  return { fn, raw, $fetch: Object.assign(fn, { raw }) }
+})
+
+vi.mock('ofetch', async importOriginal => ({
+  ...(await importOriginal<typeof Ofetch>()),
+  $fetch: fetchMocks.$fetch,
+}))
 
 describe('createResolver', () => {
   const resolve = createResolver()
@@ -65,7 +77,7 @@ describe('createLoader', () => {
       headers: new Headers({ 'content-type': 'application/typescript' }),
       _data: { text: async () => 'export const foo = 1;' },
     })
-    vi.stubGlobal('$fetch', { raw: mockFetch })
+    fetchMocks.raw.mockImplementation(mockFetch)
 
     const result = await load('https://esm.sh/foo@1.0.0/index.d.ts')
 
@@ -80,40 +92,38 @@ describe('createLoader', () => {
 
   it('returns undefined if the fetch fails (non-200 status)', async () => {
     const mockFetch = vi.fn().mockResolvedValue({ status: 404 })
-    vi.stubGlobal('$fetch', { raw: mockFetch })
+    fetchMocks.raw.mockImplementation(mockFetch)
 
     expect(await load('https://esm.sh/foo@1.0.0/missing.d.ts')).toBeUndefined()
   })
 })
 
 describe('getModules', () => {
-  const $fetchMock = vi.fn()
-
   beforeEach(() => {
-    $fetchMock.mockReset()
-    vi.stubGlobal('$fetch', $fetchMock)
+    fetchMocks.fn.mockReset()
+    fetchMocks.raw.mockReset()
   })
 
   it('falls back to root when esm.sh resolves an empty body', async () => {
-    $fetchMock.mockResolvedValue(undefined)
+    fetchMocks.fn.mockResolvedValue(undefined)
 
     await expect(getModules('ufo', '1.6.3')).resolves.toEqual(['.'])
   })
 
   it('falls back to root when the manifest fetch throws', async () => {
-    $fetchMock.mockRejectedValue(new Error('network'))
+    fetchMocks.fn.mockRejectedValue(new Error('network'))
 
     await expect(getModules('ufo', '1.6.3')).resolves.toEqual(['.'])
   })
 
   it('falls back to root when there is no exports field', async () => {
-    $fetchMock.mockResolvedValue({ name: 'is-odd' })
+    fetchMocks.fn.mockResolvedValue({ name: 'is-odd' })
 
     await expect(getModules('is-odd', '3.0.1')).resolves.toEqual(['.'])
   })
 
   it('treats a bare conditions map (no submodules) as root-only', async () => {
-    $fetchMock.mockResolvedValue({
+    fetchMocks.fn.mockResolvedValue({
       name: 'ufo',
       exports: { import: './dist/index.mjs', require: './dist/index.cjs' },
     })
@@ -122,7 +132,7 @@ describe('getModules', () => {
   })
 
   it('resolves a root entry alongside submodules, root first', async () => {
-    $fetchMock.mockResolvedValue({
+    fetchMocks.fn.mockResolvedValue({
       name: 'unstorage',
       exports: {
         '.': './dist/index.mjs',
@@ -139,7 +149,7 @@ describe('getModules', () => {
   })
 
   it('resolves submodule-only packages without a root entry', async () => {
-    $fetchMock.mockResolvedValue({
+    fetchMocks.fn.mockResolvedValue({
       name: 'tctx',
       exports: {
         './traceparent': { types: './traceparent.d.mts', default: './traceparent.mjs' },
@@ -152,7 +162,7 @@ describe('getModules', () => {
   })
 
   it('ignores ./package.json and wildcard submodules', async () => {
-    $fetchMock.mockResolvedValue({
+    fetchMocks.fn.mockResolvedValue({
       name: 'pkg',
       exports: {
         '.': './index.mjs',
@@ -165,11 +175,11 @@ describe('getModules', () => {
   })
 
   it('url-encodes scoped package names when fetching the manifest', async () => {
-    $fetchMock.mockResolvedValue({ name: '@scope/pkg' })
+    fetchMocks.fn.mockResolvedValue({ name: '@scope/pkg' })
 
     await getModules('@scope/pkg', '1.0.0')
 
-    expect($fetchMock).toHaveBeenCalledWith(
+    expect(fetchMocks.fn).toHaveBeenCalledWith(
       'https://esm.sh/@scope%2Fpkg@1.0.0/package.json',
       expect.anything(),
     )

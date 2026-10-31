@@ -1,3 +1,4 @@
+import type * as NuxtServer from 'nuxt/server'
 import { setTimeout } from 'node:timers/promises'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 
@@ -18,13 +19,17 @@ vi.mock('@atproto/oauth-client-node', () => ({
   requestLocalLock: mockLocalLock,
 }))
 
-const mockConfig = {
+const mockConfig = vi.hoisted(() => ({
   upstash: {
     redisRestUrl: '',
     redisRestToken: '',
   },
-}
-vi.stubGlobal('useRuntimeConfig', () => mockConfig)
+}))
+
+vi.mock('nuxt/server', async importOriginal => ({
+  ...(await importOriginal<typeof NuxtServer>()),
+  useRuntimeConfig: () => mockConfig,
+}))
 
 const LOCK_UUID = '00000000-0000-0000-0000-000000000000'
 vi.spyOn(crypto, 'randomUUID').mockReturnValue(LOCK_UUID)

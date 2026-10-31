@@ -1,4 +1,7 @@
-import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
+import type { CachedFetchFunction, CachedFetchResult } from '#shared/utils/fetch-cache-config'
+import { $fetch } from 'ofetch'
+import { getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 export default defineCachedEventHandler(
   async event => {
@@ -7,7 +10,7 @@ export default defineCachedEventHandler(
 
     let cachedFetch: CachedFetchFunction
     if (event.context.cachedFetch) {
-      cachedFetch = event.context.cachedFetch
+      cachedFetch = event.context.cachedFetch as CachedFetchFunction
     } else {
       // Fallback: return a function that uses regular $fetch
       // (shouldn't happen in normal operation)
@@ -16,7 +19,7 @@ export default defineCachedEventHandler(
         options: Parameters<typeof $fetch>[1] = {},
         _ttl?: number,
       ): Promise<CachedFetchResult<T>> => {
-        const data = (await $fetch<T>(url, options)) as T
+        const data = (await $fetch(url, options as Parameters<typeof $fetch>[1])) as T
         return { data, isStale: false, cachedAt: null }
       }
     }

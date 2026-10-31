@@ -23,7 +23,7 @@ const mockFetchError = (status: number) => {
 }
 
 const mockCreateError = () => {
-  const createErrorMock = vi.fn((opts: { statusCode: number; message: string }) => opts)
+  const createErrorMock = vi.fn((opts: { status: number; message: string }) => opts)
   vi.stubGlobal('createError', createErrorMock)
   return createErrorMock
 }

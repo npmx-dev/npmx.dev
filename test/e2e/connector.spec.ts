@@ -9,7 +9,7 @@
  */
 
 import type { Page } from '@playwright/test'
-import { test, expect } from './helpers/fixtures'
+import { test, expect } from './helpers/fixtures.ts'
 
 test.describe.configure({ mode: 'serial' })
 

@@ -1,5 +1,7 @@
 import type { NodeSavedState, NodeSavedStateStore } from '@atproto/oauth-client-node'
 import { OAUTH_CACHE_STORAGE_BASE } from './storage'
+import { getCacheAdapter } from '#server/utils/cache/adapter'
+import type { CacheAdapter } from '#server/utils/cache/shared'
 
 // It is recommended that oauth state is only saved for 30 minutes
 const STATE_EXPIRATION = CACHE_MAX_AGE_ONE_MINUTE * 30

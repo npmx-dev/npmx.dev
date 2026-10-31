@@ -2,6 +2,7 @@ import * as v from 'valibot'
 import type { DirectDependencyHealthResult } from '#shared/types/dependency-analysis'
 import { DirectDepsHealthBodySchema } from '#shared/schemas/dependency-analysis'
 import { analyzeDirectDependencyHealth } from '#server/utils/dependency-analysis'
+import { defineEventHandler, readBody } from 'nuxt/server'
 
 /**
  * POST /api/registry/direct-deps-health

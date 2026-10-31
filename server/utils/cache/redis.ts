@@ -1,4 +1,5 @@
 import type { Redis } from '@upstash/redis'
+import type { CacheAdapter } from '#server/utils/cache/shared'
 
 /**
  * Redis cache storage with TTL handled by redis for use in production

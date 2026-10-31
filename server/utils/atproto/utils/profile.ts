@@ -2,6 +2,9 @@ import type { MiniDoc, NPMXProfile } from '#shared/types/social'
 import * as blue from '#shared/types/lexicons/blue'
 import * as dev from '#shared/types/lexicons/dev'
 import { Client, isAtIdentifierString, isAtUriString } from '@atproto/lex'
+import { createError } from 'nuxt/server'
+import { getCacheAdapter } from '#server/utils/cache/adapter'
+import type { CacheAdapter } from '#server/utils/cache/shared'
 
 //Cache keys and helpers
 const CACHE_PREFIX = 'atproto-profile:'

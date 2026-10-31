@@ -22,6 +22,7 @@ import { hasProtocol, joinRelativeURL, joinURL, parseFilename, parseURL } from '
 import { convertToEmoji } from '#shared/utils/emoji'
 import sanitize from 'sanitize-html'
 import { ALLOWED_ATTR } from '../mdKit'
+import { useRuntimeConfig } from 'nuxt/server'
 
 // cl = ChangeLog
 const clMarked = new Marked()

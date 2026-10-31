@@ -1,11 +1,18 @@
+import type * as Ofetch from 'ofetch'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { parsePackageParams } from '#server/utils/parse-package-params'
 import { NPM_MISSING_README_SENTINEL } from '#shared/utils/constants'
 
-// Mock Nitro globals before importing the module
-vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
-const $fetchMock = vi.fn()
-vi.stubGlobal('$fetch', $fetchMock)
+const $fetchMock = vi.hoisted(() => vi.fn())
+
+vi.mock('nitro/cache', () => ({
+  defineCachedFunction: (fn: Function) => fn,
+}))
+
+vi.mock('ofetch', async importOriginal => ({
+  ...(await importOriginal<typeof Ofetch>()),
+  $fetch: $fetchMock,
+}))
 vi.stubGlobal('parsePackageParams', parsePackageParams)
 
 const fetchNpmPackageMock = vi.fn()
@@ -41,7 +48,6 @@ describe('fetchReadmeFromJsdelivr', () => {
   beforeEach(() => {
     vi.unstubAllGlobals()
     vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
-    vi.stubGlobal('$fetch', $fetchMock)
     vi.stubGlobal('parsePackageParams', parsePackageParams)
     vi.stubGlobal('fetchNpmPackage', fetchNpmPackageMock)
     vi.stubGlobal('parseRepositoryInfo', parseRepositoryInfoMock)

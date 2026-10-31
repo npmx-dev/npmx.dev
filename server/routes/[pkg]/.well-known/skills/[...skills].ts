@@ -1,14 +1,17 @@
-import type { H3Event } from 'h3'
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { SkillNameSchema } from '#shared/schemas/skills'
 import { CACHE_MAX_AGE_ONE_HOUR, CACHE_MAX_AGE_ONE_YEAR } from '#shared/utils/constants'
+import { setHeader } from 'nitro/h3'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { createError, getRequestURL } from 'nuxt/server'
+import { fetchSkillsListForWellKnown, fetchSkillFile, findSkillDirs } from '#server/utils/skills'
 
 /**
  * Serves /.well-known/skills endpoints for `npx skills add` CLI.
  */
 export default defineCachedEventHandler(
-  async (event: H3Event) => {
+  async event => {
     const url = getRequestURL(event)
     const match = url.pathname.match(/^\/(.+?)\/\.well-known\/skills\/(.*)$/)!
     const [, pkgPath, skillsPath] = match
@@ -19,7 +22,7 @@ export default defineCachedEventHandler(
     })
     const packument = await fetchNpmPackageAbbreviated(validated.packageName)
     const version = packument['dist-tags']?.latest
-    if (!version) throw createError({ statusCode: 404, message: 'No latest version found' })
+    if (!version) throw createError({ status: 404, message: 'No latest version found' })
 
     if (skillsPath === 'index.json' || skillsPath === '') {
       const fileTree = await getPackageFileTree(validated.packageName, version)
@@ -49,12 +52,11 @@ export default defineCachedEventHandler(
       return content
     }
 
-    throw createError({ statusCode: 404, message: 'File not found' })
+    throw createError({ status: 404, message: 'File not found' })
   },
   {
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
-    getKey: (event: H3Event) =>
-      `well-known-skills:v1:${getRequestURL(event).pathname.replace(/\/+$/, '')}`,
+    getKey: event => `well-known-skills:v1:${getRequestURL(event).pathname.replace(/\/+$/, '')}`,
   },
 )

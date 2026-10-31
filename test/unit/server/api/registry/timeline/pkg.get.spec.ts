@@ -1,25 +1,32 @@
+import type * as NuxtServer from 'nuxt/server'
 import { describe, expect, it, vi, beforeEach, afterAll } from 'vitest'
-import { createError, type H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
 import type { Packument, PackumentVersion } from '#shared/types/npm-registry'
 
-const fetchNpmPackageMock = vi.fn()
-vi.stubGlobal('fetchNpmPackage', fetchNpmPackageMock)
-vi.stubGlobal('defineCachedEventHandler', (fn: Function) => fn)
-vi.stubGlobal('CACHE_MAX_AGE_FIVE_MINUTES', 300)
+const handleApiErrorMock = vi.hoisted(() =>
+  vi.fn((_error: unknown, fallback: { status: number; message: string }) => {
+    throw Object.assign(new Error(fallback.message), fallback)
+  }),
+)
 
-const handleApiErrorMock = vi.fn(
-  (_error: unknown, fallback: { statusCode: number; message: string }) => {
-    throw createError(fallback)
-  },
-) as unknown as typeof handleApiError
-vi.stubGlobal('handleApiError', handleApiErrorMock)
+const mocks = vi.hoisted(() => ({
+  fetchNpmPackage: vi.fn(),
+  routerParam: undefined as string | undefined,
+  queryParams: {} as Record<string, string | number>,
+}))
 
-let routerParam: string | undefined
-let queryParams: Record<string, string | number> = {}
-
-vi.stubGlobal('getRouterParam', (_event: unknown, _name: string) => routerParam)
-vi.stubGlobal('getQuery', () => queryParams)
-vi.stubGlobal('createError', createError)
+vi.mock('#server/utils/npm', () => ({ fetchNpmPackage: mocks.fetchNpmPackage }))
+vi.mock('#server/utils/cached-handler', () => ({
+  defineCachedEventHandler: (fn: Function) => fn,
+}))
+vi.mock('#server/utils/error-handler', () => ({
+  handleApiError: handleApiErrorMock,
+}))
+vi.mock('nuxt/server', async importOriginal => ({
+  ...(await importOriginal<typeof NuxtServer>()),
+  getRouterParam: () => mocks.routerParam,
+  getQuery: () => mocks.queryParams,
+}))
 
 const handler = (await import('#server/api/registry/timeline/[...pkg].get')).default
 
@@ -46,29 +53,29 @@ afterAll(() => {
 describe('timeline API', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    routerParam = undefined
-    queryParams = {}
+    mocks.routerParam = undefined
+    mocks.queryParams = {}
   })
 
   it('throws 404 when package name param is missing', async () => {
-    routerParam = undefined
+    mocks.routerParam = undefined
     await expect(handler(fakeEvent)).rejects.toMatchObject({
-      statusCode: 404,
+      status: 404,
     })
   })
 
   it('throws 400 for invalid URI encoding', async () => {
-    routerParam = '%E0%A4%A'
+    mocks.routerParam = '%E0%A4%A'
     await expect(handler(fakeEvent)).rejects.toMatchObject({
-      statusCode: 400,
+      status: 400,
     })
   })
 
   it('returns paginated versions sorted newest-first', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { offset: 0, limit: 10 }
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { offset: 0, limit: 10 }
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { license: 'MIT' },
@@ -94,13 +101,13 @@ describe('timeline API', () => {
   })
 
   it('sorts by semver (highest first, including pre-releases) when sort=semver', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { offset: 0, limit: 10, sort: 'semver' }
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { offset: 0, limit: 10, sort: 'semver' }
 
     // Publish-time order deliberately differs from semver order: 1.9.0 was
     // published most recently (a back-port), and a pre-release sits between
     // 2.0.0 and 1.9.0 semantically.
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.9.0': {},
@@ -120,10 +127,10 @@ describe('timeline API', () => {
   })
 
   it('applies offset and limit correctly', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { offset: 1, limit: 1 }
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { offset: 1, limit: 1 }
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': {},
@@ -146,8 +153,8 @@ describe('timeline API', () => {
   })
 
   it('defaults offset to 0 and limit to 25', async () => {
-    routerParam = 'my-pkg'
-    queryParams = {}
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = {}
 
     const versions: Record<string, {}> = {}
     const time: Record<string, string> = {}
@@ -157,7 +164,7 @@ describe('timeline API', () => {
       time[v] = new Date(2024, 0, i).toISOString()
     }
 
-    fetchNpmPackageMock.mockResolvedValue(makePackument({ versions, time }))
+    mocks.fetchNpmPackage.mockResolvedValue(makePackument({ versions, time }))
 
     const result = await handler(fakeEvent)
     expect(result.total).toBe(30)
@@ -165,8 +172,8 @@ describe('timeline API', () => {
   })
 
   it('clamps limit to max 100', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { limit: 999 }
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { limit: 999 }
 
     const versions: Record<string, {}> = {}
     const time: Record<string, string> = {}
@@ -176,17 +183,17 @@ describe('timeline API', () => {
       time[v] = new Date(2024, 0, (i % 28) + 1, i % 24).toISOString()
     }
 
-    fetchNpmPackageMock.mockResolvedValue(makePackument({ versions, time }))
+    mocks.fetchNpmPackage.mockResolvedValue(makePackument({ versions, time }))
 
     const result = await handler(fakeEvent)
     expect(result.versions).toHaveLength(100)
   })
 
   it('excludes pre-releases when stable-only=true', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { 'stable-only': 'true', 'sort': 'semver' }
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { 'stable-only': 'true', 'sort': 'semver' }
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': {},
@@ -209,9 +216,9 @@ describe('timeline API', () => {
   })
 
   it('extracts license string from object format', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { license: { type: 'Apache-2.0' } as never },
@@ -225,9 +232,9 @@ describe('timeline API', () => {
   })
 
   it('includes tags for versions with dist-tags', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': {},
@@ -249,9 +256,9 @@ describe('timeline API', () => {
   })
 
   it('includes module type when present', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { type: 'module' },
@@ -265,9 +272,9 @@ describe('timeline API', () => {
   })
 
   it('sets hasTypes when version has types field', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { types: './index.d.ts' },
@@ -281,9 +288,9 @@ describe('timeline API', () => {
   })
 
   it('sets hasTrustedPublisher when trustedPublisher is true', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': { _npmUser: { trustedPublisher: true, name: 'bob' } },
@@ -297,9 +304,9 @@ describe('timeline API', () => {
   })
 
   it('sets hasProvenance when attestations exist', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': {
@@ -325,9 +332,9 @@ describe('timeline API', () => {
   })
 
   it('omits optional fields when not present', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': {},
@@ -347,9 +354,9 @@ describe('timeline API', () => {
   })
 
   it('skips versions without a time entry', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: {
           '1.0.0': {},
@@ -368,9 +375,9 @@ describe('timeline API', () => {
   })
 
   it('decodes scoped package names', async () => {
-    routerParam = '%40scope%2Fmy-pkg'
+    mocks.routerParam = '%40scope%2Fmy-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {} },
         time: { '1.0.0': '2024-01-01T00:00:00Z' },
@@ -378,25 +385,25 @@ describe('timeline API', () => {
     )
 
     await handler(fakeEvent)
-    expect(fetchNpmPackageMock).toHaveBeenCalledWith('@scope/my-pkg')
+    expect(mocks.fetchNpmPackage).toHaveBeenCalledWith('@scope/my-pkg')
   })
 
   it('calls handleApiError when fetchNpmPackage throws', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
     const error = new Error('upstream failure')
-    fetchNpmPackageMock.mockRejectedValue(error)
+    mocks.fetchNpmPackage.mockRejectedValue(error)
 
     await expect(handler(fakeEvent)).rejects.toThrow('Failed to fetch timeline for my-pkg')
     expect(handleApiErrorMock).toHaveBeenCalledWith(error, {
-      statusCode: 502,
+      status: 502,
       message: 'Failed to fetch timeline for my-pkg',
     })
   })
 
   it('supports multiple tags on the same version', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
 
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {} },
         time: { '1.0.0': '2024-01-01T00:00:00Z' },

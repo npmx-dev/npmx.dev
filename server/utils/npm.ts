@@ -1,4 +1,6 @@
 import { findMaxSatisfying } from 'verkit'
+import { $fetch } from 'ofetch'
+import { defineCachedFunction } from 'nitro/cache'
 
 export const fetchNpmPackage = defineCachedFunction(
   async (name: string): Promise<Packument> => {

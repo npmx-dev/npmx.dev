@@ -3,6 +3,7 @@ import { handleAuthError } from '~/utils/atproto/helpers'
 import type { PackageLikes } from '#shared/types/social'
 
 type LikeResult = { success: true; data: PackageLikes } | { success: false; error: Error }
+type ProfileLikesResponse = { cursor?: string | null; likes: string[] | null }
 
 /**
  * Like a package via the API
@@ -56,9 +57,13 @@ export async function togglePackageLike(
 /**
  * Fetches paginated profile likes for a given handle.
  */
-export async function fetchProfileLikes(handle: string, cursor?: string | null, limit = 20) {
+export async function fetchProfileLikes(
+  handle: string,
+  cursor?: string | null,
+  limit = 20,
+): Promise<ProfileLikesResponse> {
   try {
-    return await $fetch(`/api/social/profile/${handle}/likes`, {
+    return await $fetch<ProfileLikesResponse>(`/api/social/profile/${handle}/likes`, {
       query: { cursor, limit },
     })
   } catch (e) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { assertValidPackageName } from '~/utils/npm-validation'
 import type { RouteLocationRaw } from 'vue-router'
-import { setResponseHeader } from 'h3'
 
 definePageMeta({
   name: 'docs',
@@ -29,7 +29,7 @@ if (import.meta.server && !requestedVersion.value && packageName.value) {
   const app = useNuxtApp()
   const version = await fetchLatestVersion(packageName.value)
   if (version) {
-    setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
+    useRequestEvent()?.res.headers.set('Cache-Control', 'no-cache')
     app.runWithContext(() =>
       navigateTo(docsRoute(packageName.value, version), { redirectCode: 302 }),
     )

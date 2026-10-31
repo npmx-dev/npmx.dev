@@ -1,5 +1,7 @@
 import type { NodeSavedSession, NodeSavedSessionStore } from '@atproto/oauth-client-node'
 import { OAUTH_CACHE_STORAGE_BASE } from '#server/utils/atproto/storage'
+import { getCacheAdapter } from '#server/utils/cache/adapter'
+import type { CacheAdapter } from '#server/utils/cache/shared'
 
 // Refresh tokens from a confidential client should last for 180 days, each new refresh of access token resets
 // the expiration with the new refresh token. Shorting to 179 days to keep it a bit simpler since we rely on redis to clear sessions

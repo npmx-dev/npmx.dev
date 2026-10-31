@@ -20,7 +20,7 @@ export default defineNuxtModule({
     const config = useRuntimeConfig()
 
     nuxt.hook('nitro:config', nitroConfig => {
-      nitroConfig.storage = nitroConfig.storage || {}
+      nitroConfig.kv = nitroConfig.kv || {}
 
       const upstash = {
         driver: 'upstash' as const,
@@ -30,27 +30,26 @@ export default defineNuxtModule({
 
       if (process.env.RUNTIME_CACHE) {
         // Main cache storage (for defineCachedFunction, etc.)
-        nitroConfig.storage.cache = {
-          ...nitroConfig.storage.cache,
+        nitroConfig.kv.cache = {
+          ...nitroConfig.kv.cache,
           driver: 'vercel-runtime-cache',
         }
 
         // Fetch cache storage (for SWR fetch caching)
-        nitroConfig.storage[FETCH_CACHE_STORAGE_BASE] = {
-          ...nitroConfig.storage[FETCH_CACHE_STORAGE_BASE],
+        nitroConfig.kv[FETCH_CACHE_STORAGE_BASE] = {
+          ...nitroConfig.kv[FETCH_CACHE_STORAGE_BASE],
           driver: 'vercel-runtime-cache',
         }
 
         // Payload cache storage (for runtime payload caching)
-        nitroConfig.storage[PAYLOAD_CACHE_STORAGE_KEY] = {
-          ...nitroConfig.storage[PAYLOAD_CACHE_STORAGE_KEY],
+        nitroConfig.kv[PAYLOAD_CACHE_STORAGE_KEY] = {
+          ...nitroConfig.kv[PAYLOAD_CACHE_STORAGE_KEY],
           driver: 'vercel-runtime-cache',
         }
       }
 
       const env = process.env.VERCEL_ENV
-      nitroConfig.storage.atproto =
-        env === 'production' ? upstash : { driver: 'vercel-runtime-cache' }
+      nitroConfig.kv.atproto = env === 'production' ? upstash : { driver: 'vercel-runtime-cache' }
     })
   },
 })

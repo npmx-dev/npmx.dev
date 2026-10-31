@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('Package Page', () => {
   test('/vue → package manager select dropdown works', async ({ page, goto }) => {

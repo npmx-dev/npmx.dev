@@ -1,8 +1,10 @@
-import { createError } from 'h3'
+import { createError } from 'nuxt/server'
 import * as v from 'valibot'
 import { GravatarQuerySchema } from '#shared/schemas/user'
 import { getGravatarFromUsername } from '#server/utils/gravatar'
 import { handleApiError } from '#server/utils/error-handler'
+import { getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 export default defineCachedEventHandler(
   async event => {
@@ -17,7 +19,7 @@ export default defineCachedEventHandler(
 
       if (!hash) {
         throw createError({
-          statusCode: 404,
+          status: 404,
           message: ERROR_GRAVATAR_EMAIL_UNAVAILABLE,
         })
       }
@@ -25,7 +27,7 @@ export default defineCachedEventHandler(
       return { hash }
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: ERROR_GRAVATAR_FETCH_FAILED,
       })
     }

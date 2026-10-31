@@ -1,25 +1,32 @@
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { createError, type H3Event } from 'h3'
+import type * as NuxtServer from 'nuxt/server'
+import { describe, expect, it, vi, beforeEach, afterAll } from 'vitest'
+import type { H3Event } from 'nitro/h3'
 import type { Packument, PackumentVersion } from '#shared/types/npm-registry'
 
-const fetchNpmPackageMock = vi.fn()
-vi.stubGlobal('fetchNpmPackage', fetchNpmPackageMock)
-vi.stubGlobal('defineCachedEventHandler', (fn: Function) => fn)
-vi.stubGlobal('CACHE_MAX_AGE_FIVE_MINUTES', 300)
+const handleApiErrorMock = vi.hoisted(() =>
+  vi.fn((_error: unknown, fallback: { status: number; message: string }) => {
+    throw Object.assign(new Error(fallback.message), fallback)
+  }),
+)
 
-const handleApiErrorMock = vi.fn(
-  (_error: unknown, fallback: { statusCode: number; message: string }) => {
-    throw createError(fallback)
-  },
-) as unknown as typeof handleApiError
-vi.stubGlobal('handleApiError', handleApiErrorMock)
+const mocks = vi.hoisted(() => ({
+  fetchNpmPackage: vi.fn(),
+  routerParam: undefined as string | undefined,
+  queryParams: {} as Record<string, string | number>,
+}))
 
-let routerParam: string | undefined
-let queryParams: Record<string, string | number> = {}
-
-vi.stubGlobal('getRouterParam', () => routerParam)
-vi.stubGlobal('getQuery', () => queryParams)
-vi.stubGlobal('createError', createError)
+vi.mock('#server/utils/npm', () => ({ fetchNpmPackage: mocks.fetchNpmPackage }))
+vi.mock('#server/utils/cached-handler', () => ({
+  defineCachedEventHandler: (fn: Function) => fn,
+}))
+vi.mock('#server/utils/error-handler', () => ({
+  handleApiError: handleApiErrorMock,
+}))
+vi.mock('nuxt/server', async importOriginal => ({
+  ...(await importOriginal<typeof NuxtServer>()),
+  getRouterParam: () => mocks.routerParam,
+  getQuery: () => mocks.queryParams,
+}))
 
 const handler = (await import('#server/api/registry/packument/[...pkg].get')).default
 
@@ -49,18 +56,18 @@ afterAll(() => {
 describe('packument API', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    routerParam = undefined
-    queryParams = {}
+    mocks.routerParam = undefined
+    mocks.queryParams = {}
   })
 
   it('throws 404 when the package name param is missing', async () => {
-    routerParam = undefined
-    await expect(handler(fakeEvent)).rejects.toMatchObject({ statusCode: 404 })
+    mocks.routerParam = undefined
+    await expect(handler(fakeEvent)).rejects.toMatchObject({ status: 404 })
   })
 
   it('defaults to the latest dist-tag when no version is requested', async () => {
-    routerParam = 'my-pkg'
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.routerParam = 'my-pkg'
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {}, '2.0.0': {} },
         time: { '1.0.0': '2024-01-01T00:00:00Z', '2.0.0': '2025-01-01T00:00:00Z' },
@@ -74,9 +81,9 @@ describe('packument API', () => {
   })
 
   it('resolves an exact version', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { version: '1.0.0' }
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { version: '1.0.0' }
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {}, '2.0.0': {} },
         time: { '1.0.0': '2024-01-01T00:00:00Z', '2.0.0': '2025-01-01T00:00:00Z' },
@@ -89,9 +96,9 @@ describe('packument API', () => {
   })
 
   it('resolves a dist-tag to its concrete version', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { version: 'next' }
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { version: 'next' }
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {}, '2.0.0-beta.1': {} },
         time: {
@@ -107,9 +114,9 @@ describe('packument API', () => {
   })
 
   it('includes no requestedVersion for an unresolvable version', async () => {
-    routerParam = 'my-pkg'
-    queryParams = { version: '9.9.9' }
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.routerParam = 'my-pkg'
+    mocks.queryParams = { version: '9.9.9' }
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {} },
         time: { '1.0.0': '2024-01-01T00:00:00Z' },
@@ -122,8 +129,8 @@ describe('packument API', () => {
   })
 
   it('fetches the decoded package name via fetchNpmPackage', async () => {
-    routerParam = '%40scope%2Fmy-pkg'
-    fetchNpmPackageMock.mockResolvedValue(
+    mocks.routerParam = '%40scope%2Fmy-pkg'
+    mocks.fetchNpmPackage.mockResolvedValue(
       makePackument({
         versions: { '1.0.0': {} },
         time: { '1.0.0': '2024-01-01T00:00:00Z' },
@@ -132,17 +139,17 @@ describe('packument API', () => {
     )
 
     await handler(fakeEvent)
-    expect(fetchNpmPackageMock).toHaveBeenCalledWith('@scope/my-pkg')
+    expect(mocks.fetchNpmPackage).toHaveBeenCalledWith('@scope/my-pkg')
   })
 
   it('calls handleApiError when the packument fetch fails', async () => {
-    routerParam = 'my-pkg'
+    mocks.routerParam = 'my-pkg'
     const error = new Error('upstream failure')
-    fetchNpmPackageMock.mockRejectedValue(error)
+    mocks.fetchNpmPackage.mockRejectedValue(error)
 
-    await expect(handler(fakeEvent)).rejects.toMatchObject({ statusCode: 502 })
+    await expect(handler(fakeEvent)).rejects.toMatchObject({ status: 502 })
     expect(handleApiErrorMock).toHaveBeenCalledWith(error, {
-      statusCode: 502,
+      status: 502,
       message: expect.any(String),
     })
   })

@@ -3,19 +3,23 @@ import { Client } from '@atproto/lex'
 import * as dev from '#shared/types/lexicons/dev'
 import type { NPMXProfile } from '#shared/types/social'
 import { ProfileEditBodySchema } from '#shared/schemas/social'
+import { eventHandlerWithOAuthSession, throwOnMissingOAuthScope } from '#server/utils/atproto/oauth'
+import { ProfileUtils } from '#server/utils/atproto/utils/profile'
+import { createError, readBody } from 'nuxt/server'
 
 export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
   const loggedInUsersDid = oAuthSession?.did.toString()
 
   if (!oAuthSession || !loggedInUsersDid) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+    throw createError({ status: 401, statusText: 'Unauthorized' })
   }
 
   await throwOnMissingOAuthScope(oAuthSession, PROFILE_SCOPE)
 
-  const requestBody = await readBody(event)
+  // h3 v2 returns undefined for an empty body
+  const requestBody = (await readBody<{ website?: string }>(event)) ?? {}
   if (requestBody.website && !URL.canParse(requestBody.website)) {
-    throw createError({ statusCode: 400, statusMessage: 'Invalid website' })
+    throw createError({ status: 400, statusText: 'Invalid website' })
   }
 
   const body = parse(ProfileEditBodySchema, requestBody)
