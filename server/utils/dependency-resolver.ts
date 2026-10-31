@@ -162,8 +162,8 @@ export async function resolveDependencyTree(
     const nextLevel = new Map<string, DependencyRequest>()
 
     // Mark all packages in current level as seen before processing
-    for (const name of currentLevel.keys()) {
-      seen.add(name)
+    for (const key of currentLevel.keys()) {
+      seen.add(key)
     }
 
     // Process current level with concurrency limit
