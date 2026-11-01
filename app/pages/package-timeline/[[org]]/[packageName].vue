@@ -255,6 +255,9 @@ if (import.meta.client) {
       try {
         const data = await fetchTimeline({ around: ver }, pkgName, sortOrder, stable)
         if (isStale()) return
+        // A load-more started while this request was pending computed its offset from
+        // the old window, so discard it before committing the new one.
+        listEpoch++
         timelineEntries.value = data.versions
         timelineOffset.value = data.offset
         totalVersions.value = data.total
