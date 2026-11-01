@@ -90,6 +90,9 @@ function stripAndEscapeHtml(text: string): string {
 // so escaped entities can never match.
 const PACKAGE_NAME_PATTERN = /^(?:@\w[\w.-]*\/)?\w[\w.-]*$/
 
+// Version numbers such as `2.0.0`, `4.x` or `v3` also look like package names, but name a version.
+const VERSION_LIKE_PATTERN = /^v\d+$|^v?\d+(?:\.(?:\d+|x|\*))+(?:-[\w.]+)?$/i
+
 // Parse simple inline markdown to HTML
 function parseMarkdown({
   text,
@@ -112,7 +115,13 @@ function parseMarkdown({
 
   // Inline code: `code` — optionally link package names to their package page
   html = html.replace(/`([^`]+)`/g, (_match, code: string) => {
-    if (linkifyPackages && !plain && code !== excludePackage && PACKAGE_NAME_PATTERN.test(code)) {
+    if (
+      linkifyPackages &&
+      !plain &&
+      code !== excludePackage &&
+      PACKAGE_NAME_PATTERN.test(code) &&
+      !VERSION_LIKE_PATTERN.test(code)
+    ) {
       return `<a href="/package/${code}"><code>${code}</code></a>`
     }
     return `<code>${code}</code>`

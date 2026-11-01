@@ -183,6 +183,16 @@ describe('useMarkdown', () => {
       expect(processed.value).toBe('Run <code>npm install</code> to start')
     })
 
+    it('does not link version numbers', () => {
+      const processed = useMarkdown({
+        text: 'Upgrade to `2.0.0`, `4.x` or `v3`, see `7zip-bin`',
+        linkifyPackages: true,
+      })
+      expect(processed.value).toBe(
+        'Upgrade to <code>2.0.0</code>, <code>4.x</code> or <code>v3</code>, see <a href="/package/7zip-bin"><code>7zip-bin</code></a>',
+      )
+    })
+
     it('does not link package names when disabled', () => {
       const processed = useMarkdown({ text: '`mdast` was renamed to `remark`' })
       expect(processed.value).toBe('<code>mdast</code> was renamed to <code>remark</code>')
