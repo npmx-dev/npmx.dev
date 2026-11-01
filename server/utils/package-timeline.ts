@@ -1,4 +1,5 @@
 import { analyzePackage } from '#shared/utils/package-analysis'
+import { mapWithConcurrency } from '#shared/utils/async'
 
 interface TimelineVersionWithTypes {
   version: string
@@ -18,9 +19,13 @@ export async function enrichTimelineVersionTypes(
   // File-aware detection is limited to potential removal events: metadata-untyped
   // versions with an older typed release. Checking every untyped version would
   // require additional registry and file-tree requests.
-  const possibleTypeRemovals = visibleVersions
-    .filter(version => !version.hasTypes && hasOlderTypedVersion(version.version))
-    .map(async version => {
+  const possibleTypeRemovals = visibleVersions.filter(
+    version => !version.hasTypes && hasOlderTypedVersion(version.version),
+  )
+
+  await mapWithConcurrency(
+    possibleTypeRemovals,
+    async version => {
       try {
         const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(
           packageName,
@@ -38,7 +43,7 @@ export async function enrichTimelineVersionTypes(
       } catch {
         // Preserve the metadata-only result when the file list is unavailable.
       }
-    })
-
-  await Promise.all(possibleTypeRemovals)
+    },
+    5,
+  )
 }
