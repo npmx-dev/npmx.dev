@@ -3,7 +3,7 @@ import type { ChangelogMarkdownInfo, ChangelogInfo } from '~~/shared/types/chang
 import type { ExtendedPackageJson } from '~~/shared/utils/package-analysis'
 import { type RepoRef, parseRepositoryInfo } from '~~/shared/utils/git-providers'
 import { getFileUrls } from './fileUrls'
-import { ForgeApiError } from 'forges'
+import { ForgeApiError, RateLimitedError } from 'forges'
 import { FetchError } from 'ofetch'
 import { ERROR_CHANGELOG_NOT_FOUND, ERROR_UNGH_API_KEY_EXHAUSTED } from '~~/shared/utils/constants'
 import { GithubReleaseSchama } from '~~/shared/schemas/changelog/release'
@@ -274,6 +274,8 @@ const checkLatestRelease = defineCachedFunction(
     try {
       release = await provider.releases.latest(toForgeRepoRef(ref))
     } catch (error) {
+      // A rate limit is not "no release"; let the caller degrade instead.
+      if (error instanceof RateLimitedError) throw error
       if (error instanceof ForgeApiError && UNREADABLE_RELEASE_STATUSES.has(error.status)) {
         return false
       }
@@ -289,11 +291,13 @@ const checkLatestRelease = defineCachedFunction(
     const file = matchedChangelog ? provider.parseUrl(matchedChangelog)?.file : undefined
 
     if (!matchedChangelog || !file) {
+      const link = provider.urlFor({ repo: toForgeRepoRef(ref), section: 'releases' })
+      if (!link) return false
       return {
         provider: ref.provider,
         type: 'release',
         repo: repoSlug(ref),
-        link: provider.urlFor({ repo: toForgeRepoRef(ref), section: 'releases' }) ?? '',
+        link,
         host: ref.host,
       }
     }
