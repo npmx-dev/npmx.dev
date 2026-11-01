@@ -87,12 +87,18 @@ describe('packageRoute', () => {
       })
     })
 
-    it('returns package route with semver query for dist-tag', () => {
+    it('returns package version route for dist-tag', () => {
       expect(packageRoute('nuxt', 'latest')).toEqual({
-        name: 'package',
-        params: { org: '', name: 'nuxt' },
-        query: { semver: 'latest' },
-        hash: '#versions',
+        name: 'package-version',
+        params: { org: '', name: 'nuxt', version: 'latest' },
+      })
+    })
+
+    it('keeps the hash on exact version routes', () => {
+      expect(packageRoute('react', '18.0.0', '#provenance')).toEqual({
+        name: 'package-version',
+        params: { org: '', name: 'react', version: '18.0.0' },
+        hash: '#provenance',
       })
     })
   })

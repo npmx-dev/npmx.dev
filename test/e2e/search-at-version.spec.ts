@@ -46,18 +46,14 @@ test.describe('Search pkg@version navigation', () => {
     await expect(page).toHaveURL(/#versions/)
   })
 
-  test('nuxt@latest → navigates to package page with semver filter for dist-tag', async ({
-    page,
-    goto,
-  }) => {
+  test('nuxt@latest → navigates to version page for dist-tag', async ({ page, goto }) => {
     await goto('/search', { waitUntil: 'hydration' })
 
     const searchInput = page.locator('input[type="search"]')
     await searchInput.fill('nuxt@latest')
     await page.keyboard.press('Enter')
 
-    await expect(page).toHaveURL(/\/package\/nuxt\?semver=latest/)
-    await expect(page).toHaveURL(/#versions/)
+    await expect(page).toHaveURL(/\/package\/nuxt\/v\/latest/)
   })
 
   test('plain package name without @ version → does not trigger version navigation', async ({

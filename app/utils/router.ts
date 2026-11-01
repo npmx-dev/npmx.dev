@@ -1,5 +1,5 @@
 import type { RouteLocationRaw } from 'vue-router'
-import { isValid as isValidSingleVersion } from 'verkit'
+import { isValid as isValidSingleVersion, normalizeRange } from 'verkit'
 import { splitPackageName } from '~/utils/package-name'
 
 export function packageRoute(
@@ -10,14 +10,18 @@ export function packageRoute(
   const { org, name } = splitPackageName(packageName)
 
   if (version) {
-    if (isValidSingleVersion(version)) {
+    // Exact versions and dist-tags (e.g. `latest`) open the version page, which resolves tags.
+    // The semver filter below rejects tags, as they aren't ranges.
+    if (isValidSingleVersion(version) || !normalizeRange(version)) {
       return {
         name: 'package-version',
         params: {
           org,
           name,
-          version,
+          // remove spaces to be correctly resolved by router
+          version: version.replace(/\s+/g, ''),
         },
+        hash,
       }
     }
 
