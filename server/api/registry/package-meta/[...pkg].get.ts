@@ -1,4 +1,21 @@
 import { normalizeLicense } from '#shared/utils/npm'
+import type { PackumentVersion } from '#shared/types'
+
+function countRecordEntries(value: Record<string, unknown> | undefined): number {
+  return value ? Object.keys(value).length : 0
+}
+
+function getBinNames(bin: PackumentVersion['bin'] | undefined): string[] {
+  if (!bin) {
+    return []
+  }
+
+  if (typeof bin === 'string') {
+    return ['bin']
+  }
+
+  return Object.keys(bin)
+}
 
 /**
  * Returns lightweight package metadata for search results.
@@ -31,7 +48,9 @@ export default defineCachedEventHandler(
 
       const latestVersion =
         packument['dist-tags']?.latest || Object.values(packument['dist-tags'] ?? {})[0] || ''
+      const latestManifest = latestVersion ? packument.versions?.[latestVersion] : undefined
       const modified = packument.time?.modified || packument.time?.[latestVersion] || ''
+      const created = packument.time?.created || ''
       const date = packument.time?.[latestVersion] || modified
 
       // Extract repository URL from the packument's repository field
@@ -68,15 +87,32 @@ export default defineCachedEventHandler(
         author = typeof a === 'string' ? { name: a } : { name: a.name, email: a.email, url: a.url }
       }
 
-      const license = normalizeLicense(packument.license)
+      const license = normalizeLicense(latestManifest?.license ?? packument.license)
 
       return {
         name: packument.name,
         version: latestVersion,
-        description: packument.description,
-        keywords: packument.keywords,
+        description: packument.description ?? 'No description provided.',
+        keywords: latestManifest?.keywords ?? packument.keywords ?? [],
         license,
         date,
+        modified,
+        created,
+        distTags: packument['dist-tags'] ?? {},
+        versionCount: Object.keys(packument.versions ?? {}).length,
+        deprecated: latestManifest?.deprecated,
+        unpackedSize: latestManifest?.dist?.unpackedSize,
+        entryPoints: {
+          type: latestManifest?.type,
+          main: latestManifest?.main,
+          module: latestManifest?.module,
+          types: latestManifest?.types ?? latestManifest?.typings,
+          hasExports: latestManifest?.exports !== undefined,
+          binNames: getBinNames(latestManifest?.bin),
+          engines: latestManifest?.engines,
+          dependenciesCount: countRecordEntries(latestManifest?.dependencies),
+          peerDependenciesCount: countRecordEntries(latestManifest?.peerDependencies),
+        },
         links: {
           npm: `https://www.npmjs.com/package/${packument.name}`,
           homepage: packument.homepage,
@@ -84,7 +120,7 @@ export default defineCachedEventHandler(
           bugs: bugsUrl,
         },
         author,
-        maintainers: packument.maintainers,
+        maintainers: packument.maintainers ?? [],
         weeklyDownloads: downloads?.downloads,
       }
     } catch (error: unknown) {
