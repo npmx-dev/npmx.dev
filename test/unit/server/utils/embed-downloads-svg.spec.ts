@@ -1,5 +1,5 @@
 import type { createStaticVueUiXy as StaticRenderer } from 'vue-data-ui/ssr/vue-ui-xy'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createDownloadsSvgResponse } from '../../../../server/utils/embed-downloads-svg'
 
 const mocks = vi.hoisted(() => ({

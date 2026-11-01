@@ -372,9 +372,7 @@
       "tangled": "Vedi su Tangled"
     },
     "collapse": "Comprimi",
-    "collapse_with_name": "Comprimi {name}",
-    "expand": "Espandi",
-    "expand_with_name": "Espandi {name}"
+    "expand": "Espandi"
   },
   "profile": {
     "display_name": "Nome visualizzato",
@@ -1685,7 +1683,9 @@
       "p1": "Spiacenti, il changelog per {package} non ha potuto essere caricato",
       "p2": "Riprova più tardi o {viewon}"
     },
-    "rate_limit_ungh": "Spiacenti, è stato raggiunto il limite di richieste di GitHub. Riprova tra un momento.",
-    "version_unavailable": "La versione richiesta non è disponibile."
+    "version_unavailable": "La versione richiesta non è disponibile.",
+    "ungh": {
+      "rate_limit": "Spiacenti, è stato raggiunto il limite di richieste di GitHub. Riprova tra un momento."
+    }
   }
 }

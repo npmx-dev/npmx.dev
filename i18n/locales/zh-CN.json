@@ -342,9 +342,7 @@
       "tangled": "在 Tangled 上查看"
     },
     "collapse": "收起",
-    "collapse_with_name": "收起 {name}",
-    "expand": "展开",
-    "expand_with_name": "展开 {name}"
+    "expand": "展开"
   },
   "profile": {
     "display_name": "显示名称",
@@ -587,6 +585,7 @@
       "trusted_publisher_removed": "已移除可信发布",
       "provenance_added": "已启用 Provenance",
       "provenance_removed": "已移除 Provenance",
+      "deprecated": "已弃用",
       "chart": {
         "tab_aria_label": "指标选择",
         "base_scale": "Y 轴从 0 开始",
@@ -597,8 +596,7 @@
           "version_events": "版本 {version}：{events}",
           "general_description": "折线图展示了 {package} 包从版本 {first} 到 {last} 的 {metric} 变化情况。版本 {first} 的 {metric} 为 {first_value}，版本 {last} 为 {last_value}（整体变化 {overall_progress_percentage}%）。{key_changes} {watermark}。"
         }
-      },
-      "deprecated": "已弃用"
+      }
     },
     "dependencies": {
       "title": "依赖（{count} 个）",
@@ -1702,8 +1700,5 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "一个圆润可爱、色彩活泼的 npmx logo 版本。",
-  "changelog": {
-    "error": {}
-  }
+  "alt_logo_kawaii": "一个圆润可爱、色彩活泼的 npmx logo 版本。"
 }

@@ -342,9 +342,7 @@
       "tangled": "Vizualizează pe Tangled"
     },
     "collapse": "Reduce",
-    "collapse_with_name": "Reduce {name}",
-    "expand": "Extinde",
-    "expand_with_name": "Extinde {name}"
+    "expand": "Extinde"
   },
   "profile": {
     "display_name": "Nume afișat",
@@ -1697,8 +1695,5 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "O versiune drăguță, rotunjită și colorată a logo-ului npmx.",
-  "changelog": {
-    "error": {}
-  }
+  "alt_logo_kawaii": "O versiune drăguță, rotunjită și colorată a logo-ului npmx."
 }

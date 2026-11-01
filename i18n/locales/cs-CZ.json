@@ -377,9 +377,7 @@
       "tangled": "Zobrazit na Tangled"
     },
     "collapse": "Sbalit",
-    "collapse_with_name": "Sbalit sekci {name}",
-    "expand": "Rozbalit",
-    "expand_with_name": "Rozbalit sekci {name}"
+    "expand": "Rozbalit"
   },
   "profile": {
     "display_name": "Zobrazované jméno",
@@ -1770,7 +1768,9 @@
       "p1": "Omlouváme se, seznam změn pro {package} nelze načíst",
       "p2": "Zkuste to prosím později nebo {viewon}"
     },
-    "rate_limit_ungh": "Omlouváme se, byl dosažen limit GitHubu, zkuste to prosím za chvíli znovu",
-    "version_unavailable": "Omlouváme se, požadovaná verze není k dispozici."
+    "version_unavailable": "Omlouváme se, požadovaná verze není k dispozici.",
+    "ungh": {
+      "rate_limit": "Omlouváme se, byl dosažen limit GitHubu, zkuste to prosím za chvíli znovu"
+    }
   }
 }

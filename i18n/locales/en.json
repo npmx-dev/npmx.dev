@@ -432,9 +432,9 @@
       "tangled": "View on Tangled"
     },
     "collapse": "Collapse",
-    "collapse_with_name": "Collapse {name}",
     "expand": "Expand",
-    "expand_with_name": "Expand {name}",
+    "copy_section_link": "Copy link to {name}",
+    "section_link_copied": "Link copied",
     "copyMdError": "Failed to load markdown, try again later"
   },
   "profile": {
@@ -504,7 +504,8 @@
       "inspect_dependency_tree": "Inspect dependency tree",
       "size_tooltip": {
         "unpacked": "{size} unpacked size (this package)",
-        "total": "{size} total unpacked size (including {count} dependency for linux-x64) | {size} total unpacked size (including all {count} dependencies for linux-x64)"
+        "total": "{size} total unpacked size (including {count} dependency for linux-x64) | {size} total unpacked size (including all {count} dependencies for linux-x64)",
+        "frozen": "{size} total unpacked size before the next version was released"
       },
       "main_information": "Main Information",
       "trends": "Trends",
@@ -688,9 +689,10 @@
       "no_match_filter": "No versions match {filter}"
     },
     "timeline": {
+      "load_newer": "Load newer versions",
       "load_more": "Load more",
       "load_error": "Failed to load timeline. Please try again later.",
-      "no_stable_versions": "No stable versions to show. Turn off \u201cstable only\u201d to include pre-releases.",
+      "no_stable_versions": "No stable versions to show. Turn off “stable only” to include pre-releases.",
       "size_increase": "Install size increased by {percent}% ({size})",
       "size_decrease": "Install size decreased by {percent}% ({size})",
       "dep_increase": "{count} dependency added | {count} dependencies added",
@@ -713,6 +715,7 @@
         "zoom": "zoom",
         "reset_minimap": "reset minimap",
         "ordered_versions": "stable only",
+        "frozen_history": "frozen history",
         "sort_label": "Sort by",
         "sort_time": "Publish time",
         "sort_semver": "Semver",
@@ -789,6 +792,7 @@
       "download_file": "Download {fileType}",
       "copy_file": "Copy {fileType}",
       "toggle_annotator": "Toggle annotator",
+      "toggle_fullscreen": "Toggle fullscreen",
       "toggle_stack_mode": "Toggle stack mode",
       "open_options": "Open options",
       "close_options": "Close options",
@@ -1516,7 +1520,8 @@
       "searching": "Searching...",
       "remove_package": "Remove {package}",
       "packages_selected": "{count}/{max} packages selected.",
-      "add_hint": "Add at least 2 packages to compare."
+      "add_hint": "Add at least 2 packages to compare.",
+      "version_hint": "Compare specific versions with {syntax}. For example, enter {first} and press Enter, then add {second}."
     },
     "scatter_chart": {
       "title": "Compare {x} vs {y}",
@@ -1948,8 +1953,12 @@
       "p1": "Sorry, the changelog for {package} couldn't be loaded",
       "p2": "Please try again later or {viewon}"
     },
-    "rate_limit_ungh": "Sorry, Github's rate limit has been hit, try again in a moment",
     "version_unavailable": "The requested version is not available.",
-    "copy_as_markdown": "Copy changelog as Markdown"
+    "copy_as_markdown": "Copy changelog as Markdown",
+    "ungh": {
+      "rate_limit": "Sorry, Github's rate limit has been hit, try again in a moment",
+      "hint": "You can help increase the rate limit quota by installing the UNGH GitHub app",
+      "install": "Install UNGH GitHub app"
+    }
   }
 }

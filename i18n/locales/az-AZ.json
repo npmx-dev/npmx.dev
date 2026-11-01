@@ -73,23 +73,6 @@
     "instant_search_turn_off": "bağla",
     "instant_search_advisory": "{label} {state} — {action}"
   },
-  "command_palette": {
-    "keyboard_shortcuts": {},
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
-  },
   "nav": {
     "main_navigation": "Əsas",
     "popular_packages": "Populyar paketlər",
@@ -101,14 +84,6 @@
     "open_menu": "Menyunu aç",
     "links": "Keçidlər",
     "tap_to_search": "Axtarmaq üçün toxunun"
-  },
-  "tools": {
-    "deps_stats": {}
-  },
-  "deps_stats": {
-    "upload": {},
-    "dependencies": {},
-    "stats": {}
   },
   "blog": {
     "title": "Bloq",
@@ -134,9 +109,6 @@
       "repost_count": "{count} yenidən paylaşım",
       "more_replies": "daha {count} cavab... | daha {count} cavab..."
     }
-  },
-  "noodles": {
-    "missing": {}
   },
   "settings": {
     "title": "tənzimləmələr",
@@ -178,7 +150,6 @@
     "background_themes": {
       "label": "Fon tonu"
     },
-    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Klaviatura qısayollarını aktivləşdir",
     "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər"
   },
@@ -264,7 +235,6 @@
       "size": "Quraşdırma həcmi {percent} artıb ({size} daha böyük)",
       "deps": "{count} daha çox asılılıq"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "Bu asılılığa ehtiyacınız olmaya bilər.",
       "native": "Bu, Node {nodeVersion}-dən bəri mövcud olan {replacement} ilə əvəz edilə bilər.",
@@ -339,7 +309,6 @@
       "title": "İşə sal",
       "locally": "Lokal işə sal"
     },
-    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README mövcud deyil.",
@@ -420,11 +389,6 @@
         "general_description": "{package_name} paketinin {versions_count} {semver_grouping_mode} versiyası üçün versiya başına endirmələri göstərən çubuq diaqramı, {date_range_label} {first_version} versiyasından {last_version} versiyasına qədər. Ən çox endirilən versiya {max_version_downloads} endirmə ilə {max_downloaded_version}-dir. {per_version_analysis}. {watermark}."
       }
     },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
-    },
     "dependencies": {
       "title": "Asılılıq ({count}) | Asılılıqlar ({count})",
       "list_label": "Paket asılılıqları",
@@ -461,7 +425,6 @@
       "show_less": "(daha az göstər)"
     },
     "trends": {
-      "chart_assistive_text": {},
       "granularity": "Dərəcəlilik",
       "granularity_daily": "Günlük",
       "granularity_weekly": "Həftəlik",
@@ -512,12 +475,6 @@
         "compare": "Paket endirmə müqayisəsi xətt diaqramı: {packages}.",
         "single_package": "{package} paketi üçün endirmə xətt diaqramı.",
         "general_description": "Y oxu endirmələrin sayını təmsil edir. X oxu tarix aralığını təmsil edir, {start_date}-dən {end_date}-ə, {granularity} zaman dövrü ilə.{estimation_notice} {packages_analysis}. {watermark}."
-      },
-      "embedding": {},
-      "sparkline_zoom_reset": {},
-      "downloads_heatmap": {
-        "legend": {},
-        "copy_alt": {}
       }
     },
     "downloads": {
@@ -612,11 +569,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
-  },
-  "leaderboard": {
-    "likes": {}
+    }
   },
   "connector": {
     "modal": {
@@ -1005,25 +958,6 @@
       }
     }
   },
-  "sponsors_page": {
-    "what_we_do": {},
-    "what_support_means": {},
-    "what_this_means_for_you": {
-      "cards": {
-        "people": {},
-        "visitors": {},
-        "stars": {},
-        "community": {},
-        "adoption": {},
-        "default_source": {}
-      }
-    },
-    "tiers": {
-      "silver": {},
-      "gold": {},
-      "platinum": {}
-    }
-  },
   "account_menu": {
     "connect": "qoşul",
     "account": "Hesab",
@@ -1097,9 +1031,6 @@
       "remove_package": "{package} sil",
       "packages_selected": "{count}/{max} paket seçilib.",
       "add_hint": "Müqayisə üçün ən azı 2 paket əlavə edin."
-    },
-    "scatter_chart": {
-      "copy_alt": {}
     },
     "no_dependency": {
       "label": "(Asılılıq yoxdur)",
@@ -1175,11 +1106,7 @@
         "vulnerabilities": {
           "label": "Zəifliklər",
           "description": "Məlum təhlükəsizlik zəiflikləri"
-        },
-        "githubStars": {},
-        "githubForks": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "İstənilən",
@@ -1201,7 +1128,6 @@
     "lines_hidden": "{count} sətir gizlədilib",
     "compare_versions": "fərq",
     "compare_versions_title": "Versiyaları müqayisə et",
-    "version_invalid_url_format": {},
     "summary": "Xülasə",
     "deps_count": "{count} asılılıq",
     "dependencies": "Asılılıqlar",
@@ -1366,25 +1292,5 @@
       "p1": "{app} saytında əlçatanlıq maneəsi ilə qarşılaşsanız, xahiş edirik {link} issue açaraq bizə bildirin. Bu hesabatları ciddi qəbul edirik və onları həll etmək üçün əlimizdən gələni edəcəyik.",
       "link": "GitHub repozitoriyası"
     }
-  },
-  "translation_status": {},
-  "vacations": {
-    "what": {},
-    "meantime": {},
-    "return": {},
-    "stats": {
-      "subtitle": {}
-    }
-  },
-  "action_bar": {},
-  "logo_menu": {},
-  "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
-  },
-  "changelog": {
-    "error": {}
   }
 }

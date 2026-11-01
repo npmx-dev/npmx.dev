@@ -341,9 +341,7 @@
       "tangled": "Ver em Tangled"
     },
     "collapse": "Colapsar",
-    "collapse_with_name": "Colapsar {name}",
-    "expand": "Expandir",
-    "expand_with_name": "Expandir {name}"
+    "expand": "Expandir"
   },
   "profile": {
     "display_name": "Nome visível",
@@ -579,10 +577,7 @@
       "trusted_publisher_added": "Publicação de confiança ativada",
       "trusted_publisher_removed": "Publicação de confiança removida",
       "provenance_added": "Proveniência ativada",
-      "provenance_removed": "Proveniência removida",
-      "chart": {
-        "copy_alt": {}
-      }
+      "provenance_removed": "Proveniência removida"
     },
     "dependencies": {
       "title": "Dependências ({count})",
@@ -785,9 +780,6 @@
       "button": "Baixar",
       "tarball": "Baixar Tarball como .tar.gz"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1678,8 +1670,5 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logotipo do npmx.",
-  "changelog": {
-    "error": {}
-  }
+  "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logotipo do npmx."
 }

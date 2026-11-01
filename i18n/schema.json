@@ -1300,13 +1300,13 @@
         "collapse": {
           "type": "string"
         },
-        "collapse_with_name": {
-          "type": "string"
-        },
         "expand": {
           "type": "string"
         },
-        "expand_with_name": {
+        "copy_section_link": {
+          "type": "string"
+        },
+        "section_link_copied": {
           "type": "string"
         },
         "copyMdError": {
@@ -1517,6 +1517,9 @@
                   "type": "string"
                 },
                 "total": {
+                  "type": "string"
+                },
+                "frozen": {
                   "type": "string"
                 }
               },
@@ -2068,6 +2071,9 @@
         "timeline": {
           "type": "object",
           "properties": {
+            "load_newer": {
+              "type": "string"
+            },
             "load_more": {
               "type": "string"
             },
@@ -2141,6 +2147,9 @@
                   "type": "string"
                 },
                 "ordered_versions": {
+                  "type": "string"
+                },
+                "frozen_history": {
                   "type": "string"
                 },
                 "sort_label": {
@@ -2369,6 +2378,9 @@
               "type": "string"
             },
             "toggle_annotator": {
+              "type": "string"
+            },
+            "toggle_fullscreen": {
               "type": "string"
             },
             "toggle_stack_mode": {
@@ -4554,6 +4566,9 @@
             },
             "add_hint": {
               "type": "string"
+            },
+            "version_hint": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -5848,14 +5863,26 @@
           },
           "additionalProperties": false
         },
-        "rate_limit_ungh": {
-          "type": "string"
-        },
         "version_unavailable": {
           "type": "string"
         },
         "copy_as_markdown": {
           "type": "string"
+        },
+        "ungh": {
+          "type": "object",
+          "properties": {
+            "rate_limit": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "install": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

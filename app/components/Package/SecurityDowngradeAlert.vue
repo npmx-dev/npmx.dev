@@ -2,6 +2,7 @@
 import type { PublishSecurityDowngrade } from '~/utils/publish-security'
 
 defineProps<{
+  packageName: string
   downgrade: PublishSecurityDowngrade | null
   fallbackInstallText?: string | null
 }>()
@@ -119,5 +120,15 @@ defineProps<{
         {{ fallbackInstallText }}
       </template>
     </p>
+    <LinkBase
+      v-if="downgrade.trustedVersion"
+      :to="diffRoute(packageName, downgrade.trustedVersion, downgrade.downgradedVersion)"
+      variant="button-secondary"
+      size="sm"
+      classicon="i-lucide:git-compare"
+      class="mt-3"
+    >
+      {{ $t('compare.file_changes') }}
+    </LinkBase>
   </div>
 </template>
