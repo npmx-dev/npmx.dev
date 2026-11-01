@@ -65,23 +65,6 @@
       "view_org_packages": "Показване на пакети от тази организация"
     }
   },
-  "command_palette": {
-    "keyboard_shortcuts": {},
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
-  },
   "nav": {
     "main_navigation": "Главна",
     "popular_packages": "Популярни пакети",
@@ -93,21 +76,6 @@
     "open_menu": "Отваряне на меню",
     "links": "Връзки",
     "tap_to_search": "Докоснете за търсене"
-  },
-  "tools": {
-    "deps_stats": {}
-  },
-  "deps_stats": {
-    "upload": {},
-    "dependencies": {},
-    "stats": {}
-  },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
-  "noodles": {
-    "missing": {}
   },
   "settings": {
     "title": "настройки",
@@ -147,7 +115,6 @@
     "background_themes": {
       "label": "Фонов нюанс"
     },
-    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Активиране на клавишни комбинации",
     "keyboard_shortcuts_enabled_description": "Клавишните комбинации могат да бъдат деактивирани, ако влизат в конфликт с други браузърни или системни преки пътища"
   },
@@ -159,7 +126,6 @@
     "edit_on_github": "Редактиране в GitHub",
     "view_guide": "Ръководство за превод"
   },
-  "error": {},
   "common": {
     "loading": "Зареждане...",
     "loading_more": "Зареждане на още...",
@@ -227,7 +193,6 @@
       "size": "Размерът при инсталация се е увеличил с {percent} ({size} по-голям)",
       "deps": "{count} повече зависимости"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "Може да не се нуждаете от тази зависимост.",
       "native": "Това може да бъде заменено с {replacement}, налично от Node {nodeVersion}.",
@@ -302,7 +267,6 @@
       "title": "Изпълнение",
       "locally": "Изпълнение локално"
     },
-    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Няма наличен README.",
@@ -383,11 +347,6 @@
         "general_description": "Стълбовидна диаграма, показваща изтеглянията по версии за {versions_count} {semver_grouping_mode} версии на пакета {package_name}, {date_range_label} от версия {first_version} до версия {last_version}. Най-изтегляната версия е {max_downloaded_version} с {max_version_downloads} изтегляния. {per_version_analysis}. {watermark}."
       }
     },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
-    },
     "dependencies": {
       "title": "Зависимост ({count}) | Зависимости ({count})",
       "list_label": "Зависимости на пакета",
@@ -424,7 +383,6 @@
       "show_less": "(показване на по-малко)"
     },
     "trends": {
-      "chart_assistive_text": {},
       "granularity": "Гранулация",
       "granularity_daily": "Дневна",
       "granularity_weekly": "Седмична",
@@ -473,12 +431,6 @@
         "compare": "Линейна диаграма за сравнение на изтегляния на пакети за: {packages}.",
         "single_package": "Линейна диаграма на изтегляния за пакета {package}.",
         "general_description": "Оста Y представлява броя на изтеглянията. Оста X представлява диапазона от дати, от {start_date} до {end_date}, с {granularity} времеви период.{estimation_notice} {packages_analysis}. {watermark}."
-      },
-      "embedding": {},
-      "sparkline_zoom_reset": {},
-      "downloads_heatmap": {
-        "legend": {},
-        "copy_alt": {}
       }
     },
     "downloads": {
@@ -573,11 +525,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
-  },
-  "leaderboard": {
-    "likes": {}
+    }
   },
   "connector": {
     "modal": {
@@ -954,31 +902,11 @@
         "description": "Чат, задаване на въпроси и споделяне на идеи.",
         "cta": "Присъединяване към Discord"
       },
-      "builders": {},
       "follow": {
         "title": "Следете актуалното",
         "description": "Научете най-новото за npmx.",
         "cta": "Последвайте в Bluesky"
       }
-    }
-  },
-  "sponsors_page": {
-    "what_we_do": {},
-    "what_support_means": {},
-    "what_this_means_for_you": {
-      "cards": {
-        "people": {},
-        "visitors": {},
-        "stars": {},
-        "community": {},
-        "adoption": {},
-        "default_source": {}
-      }
-    },
-    "tiers": {
-      "silver": {},
-      "gold": {},
-      "platinum": {}
     }
   },
   "account_menu": {
@@ -1055,9 +983,6 @@
       "packages_selected": "{count}/{max} избрани пакета.",
       "add_hint": "Добавете поне 2 пакета за сравнение."
     },
-    "scatter_chart": {
-      "copy_alt": {}
-    },
     "no_dependency": {
       "label": "(Без зависимост)",
       "typeahead_title": "Какво би направил James?",
@@ -1132,11 +1057,7 @@
         "vulnerabilities": {
           "label": "Уязвимости",
           "description": "Известни уязвимости в сигурността"
-        },
-        "githubStars": {},
-        "githubForks": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "Всякакъв",
@@ -1157,7 +1078,6 @@
     "files_count": "{count} файла",
     "lines_hidden": "{count} реда скрити",
     "compare_versions": "diff",
-    "version_invalid_url_format": {},
     "summary": "Резюме",
     "deps_count": "{count} зависимости",
     "dependencies": "Зависимости",
@@ -1184,11 +1104,6 @@
     "select_file_prompt": "Изберете файл от страничната лента за преглед на разликите",
     "close_files_panel": "Затваряне на панела с файлове",
     "filter_files_label": "Филтриране на файлове по тип на промяна"
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
   },
   "privacy_policy": {
     "title": "политика за поверителност",
@@ -1299,25 +1214,5 @@
       "p1": "Ако срещнете бариера за достъпност в {app}, моля, уведомете ни, като отворите проблем в нашето {link}. Приемаме сериозно тези доклади и ще направим всичко възможно да ги разгледаме.",
       "link": "GitHub хранилище"
     }
-  },
-  "translation_status": {},
-  "vacations": {
-    "what": {},
-    "meantime": {},
-    "return": {},
-    "stats": {
-      "subtitle": {}
-    }
-  },
-  "action_bar": {},
-  "logo_menu": {},
-  "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
-  },
-  "changelog": {
-    "error": {}
   }
 }

@@ -65,23 +65,6 @@
       "view_org_packages": "E szervezet csomagjainak megtekintése"
     }
   },
-  "command_palette": {
-    "keyboard_shortcuts": {},
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
-  },
   "nav": {
     "main_navigation": "Főmenü",
     "popular_packages": "Népszerű csomagok",
@@ -93,21 +76,6 @@
     "open_menu": "Menü megnyitása",
     "links": "Linkek",
     "tap_to_search": "Koppints a kereséshez"
-  },
-  "tools": {
-    "deps_stats": {}
-  },
-  "deps_stats": {
-    "upload": {},
-    "dependencies": {},
-    "stats": {}
-  },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
-  "noodles": {
-    "missing": {}
   },
   "settings": {
     "title": "beállítások",
@@ -147,7 +115,6 @@
     "background_themes": {
       "label": "Háttér árnyalata"
     },
-    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Billentyűzet parancsikonok engedélyezése",
     "keyboard_shortcuts_enabled_description": "A billentyűzet parancsikonok letilthatók, ha ütköznek más böngésző vagy rendszer parancsikonokkal"
   },
@@ -159,7 +126,6 @@
     "edit_on_github": "Szerkesztés GitHub-on",
     "view_guide": "Fordítási útmutató"
   },
-  "error": {},
   "common": {
     "loading": "Betöltés...",
     "loading_more": "Továbbiak betöltése...",
@@ -227,7 +193,6 @@
       "size": "A telepítési méret {percent}-kal nőtt ({size} nagyobb)",
       "deps": "{count} további függőség"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "Lehet, hogy nincs szükséged erre a függőségre.",
       "native": "Ez helyettesíthető a következővel: {replacement}, amely elérhető a Node {nodeVersion} verzió óta.",
@@ -302,7 +267,6 @@
       "title": "Futtatás",
       "locally": "Futtatás helyileg"
     },
-    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Nincs elérhető README.",
@@ -383,11 +347,6 @@
         "general_description": "Sávdiagram, amely a(z) {package_name} csomag {semver_grouping_mode} verzióinak verzió szerinti letöltéseit mutatja, {date_range_label} a(z) {first_version} verziótól a(z) {last_version} verzióig. A legtöbbször letöltött verzió a(z) {max_downloaded_version}, {max_version_downloads} letöltéssel. {per_version_analysis}. {watermark}."
       }
     },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
-    },
     "dependencies": {
       "title": "Függőség ({count}) | Függőségek ({count})",
       "list_label": "Csomag függőségei",
@@ -424,7 +383,6 @@
       "show_less": "(kevesebb megjelenítése)"
     },
     "trends": {
-      "chart_assistive_text": {},
       "granularity": "Bontás",
       "granularity_daily": "Napi",
       "granularity_weekly": "Heti",
@@ -473,12 +431,6 @@
         "compare": "Csomag letöltési összehasonlítás vonaldiagram: {packages}.",
         "single_package": "A(z) {package} csomag letöltési vonaldiagramja.",
         "general_description": "Az Y tengely a letöltések számát ábrázolja. Az X tengely a dátumtartományt ábrázolja, {start_date} -től {end_date} -ig, {granularity} időszakkal.{estimation_notice} {packages_analysis}. {watermark}."
-      },
-      "embedding": {},
-      "sparkline_zoom_reset": {},
-      "downloads_heatmap": {
-        "legend": {},
-        "copy_alt": {}
       }
     },
     "downloads": {
@@ -573,11 +525,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
-  },
-  "leaderboard": {
-    "likes": {}
+    }
   },
   "connector": {
     "modal": {
@@ -954,31 +902,11 @@
         "description": "Chat, kérdések és ötletelés.",
         "cta": "Csatlakozás a Discord-hoz"
       },
-      "builders": {},
       "follow": {
         "title": "Maradj naprakész",
         "description": "Értesülj a legújabb npmx hírekről.",
         "cta": "Követés a Bluesky-on"
       }
-    }
-  },
-  "sponsors_page": {
-    "what_we_do": {},
-    "what_support_means": {},
-    "what_this_means_for_you": {
-      "cards": {
-        "people": {},
-        "visitors": {},
-        "stars": {},
-        "community": {},
-        "adoption": {},
-        "default_source": {}
-      }
-    },
-    "tiers": {
-      "silver": {},
-      "gold": {},
-      "platinum": {}
     }
   },
   "account_menu": {
@@ -1055,9 +983,6 @@
       "packages_selected": "{count}/{max} csomag kiválasztva.",
       "add_hint": "Adj hozzá legalább 2 csomagot az összehasonlításhoz."
     },
-    "scatter_chart": {
-      "copy_alt": {}
-    },
     "no_dependency": {
       "label": "(Nincs függőség)",
       "typeahead_title": "Mit tenne James?",
@@ -1132,11 +1057,7 @@
         "vulnerabilities": {
           "label": "Sebezhetőségek",
           "description": "Ismert biztonsági sebezhetőségek"
-        },
-        "githubStars": {},
-        "githubForks": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "Bármely",
@@ -1157,7 +1078,6 @@
     "files_count": "{count} fájl",
     "lines_hidden": "{count} sor elrejtve",
     "compare_versions": "diff",
-    "version_invalid_url_format": {},
     "summary": "Összegzés",
     "deps_count": "{count} függ",
     "dependencies": "Függőségek",
@@ -1184,11 +1104,6 @@
     "select_file_prompt": "Válassz egy fájlt az oldalsávból a diff megtekintéséhez",
     "close_files_panel": "Fájlok panel bezárása",
     "filter_files_label": "Fájlok szűrése módosítás típusa szerint"
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
   },
   "privacy_policy": {
     "title": "adatvédelmi nyilatkozat",
@@ -1299,25 +1214,5 @@
       "p1": "Ha akadálymentességi problémákat tapasztalsz a(z) {app} -on, kérjük, közölj velünk egy kérdés megnyitásával a(z) {link} -ben. Komolyan vesszük ezeket a jelentéseket, és mindent megteszünk a megoldásukért.",
       "link": "GitHub tárhelyen"
     }
-  },
-  "translation_status": {},
-  "vacations": {
-    "what": {},
-    "meantime": {},
-    "return": {},
-    "stats": {
-      "subtitle": {}
-    }
-  },
-  "action_bar": {},
-  "logo_menu": {},
-  "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
-  },
-  "changelog": {
-    "error": {}
   }
 }
