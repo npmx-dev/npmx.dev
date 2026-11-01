@@ -12,22 +12,61 @@ import type {
   Contact,
 } from '@npm/types'
 import type { ReadmeResponse } from './readme'
+import type { TrustLevelName, TrustStatus } from 'packumeta'
 
 // Re-export official npm types for packument/manifest
-export type { Manifest, ManifestVersion, PackageJSON } from '@npm/types'
 
 type NpmTrustedPublisherEvidence = NpmSearchTrustedPublisher | NpmTrustedPublisher | true
 
 export interface PackumentVersion extends PackumentVersionWithoutAttestations {
-  _npmUser?: Contact & { trustedPublisher?: NpmTrustedPublisherEvidence }
+  _npmUser?: Contact & {
+    trustedPublisher?: NpmTrustedPublisherEvidence
+    /** Present when the version was released through staged publishing. */
+    approver?: Contact
+  }
   dist: PackumentVersionWithoutAttestations['dist'] & { attestations?: NpmVersionAttestations }
 }
+
+export type PackumentLicense = string | { type: string; url?: string }
 
 export type Packument = Omit<PackumentWithoutLicenseObjects, 'license' | 'versions'> & {
   // Fix for license field being incorrectly typed in @npm/types
   // TODO: Remove this type override when @npm/types fixes the license field typing
-  license?: string | { type: string; url?: string }
+  license?: PackumentLicense
   versions: Record<string, PackumentVersion>
+}
+
+/**
+ * Abbreviated ("install") packument returned by the registry when requesting
+ * `Accept: application/vnd.npm.install-v1+json` — the much smaller document `npm install`
+ * consumes. It carries only install-relevant fields (versions, dist-tags, dependencies,
+ * os/cpu, dist, deprecated) and omits `time`, `readme`, `license`, `repository`, maintainers.
+ *
+ * Note: the registry omits `libc` from this document even though the full packument has it,
+ * so it must be fetched separately when needed (see `fetchNpmPackageVersionLibc`).
+ */
+export interface AbbreviatedPackument {
+  'name': string
+  'dist-tags'?: Record<string, string>
+  'modified'?: string
+  'versions': Record<string, AbbreviatedPackumentVersion>
+}
+
+export interface AbbreviatedPackumentVersion {
+  name?: string
+  version: string
+  dependencies?: Record<string, string>
+  optionalDependencies?: Record<string, string>
+  peerDependencies?: Record<string, string>
+  os?: string[]
+  cpu?: string[]
+  libc?: string[]
+  deprecated?: string
+  dist?: {
+    tarball?: string
+    unpackedSize?: number
+    [key: string]: unknown
+  }
 }
 
 /** Install scripts info (preinstall, install, postinstall) */
@@ -42,11 +81,8 @@ export type SlimPackumentVersion = PackumentVersion & {
   installScripts?: InstallScriptsInfo
 }
 
-export type PublishTrustLevel = 'none' | 'trustedPublisher' | 'provenance'
-
 export type SlimVersion = Pick<SlimPackumentVersion, 'version' | 'deprecated' | 'tags'> & {
-  hasProvenance?: boolean
-  trustLevel?: PublishTrustLevel
+  trustStatus?: TrustStatus
   license?: string
   /** Package type field — "module" indicates ESM */
   type?: string
@@ -84,15 +120,33 @@ export interface SlimPackument {
   'license'?: string
   'homepage'?: string
   'keywords'?: string[]
-  'repository'?: { type?: string; url?: string; directory?: string }
+  'repository'?: { type?: string; url?: string; directory?: string } | string
   'bugs'?: { url?: string; email?: string }
   'storybook'?: { url: string }
   /** current version */
   'requestedVersion': SlimPackumentVersion | null
   /** Only includes dist-tag versions (with installScripts info added per version) */
   'versions': Record<string, SlimVersion>
-  /** Lightweight security metadata for all versions */
-  'securityVersions'?: PackageVersionInfo[]
+  /**
+   * Publish security downgrade for the requested version, or `null`.
+   * Computed server-side so the payload only carries the small result, not the full version history.
+   */
+  'publishSecurityDowngrade'?: PublishSecurityDowngrade | null
+}
+
+/**
+ * A publish-security downgrade detected for a specific viewed version.
+ */
+export interface PublishSecurityDowngrade {
+  downgradedVersion: string
+  downgradedPublishedAt?: string
+  downgradedTrustLevel: TrustLevelName
+  /** Whether the downgraded version was still published via trusted publishing (OIDC) */
+  downgradedTrustedPublisher: boolean
+  /** Recommended trusted version within the same major, if one exists */
+  trustedVersion?: string
+  trustedPublishedAt?: string
+  trustedTrustLevel: TrustLevelName
 }
 
 /**
@@ -101,8 +155,7 @@ export interface SlimPackument {
 export interface PackageVersionInfo {
   version: string
   time?: string
-  hasProvenance: boolean
-  trustLevel?: PublishTrustLevel
+  trustStatus?: TrustStatus
   deprecated?: string
 }
 
@@ -110,7 +163,7 @@ export interface PackageVersionInfo {
  * Person/contact type extracted from @npm/types Contact interface
  * Used for maintainers, authors, publishers
  */
-export interface NpmPerson {
+interface NpmPerson {
   name?: string
   email?: string
   url?: string
@@ -151,7 +204,7 @@ export interface NpmSearchResult {
  * Trusted publisher info from search API
  * Present when package was published via OIDC (e.g., GitHub Actions)
  */
-export interface NpmSearchTrustedPublisher {
+interface NpmSearchTrustedPublisher {
   /** OIDC provider identifier (e.g., "github", "gitlab") */
   id: string
   /** OIDC config ID */
@@ -161,7 +214,7 @@ export interface NpmSearchTrustedPublisher {
 /**
  * Publisher info with optional trusted publisher and actor details
  */
-export interface NpmSearchPublisher extends NpmPerson {
+interface NpmSearchPublisher extends NpmPerson {
   /** Trusted publisher info (present if published via OIDC) */
   trustedPublisher?: NpmSearchTrustedPublisher
   /** Actor who triggered the publish (for trusted publishing) */
@@ -172,7 +225,7 @@ export interface NpmSearchPublisher extends NpmPerson {
   }
 }
 
-export interface NpmSearchPackage {
+interface NpmSearchPackage {
   name: string
   scope?: string
   version: string
@@ -198,7 +251,7 @@ export interface NpmSearchPackage {
  * Present when package was published with provenance
  * Note: Not covered by @npm/types
  */
-export interface NpmVersionAttestations {
+interface NpmVersionAttestations {
   /** URL to fetch full attestation details */
   url: string
   /** Provenance info */
@@ -261,41 +314,11 @@ export interface NpmDownloadCount {
   package: string
 }
 
-export interface NpmDownloadRange {
-  downloads: Array<{
-    downloads: number
-    day: string
-  }>
-  start: string
-  end: string
-  package: string
-}
-
-/**
- * Organization API types
- * These require authentication
- * Note: Not covered by @npm/types
- */
-export interface NpmOrgMember {
-  user: string
-  role: 'developer' | 'admin' | 'owner'
-}
-
-export interface NpmTeam {
-  name: string
-  description?: string
-  members?: string[]
-}
-
-export interface NpmPackageAccess {
-  permissions: 'read-only' | 'read-write'
-}
-
 /**
  * Trusted Publishing types
  * Note: Not covered by @npm/types
  */
-export interface NpmTrustedPublisher {
+interface NpmTrustedPublisher {
   type: 'github-actions' | 'gitlab-ci'
   // GitHub Actions specific
   repository?: string
@@ -384,19 +407,6 @@ export interface PackageFileContentResponse {
 }
 
 /**
- * Minimal packument data needed for package cards
- */
-export interface MinimalPackument {
-  'name': string
-  'description'?: string
-  'keywords'?: string[]
-  // `dist-tags` can be missing in some later unpublished packages
-  'dist-tags'?: Record<string, string>
-  'time': Record<string, string>
-  'maintainers'?: NpmPerson[]
-}
-
-/**
  * Lightweight package metadata returned by /api/registry/package-meta/.
  * Contains only the fields needed for search result cards, extracted
  * server-side from the full packument + downloads API.
@@ -417,4 +427,5 @@ export interface PackageMetaResponse {
   author?: NpmPerson
   maintainers?: NpmPerson[]
   weeklyDownloads?: number
+  repositoryStars?: number | null
 }

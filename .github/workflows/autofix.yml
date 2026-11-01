@@ -19,28 +19,31 @@ permissions:
 jobs:
   code:
     name: 🤖 Autofix code
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
+          sfw: true
 
-      - name: 🎨 Check for non-RTL/non-a11y CSS classes
-        run: vp run lint:css
+      - parallel:
+          - name: 🎨 Check for non-RTL/non-a11y CSS classes
+            run: vp run lint:css
 
-      - name: 🌐 Compare translations
-        run: vp run i18n:check
+          - name: 🌐 Compare translations
+            run: vp run i18n:check
 
-      - name: 🌍 Update lunaria data
-        run: vp run build:lunaria
+          - name: 🌍 Update lunaria data
+            run: vp run build:lunaria
 
-      - name: 🔠 Fix lint errors
-        run: vp run lint:fix
+          - name: 🔠 Fix lint errors
+            run: vp run lint:fix
 
-      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # v1.3.2
+      - uses: autofix-ci/action@c5b2d67aa2274e7b5a18224e8171550871fc7e4a # v1.3.4

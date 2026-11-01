@@ -58,3 +58,50 @@ export function parsePackageParam(pkgParam: string): ParsedPackageParams {
     rest: [],
   }
 }
+
+/**
+ * Parse a package spec into its name and optional version.
+ * Handles formats like: `name`, `name@version`, `@scope/name`, `@scope/name@version`.
+ *
+ * The version segment may be an exact version or a dist-tag (e.g. `next`); it is
+ * returned verbatim for the caller to resolve.
+ *
+ * @example
+ * ```ts
+ * parsePackageSpec('react') // { name: 'react' }
+ * parsePackageSpec('react@18.2.0') // { name: 'react', version: '18.2.0' }
+ * parsePackageSpec('@vue/reactivity') // { name: '@vue/reactivity' }
+ * parsePackageSpec('@vue/reactivity@3.4.0') // { name: '@vue/reactivity', version: '3.4.0' }
+ * ```
+ */
+export function parsePackageSpec(input: string): { name: string; version?: string } {
+  if (input.startsWith('@')) {
+    // Scoped package: @scope/name or @scope/name@version
+    const slashIndex = input.indexOf('/')
+    if (slashIndex === -1) {
+      // Invalid format like just "@scope"
+      return { name: input }
+    }
+    const afterSlash = input.slice(slashIndex + 1)
+    const atIndex = afterSlash.indexOf('@')
+    if (atIndex === -1) {
+      // @scope/name (no version)
+      return { name: input }
+    }
+    // @scope/name@version
+    return {
+      name: input.slice(0, slashIndex + 1 + atIndex),
+      version: afterSlash.slice(atIndex + 1),
+    }
+  }
+
+  // Unscoped package: name or name@version
+  const atIndex = input.indexOf('@')
+  if (atIndex === -1) {
+    return { name: input }
+  }
+  return {
+    name: input.slice(0, atIndex),
+    version: input.slice(atIndex + 1),
+  }
+}

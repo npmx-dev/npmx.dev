@@ -1,5 +1,6 @@
 import { mapWithConcurrency } from '#shared/utils/async'
-import { maxSatisfying } from 'semver'
+import { parseDependencyVersion } from '#shared/utils/npm'
+import { findMaxSatisfying } from 'verkit'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
 const PACKUMENT_FETCH_CONCURRENCY = 20
@@ -15,12 +16,13 @@ export const TARGET_PLATFORM = {
 }
 
 /**
- * Fetch packument with caching (returns null on error for tree traversal).
- * Delegates to fetchNpmPackage() to share a single cache for all packument fetches.
+ * Fetch abbreviated packument metadata for tree traversal (returns null on error).
+ * Only install-relevant fields are needed here, so this uses the much smaller abbreviated
+ * document rather than the full packument.
  */
-async function fetchPackument(name: string): Promise<Packument | null> {
+async function fetchPackument(name: string): Promise<AbbreviatedPackument | null> {
   try {
-    return await fetchNpmPackage(name)
+    return await fetchNpmPackageAbbreviated(name)
   } catch (error) {
     if (import.meta.dev) {
       // oxlint-disable-next-line no-console -- log npm registry failures for debugging
@@ -30,11 +32,18 @@ async function fetchPackument(name: string): Promise<Packument | null> {
   }
 }
 
+/** The subset of version fields used to decide platform compatibility. */
+interface PlatformRestrictions {
+  os?: string[]
+  cpu?: string[]
+  libc?: string[]
+}
+
 /**
  * Check if a package version matches the target platform.
  * Returns false if the package explicitly excludes our target platform.
  */
-export function matchesPlatform(version: PackumentVersion): boolean {
+export function matchesPlatform(version: PlatformRestrictions): boolean {
   if (version.os && Array.isArray(version.os) && version.os.length > 0) {
     const osMatch = version.os.some(os => {
       if (os.startsWith('!')) return os.slice(1) !== TARGET_PLATFORM.os
@@ -51,7 +60,7 @@ export function matchesPlatform(version: PackumentVersion): boolean {
     if (!cpuMatch) return false
   }
 
-  const libc = (version as { libc?: string[] }).libc
+  const libc = version.libc
   if (libc && Array.isArray(libc) && libc.length > 0) {
     const libcMatch = libc.some(l => {
       if (l.startsWith('!')) return l.slice(1) !== TARGET_PLATFORM.libc
@@ -90,7 +99,7 @@ export function resolveVersion(range: string, versions: string[]): string | null
     return null
   }
 
-  return maxSatisfying(versions, range)
+  return findMaxSatisfying(versions, range)
 }
 
 /** Resolved package info */
@@ -108,6 +117,25 @@ export interface ResolvedPackage {
   deprecated?: string
 }
 
+type DependencyRequest = {
+  name: string
+  range: string
+  optional: boolean
+  path: string[]
+}
+
+function requestKey(name: string, range: string): string {
+  // Match the alias-range extraction used by resolveVersion.
+  if (range.startsWith('npm:')) {
+    const atIndex = range.lastIndexOf('@')
+    if (atIndex > 4) {
+      range = range.slice(atIndex + 1)
+    }
+  }
+
+  return JSON.stringify([name, range])
+}
+
 /**
  * Resolve the entire dependency tree for a package.
  * Uses level-by-level BFS to ensure correct depth assignment when trackDepth is enabled.
@@ -122,24 +150,27 @@ export async function resolveDependencyTree(
 
   // Process level by level for correct depth tracking
   // Each entry includes the path of package names leading to this dependency
-  let currentLevel = new Map<string, { range: string; optional: boolean; path: string[] }>([
-    [rootName, { range: rootVersion, optional: false, path: [] }],
+  let currentLevel = new Map<string, DependencyRequest>([
+    [
+      requestKey(rootName, rootVersion),
+      { name: rootName, range: rootVersion, optional: false, path: [] },
+    ],
   ])
   let level = 0
 
   while (currentLevel.size > 0) {
-    const nextLevel = new Map<string, { range: string; optional: boolean; path: string[] }>()
+    const nextLevel = new Map<string, DependencyRequest>()
 
     // Mark all packages in current level as seen before processing
-    for (const name of currentLevel.keys()) {
-      seen.add(name)
+    for (const key of currentLevel.keys()) {
+      seen.add(key)
     }
 
     // Process current level with concurrency limit
-    const entries = [...currentLevel.entries()]
+    const entries = [...currentLevel.values()]
     await mapWithConcurrency(
       entries,
-      async ([name, { range, optional, path }]) => {
+      async ({ name, range, optional, path }) => {
         const packument = await fetchPackument(name)
         if (!packument) return
 
@@ -147,19 +178,39 @@ export async function resolveDependencyTree(
         const version = resolveVersion(range, versions)
         if (!version) return
 
-        const versionData = packument.versions[version]
+        let versionData = packument.versions[version]
         if (!versionData) return
+
+        // `os`/`cpu` come from the abbreviated metadata; reject mismatches before paying for
+        // the separate libc lookup.
+        if (!matchesPlatform({ os: versionData.os, cpu: versionData.cpu })) return
+
+        // The registry omits `libc` from abbreviated metadata, but it can still exclude a
+        // version (e.g. musl-only builds on a glibc target), so read it from the small
+        // single-version manifest.
+        if (versionData.libc === undefined && (versionData.os?.length || versionData.cpu?.length)) {
+          try {
+            const libc = await fetchNpmPackageVersionLibc(name, version)
+            if (libc) versionData = { ...versionData, libc }
+          } catch {
+            // libc lookup failed: skip optional deps, keep required ones.
+            if (optional) return
+          }
+        }
 
         if (!matchesPlatform(versionData)) return
 
-        const size = (versionData.dist as { unpackedSize?: number })?.unpackedSize ?? 0
+        const size = versionData.dist?.unpackedSize ?? 0
         const tarballUrl = versionData.dist?.tarball ?? ''
         const key = `${name}@${version}`
 
         // Build path for this package (path to parent + this package with version)
-        const currentPath = [...path, `${name}@${version}`]
+        const currentPath = [...path, key]
 
-        if (!resolved.has(key)) {
+        const existing = resolved.get(key)
+        if (existing) {
+          if (!optional) existing.optional = false
+        } else {
           const pkg: ResolvedPackage = { name, version, size, tarballUrl, optional }
           if (options.trackDepth) {
             pkg.depth = level === 0 ? 'root' : level === 1 ? 'direct' : 'transitive'
@@ -171,20 +222,41 @@ export async function resolveDependencyTree(
           resolved.set(key, pkg)
         }
 
-        // Collect dependencies for next level
+        // Collect dependencies for next level.
+        // An npm alias ("npm:pkg@range") is resolved against the aliased package, not the dependency key.
         if (versionData.dependencies) {
-          for (const [depName, depRange] of Object.entries(versionData.dependencies)) {
-            if (!seen.has(depName) && !nextLevel.has(depName)) {
-              nextLevel.set(depName, { range: depRange, optional: false, path: currentPath })
+          for (const [depKey, depRange] of Object.entries(versionData.dependencies)) {
+            const depName = parseDependencyVersion(depRange).name ?? depKey
+            const reqKey = requestKey(depName, depRange)
+            const queued = nextLevel.get(reqKey)
+
+            if (queued) {
+              // A required request upgrades a queued optional request.
+              queued.optional = false
+            } else if (!seen.has(reqKey)) {
+              nextLevel.set(reqKey, {
+                name: depName,
+                range: depRange,
+                optional: false,
+                path: currentPath,
+              })
             }
           }
         }
 
         // Collect optional dependencies
         if (versionData.optionalDependencies) {
-          for (const [depName, depRange] of Object.entries(versionData.optionalDependencies)) {
-            if (!seen.has(depName) && !nextLevel.has(depName)) {
-              nextLevel.set(depName, { range: depRange, optional: true, path: currentPath })
+          for (const [depKey, depRange] of Object.entries(versionData.optionalDependencies)) {
+            const depName = parseDependencyVersion(depRange).name ?? depKey
+            const reqKey = requestKey(depName, depRange)
+
+            if (!seen.has(reqKey) && !nextLevel.has(reqKey)) {
+              nextLevel.set(reqKey, {
+                name: depName,
+                range: depRange,
+                optional: true,
+                path: currentPath,
+              })
             }
           }
         }

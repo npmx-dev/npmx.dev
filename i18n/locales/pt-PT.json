@@ -155,9 +155,6 @@
       "compare": "Comparar este pacote",
       "download": "Transferir tarball"
     },
-    "package_actions": {
-      "copy_run": "Copiar comando de execução"
-    },
     "code": {
       "copy_file": "Copiar conteúdo do ficheiro"
     },
@@ -317,6 +314,7 @@
     "warnings": "Avisos:",
     "go_back_home": "Voltar para a página inicial",
     "per_week": "/ semana",
+    "per_week_short": "/sem",
     "vanity_downloads_hint": "Número de vaidade: nenhum pacote apresentado | Número de vaidade: para o pacote apresentado | Número de vaidade: Soma de {count} pacotes apresentados",
     "sort": {
       "name": "nome",
@@ -396,12 +394,9 @@
       "example": "Exemplo:",
       "native": "Este pacote pode ser substituído por {replacement}, disponível desde Node {nodeVersion}.",
       "native_no_version": "Este pacote pode ser substituído por {replacement}.",
-      "simple": "A {community} marcou este pacote como redundante, com o conselho: {replacement}.",
-      "documented": "A {community} marcou este pacote como tendo alternativas mais performáticas.",
       "none": "Este pacote foi marcado como já não sendo necessário, e a sua funcionalidade provavelmente está disponível nativamente em todas as engines.",
       "learn_more": "Sabe mais",
       "learn_more_above": "Sabe mais acima.",
-      "community": "comunidade",
       "consider_no_dep": "+ Considerar sem dependências?"
     },
     "stats": {
@@ -446,12 +441,14 @@
       "docs": "docs",
       "fund": "financiar",
       "compare": "comparar",
-      "timeline": "linha do tempo",
-      "compare_this_package": "comparar este pacote"
+      "timeline": "linha do tempo"
     },
     "likes": {
       "like": "Gostar deste pacote",
-      "unlike": "Remover gosto deste pacote"
+      "unlike": "Remover gosto deste pacote",
+      "top_rank_tooltip": "Este está entre os 10 pacotes com mais gostos no npmx! (#{rank})",
+      "top_rank_label": "#{rank}",
+      "top_rank_link_label": "Ver tabela de classificação de gostos. Este pacote está em #{rank}."
     },
     "docs": {
       "contents": "Conteúdo",
@@ -542,7 +539,6 @@
       "view_all": "Ver {count} versão | Ver todas as {count} versões",
       "view_all_versions": "Ver todas as versões",
       "distribution_title": "Grupo Semver",
-      "distribution_modal_title": "Versões",
       "distribution_range_date_same_year": "de {from} a {to}, {endYear}",
       "distribution_range_date_multiple_years": "de {from}, {startYear} a {to}, {endYear}",
       "grouping_major": "Major",
@@ -587,7 +583,10 @@
       "trusted_publisher_added": "Publicação de confiança ativada",
       "trusted_publisher_removed": "Publicação de confiança removida",
       "provenance_added": "Proveniência ativada",
-      "provenance_removed": "Proveniência removida"
+      "provenance_removed": "Proveniência removida",
+      "chart": {
+        "copy_alt": {}
+      }
     },
     "dependencies": {
       "title": "Dependência ({count}) | Dependências ({count})",
@@ -789,6 +788,16 @@
     "download": {
       "button": "Transferir",
       "tarball": "Transferir Tarball como .tar.gz"
+    }
+  },
+  "leaderboard": {
+    "likes": {
+      "title": "Tabela de Classificação de Gostos",
+      "description": "Os 10 pacotes com mais gostos no npmx neste momento.",
+      "rank": "Classificação",
+      "likes": "Gostos",
+      "unavailable_title": "Ainda não há tabela de classificação de gostos",
+      "unavailable_description": "Não temos uma tabela de classificação de gostos para mostrar neste momento."
     }
   },
   "connector": {
@@ -1151,7 +1160,6 @@
     },
     "team": {
       "title": "Equipa",
-      "governance": "Governança",
       "role_steward": "curador",
       "role_maintainer": "responsável",
       "sponsor": "patrocinador",
@@ -1389,8 +1397,6 @@
     "file_changes": "Alterações de Ficheiro",
     "files_count": "{count} ficheiro | {count} ficheiros",
     "lines_hidden": "{count} linha escondida | {count} linhas escondidas",
-    "file_too_large": "Ficheiro muito grande para comparar",
-    "file_size_warning": "{size} excede o limite de 250 kB para comparação",
     "compare_versions": "diff",
     "compare_versions_title": "Compara com a versão mais recente",
     "comparing_versions_label": "A comparar versões...",
@@ -1588,18 +1594,10 @@
     "p2": "Antes de começar, por favor lê o nosso {guide} para saberes mais sobre o nosso processo de tradução e como podes contribuir.",
     "guide": "Guia de tradução (i18n)",
     "by_locale": "Progresso de tradução por locale",
-    "by_file": "Progresso de tradução por ficheiro",
     "complete_text": "Esta tradução está completa, ótimo trabalho!",
     "missing_text": "em falta",
     "missing_keys": "Não existem traduções em falta | Tradução em falta | Traduções em falta",
-    "progress_label": "Estado de progresso para {locale}",
-    "table": {
-      "file": "Ficheiro",
-      "status": "Estado",
-      "error": "Erro ao carregar a lista de ficheiros.",
-      "empty": "Nenhum ficheiro encontrado",
-      "file_link": "Editar {file} ({lang}) no GitHub"
-    }
+    "progress_label": "Estado de progresso para {locale}"
   },
   "vacations": {
     "title": "de férias",
@@ -1691,5 +1689,8 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logótipo do npmx."
+  "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logótipo do npmx.",
+  "changelog": {
+    "error": {}
+  }
 }

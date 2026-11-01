@@ -75,8 +75,12 @@ if (layoutTier.value !== 'summary') {
         }
       }),
     )
-    // Sort by downloads descending for readability
-    stats.value = results.sort((a, b) => b.downloads - a.downloads)
+    const packageOrder = new Map(displayPackages.value.map((name, index) => [name, index]))
+    stats.value = results.sort((a, b) => {
+      const downloadsDiff = b.downloads - a.downloads
+      if (downloadsDiff !== 0) return downloadsDiff
+      return (packageOrder.get(a.name) ?? 0) - (packageOrder.get(b.name) ?? 0)
+    })
   } catch {
     stats.value = displayPackages.value.map((name, index) => ({
       name,

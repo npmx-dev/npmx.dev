@@ -68,9 +68,50 @@ export const packageManagers = [
     create: 'vp create',
     icon: 'i-simple-icons:vite',
   },
+  {
+    id: 'nub',
+    label: 'nub',
+    action: 'add',
+    executeLocal: 'nubx',
+    executeRemote: 'nubx',
+    create: 'nub create',
+    icon: 'i-custom-nub',
+  },
+  {
+    id: 'ni',
+    label: 'ni',
+    action: '',
+    executeLocal: 'nlx --local',
+    executeRemote: 'nlx',
+    create: 'na create',
+    icon: 'i-custom-ni',
+  },
+  {
+    id: 'upm',
+    label: 'upm',
+    action: 'add',
+    executeLocal: 'upx',
+    executeRemote: 'upx',
+    create: 'upm create',
+    icon: 'i-custom-upm',
+  },
 ] as const
 
 export type PackageManagerId = (typeof packageManagers)[number]['id']
+
+export function getPackageManagerConfig(packageManager: PackageManagerId) {
+  const selectedPackageManager = packageManagers.find(pm => pm.id === packageManager)
+  if (selectedPackageManager) {
+    return selectedPackageManager
+  }
+
+  const defaultPackageManager = packageManagers.find(pm => pm.id === 'npm')
+  if (!defaultPackageManager) {
+    throw new Error('Default package manager configuration is missing.')
+  }
+
+  return defaultPackageManager
+}
 
 export interface InstallCommandOptions {
   packageName: string
@@ -124,6 +165,7 @@ export function getInstallCommandParts(options: InstallCommandOptions): string[]
   const version = options.version ? `@${options.version}` : ''
   const devFlag = options.dev ? [getDevDependencyFlag(options.packageManager)] : []
 
+  if (pm.action.length === 0) return [pm.label, ...devFlag, `${spec}${version}`]
   return [pm.label, pm.action, ...devFlag, `${spec}${version}`]
 }
 

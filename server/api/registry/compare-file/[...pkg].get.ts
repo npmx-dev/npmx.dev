@@ -1,11 +1,53 @@
 import * as v from 'valibot'
 import { PackageFileDiffQuerySchema } from '#shared/schemas/package'
+import { countDiffStats, createDiff, insertSkipBlocks, truncateDiffHunks } from '#shared/utils/diff'
+import type { DiffHunk, DiffSkipBlock } from '#shared/types/compare'
 
-const CACHE_VERSION = 1
+const CACHE_VERSION = 3
 const DIFF_TIMEOUT = 15000 // 15 sec
 
-/** Maximum file size for diffing (250KB - smaller than viewing since we diff two files) */
-const MAX_DIFF_FILE_SIZE = 250 * 1024
+/** Files above this size use a cheaper plain-text diff renderer. */
+const LARGE_DIFF_MODE_BYTES = 250 * 1024
+/** Maximum file size for modified-file diffs. */
+const MAX_MODIFIED_DIFF_INPUT_BYTES = 1024 * 1024
+/** Maximum file size for added/removed-file diffs, which render the whole file. */
+const MAX_SINGLE_SIDED_DIFF_INPUT_BYTES = LARGE_DIFF_MODE_BYTES
+/** Maximum number of changed/context lines returned to the client. */
+const MAX_DIFF_OUTPUT_LINES = 5000
+/** Maximum rendered diff lines we'll syntax-highlight. */
+const MAX_HIGHLIGHT_DIFF_LINES = 1000
+/** Maximum rendered diff text we'll syntax-highlight. */
+const MAX_HIGHLIGHT_DIFF_BYTES = 128 * 1024
+
+function byteLength(content: string): number {
+  return Buffer.byteLength(content, 'utf8')
+}
+
+function countRenderableDiffLines(hunks: (DiffHunk | DiffSkipBlock)[]): number {
+  let count = 0
+
+  for (const hunk of hunks) {
+    if (hunk.type === 'hunk') count += hunk.lines.length
+  }
+
+  return count
+}
+
+function countRenderableDiffBytes(hunks: (DiffHunk | DiffSkipBlock)[]): number {
+  let count = 0
+
+  for (const hunk of hunks) {
+    if (hunk.type !== 'hunk') continue
+    for (const line of hunk.lines) {
+      for (const segment of line.content) {
+        count += byteLength(segment.value)
+      }
+      count += 1
+    }
+  }
+
+  return count
+}
 
 /**
  * Fetch file content from jsDelivr with size check
@@ -14,6 +56,7 @@ async function fetchFileContentForDiff(
   packageName: string,
   version: string,
   filePath: string,
+  maxBytes: number,
   signal?: AbortSignal,
 ): Promise<string | null> {
   const url = `https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`
@@ -35,19 +78,19 @@ async function fetchFileContentForDiff(
     }
 
     const contentLength = response.headers.get('content-length')
-    if (contentLength && parseInt(contentLength, 10) > MAX_DIFF_FILE_SIZE) {
+    if (contentLength && parseInt(contentLength, 10) > maxBytes) {
       throw createError({
         statusCode: 413,
-        message: `File too large to diff (${(parseInt(contentLength, 10) / 1024).toFixed(0)}KB). Maximum is ${MAX_DIFF_FILE_SIZE / 1024}KB.`,
+        message: `File too large to diff (${(parseInt(contentLength, 10) / 1024).toFixed(0)}KB). Maximum is ${maxBytes / 1024}KB.`,
       })
     }
 
     const content = await response.text()
 
-    if (content.length > MAX_DIFF_FILE_SIZE) {
+    if (byteLength(content) > maxBytes) {
       throw createError({
         statusCode: 413,
-        message: `File too large to diff (${(content.length / 1024).toFixed(0)}KB). Maximum is ${MAX_DIFF_FILE_SIZE / 1024}KB.`,
+        message: `File too large to diff (${(byteLength(content) / 1024).toFixed(0)}KB). Maximum is ${maxBytes / 1024}KB.`,
       })
     }
 
@@ -138,8 +181,20 @@ export default defineCachedEventHandler(
 
         // Fetch file contents in parallel
         const [fromContent, toContent] = await Promise.all([
-          fetchFileContentForDiff(packageName, fromVersion, filePath, controller.signal),
-          fetchFileContentForDiff(packageName, toVersion, filePath, controller.signal),
+          fetchFileContentForDiff(
+            packageName,
+            fromVersion,
+            filePath,
+            MAX_MODIFIED_DIFF_INPUT_BYTES,
+            controller.signal,
+          ),
+          fetchFileContentForDiff(
+            packageName,
+            toVersion,
+            filePath,
+            MAX_MODIFIED_DIFF_INPUT_BYTES,
+            controller.signal,
+          ),
         ])
 
         clearTimeout(timeoutId)
@@ -159,8 +214,27 @@ export default defineCachedEventHandler(
           type = 'modify'
         }
 
+        const fromSize = fromContent === null ? 0 : byteLength(fromContent)
+        const toSize = toContent === null ? 0 : byteLength(toContent)
+        const largestSize = Math.max(fromSize, toSize)
+
+        if (type !== 'modify' && largestSize > MAX_SINGLE_SIDED_DIFF_INPUT_BYTES) {
+          throw createError({
+            statusCode: 413,
+            message: `File too large to diff (${(largestSize / 1024).toFixed(0)}KB). Maximum is ${MAX_SINGLE_SIDED_DIFF_INPUT_BYTES / 1024}KB for added or removed files.`,
+          })
+        }
+
+        const large = largestSize > LARGE_DIFF_MODE_BYTES
+        const effectiveDiffOptions = large
+          ? {
+              ...diffOptions,
+              mergeModifiedLines: false,
+            }
+          : diffOptions
+
         // Create diff with options
-        const diff = createDiff(fromContent ?? '', toContent ?? '', filePath, diffOptions)
+        const diff = createDiff(fromContent ?? '', toContent ?? '', filePath, effectiveDiffOptions)
 
         if (!diff) {
           // No changes (shouldn't happen but handle it)
@@ -172,7 +246,7 @@ export default defineCachedEventHandler(
             type,
             hunks: [],
             stats: { additions: 0, deletions: 0 },
-            meta: { computeTime: Date.now() - startTime },
+            meta: { large, computeTime: Date.now() - startTime },
           } satisfies FileDiffResponse
         }
 
@@ -180,15 +254,19 @@ export default defineCachedEventHandler(
         const hunkOnly = diff.hunks.filter((h): h is DiffHunk => h.type === 'hunk')
         const hunksWithSkips = insertSkipBlocks(hunkOnly)
         const stats = countDiffStats(hunksWithSkips)
+        const { hunks, truncated } = truncateDiffHunks(hunksWithSkips, MAX_DIFF_OUTPUT_LINES)
+        const shouldHighlight =
+          !truncated &&
+          countRenderableDiffLines(hunks) <= MAX_HIGHLIGHT_DIFF_LINES &&
+          countRenderableDiffBytes(hunks) <= MAX_HIGHLIGHT_DIFF_BYTES
 
         // Syntax-highlight diff segments using server-side Shiki
         const language = getLanguageFromPath(filePath)
-        const shiki = await getShikiHighlighter()
-        const loadedLangs = shiki.getLoadedLanguages()
-        const canHighlight = loadedLangs.includes(language as never)
+        const shiki = shouldHighlight ? await getShikiHighlighter() : null
+        const loadedLangs = shiki?.getLoadedLanguages() ?? []
 
-        if (canHighlight) {
-          for (const hunk of hunksWithSkips) {
+        if (shiki && loadedLangs.includes(language as never)) {
+          for (const hunk of hunks) {
             if (hunk.type !== 'hunk') continue
             for (const line of hunk.lines) {
               line.content = line.content.map(seg => {
@@ -215,9 +293,14 @@ export default defineCachedEventHandler(
           to: toVersion,
           path: filePath,
           type,
-          hunks: hunksWithSkips,
+          hunks,
           stats,
-          meta: { computeTime: Date.now() - startTime },
+          meta: {
+            large,
+            truncated,
+            truncationReason: truncated ? 'too_many_lines' : undefined,
+            computeTime: Date.now() - startTime,
+          },
         } satisfies FileDiffResponse
       } catch (error) {
         clearTimeout(timeoutId)

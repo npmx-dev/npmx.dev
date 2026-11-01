@@ -20,7 +20,7 @@ export const scope = `atproto ${LIKES_SCOPE} ${PROFILE_SCOPE}`
 /**
  * Resolves a did to a handle via DoH or via the http website calls
  */
-export const handleResolver = new AtprotoDohHandleResolver({
+const handleResolver = new AtprotoDohHandleResolver({
   dohEndpoint: 'https://cloudflare-dns.com/dns-query',
 })
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 // Maximum file size we'll try to load (500KB) - must match server
@@ -13,6 +14,16 @@ definePageMeta({
     // '/code/@:org?/:packageName/v/:version/:filePath(.*)?',
   ],
   scrollMargin: 160,
+  // needed to keep the file-tree in-place when navigating files (otherwise the filetree scroll position snaps to the top)
+  // changing the version (or org/packageName for that matter) causes a re-render
+  key: route => {
+    const { org, packageName, version } = route.params as {
+      org?: string
+      packageName: string
+      version: string
+    }
+    return `/package-code/${org ?? ''}/${packageName}/v/${version}`
+  },
 })
 
 const route = useRoute('code')
@@ -86,7 +97,16 @@ const versionUrlPattern = computed(() =>
   }),
 )
 
-useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
+function codeVersionRoute(nextVersion: string): RouteLocationRaw {
+  return getCodeUrl({
+    org: route.params.org,
+    packageName: route.params.packageName,
+    version: nextVersion,
+    filePath: filePath.value,
+  })
+}
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, codeVersionRoute)
 
 // Fetch file tree
 const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>(
@@ -127,13 +147,13 @@ const currentNode = computed(() => {
 
 const isViewingFile = computed<boolean>(() => currentNode.value?.type === 'file')
 
-// Estimate binary file based on mime type
+// Estimate binary file based on MIME type and the detected source language
 const isBinaryFile = computed<boolean>(() => {
   if (!isViewingFile.value) return false
 
   const contentType = fileContent.value?.contentType
   if (!contentType) return false
-  return isBinaryContentType(contentType)
+  return isBinaryContentType(contentType, fileContent.value?.language)
 })
 
 const isFileTooLarge = computed<boolean>(() => {
@@ -156,13 +176,19 @@ const {
   data: fileContent,
   status: fileStatus,
   execute: fetchFileContent,
-} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, { immediate: false })
+  clear: clearFileContent,
+} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, {
+  immediate: false,
+  watch: false,
+})
 
 // Loading skeleton state
 const isLoading = computed<boolean>(() => {
   if (!isViewingFile.value) {
     return treeStatus.value !== 'success' && treeStatus.value !== 'error'
   }
+
+  if (isFileTooLarge.value) return false
 
   return !fileStatus.value || fileStatus.value === 'pending' || fileStatus.value === 'idle'
 })
@@ -174,6 +200,7 @@ function toggleMobileTreeDrawer(): void {
 watch(
   fileContentUrl,
   url => {
+    clearFileContent()
     if (url) fetchFileContent()
   },
   { immediate: true },
@@ -324,15 +351,7 @@ defineOgImage(
     version: () => version.value,
     variant: 'code-tree',
   },
-  [
-    { key: 'og', alt: () => `Source code file tree for ${packageName.value}@${version.value}` },
-    {
-      key: 'whatsapp',
-      width: 800,
-      height: 800,
-      alt: () => `Source code file tree for ${packageName.value}@${version.value}`,
-    },
-  ],
+  { alt: () => `Source code file tree for ${packageName.value}@${version.value}` },
 )
 
 useCommandPaletteContextCommands(

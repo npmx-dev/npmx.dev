@@ -7,7 +7,7 @@ import {
   hasComingSoonFacets,
 } from '#shared/types/comparison'
 import FacetSelector from '~/components/Compare/FacetSelector.vue'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { computed, ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 
@@ -33,6 +33,7 @@ const facetLabels: Record<ComparisonFacet, { label: string; description: string 
   deprecated: { label: 'Deprecated?', description: 'Whether the package is deprecated' },
   totalLikes: { label: 'Likes', description: 'Number of likes' },
   githubStars: { label: 'GitHub Stars', description: 'Number of GitHub stars' },
+  githubForks: { label: 'GitHub Forks', description: 'Number of GitHub forks' },
   githubIssues: { label: 'GitHub Issues', description: 'Number of open GitHub issues' },
   createdAt: { label: 'Created', description: 'When the package was first created' },
 }

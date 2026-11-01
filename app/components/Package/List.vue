@@ -33,6 +33,8 @@ const props = defineProps<{
   currentPage?: number
   /** When true, shows search-specific UI (relevance sort, no filters) */
   searchContext?: boolean
+  /** Whether package cards should show selection checkboxes. */
+  selectable?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -45,6 +47,8 @@ const emit = defineEmits<{
   /** Emitted when a keyword is clicked */
   'clickKeyword': [keyword: string]
 }>()
+
+providePackageSelectionContext(props.selectable ?? false)
 
 // Reference to WindowVirtualizer for infinite scroll detection
 const listRef = useTemplateRef<WindowVirtualizerHandle>('listRef')

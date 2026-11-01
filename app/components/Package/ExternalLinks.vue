@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { IconClass } from '~/types'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 
 const props = defineProps<{
@@ -9,7 +8,7 @@ const props = defineProps<{
 
 const displayVersion = computed(() => props.pkg?.requestedVersion ?? null)
 const { repositoryUrl } = useRepositoryUrl(displayVersion)
-const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
+const { meta: repoMeta, repoRef, stars, forks, forksLink, repoLink } = useRepoMeta(repositoryUrl)
 const compactNumberFormatter = useCompactNumberFormatter()
 
 const homepageUrl = computed(() => {
@@ -24,24 +23,7 @@ const homepageUrl = computed(() => {
   return homepage
 })
 
-const PROVIDER_ICONS: Record<string, IconClass> = {
-  github: 'i-simple-icons:github',
-  gitlab: 'i-simple-icons:gitlab',
-  bitbucket: 'i-simple-icons:bitbucket',
-  codeberg: 'i-simple-icons:codeberg',
-  gitea: 'i-simple-icons:gitea',
-  forgejo: 'i-simple-icons:forgejo',
-  gitee: 'i-simple-icons:gitee',
-  sourcehut: 'i-simple-icons:sourcehut',
-  tangled: 'i-custom:tangled',
-  radicle: 'i-lucide:network', // Radicle is a P2P network, using network icon
-}
-
-const repoProviderIcon = computed((): IconClass => {
-  const provider = repoRef.value?.provider
-  if (!provider) return 'i-simple-icons:github'
-  return PROVIDER_ICONS[provider] ?? 'i-lucide:code'
-})
+const repoProviderIcon = useProviderIcon(() => repoRef.value?.provider)
 
 const repositoryCommandLabel = computed(() => {
   if (!repoRef.value) {
@@ -73,14 +55,14 @@ useCommandPaletteContextCommands(
       })
     }
 
-    if (repositoryUrl.value && starsLink.value) {
+    if (repositoryUrl.value && repoLink.value) {
       commands.push({
         id: 'package-link-stars',
         group: 'links',
         label: $t('command_palette.package_links.stars'),
         keywords: [...packageKeywords, $t('command_palette.package_links.stars')],
         iconClass: 'i-lucide:star',
-        href: starsLink.value,
+        href: repoLink.value,
       })
     }
 
@@ -161,8 +143,8 @@ useCommandPaletteContextCommands(
         <span v-else>{{ $t('package.links.repo') }}</span>
       </LinkBase>
     </li>
-    <li v-if="repositoryUrl && repoMeta && starsLink">
-      <LinkBase :to="starsLink" classicon="i-lucide:star">
+    <li v-if="repositoryUrl && repoMeta && repoLink">
+      <LinkBase :to="repoLink" classicon="i-lucide:star">
         {{ compactNumberFormatter.format(stars) }}
       </LinkBase>
     </li>

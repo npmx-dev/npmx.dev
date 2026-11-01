@@ -8,10 +8,12 @@ const props = withDefaults(
     value: string
     icon?: IconClass
     tabId?: string
+    controlsPanel?: boolean
     variant?: 'primary' | 'secondary'
     size?: 'sm' | 'md'
   }>(),
   {
+    controlsPanel: true,
     variant: 'secondary',
     size: 'md',
   },
@@ -22,12 +24,13 @@ const attrs = useAttrs()
 const selected = inject<WritableComputedRef<string>>('tabs-selected')
 const getTabId = inject<(value: string) => string>('tabs-tab-id')
 const getPanelId = inject<(value: string) => string>('tabs-panel-id')
+
 if (!selected || !getTabId || !getPanelId) {
   throw new Error('TabItem must be used inside a TabRoot component')
 }
 const isSelected = computed(() => selected.value === props.value)
 const resolvedTabId = computed(() => props.tabId ?? getTabId(props.value))
-const resolvedPanelId = computed(() => getPanelId(props.value))
+const resolvedPanelId = computed(() => (props.controlsPanel ? getPanelId(props.value) : undefined))
 const select = () => {
   selected.value = props.value
 }

@@ -39,18 +39,18 @@ type EvolutionOptionsBase = {
   endDate?: string
 }
 
-export type EvolutionOptionsDay = EvolutionOptionsBase & {
+type EvolutionOptionsDay = EvolutionOptionsBase & {
   granularity: 'day'
 }
-export type EvolutionOptionsWeek = EvolutionOptionsBase & {
+type EvolutionOptionsWeek = EvolutionOptionsBase & {
   granularity: 'week'
   weeks?: number
 }
-export type EvolutionOptionsMonth = EvolutionOptionsBase & {
+type EvolutionOptionsMonth = EvolutionOptionsBase & {
   granularity: 'month'
   months?: number
 }
-export type EvolutionOptionsYear = EvolutionOptionsBase & {
+type EvolutionOptionsYear = EvolutionOptionsBase & {
   granularity: 'year'
 }
 

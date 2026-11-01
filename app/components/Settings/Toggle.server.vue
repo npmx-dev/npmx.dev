@@ -27,29 +27,13 @@ const props = withDefaults(
         : 'grid-template-areas: \'label-text . toggle\''
     "
   >
-    <template v-if="props.reverseOrder">
-      <SkeletonBlock class="h-6 w-11 shrink-0 rounded-full" style="grid-area: toggle" />
-      <span
-        v-if="label"
-        class="text-sm text-fg font-medium text-start"
-        style="grid-area: label-text"
-      >
-        {{ label }}
-      </span>
-    </template>
-    <template v-else>
-      <span
-        v-if="label"
-        class="text-sm text-fg font-medium text-start"
-        style="grid-area: label-text"
-      >
-        {{ label }}
-      </span>
-      <SkeletonBlock
-        class="h-6 w-11 shrink-0 rounded-full"
-        style="grid-area: toggle; justify-self: end"
-      />
-    </template>
+    <span v-if="label" class="text-sm text-fg font-medium text-start" style="grid-area: label-text">
+      {{ label }}
+    </span>
+    <SkeletonBlock
+      class="h-6 w-11 shrink-0 rounded-full"
+      style="grid-area: toggle; justify-self: end"
+    />
   </div>
   <p v-if="description" class="text-sm text-fg-muted mt-2">
     {{ description }}

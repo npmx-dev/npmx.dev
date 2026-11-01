@@ -29,7 +29,11 @@ onPrehydrate(el => {
           <strong>{{ $t('search.instant_search_on') }}</strong>
         </template>
         <template #action>
-          <button type="button" class="underline" @click="settings.instantSearch = false">
+          <button
+            type="button"
+            class="underline cursor-pointer"
+            @click="settings.instantSearch = false"
+          >
             {{ $t('search.instant_search_turn_off') }}
           </button>
         </template>
@@ -44,7 +48,11 @@ onPrehydrate(el => {
           <strong>{{ $t('search.instant_search_off') }}</strong>
         </template>
         <template #action>
-          <button type="button" class="underline" @click="settings.instantSearch = true">
+          <button
+            type="button"
+            class="underline cursor-pointer"
+            @click="settings.instantSearch = true"
+          >
             {{ $t('search.instant_search_turn_on') }}
           </button>
         </template>

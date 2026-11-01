@@ -7,7 +7,10 @@ import type {
   YearlyDataPoint,
 } from '~/types/chart'
 import { mapWithConcurrency } from '#shared/utils/async'
+import { splitIsoRangeIntoChunksInclusive, mergeDailyPoints } from '#shared/utils/download-ranges'
 import { fetchNpmDownloadsRange } from '~/utils/npm/api'
+import { toValue } from 'vue'
+import { addDays, toIsoDate, parseIsoDate } from '~/utils/date'
 
 export type PackumentLikeForTime = {
   time?: Record<string, string>
@@ -19,51 +22,6 @@ function startOfUtcMonth(date: Date): Date {
 
 function startOfUtcYear(date: Date): Date {
   return new Date(Date.UTC(date.getUTCFullYear(), 0, 1))
-}
-
-function differenceInUtcDaysInclusive(startIso: string, endIso: string): number {
-  const start = parseIsoDate(startIso)
-  const end = parseIsoDate(endIso)
-  return Math.floor((end.getTime() - start.getTime()) / 86400000) + 1
-}
-
-function splitIsoRangeIntoChunksInclusive(
-  startIso: string,
-  endIso: string,
-  maximumDaysPerRequest: number,
-): Array<{ startIso: string; endIso: string }> {
-  const totalDays = differenceInUtcDaysInclusive(startIso, endIso)
-  if (totalDays <= maximumDaysPerRequest) return [{ startIso, endIso }]
-
-  const chunks: Array<{ startIso: string; endIso: string }> = []
-  let cursorStart = parseIsoDate(startIso)
-  const finalEnd = parseIsoDate(endIso)
-
-  while (cursorStart.getTime() <= finalEnd.getTime()) {
-    const cursorEnd = addDays(cursorStart, maximumDaysPerRequest - 1)
-    const actualEnd = cursorEnd.getTime() < finalEnd.getTime() ? cursorEnd : finalEnd
-
-    chunks.push({
-      startIso: toIsoDate(cursorStart),
-      endIso: toIsoDate(actualEnd),
-    })
-
-    cursorStart = addDays(actualEnd, 1)
-  }
-
-  return chunks
-}
-
-function mergeDailyPoints(points: DailyRawPoint[]): DailyRawPoint[] {
-  const valuesByDay = new Map<string, number>()
-
-  for (const point of points) {
-    valuesByDay.set(point.day, (valuesByDay.get(point.day) ?? 0) + point.value)
-  }
-
-  return Array.from(valuesByDay.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([day, value]) => ({ day, value }))
 }
 
 const npmDailyRangeCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null

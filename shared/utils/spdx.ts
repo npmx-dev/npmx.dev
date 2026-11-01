@@ -7,7 +7,7 @@ import spdxLicenseIds from 'spdx-license-list/spdx-simple.json'
  *
  * @see https://spdx.org/licenses/
  */
-export const SPDX_LICENSE_IDS: Set<string> = new Set(spdxLicenseIds)
+const SPDX_LICENSE_IDS: Set<string> = new Set(spdxLicenseIds)
 
 /**
  * Check if a license identifier is a valid SPDX license.

@@ -1,14 +1,30 @@
 <script setup lang="ts">
-import type { FilterChip, SortOption } from '#shared/types/preferences'
+import {
+  type ColumnConfig,
+  type FilterChip,
+  type SortOption,
+  type StructuredFilters,
+  DEFAULT_COLUMNS,
+  DEFAULT_FILTERS,
+  parseDownloadRange,
+  parseSearchScope,
+  parseSecurityFilter,
+  parseUpdatedWithin,
+  parseColumns,
+  serializeVisibleColumns,
+} from '#shared/types/preferences'
 import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
 
 definePageMeta({
   name: 'org',
+  preserveScrollOnQuery: true,
 })
 
 const route = useRoute('org')
 const router = useRouter()
+
+const DEFAULT_SORT = 'downloads-week-desc' satisfies SortOption
 
 const orgName = computed(() => route.params.org.toLowerCase())
 
@@ -36,8 +52,60 @@ const packages = computed(() => results.value?.objects ?? [])
 const packageCount = computed(() => packages.value.length)
 
 // Preferences (persisted to localStorage)
-const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns } =
+const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns, isHydrated } =
   usePackageListPreferences()
+
+const initialFilters: Partial<StructuredFilters> = {}
+const searchScope = parseSearchScope(normalizeSearchParam(route.query.scope))
+const downloadRange = parseDownloadRange(normalizeSearchParam(route.query.downloads))
+const security = parseSecurityFilter(normalizeSearchParam(route.query.security))
+const updatedWithin = parseUpdatedWithin(normalizeSearchParam(route.query.updated))
+
+if (searchScope) initialFilters.searchScope = searchScope
+if (downloadRange) initialFilters.downloadRange = downloadRange
+if (security) initialFilters.security = security
+if (updatedWithin) initialFilters.updatedWithin = updatedWithin
+
+const columnOverride = shallowRef<ColumnConfig[] | null>(null)
+
+watch(
+  [isHydrated, () => route.query.columns],
+  ([hydrated]) => {
+    if (!hydrated) return
+    const ids = parseColumns(
+      route.query.columns === undefined ? undefined : normalizeSearchParam(route.query.columns),
+    )
+    if (!ids) {
+      columnOverride.value = null
+      return
+    }
+    columnOverride.value = columns.value.map(col => ({
+      ...col,
+      visible: col.id === 'name' || ids.includes(col.id),
+    }))
+  },
+  { immediate: true },
+)
+
+const viewColumns = computed(() => columnOverride.value ?? columns.value)
+
+function handleToggleColumn(columnId: ColumnConfig['id']) {
+  if (!columnOverride.value) {
+    toggleColumn(columnId)
+    return
+  }
+  columnOverride.value = columnOverride.value.map(col =>
+    col.id === columnId ? { ...col, visible: !col.visible } : col,
+  )
+}
+
+function handleResetColumns() {
+  if (!columnOverride.value) {
+    resetColumns()
+    return
+  }
+  columnOverride.value = DEFAULT_COLUMNS.map(col => ({ ...col }))
+}
 
 // Structured filters and sorting
 const {
@@ -57,7 +125,8 @@ const {
   setSort,
 } = useStructuredFilters({
   packages,
-  initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? 'updated-desc',
+  initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? DEFAULT_SORT,
+  initialFilters,
 })
 
 // Pagination state
@@ -81,24 +150,61 @@ watch(totalPages, newTotal => {
 })
 
 // Debounced URL update for filter/sort
-const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
-  router.replace({
-    query: {
-      ...route.query,
-      q: updates.filter || undefined,
-      sort: updates.sort && updates.sort !== 'updated-desc' ? updates.sort : undefined,
-    },
-  })
-}, 300)
+const updateUrl = debounce(
+  (updates: {
+    filter?: string
+    sort?: string
+    scope?: string
+    downloads?: string
+    security?: string
+    updated?: string
+  }) => {
+    router.replace({
+      query: {
+        ...route.query,
+        q: updates.filter || undefined,
+        sort: updates.sort && updates.sort !== DEFAULT_SORT ? updates.sort : undefined,
+        columns: serializeVisibleColumns(viewColumns.value),
+        scope:
+          updates.scope && updates.scope !== DEFAULT_FILTERS.searchScope
+            ? updates.scope
+            : undefined,
+        downloads:
+          updates.downloads && updates.downloads !== DEFAULT_FILTERS.downloadRange
+            ? updates.downloads
+            : undefined,
+        security:
+          updates.security && updates.security !== DEFAULT_FILTERS.security
+            ? updates.security
+            : undefined,
+        updated:
+          updates.updated && updates.updated !== DEFAULT_FILTERS.updatedWithin
+            ? updates.updated
+            : undefined,
+      },
+    })
+  },
+  300,
+)
 
-// Update URL when filter/sort changes (debounced)
+// Update URL when filter/sort/columns change (debounced)
 watch(
-  [() => filters.value.text, () => filters.value.keywords, () => sortOption.value] as const,
-  ([text, keywords, sort]) => {
+  [
+    () => filters.value.text,
+    () => filters.value.keywords,
+    () => sortOption.value,
+    () => filters.value.searchScope,
+    () => filters.value.downloadRange,
+    () => filters.value.security,
+    () => filters.value.updatedWithin,
+    // serialize so visibility toggles (same array ref) still trigger
+    () => serializeVisibleColumns(viewColumns.value),
+  ] as const,
+  ([text, keywords, sort, scope, downloads, security, updated]) => {
     const filter = [text, ...keywords.map(keyword => `keyword:${keyword}`)]
       .filter(Boolean)
       .join(' ')
-    updateUrl({ filter, sort })
+    updateUrl({ filter, sort, scope, downloads, security, updated })
   },
 )
 
@@ -112,7 +218,7 @@ const totalWeeklyDownloads = computed(() =>
 // Reset state when org changes
 watch(orgName, () => {
   clearAllFilters()
-  setSort('updated-desc')
+  setSort(DEFAULT_SORT)
   currentPage.value = 1
 })
 
@@ -125,6 +231,15 @@ const activeTab = shallowRef<'members' | 'teams'>('members')
 
 // Canonical URL for this org page
 const canonicalUrl = computed(() => `https://npmx.dev/@${orgName.value}`)
+
+const { selectedPackages, showSelectionView, openSelectionView, closeSelectionView } =
+  usePackageSelection()
+
+watch(selectedPackages, newSelectedPackages => {
+  if (newSelectedPackages.length === 0) {
+    closeSelectionView()
+  }
+})
 
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
@@ -150,6 +265,8 @@ defineOgImage(
 </script>
 
 <template>
+  <PackageActionBar v-if="!showSelectionView" />
+
   <main class="container flex-1 py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
@@ -257,6 +374,22 @@ defineOgImage(
       </p>
     </div>
 
+    <section v-else-if="showSelectionView && selectedPackages.length">
+      <header class="flex justify-end mb-4">
+        <button
+          type="button"
+          class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+          @click="closeSelectionView"
+          :aria-label="$t('nav.back')"
+        >
+          <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+          <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
+        </button>
+      </header>
+
+      <PackageSelectionView :view-mode="viewMode" />
+    </section>
+
     <!-- Package list -->
     <section v-else-if="packages.length > 0" :aria-label="$t('org.page.packages_title')">
       <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
@@ -268,18 +401,19 @@ defineOgImage(
         :filters="filters"
         v-model:sort-option="sortOption"
         v-model:view-mode="viewMode"
-        :columns="columns"
+        :columns="viewColumns"
         v-model:pagination-mode="paginationMode"
         v-model:page-size="pageSize"
         :total-count="packageCount"
         :filtered-count="filteredCount"
         :available-keywords="availableKeywords"
         :active-filters="activeFilters"
-        @toggle-column="toggleColumn"
-        @reset-columns="resetColumns"
+        @toggle-column="handleToggleColumn"
+        @reset-columns="handleResetColumns"
         @clear-filter="handleClearFilter"
         @clear-all-filters="clearAllFilters"
         @update:text="setTextFilter"
+        @toggle-selection="openSelectionView"
         @update:search-scope="setSearchScope"
         @update:download-range="setDownloadRange"
         @update:security="setSecurity"
@@ -297,13 +431,14 @@ defineOgImage(
         <PackageList
           :results="sortedPackages"
           :view-mode="viewMode"
-          :columns="columns"
+          :columns="viewColumns"
           :filters="filters"
           v-model:sort-option="sortOption"
           :pagination-mode="paginationMode"
           :page-size="pageSize"
           :current-page="currentPage"
           @click-keyword="toggleKeyword"
+          selectable
         />
 
         <!-- Pagination controls -->

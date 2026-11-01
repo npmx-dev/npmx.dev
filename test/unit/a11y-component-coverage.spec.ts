@@ -10,7 +10,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { assert, describe, it } from 'vitest'
+import { assert, describe, it } from 'vite-plus/test'
 
 /**
  * Components explicitly skipped from a11y testing with reasons.
@@ -27,9 +27,12 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'OgImage/BlogPost.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Compare.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Package.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
+  'OgImage/Noodle.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Page.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Profile.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Splash.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
+  'OgImage/UserProfile.takumi.vue':
+    'OG Image component - server-rendered image, not interactive UI',
 
   // Client-only components with complex dependencies
   'Header/AuthModal.client.vue': 'Complex auth modal with navigation - requires full app context',
@@ -55,8 +58,10 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'SkeletonBlock.vue': 'Already covered indirectly via other component tests',
   'SkeletonInline.vue': 'Already covered indirectly via other component tests',
   'Button/Group.vue': "Wrapper component, tests wouldn't make much sense here",
-  'Translation/StatusByFile.unused.vue': 'Unused component, might be needed in the future',
+  'Changelog/Releases.vue': 'Requires API calls & only renders ChangelogCard components in a list',
+  'Changelog/Markdown.vue': 'Requires API call & mostly renders markdown html',
   'ColorScheme/Img.vue': 'Image component, basic ui',
+  'VideoPlayer.vue': 'Atproto video component, basic ui',
 }
 
 function normalizeComponentPath(filePath: string): string {

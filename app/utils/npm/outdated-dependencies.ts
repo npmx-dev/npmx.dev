@@ -1,4 +1,4 @@
-import type { ReleaseType } from 'semver'
+import type { VersionDifference } from 'verkit'
 
 /** Information about an outdated dependency */
 export interface OutdatedDependencyInfo {
@@ -11,7 +11,7 @@ export interface OutdatedDependencyInfo {
   /** How many minor versions behind (when same major) */
   minorsBehind: number
   /** The type of version difference */
-  diffType: ReleaseType | null
+  diffType: VersionDifference | null
 }
 
 /**
@@ -22,21 +22,6 @@ export function constraintIncludesPrerelease(constraint: string): boolean {
   return (
     /-(?:alpha|beta|rc|next|canary|dev|preview|pre|experimental)/i.test(constraint) ||
     /-\d/.test(constraint)
-  )
-}
-
-/**
- * Check if a constraint is a non-semver value (git URL, file path, etc.)
- */
-export function isNonSemverConstraint(constraint: string): boolean {
-  return (
-    constraint.startsWith('git') ||
-    constraint.startsWith('http') ||
-    constraint.startsWith('file:') ||
-    constraint.startsWith('npm:') ||
-    constraint.startsWith('link:') ||
-    constraint.startsWith('workspace:') ||
-    constraint.includes('/')
   )
 }
 

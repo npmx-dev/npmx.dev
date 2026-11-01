@@ -110,6 +110,14 @@ useSeoMeta({
               </span>
               <SettingsBgThemePicker />
             </div>
+
+            <!-- Foreground themes -->
+            <div class="space-y-3">
+              <span class="block text-sm text-fg font-medium">
+                {{ $t('settings.foreground_themes.label') }}
+              </span>
+              <SettingsFgThemePicker />
+            </div>
           </div>
         </section>
 
@@ -163,6 +171,15 @@ useSeoMeta({
               :label="$t('settings.enable_code_ligatures')"
               :modelValue="settings.codeLigatures"
               @update:modelValue="() => toggleCodeLigatures()"
+            />
+
+            <div class="border-t border-border my-4" />
+
+            <!-- Enable auto scrolling to requested version at package changelog -->
+            <SettingsToggle
+              :label="$t('settings.enable_changelog_autoscroll')"
+              :description="$t('settings.enable_changelog_autoscroll_description')"
+              v-model="settings.changelogAutoScroll"
             />
           </div>
         </section>

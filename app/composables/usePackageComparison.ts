@@ -1,13 +1,12 @@
+import { NO_DEPENDENCY_ID } from '#shared/utils/compare'
+import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
-
-/** Special identifier for the "What Would James Do?" comparison column */
-export const NO_DEPENDENCY_ID = '__no_dependency__'
 
 /**
  * Special display values for the "no dependency" column.
  * These are explicit markers that get special rendering treatment.
  */
-export const NoDependencyDisplay = {
+const NoDependencyDisplay = {
   /** Display as "–" (en-dash) */
   DASH: '__display_dash__',
   /** Display as "Up to you!" with good status */
@@ -50,6 +49,7 @@ export interface PackageComparisonData {
     deprecated?: string
     github?: {
       stars?: number
+      forks?: number
       issues?: number
     }
   }
@@ -62,10 +62,11 @@ export interface PackageComparisonData {
 /**
  * Composable for fetching and comparing multiple packages.
  *
+ * Each entry may pin a version using the npm spec syntax (e.g. `nuxt`, `react@18.2.0`
+ * or `vue@3.6.0`). When no version is given the latest is used
  */
 export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const { t } = useI18n()
-  const { $npmRegistry } = useNuxtApp()
   const numberFormatter = useNumberFormatter()
   const compactNumberFormatter = useCompactNumberFormatter()
   const bytesFormatter = useBytesFormatter()
@@ -117,35 +118,50 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
     try {
       // First pass: fetch fast data (package info, downloads, analysis, vulns)
       const results = await Promise.all(
-        namesToFetch.map(async (name): Promise<PackageComparisonData | null> => {
+        namesToFetch.map(async (spec): Promise<PackageComparisonData | null> => {
           try {
-            // Fetch basic package info first (required)
-            const { data: pkgData } = await $npmRegistry<Packument>(`/${encodePackageName(name)}`)
-            const latestVersion = pkgData['dist-tags']?.latest
-            if (!latestVersion) return null
+            // A spec may include a version or dist-tag (vue@3.6.0, nuxt@next)
+            const { name, version: requestedVersion } = parsePackageSpec(spec)
+
+            // Fetch the already-trimmed packument from our own cached route. The
+            // route resolves the requested version (exact version or dist-tag,
+            // defaulting to latest) and returns that version's full manifest as
+            // `requestedVersion`.
+            const pkg = await $fetch<SlimPackument>(
+              `/api/registry/packument/${encodePackageName(name)}`,
+              { params: requestedVersion ? { version: requestedVersion } : undefined },
+            )
+            const versionData = pkg.requestedVersion
+            const resolvedVersion = versionData?.version
+            if (!versionData || !resolvedVersion) return null
+
+            // Only target a specific version on the API endpoints when one was
+            // explicitly requested
+            const versionSuffix = requestedVersion
+              ? `/v/${encodeURIComponent(resolvedVersion)}`
+              : ''
 
             // Fetch fast additional data in parallel (optional - failures are ok)
-            const repoInfo = parseRepositoryInfo(pkgData.repository)
+            const repoInfo = parseRepositoryInfo(pkg.repository)
             const isGitHub = repoInfo?.provider === 'github'
-            const [downloads, analysis, vulns, likes, ghStars, ghIssues] = await Promise.all([
+            const [downloads, analysis, vulns, likes, ghRepo, ghIssues] = await Promise.all([
+              // Download counts are per-package, not per-version.
               $fetch<{ downloads: number }>(
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
               ).catch(() => null),
               $fetch<PackageAnalysisResponse>(
-                `/api/registry/analysis/${encodePackageName(name)}`,
+                `/api/registry/analysis/${encodePackageName(name)}${versionSuffix}`,
               ).catch(() => null),
               $fetch<VulnerabilityTreeResult>(
-                `/api/registry/vulnerabilities/${encodePackageName(name)}`,
+                `/api/registry/vulnerabilities/${encodePackageName(name)}${versionSuffix}`,
               ).catch(() => null),
               $fetch<PackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
                 () => null,
               ),
               isGitHub
-                ? $fetch<{ repo: { stars: number } }>(
+                ? $fetch<{ repo: { stars?: number; forks?: number } }>(
                     `https://ungh.cc/repos/${repoInfo.owner}/${repoInfo.repo}`,
-                  )
-                    .then(res => (typeof res?.repo?.stars === 'number' ? res.repo.stars : null))
-                    .catch(() => null)
+                  ).catch(() => null)
                 : Promise.resolve(null),
               isGitHub
                 ? $fetch<{ issues: number | null }>(
@@ -155,16 +171,15 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                     .catch(() => null)
                 : Promise.resolve(null),
             ])
-            const versionData = pkgData.versions[latestVersion]
-            const packageSize = versionData?.dist?.unpackedSize
+            const packageSize = versionData.dist?.unpackedSize
 
             // Detect if package is binary-only
             const isBinary = isBinaryOnlyPackage({
-              name: pkgData.name,
-              bin: versionData?.bin,
-              main: versionData?.main,
-              module: versionData?.module,
-              exports: versionData?.exports,
+              name: pkg.name,
+              bin: versionData.bin,
+              main: versionData.main,
+              module: versionData.module,
+              exports: versionData.exports,
             })
 
             // Vulnerabilities
@@ -179,13 +194,13 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
             return {
               package: {
-                name: pkgData.name,
-                version: latestVersion,
+                name: pkg.name,
+                version: resolvedVersion,
                 description: undefined,
               },
               downloads: downloads?.downloads,
               packageSize,
-              directDeps: versionData ? getDependencyCount(versionData) : null,
+              directDeps: getDependencyCount(versionData),
               installSize: undefined, // Will be filled in second pass
               analysis: analysis ?? undefined,
               vulnerabilities: {
@@ -193,18 +208,16 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 severity: vulnsSeverity,
               },
               metadata: {
-                license:
-                  typeof pkgData.license === 'object' && 'type' in pkgData.license
-                    ? pkgData.license.type
-                    : pkgData.license,
+                license: pkg.license,
                 // Use version-specific publish time, NOT time.modified (which can be
                 // updated by metadata changes like maintainer additions)
-                lastUpdated: pkgData.time?.[latestVersion],
-                createdAt: pkgData.time?.created,
+                lastUpdated: pkg.time?.[resolvedVersion],
+                createdAt: pkg.time?.created,
                 engines: analysis?.engines,
-                deprecated: versionData?.deprecated,
+                deprecated: versionData.deprecated,
                 github: {
-                  stars: ghStars ?? undefined,
+                  stars: typeof ghRepo?.repo?.stars === 'number' ? ghRepo.repo.stars : undefined,
+                  forks: typeof ghRepo?.repo?.forks === 'number' ? ghRepo.repo.forks : undefined,
                   issues: ghIssues ?? undefined,
                 },
               },
@@ -232,19 +245,25 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
       // Second pass: fetch slow install size data in background for new packages
       installSizeLoading.value = true
       Promise.all(
-        namesToFetch.map(async name => {
+        namesToFetch.map(async spec => {
           try {
+            const { name, version: requestedVersion } = parsePackageSpec(spec)
+            // Reuse the version resolved during the first pass when one was pinned.
+            const resolvedVersion = cache.value.get(spec)?.package.version
+            const versionSuffix =
+              requestedVersion && resolvedVersion ? `/v/${encodeURIComponent(resolvedVersion)}` : ''
+
             const installSize = await $fetch<{
               selfSize: number
               totalSize: number
               dependencyCount: number
-            }>(`/api/registry/install-size/${encodePackageName(name)}`)
+            }>(`/api/registry/install-size/${encodePackageName(name)}${versionSuffix}`)
 
             // Update cache with install size
-            const existing = cache.value.get(name)
+            const existing = cache.value.get(spec)
             if (existing) {
               const updated = new Map(cache.value)
-              updated.set(name, { ...existing, installSize })
+              updated.set(spec, { ...existing, installSize })
               cache.value = updated
             }
           } catch {
@@ -571,6 +590,15 @@ function computeFacetValue(
       return {
         raw: stars,
         display: formatCompactNumber(stars),
+        status: 'neutral',
+      }
+    }
+    case 'githubForks': {
+      const forks = data.metadata?.github?.forks
+      if (forks == null) return null
+      return {
+        raw: forks,
+        display: formatCompactNumber(forks),
         status: 'neutral',
       }
     }

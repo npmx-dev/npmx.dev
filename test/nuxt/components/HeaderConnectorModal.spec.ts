@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vite-plus/test'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { ref, computed, readonly, nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
@@ -73,6 +73,9 @@ function createMockUseConnector() {
     connect: vi.fn().mockResolvedValue(true),
     reconnect: vi.fn().mockResolvedValue(true),
     disconnect: vi.fn(),
+    clearError: vi.fn(() => {
+      mockState.value.error = null
+    }),
     refreshState: vi.fn().mockResolvedValue(undefined),
     addOperation: vi.fn().mockResolvedValue(null),
     addOperations: vi.fn().mockResolvedValue([]),
@@ -119,6 +122,7 @@ const mockSettings = ref({
   hidePlatformPackages: true,
   selectedLocale: null,
   preferredBackgroundTheme: null,
+  preferredForegroundTheme: null,
   searchProvider: 'npm',
   connector: {
     autoOpenURL: false,

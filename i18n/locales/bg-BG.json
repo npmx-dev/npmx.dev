@@ -65,6 +65,23 @@
       "view_org_packages": "Показване на пакети от тази организация"
     }
   },
+  "command_palette": {
+    "keyboard_shortcuts": {},
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "Главна",
     "popular_packages": "Популярни пакети",
@@ -77,9 +94,20 @@
     "links": "Връзки",
     "tap_to_search": "Докоснете за търсене"
   },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
+  },
   "blog": {
     "author": {},
     "atproto": {}
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "настройки",
@@ -119,6 +147,7 @@
     "background_themes": {
       "label": "Фонов нюанс"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Активиране на клавишни комбинации",
     "keyboard_shortcuts_enabled_description": "Клавишните комбинации могат да бъдат деактивирани, ако влизат в конфликт с други браузърни или системни преки пътища"
   },
@@ -198,15 +227,13 @@
       "size": "Размерът при инсталация се е увеличил с {percent} ({size} по-голям)",
       "deps": "{count} повече зависимости"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Може да не се нуждаете от тази зависимост.",
       "native": "Това може да бъде заменено с {replacement}, налично от Node {nodeVersion}.",
-      "simple": "{community} е отбелязала този пакет като излишен, със съвета: {replacement}.",
-      "documented": "{community} е отбелязала този пакет като имащ по-производителни алтернативи.",
       "none": "Този пакет е отбелязан като вече ненужен и функционалността му вероятно е налична нативно във всички двигатели.",
       "learn_more": "Научете повече",
       "learn_more_above": "Научете повече по-горе.",
-      "community": "общност",
       "consider_no_dep": "+ Обмислете без зависимости?"
     },
     "stats": {
@@ -275,6 +302,7 @@
       "title": "Изпълнение",
       "locally": "Изпълнение локално"
     },
+    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "Няма наличен README.",
@@ -332,7 +360,6 @@
       "deprecated_title": "{version} (остаряла)",
       "view_all": "Преглед на {count} версия | Преглед на всички {count} версии",
       "distribution_title": "Semver група",
-      "distribution_modal_title": "Версии",
       "distribution_range_date_same_year": "от {from} до {to}, {endYear}",
       "distribution_range_date_multiple_years": "от {from}, {startYear} до {to}, {endYear}",
       "grouping_major": "Major",
@@ -354,6 +381,11 @@
       "copy_alt": {
         "per_version_analysis": "Версия {version} е изтеглена {downloads} пъти",
         "general_description": "Стълбовидна диаграма, показваща изтеглянията по версии за {versions_count} {semver_grouping_mode} версии на пакета {package_name}, {date_range_label} от версия {first_version} до версия {last_version}. Най-изтегляната версия е {max_downloaded_version} с {max_version_downloads} изтегляния. {per_version_analysis}. {watermark}."
+      }
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
       }
     },
     "dependencies": {
@@ -392,6 +424,7 @@
       "show_less": "(показване на по-малко)"
     },
     "trends": {
+      "chart_assistive_text": {},
       "granularity": "Гранулация",
       "granularity_daily": "Дневна",
       "granularity_weekly": "Седмична",
@@ -440,6 +473,12 @@
         "compare": "Линейна диаграма за сравнение на изтегляния на пакети за: {packages}.",
         "single_package": "Линейна диаграма на изтегляния за пакета {package}.",
         "general_description": "Оста Y представлява броя на изтеглянията. Оста X представлява диапазона от дати, от {start_date} до {end_date}, с {granularity} времеви период.{estimation_notice} {packages_analysis}. {watermark}."
+      },
+      "embedding": {},
+      "sparkline_zoom_reset": {},
+      "downloads_heatmap": {
+        "legend": {},
+        "copy_alt": {}
       }
     },
     "downloads": {
@@ -536,6 +575,9 @@
       "mb": "{size} MB"
     },
     "download": {}
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -888,7 +930,6 @@
     },
     "team": {
       "title": "Отбор",
-      "governance": "Управление",
       "role_steward": "управител",
       "role_maintainer": "поддържащ",
       "sponsor": "спонсор",
@@ -919,6 +960,25 @@
         "description": "Научете най-новото за npmx.",
         "cta": "Последвайте в Bluesky"
       }
+    }
+  },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
     }
   },
   "account_menu": {
@@ -995,6 +1055,9 @@
       "packages_selected": "{count}/{max} избрани пакета.",
       "add_hint": "Добавете поне 2 пакета за сравнение."
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {
       "label": "(Без зависимост)",
       "typeahead_title": "Какво би направил James?",
@@ -1069,7 +1132,11 @@
         "vulnerabilities": {
           "label": "Уязвимости",
           "description": "Известни уязвимости в сигурността"
-        }
+        },
+        "githubStars": {},
+        "githubForks": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "Всякакъв",
@@ -1089,8 +1156,6 @@
     "file_changes": "Промени в файловете",
     "files_count": "{count} файла",
     "lines_hidden": "{count} реда скрити",
-    "file_too_large": "Файлът е твърде голям за сравнение",
-    "file_size_warning": "{size} надвишава лимита от 250KB за сравнение",
     "compare_versions": "diff",
     "version_invalid_url_format": {},
     "summary": "Резюме",
@@ -1235,8 +1300,24 @@
       "link": "GitHub хранилище"
     }
   },
-  "translation_status": {
-    "table": {}
+  "translation_status": {},
+  "vacations": {
+    "what": {},
+    "meantime": {},
+    "return": {},
+    "stats": {
+      "subtitle": {}
+    }
   },
-  "action_bar": {}
+  "action_bar": {},
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
+  },
+  "changelog": {
+    "error": {}
+  }
 }

@@ -59,11 +59,17 @@ watch(open, value => {
         <div class="flex items-center justify-between gap-2 py-2 px-4">
           <div class="text-xs font-mono text-fg-muted flex items-center gap-2">
             <span class="flex items-center gap-1">
-              <span class="text-green-500">+{{ props.compare.stats.filesAdded }}</span>
+              <span class="text-green-700 dark:text-green-400"
+                >+{{ props.compare.stats.filesAdded }}</span
+              >
               <span class="text-fg-subtle">/</span>
-              <span class="text-red-500">-{{ props.compare.stats.filesRemoved }}</span>
+              <span class="text-red-700 dark:text-red-400"
+                >-{{ props.compare.stats.filesRemoved }}</span
+              >
               <span class="text-fg-subtle">/</span>
-              <span class="text-yellow-500">~{{ props.compare.stats.filesModified }}</span>
+              <span class="text-yellow-700 dark:text-yellow-400"
+                >~{{ props.compare.stats.filesModified }}</span
+              >
             </span>
             <span class="text-fg-subtle">•</span>
             <span>{{

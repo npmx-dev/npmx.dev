@@ -57,13 +57,13 @@ const filteredChanges = computed(() => {
 function getSemverBadgeClass(semverDiff: string | null | undefined): string {
   switch (semverDiff) {
     case 'major':
-      return 'bg-red-500/10 text-red-500'
+      return 'bg-red-500/10 text-red-700 dark:text-red-400'
     case 'minor':
-      return 'bg-yellow-500/10 text-yellow-500'
+      return 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400'
     case 'patch':
-      return 'bg-green-500/10 text-green-500'
+      return 'bg-green-500/10 text-green-700 dark:text-green-400'
     case 'prerelease':
-      return 'bg-purple-500/10 text-purple-500'
+      return 'bg-purple-500/10 text-purple-700 dark:text-purple-400'
     default:
       return 'bg-bg-muted text-fg-subtle'
   }
@@ -87,11 +87,15 @@ function handleFileSelect(file: FileChange) {
           </span>
           <div class="flex items-center gap-3 font-mono text-3xs">
             <span class="flex items-center gap-1">
-              <span class="text-green-500">+{{ compare.stats.filesAdded }}</span>
+              <span class="text-green-700 dark:text-green-400"
+                >+{{ compare.stats.filesAdded }}</span
+              >
               <span class="text-fg-subtle">/</span>
-              <span class="text-red-500">-{{ compare.stats.filesRemoved }}</span>
+              <span class="text-red-700 dark:text-red-400">-{{ compare.stats.filesRemoved }}</span>
               <span class="text-fg-subtle">/</span>
-              <span class="text-yellow-500">~{{ compare.stats.filesModified }}</span>
+              <span class="text-yellow-700 dark:text-yellow-400"
+                >~{{ compare.stats.filesModified }}</span
+              >
             </span>
             <span v-if="compare.dependencyChanges.length > 0" class="text-fg-muted">
               {{

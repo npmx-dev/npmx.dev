@@ -1,4 +1,5 @@
 import type { VueUiScatterDatasetItem } from 'vue-data-ui'
+import { getPackageDisplayInfo } from '#shared/utils/compare'
 import { applyEllipsis } from '~/utils/charts'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 
@@ -76,7 +77,10 @@ function getNumericFacetValue(
       return isFiniteNumber(packageData.metadata?.github?.stars)
         ? packageData.metadata.github.stars
         : null
-
+    case 'githubForks':
+      return isFiniteNumber(packageData.metadata?.github?.forks)
+        ? packageData.metadata.github.forks
+        : null
     case 'githubIssues':
       return isFiniteNumber(packageData.metadata?.github?.issues)
         ? packageData.metadata.github.issues
@@ -85,10 +89,6 @@ function getNumericFacetValue(
     default:
       return null
   }
-}
-
-function getPackageName(packageData: PackageComparisonData, fallbackName: string): string {
-  return packageData.package?.name || fallbackName
 }
 
 export function buildCompareScatterChartDataset(
@@ -109,18 +109,18 @@ export function buildCompareScatterChartDataset(
       return acc
     }
 
-    const fallbackName = packages[index] || `package-${index + 1}`
-    const packageName = getPackageName(packageData, fallbackName)
+    const pkgSpec = packages[index] || `package-${index + 1}`
+    const { name, displayName: packageName } = getPackageDisplayInfo(packageData, pkgSpec)
 
     acc.push({
-      name: applyEllipsis(packageName, 14),
+      name: applyEllipsis(packageName, 18),
       fullName: packageName,
-      color: isListedFramework(packageName) ? getFrameworkColor(packageName) : undefined,
+      color: isListedFramework(name) ? getFrameworkColor(name) : undefined,
       values: [
         {
           x,
           y,
-          name: applyEllipsis(packageName, 14),
+          name: applyEllipsis(packageName, 18),
           fullName: packageName,
         },
       ],

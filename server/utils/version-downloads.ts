@@ -1,4 +1,4 @@
-import semver from 'semver'
+import { compareReversed, tryParse, type SemVer } from 'verkit'
 
 /**
  * Intermediate data structure for version processing
@@ -8,20 +8,7 @@ interface ProcessedVersion {
   downloads: number
   major: number
   minor: number
-  parsed: semver.SemVer
-}
-
-/**
- * Filter out versions below a usage threshold
- * @param versions Array of version download points
- * @param thresholdPercent Minimum percentage to include (default: 0.1%)
- * @returns Filtered array of versions
- */
-export function filterLowUsageVersions(
-  versions: VersionDownloadPoint[],
-  thresholdPercent: number = 0.1,
-): VersionDownloadPoint[] {
-  return versions.filter(v => v.percentage >= thresholdPercent)
+  parsed: SemVer
 }
 
 /**
@@ -33,7 +20,7 @@ function parseVersions(rawDownloads: Record<string, number>): ProcessedVersion[]
   const processed: ProcessedVersion[] = []
 
   for (const [version, downloads] of Object.entries(rawDownloads)) {
-    const parsed = semver.parse(version)
+    const parsed = tryParse(version)
     if (!parsed) continue
 
     processed.push({
@@ -45,7 +32,7 @@ function parseVersions(rawDownloads: Record<string, number>): ProcessedVersion[]
     })
   }
 
-  processed.sort((a, b) => semver.rcompare(a.version, b.version))
+  processed.sort((a, b) => compareReversed(a.version, b.version))
 
   return processed
 }
@@ -72,7 +59,7 @@ function addPercentages(
  * @param rawDownloads Raw download data from npm API
  * @returns Array of version groups sorted by downloads descending
  */
-export function groupByMajor(rawDownloads: Record<string, number>): VersionGroupDownloads[] {
+function groupByMajor(rawDownloads: Record<string, number>): VersionGroupDownloads[] {
   const processed = parseVersions(rawDownloads)
   const totalDownloads = processed.reduce((sum, v) => sum + v.downloads, 0)
 
@@ -108,7 +95,7 @@ export function groupByMajor(rawDownloads: Record<string, number>): VersionGroup
  * @param rawDownloads Raw download data from npm API
  * @returns Array of version groups sorted by downloads descending
  */
-export function groupByMinor(rawDownloads: Record<string, number>): VersionGroupDownloads[] {
+function groupByMinor(rawDownloads: Record<string, number>): VersionGroupDownloads[] {
   const processed = parseVersions(rawDownloads)
   const totalDownloads = processed.reduce((sum, v) => sum + v.downloads, 0)
 

@@ -7,8 +7,9 @@ const props = defineProps<{
 
 const bytesFormatter = useBytesFormatter()
 const numberFormatter = useNumberFormatter()
+const percentFormatter = useNumberFormatter({ style: 'percent' })
 
-const sizePercent = computed(() => Math.round(props.diff.sizeRatio * 100))
+const sizePercent = computed(() => percentFormatter.value.format(Math.abs(props.diff.sizeRatio)))
 </script>
 
 <template>
@@ -28,16 +29,21 @@ const sizePercent = computed(() => Math.round(props.diff.sizeRatio * 100))
     <p class="text-sm m-0 mt-1">
       <i18n-t v-if="diff.sizeThresholdExceeded" keypath="package.size_increase.size" scope="global">
         <template #percent
-          ><strong>{{ sizePercent }}%</strong></template
+          ><strong>{{ sizePercent }}</strong></template
         >
         <template #size
           ><strong>{{ bytesFormatter.format(diff.sizeIncrease) }}</strong></template
         >
       </i18n-t>
       <template v-if="diff.sizeThresholdExceeded && diff.depThresholdExceeded"> · </template>
-      <i18n-t v-if="diff.depThresholdExceeded" keypath="package.size_increase.deps" scope="global">
+      <i18n-t
+        v-if="diff.depThresholdExceeded"
+        keypath="package.size_increase.deps"
+        scope="global"
+        :plural="diff.depDiff"
+      >
         <template #count
-          ><strong>+{{ numberFormatter.format(diff.depDiff) }}</strong></template
+          ><strong>{{ numberFormatter.format(diff.depDiff) }}</strong></template
         >
       </i18n-t>
     </p>

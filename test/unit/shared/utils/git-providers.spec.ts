@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import {
   normalizeGitUrl,
   parseRepositoryInfo,
@@ -80,6 +80,53 @@ describe('normalizeGitUrl', () => {
       .soft(normalizeGitUrl('git+ssh://git@gitlab.com/user/repo.git'))
       .toBe('https://gitlab.com/user/repo')
   })
+
+  it('should support shorthand git provider URLs', () => {
+    expect.soft(normalizeGitUrl('github:user/repo')).toBe('https://github.com/user/repo')
+    expect.soft(normalizeGitUrl('gitlab:user/repo')).toBe('https://gitlab.com/user/repo')
+    expect.soft(normalizeGitUrl('bitbucket:user/repo')).toBe('https://bitbucket.org/user/repo')
+    expect.soft(normalizeGitUrl('codeberg:user/repo')).toBe('https://codeberg.org/user/repo')
+    expect.soft(normalizeGitUrl('gitee:user/repo')).toBe('https://gitee.com/user/repo')
+    expect.soft(normalizeGitUrl('sourcehut:~user/repo')).toBe('https://git.sr.ht/~user/repo')
+    expect.soft(normalizeGitUrl('sourcehut:org/repo')).toBe('https://git.sr.ht/org/repo')
+    expect.soft(normalizeGitUrl('gitea:user/repo')).toBe('https://gitea.com/user/repo')
+    expect.soft(normalizeGitUrl('tangled:user/repo')).toBe('https://tangled.org/user/repo')
+    expect.soft(normalizeGitUrl('forgejo:user/repo')).toBe('https://code.forgejo.org/user/repo')
+    expect
+      .soft(normalizeGitUrl('github:user/repo.git#readme'))
+      .toBe('https://github.com/user/repo#readme')
+  })
+
+  it('should expand bare owner/repo GitHub shorthand', () => {
+    expect.soft(normalizeGitUrl('wevm/ox')).toBe('https://github.com/wevm/ox')
+    expect.soft(normalizeGitUrl('user/repo.git')).toBe('https://github.com/user/repo')
+    expect.soft(normalizeGitUrl(' user/repo ')).toBe('https://github.com/user/repo')
+    expect.soft(normalizeGitUrl('user/repo#readme')).toBe('https://github.com/user/repo#readme')
+    expect
+      .soft(normalizeGitUrl('user/repo?path=packages/core'))
+      .toBe('https://github.com/user/repo?path=packages/core')
+    expect
+      .soft(normalizeGitUrl('user/repo/tree/main'))
+      .toBe('https://github.com/user/repo/tree/main')
+  })
+
+  it('should convert scp-style shorthand with a dotless host', () => {
+    expect.soft(normalizeGitUrl('git@localhost:owner/repo')).toBe('https://localhost/owner/repo')
+  })
+
+  it('should not treat host-prefixed paths as owner/repo shorthand', () => {
+    expect.soft(normalizeGitUrl('git.sr.ht/~user/repo')).toBe('https://git.sr.ht/~user/repo')
+    expect.soft(normalizeGitUrl('example.com/user/repo')).toBe('https://example.com/user/repo')
+  })
+
+  it('should parse bare shorthand repository fields', () => {
+    const info = parseRepositoryInfo('wevm/ox')
+    expect.soft(info?.provider).toBe('github')
+    expect.soft(info?.owner).toBe('wevm')
+    expect.soft(info?.repo).toBe('ox')
+    expect.soft(info?.rawBaseUrl).toBe('https://raw.githubusercontent.com/wevm/ox/HEAD')
+    expect.soft(info?.blobBaseUrl).toBe('https://github.com/wevm/ox/blob/HEAD')
+  })
 })
 
 describe('parseRepositoryInfo', () => {
@@ -118,8 +165,27 @@ describe('parseRepositoryInfo', () => {
 
   it('parses shorthand GitHub string', () => {
     const result = parseRepositoryInfo('github:nuxt/nuxt')
-    // This shorthand format is not supported
-    expect(result).toBeUndefined()
+    expect(result).toMatchObject({
+      provider: 'github',
+      owner: 'nuxt',
+      repo: 'nuxt',
+      rawBaseUrl: 'https://raw.githubusercontent.com/nuxt/nuxt/HEAD',
+      blobBaseUrl: 'https://github.com/nuxt/nuxt/blob/HEAD',
+    })
+  })
+
+  it('parses GitHub URL from object with shorthand prefix', () => {
+    const result = parseRepositoryInfo({
+      type: 'git',
+      url: 'github:org/repo',
+    })
+    expect(result).toMatchObject({
+      provider: 'github',
+      owner: 'org',
+      repo: 'repo',
+      rawBaseUrl: 'https://raw.githubusercontent.com/org/repo/HEAD',
+      blobBaseUrl: 'https://github.com/org/repo/blob/HEAD',
+    })
   })
 
   it('parses HTTPS GitHub URL without .git suffix', () => {
@@ -324,19 +390,59 @@ describe('parseRepositoryInfo', () => {
     })
   })
 
-  describe('Forgejo support', () => {
-    it('parses Forgejo URL from forgejo subdomain', () => {
+  describe('Pushin support', () => {
+    it('parses Pushin URL', () => {
       const result = parseRepositoryInfo({
-        url: 'https://forgejo.example.com/owner/repo',
+        url: 'https://pushin.eu/tobbe/npmx-pushin-test',
       })
       expect(result).toMatchObject({
-        provider: 'forgejo',
-        owner: 'owner',
-        repo: 'repo',
-        host: 'forgejo.example.com',
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
+        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+      })
+      expect(result?.host).toBeUndefined()
+    })
+
+    it('parses Pushin URL from www.pushin.eu', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://www.pushin.eu/tobbe/npmx-pushin-test',
+      })
+      expect(result).toMatchObject({
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
+        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
       })
     })
 
+    it('parses Pushin HTTPS clone URL from git.pushin.eu', () => {
+      const result = parseRepositoryInfo({
+        url: 'git+https://git.pushin.eu/tobbe/npmx-pushin-test.git',
+      })
+      expect(result).toMatchObject({
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
+        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+      })
+      expect(result?.host).toBeUndefined()
+    })
+
+    it('parses Pushin SSH clone URL from git.pushin.eu', () => {
+      const result = parseRepositoryInfo('git@git.pushin.eu:tobbe/npmx-pushin-test.git')
+      expect(result).toMatchObject({
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
+      })
+    })
+  })
+
+  describe('Forgejo support', () => {
     it('parses Forgejo URL from next.forgejo.org', () => {
       const result = parseRepositoryInfo({
         url: 'https://next.forgejo.org/forgejo/forgejo',
@@ -348,16 +454,19 @@ describe('parseRepositoryInfo', () => {
         host: 'next.forgejo.org',
       })
     })
+  })
 
-    it('parses Forgejo URL with .git suffix', () => {
+  describe('Gitea support', () => {
+    it('parses exact allowlisted Gitea hosts', () => {
       const result = parseRepositoryInfo({
-        url: 'git+ssh://git@forgejo.myserver.com/user/project.git',
+        url: 'https://gitea.com/owner/repo',
       })
       expect(result).toMatchObject({
-        provider: 'forgejo',
-        owner: 'user',
-        repo: 'project',
-        host: 'forgejo.myserver.com',
+        provider: 'gitea',
+        owner: 'owner',
+        repo: 'repo',
+        host: 'gitea.com',
+        rawBaseUrl: 'https://gitea.com/owner/repo/raw/branch/main',
       })
     })
   })
@@ -462,6 +571,16 @@ describe('parseRepositoryInfo', () => {
       expect(result).toMatchObject({
         rawBaseUrl: 'https://next.forgejo.org/forgejo/forgejo/raw/branch/main',
         blobBaseUrl: 'https://next.forgejo.org/forgejo/forgejo/src/branch/main',
+      })
+    })
+
+    it('generates correct blobBaseUrl for Pushin', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://pushin.eu/tobbe/npmx-pushin-test',
+      })
+      expect(result).toMatchObject({
+        rawBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
+        blobBaseUrl: 'https://pushin.eu/tobbe/npmx-pushin-test/blob/HEAD',
       })
     })
   })

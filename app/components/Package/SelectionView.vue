@@ -52,6 +52,7 @@ const { data, pending } = useAsyncData(
         :view-mode="viewMode"
         :results="data"
         heading-level="h2"
+        selectable
       />
       <p v-else class="text-fg-muted text-sm">
         {{ $t('filters.table.no_packages') }}

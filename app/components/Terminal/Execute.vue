@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import type { PackageManagerId } from '~/utils/install-command'
+import { getPackageManagerConfig } from '~/utils/install-command'
 
 /**
  * A terminal-style execute command display for binary-only packages.
- * Renders all package manager variants with CSS-based visibility.
+ * Renders the currently selected package manager command.
  */
 
 const props = defineProps<{
@@ -14,6 +15,8 @@ const props = defineProps<{
 }>()
 
 const selectedPM = useSelectedPackageManager()
+const { polite } = useAnnouncer()
+const selectedPackageManagerConfig = computed(() => getPackageManagerConfig(selectedPM.value))
 
 // Generate execute command parts for a specific package manager
 function getExecutePartsForPM(pmId: PackageManagerId) {
@@ -39,7 +42,10 @@ function getFullExecuteCommand() {
 
 // Copy handler
 const { copied: executeCopied, copy: copyExecute } = useClipboard({ copiedDuring: 2000 })
-const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
+const copyExecuteCommand = () => {
+  copyExecute(getFullExecuteCommand())
+  polite($t('package.command.copied_execute'))
+}
 </script>
 
 <template>
@@ -52,55 +58,28 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
       </div>
       <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1">
-        <!-- Execute command - render all PM variants, CSS controls visibility -->
         <div
-          v-for="pm in packageManagers"
-          :key="`execute-${pm.id}`"
-          :data-pm-cmd="pm.id"
+          :data-pm-cmd="selectedPackageManagerConfig.id"
           class="flex items-center gap-2 group/executecmd"
         >
-          <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+          <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
           <code class="font-mono text-sm"
             ><span
-              v-for="(part, i) in getExecutePartsForPM(pm.id)"
+              v-for="(part, i) in getExecutePartsForPM(selectedPackageManagerConfig.id)"
               :key="i"
               :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
               >{{ i > 0 ? ' ' : '' }}{{ part }}</span
             ></code
           >
-          <button
+          <ButtonBase
             type="button"
-            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/executecmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70"
+            class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/executecmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
+            :classicon="executeCopied ? 'i-lucide:check' : 'i-lucide:copy'"
             @click.stop="copyExecuteCommand"
-          >
-            {{ executeCopied ? $t('common.copied') : $t('common.copy') }}
-          </button>
+          />
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style>
-/* Hide all variants by default when preference is set */
-:root[data-pm] [data-pm-cmd] {
-  display: none;
-}
-
-/* Show only the matching package manager command */
-:root[data-pm='npm'] [data-pm-cmd='npm'],
-:root[data-pm='pnpm'] [data-pm-cmd='pnpm'],
-:root[data-pm='yarn'] [data-pm-cmd='yarn'],
-:root[data-pm='bun'] [data-pm-cmd='bun'],
-:root[data-pm='deno'] [data-pm-cmd='deno'],
-:root[data-pm='vlt'] [data-pm-cmd='vlt'],
-:root[data-pm='vp'] [data-pm-cmd='vp'] {
-  display: flex;
-}
-
-/* Fallback: when no data-pm is set (SSR initial), show npm as default */
-:root:not([data-pm]) [data-pm-cmd]:not([data-pm-cmd='npm']) {
-  display: none;
-}
-</style>

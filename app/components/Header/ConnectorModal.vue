@@ -1,6 +1,14 @@
 <script setup lang="ts">
-const { isConnected, isConnecting, npmUser, error, hasOperations, connect, disconnect } =
-  useConnector()
+const {
+  isConnected,
+  isConnecting,
+  npmUser,
+  error,
+  hasOperations,
+  connect,
+  disconnect,
+  clearError,
+} = useConnector()
 
 const { settings } = useSettings()
 
@@ -10,12 +18,23 @@ const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
 const hasAttemptedConnect = shallowRef(false)
 
+function resetForm() {
+  tokenInput.value = ''
+  hasAttemptedConnect.value = false
+  clearError()
+}
+
 watch(isConnected, connected => {
   if (!connected) {
-    tokenInput.value = ''
-    hasAttemptedConnect.value = false
+    resetForm()
   }
 })
+
+/** Reset the connection form so a stale token/error isn't shown when reopening. */
+function handleModalClose() {
+  if (isConnected.value) return
+  resetForm()
+}
 
 async function handleConnect() {
   hasAttemptedConnect.value = true
@@ -51,6 +70,7 @@ const executeNpmxConnectorCommand = computed(() => {
     :modalTitle="$t('connector.modal.title')"
     :class="isConnected && hasOperations ? 'max-w-2xl' : 'max-w-md'"
     id="connector-modal"
+    @close="handleModalClose"
   >
     <!-- Connected state -->
     <div v-if="isConnected" class="space-y-4">

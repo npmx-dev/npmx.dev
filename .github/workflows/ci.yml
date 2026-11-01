@@ -23,77 +23,96 @@ permissions:
 jobs:
   lint:
     name: 🔠 Lint project
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
-          run-install: false
-
-      - name: 📦 Install dependencies (root only, no scripts)
-        run: vp install --filter . --ignore-scripts
+          node-version-file: .node-version
+          sfw: true
+          # root only, no scripts
+          run-install: |
+            - args: ['--filter', '.', '--ignore-scripts']
 
       - name: 🔠 Lint project
         run: vp run lint
 
   types:
     name: 💪 Type check
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
+          sfw: true
 
       - name: 💪 Type check
         run: vp run test:types
 
   unit:
     name: 🧪 Unit tests
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
+          sfw: true
 
       - name: 🧪 Unit tests
         run: vp test --project unit --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
-      - name: ⬆︎ Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+      - parallel:
+          - name: ⬆︎ Upload test results to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: test-report.junit.xml
+              flags: unit
+              report_type: test_results
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+          - name: ⬆︎ Upload coverage reports to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: coverage/clover.xml
+              flags: unit
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   test:
     name: 🧪 Component tests
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
+          sfw: true
 
       - name: 🌐 Install browser
         run: vp exec playwright install chromium-headless-shell
@@ -101,36 +120,54 @@ jobs:
       - name: 🧪 Component tests
         run: vp test --project nuxt --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
-      - name: ⬆︎ Upload coverage reports to Codecov
-        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
-        with:
-          report_type: test_results
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - parallel:
+          - name: ⬆︎ Upload test results to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: test-report.junit.xml
+              flags: component
+              report_type: test_results
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: ⬆︎ Upload coverage reports to Codecov
-        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          - name: ⬆︎ Upload coverage reports to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: coverage/clover.xml
+              flags: component
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   browser:
     name: 🖥️ Browser tests
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     container:
-      image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:6446946a1d9fd62d9ae501312a2d76a43ee688542b21622056a372959b65d63d
+      image: mcr.microsoft.com/playwright:v1.62.1-noble@sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: 👑 Fix Git ownership
         run: git config --global --add safe.directory /__w/npmx.dev/npmx.dev
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      # Required to build better-sqlite3 for docs presumably because of the
+      # use of the playwright container. We should remove this if we stop having
+      # to build better-sqlite3 and the prebuilt binary starts working.
+      - name: 🚧 Install build tools
+        run: apt-get update && apt-get install --yes build-essential
+        shell: bash
+
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
+          sfw: true
 
       - name: 🏗️ Build project
         run: vp run build:test
@@ -140,6 +177,18 @@ jobs:
       - name: 🖥️ Test project (browser)
         run: vp run test:browser:prebuilt
 
+      - name: ⬆︎ Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        with:
+          disable_search: true
+          files: test-report.junit.xml
+          flags: browser
+          report_type: test_results
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      # TODO(serhalp): Upload browser *coverage* report once we've instrumented the prebuilt bundle
+
   a11y:
     name: ♿ Accessibility audit
     runs-on: ubuntu-latest # See https://github.com/GoogleChrome/lighthouse/discussions/16834
@@ -148,14 +197,15 @@ jobs:
         mode: [dark, light]
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
+          sfw: true
 
       - name: 🏗️ Build project
         run: vp run build:test
@@ -168,37 +218,38 @@ jobs:
 
   knip:
     name: 🧹 Unused code check
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
+          sfw: true
 
       - name: 🧹 Check for unused code
         run: vp run knip
 
   i18n:
     name: 🌐 i18n validation
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-slim
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
-          run-install: false
-
-      - name: 📦 Install dependencies (root only, no scripts)
-        run: vp install --filter . --ignore-scripts
+          node-version-file: .node-version
+          sfw: true
+          # root only, no scripts
+          run-install: |
+            - args: ['--filter', '.', '--ignore-scripts']
 
       - name: 🌐 Check for missing or dynamic i18n keys
         run: vp run i18n:report

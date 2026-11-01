@@ -132,12 +132,14 @@ export default defineNitroPlugin(nitroApp => {
     } else if (isHtmlResponse && isISRRoute(ctx.event)) {
       // This was an HTML render for an ISR route — check if the Nuxt plugin
       // stashed a serialized payload on the event context
+      // oxlint-disable-next-line eslint/no-underscore-dangle
       const cachedPayload = ctx.event.context._cachedPayloadResponse
       if (cachedPayload) {
         const pathWithoutQuery = ctx.event.path.replace(/\?.*$/, '')
         const routePath = pathWithoutQuery === '/' ? '/' : pathWithoutQuery.replace(/\/$/, '')
         cachePayload(ctx.event, routePath, cachedPayload)
         // Clean up the stashed payload
+        // oxlint-disable-next-line eslint/no-underscore-dangle
         delete ctx.event.context._cachedPayloadResponse
       }
     }

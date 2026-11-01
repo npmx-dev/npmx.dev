@@ -1,4 +1,4 @@
-import { diff as semverDiff } from 'semver'
+import { difference as semverDifference } from 'verkit'
 
 /**
  * Parse a version range from a URL segment.
@@ -26,7 +26,7 @@ function traverse(nodes: PackageFileTree[], callback: (node: PackageFileTree) =>
 }
 
 /** Flatten a file tree into a map of path -> node */
-export function flattenTree(tree: PackageFileTree[]): Map<string, PackageFileTree> {
+function flattenTree(tree: PackageFileTree[]): Map<string, PackageFileTree> {
   const result = new Map<string, PackageFileTree>()
 
   traverse(tree, node => {
@@ -48,7 +48,7 @@ const hasChanged = (fromNode: PackageFileTree, toNode: PackageFileTree): boolean
 }
 
 /** Compare two file trees and return changes */
-export function compareFileTrees(
+function compareFileTrees(
   fromTree: PackageFileTree[],
   toTree: PackageFileTree[],
 ): { added: FileChange[]; removed: FileChange[]; modified: FileChange[]; truncated: boolean } {
@@ -136,7 +136,7 @@ export function compareFileTrees(
 }
 
 /** Compare dependencies between two package.json files */
-export function compareDependencies(
+function compareDependencies(
   fromPkg: Record<string, unknown> | null,
   toPkg: Record<string, unknown> | null,
 ): DependencyChange[] {
@@ -172,7 +172,7 @@ export function compareDependencies(
           // Strip ^ ~ >= etc for comparison
           const cleanFrom = fromVersion.replace(/^[\^~>=<]+/, '')
           const cleanTo = toVersion.replace(/^[\^~>=<]+/, '')
-          const diffResult = semverDiff(cleanFrom, cleanTo)
+          const diffResult = semverDifference(cleanFrom, cleanTo)
           if (diffResult) {
             if (
               diffResult === 'premajor' ||
@@ -212,7 +212,7 @@ export function compareDependencies(
 }
 
 /** Count total files in a tree */
-export function countFiles(tree: PackageFileTree[]): number {
+function countFiles(tree: PackageFileTree[]): number {
   let count = 0
 
   traverse(tree, node => {

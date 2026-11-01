@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { PackageVersionInfo } from '#shared/types/npm-registry'
 import VersionSelector from '~/components/VersionSelector.vue'
@@ -604,7 +604,13 @@ describe('VersionSelector', () => {
 
       expect(mockFetchAllPackageVersions).toHaveBeenCalledTimes(1)
 
-      finishLoad!([{ version: '1.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false }])
+      finishLoad!([
+        {
+          version: '1.0.0',
+          time: '2024-01-15T12:00:00.000Z',
+          trustStatus: { provenance: false, trustedPublisher: false, stagedPublish: false },
+        },
+      ])
     })
   })
 

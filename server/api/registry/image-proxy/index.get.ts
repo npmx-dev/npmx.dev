@@ -154,10 +154,17 @@ export default defineEventHandler(async event => {
       })
     }
 
-    const contentType = response.headers.get('content-type') || 'application/octet-stream'
+    const rawContentType = response.headers.get('content-type') || 'application/octet-stream'
+    const contentType = rawContentType.split(';', 1)[0]?.trim().toLowerCase()
 
+    const imagePathname = new URL(url).pathname.toLowerCase()
+    // Since some services don't specify the content-type, leaving it up to the user, we additionally check the extension.
+    // This doesn't compromise security, as both the extension and the content-type allow the user to forge the value.
+    const isImageLike =
+      contentType === 'application/octet-stream' &&
+      ['.png', '.jpg', '.jpeg', '.gif'].some(ext => imagePathname.endsWith(ext))
     // Allow raster/vector image content types (we don't inject external content into DOM, so SVG is allowed too)
-    if (!contentType.startsWith('image/')) {
+    if (!contentType?.startsWith('image/') && !isImageLike) {
       await response.body?.cancel()
       throw createError({
         statusCode: 400,

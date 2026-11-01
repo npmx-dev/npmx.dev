@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import {
   getInstallCommand,
   getInstallCommandParts,
@@ -36,6 +36,8 @@ describe('install command generation', () => {
         ['deno', 'npm:lodash'],
         ['vlt', 'lodash'],
         ['vp', 'lodash'],
+        ['nub', 'lodash'],
+        ['upm', 'lodash'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getPackageSpecifier({
@@ -56,6 +58,8 @@ describe('install command generation', () => {
         ['deno', 'jsr:@trpc/server'], // Native JSR specifier preferred
         ['vlt', '@trpc/server'],
         ['vp', '@trpc/server'],
+        ['nub', '@trpc/server'],
+        ['upm', '@trpc/server'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getPackageSpecifier({
@@ -76,6 +80,8 @@ describe('install command generation', () => {
         ['deno', 'npm:@vue/shared'], // Falls back to npm: compat
         ['vlt', '@vue/shared'],
         ['vp', '@vue/shared'],
+        ['nub', '@vue/shared'],
+        ['upm', '@vue/shared'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getPackageSpecifier({
@@ -98,6 +104,8 @@ describe('install command generation', () => {
         ['deno', 'deno add npm:lodash'],
         ['vlt', 'vlt install lodash'],
         ['vp', 'vp add lodash'],
+        ['nub', 'nub add lodash'],
+        ['upm', 'upm add lodash'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -118,6 +126,8 @@ describe('install command generation', () => {
         ['deno', 'deno add npm:lodash@4.17.21'],
         ['vlt', 'vlt install lodash@4.17.21'],
         ['vp', 'vp add lodash@4.17.21'],
+        ['nub', 'nub add lodash@4.17.21'],
+        ['upm', 'upm add lodash@4.17.21'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -139,6 +149,8 @@ describe('install command generation', () => {
         ['deno', 'deno add -D npm:eslint'],
         ['vlt', 'vlt install -D eslint'],
         ['vp', 'vp add -D eslint'],
+        ['nub', 'nub add -D eslint'],
+        ['upm', 'upm add -D eslint'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -160,6 +172,8 @@ describe('install command generation', () => {
         ['deno', 'deno add jsr:@trpc/server'], // Native JSR preferred
         ['vlt', 'vlt install @trpc/server'],
         ['vp', 'vp add @trpc/server'],
+        ['nub', 'nub add @trpc/server'],
+        ['upm', 'upm add @trpc/server'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -180,6 +194,8 @@ describe('install command generation', () => {
         ['deno', 'deno add jsr:@trpc/server@10.0.0'], // Native JSR with version
         ['vlt', 'vlt install @trpc/server@10.0.0'],
         ['vp', 'vp add @trpc/server@10.0.0'],
+        ['nub', 'nub add @trpc/server@10.0.0'],
+        ['upm', 'upm add @trpc/server@10.0.0'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -201,6 +217,8 @@ describe('install command generation', () => {
         ['deno', 'deno add npm:@vue/shared'], // Falls back to npm: compat
         ['vlt', 'vlt install @vue/shared'],
         ['vp', 'vp add @vue/shared'],
+        ['nub', 'nub add @vue/shared'],
+        ['upm', 'upm add @vue/shared'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -280,6 +298,25 @@ describe('install command generation', () => {
       expect(parts).toEqual(['vlt', 'install', 'lodash'])
     })
 
+    it('omits an empty action for ni', () => {
+      expect(
+        getInstallCommandParts({
+          packageName: 'lodash',
+          packageManager: 'ni',
+          jsrInfo: jsrNotAvailable,
+        }),
+      ).toEqual(['ni', 'lodash'])
+
+      expect(
+        getInstallCommandParts({
+          packageName: 'eslint',
+          packageManager: 'ni',
+          jsrInfo: jsrNotAvailable,
+          dev: true,
+        }),
+      ).toEqual(['ni', '-D', 'eslint'])
+    })
+
     it('joined parts match getInstallCommand output', () => {
       const options = {
         packageName: '@trpc/server',
@@ -355,6 +392,8 @@ describe('install command generation', () => {
         ['deno', ['deno', 'run', 'npm:eslint']],
         ['vlt', ['vlx', 'eslint']],
         ['vp', ['vp', 'exec', 'eslint']],
+        ['nub', ['nubx', 'eslint']],
+        ['upm', ['upx', 'eslint']],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getExecuteCommandParts({
@@ -375,6 +414,8 @@ describe('install command generation', () => {
         ['deno', ['deno', 'run', 'npm:degit']],
         ['vlt', ['vlx', 'degit']],
         ['vp', ['vp', 'dlx', 'degit']],
+        ['nub', ['nubx', 'degit']],
+        ['upm', ['upx', 'degit']],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getExecuteCommandParts({
@@ -395,6 +436,8 @@ describe('install command generation', () => {
         ['deno', ['deno', 'create', 'npm:vite']],
         ['vlt', ['vlx', 'vite']],
         ['vp', ['vp', 'create', 'vite']],
+        ['nub', ['nub', 'create', 'vite']],
+        ['upm', ['upm', 'create', 'vite']],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getExecuteCommandParts({

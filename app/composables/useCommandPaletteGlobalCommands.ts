@@ -75,6 +75,7 @@ export function useCommandPaletteGlobalCommands() {
   const colorMode = useColorMode()
   const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
   const { backgroundThemes, selectedBackgroundTheme, setBackgroundTheme } = useBackgroundTheme()
+  const { foregroundThemes, selectedForegroundTheme, setForegroundTheme } = useForegroundTheme()
   const connectorModal = useModal('connector-modal')
   const authModal = useModal('auth-modal')
   const keyboardShortcutsModal = useModal('keyboard-shortcuts-modal')
@@ -126,6 +127,16 @@ export function useCommandPaletteGlobalCommands() {
     const id = selectedBackgroundTheme.value
     if (!id) return null
     return backgroundThemes.value.find(theme => theme.id === id)?.value ?? null
+  })
+  const currentForegroundThemeLabel = computed(() => {
+    const id = selectedForegroundTheme.value
+    if (!id) return t('settings.foreground_themes.standard')
+    return foregroundThemes.value.find(theme => theme.id === id)?.label ?? id
+  })
+  const currentForegroundThemePreview = computed(() => {
+    const id = selectedForegroundTheme.value
+    if (!id) return null
+    return foregroundThemes.value.find(theme => theme.id === id)?.value ?? null
   })
   const localeCommands = computed<CommandPaletteCommand[]>(() =>
     locales.value.map(entry => {
@@ -205,6 +216,32 @@ export function useCommandPaletteGlobalCommands() {
     }))
   })
 
+  const foregroundThemeCommands = computed<CommandPaletteCommand[]>(() => {
+    const activeId = selectedForegroundTheme.value
+
+    return foregroundThemes.value.map(theme => ({
+      id: `foreground-theme:${theme.id}`,
+      group: 'settings' as const,
+      label: theme.label,
+      keywords: [theme.label, theme.id, t('settings.foreground_themes.label'), t('settings.theme')],
+      iconClass: 'i-lucide:swatch-book',
+      previewColor: theme.value,
+      active: theme.id === 'standard' ? !activeId : theme.id === activeId,
+      activeLabel: (theme.id === 'standard' ? !activeId : theme.id === activeId)
+        ? t('command_palette.current')
+        : null,
+      action: runThenAnnounce(
+        () => {
+          setForegroundTheme(theme.id)
+        },
+        () =>
+          t('command_palette.announcements.foreground_theme_changed', {
+            theme: theme.label,
+          }),
+      ),
+    }))
+  })
+
   const globalCommands = computed<CommandPaletteCommand[]>(() => {
     const items: CommandPaletteCommand[] = [
       {
@@ -278,6 +315,29 @@ export function useCommandPaletteGlobalCommands() {
         to: { name: 'compare' },
       },
       {
+        id: 'tools',
+        group: 'navigation',
+        label: t('nav.tools'),
+        keywords: [t('footer.tools'), t('shortcuts.deps_stats')],
+        iconClass: 'i-lucide:wrench',
+        active: route.name === 'tools' || route.name === 'tools-deps-stats',
+        activeLabel: activeLabel(
+          route.name === 'tools' || route.name === 'tools-deps-stats',
+          t('command_palette.here'),
+        ),
+        to: { name: 'tools' },
+      },
+      {
+        id: 'deps-stats',
+        group: 'navigation',
+        label: t('tools.deps_stats.name'),
+        keywords: [t('shortcuts.deps_stats'), 'package.json', 'deps'],
+        iconClass: 'i-lucide:file-json',
+        active: route.name === 'tools-deps-stats',
+        activeLabel: activeLabel(route.name === 'tools-deps-stats', t('command_palette.here')),
+        to: { name: 'tools-deps-stats' },
+      },
+      {
         id: 'settings',
         group: 'navigation',
         label: t('nav.settings'),
@@ -309,6 +369,39 @@ export function useCommandPaletteGlobalCommands() {
           t('command_palette.here'),
         ),
         to: { name: 'blog' },
+      },
+      {
+        id: 'noodles',
+        group: 'npmx',
+        label: t('noodles.title'),
+        keywords: [t('noodles.latest'), t('noodles.what_is')],
+        iconClass: 'i-lucide:soup',
+        active: route.name === 'noodles' || `${route.name ?? ''}`.startsWith('noodles-'),
+        activeLabel: activeLabel(
+          route.name === 'noodles' || `${route.name ?? ''}`.startsWith('noodles-'),
+          t('command_palette.here'),
+        ),
+        to: { name: 'noodles' },
+      },
+      {
+        id: 'sponsors',
+        group: 'npmx',
+        label: t('sponsors_page.title'),
+        keywords: [t('sponsors_page.title')],
+        iconClass: 'i-lucide:heart',
+        active: route.name === 'sponsors',
+        activeLabel: activeLabel(route.name === 'sponsors', t('command_palette.here')),
+        to: { name: 'sponsors' },
+      },
+      {
+        id: 'brand',
+        group: 'npmx',
+        label: t('footer.brand'),
+        keywords: [t('footer.brand')],
+        iconClass: 'i-lucide:palette',
+        active: route.name === 'brand',
+        activeLabel: activeLabel(route.name === 'brand', t('command_palette.here')),
+        to: { name: 'brand' },
       },
       {
         id: 'privacy',
@@ -498,6 +591,22 @@ export function useCommandPaletteGlobalCommands() {
           setView('background-themes')
         },
       },
+      {
+        id: 'foreground-themes',
+        group: 'settings',
+        label: t('settings.foreground_themes.label'),
+        keywords: [
+          t('settings.foreground_themes.label'),
+          currentForegroundThemeLabel.value,
+          t('settings.theme'),
+        ],
+        iconClass: 'i-lucide:swatch-book',
+        badge: currentForegroundThemeLabel.value,
+        previewColor: currentForegroundThemePreview.value,
+        action: async () => {
+          setView('foreground-themes')
+        },
+      },
     ]
 
     const npmUsername = npmUser.value
@@ -636,6 +745,11 @@ export function useCommandPaletteGlobalCommands() {
         commands: backgroundThemeCommands.value,
         placeholder: t('settings.background_themes.label'),
         subtitle: t('settings.background_themes.label'),
+      },
+      'foreground-themes': {
+        commands: foregroundThemeCommands.value,
+        placeholder: t('settings.foreground_themes.label'),
+        subtitle: t('settings.foreground_themes.label'),
       },
     }),
   )

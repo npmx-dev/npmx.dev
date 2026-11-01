@@ -35,6 +35,7 @@ const TEST_CASES = [
 
   // Package code-tree variant (file tree decoration)
   { path: '/package-code/vue/v/3.5.27', label: 'code-tree variant' },
+  { path: '/package-code/takumi-js/v/1.8.7', label: 'code-tree variant with nested dist tree' },
 
   // Package function-tree variant (API symbols decoration)
   { path: '/package-docs/ufo/v/1.6.3', label: 'function-tree variant' },

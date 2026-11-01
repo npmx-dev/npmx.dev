@@ -72,29 +72,11 @@ const replacementDescription = useMarkdown(() => ({
         <template v-else-if="replacement.type === 'simple'">
           <i18n-t keypath="package.replacement.simple">
             <template #replacement><span v-html="replacementDescription" /></template>
-            <template #community>{{ $t('package.replacement.community') }}</template>
           </i18n-t>
         </template>
-        <i18n-t
-          v-else-if="replacement.type === 'documented'"
-          keypath="package.replacement.documented"
-          scope="global"
-        >
-          <template #replacement>
-            <code>{{ replacement.replacementModule }}</code>
-          </template>
-          <template #community>
-            <a
-              href="https://e18e.dev/docs/replacements/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
-            >
-              {{ $t('package.replacement.community') }}
-              <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
-            </a>
-          </template>
-        </i18n-t>
+        <template v-else-if="replacement.type === 'documented'">
+          {{ $t('package.replacement.documented') }}
+        </template>
         <template v-else-if="replacement.type === 'removal'">
           <span v-html="replacementDescription" />
         </template>

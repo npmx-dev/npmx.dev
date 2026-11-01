@@ -56,7 +56,9 @@ export default defineNuxtPlugin(nuxtApp => {
       return promise
     })
 
-    transition.finished.then(resetTransitionState)
+    transition.ready.catch(handleViewTransitionRejection)
+    transition.updateCallbackDone.catch(handleViewTransitionRejection)
+    transition.finished.catch(handleViewTransitionRejection).finally(resetTransitionState)
 
     await nuxtApp.callHook('page:view-transition:start', transition)
 
@@ -88,4 +90,18 @@ export default defineNuxtPlugin(nuxtApp => {
 function isSearchTransition(toPath: string, fromPath: string): boolean {
   const paths = new Set([toPath, fromPath])
   return paths.has('/') && paths.has('/search')
+}
+
+function handleViewTransitionRejection(error: unknown) {
+  if (!import.meta.dev || isExpectedViewTransitionRejection(error)) return
+
+  // oxlint-disable-next-line no-console -- dev-only diagnostics for unexpected transition failures
+  console.warn('[view-transitions] transition promise rejected', error)
+}
+
+function isExpectedViewTransitionRejection(error: unknown): boolean {
+  const name = error instanceof Error ? error.name : ''
+  const message = error instanceof Error ? error.message : String(error)
+
+  return name === 'AbortError' || message.includes('Transition was aborted')
 }

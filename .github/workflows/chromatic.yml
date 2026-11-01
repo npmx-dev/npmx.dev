@@ -16,27 +16,29 @@ permissions:
 jobs:
   chromatic:
     name: 📚 Chromatic
-    runs-on: ubuntu-24.04-arm
+    if: github.repository == 'npmx-dev/npmx.dev'
+    runs-on: ubuntu-26.04-arm
 
     steps:
       - name: ☑️ Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
 
-      - uses: voidzero-dev/setup-vp@8ecb39174989ce55af90f45cf55b02738599831d # v1.6.0
+      - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
-
-      - name: 🟧 Install pnpm globally
-        run: vp install -g pnpm
+          sfw: true
 
       - name: 🧪 Run Chromatic Visual and Accessibility Tests
-        uses: chromaui/action@f191a0224b10e1a38b2091cefb7b7a2337009116 # v16.0.0
+        uses: chromaui/action@14cfaef73576e69f95f47f60058063f46ca38719 # v18.1.0
+        with:
+          buildCommand: vp run build-storybook
+          outputDir: storybook-static
         env:
           CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
           CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}

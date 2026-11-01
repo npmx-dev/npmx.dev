@@ -5,12 +5,15 @@ import { contributorsHandler } from '../storybook/mocks/handlers'
 
 const meta = {
   component: About,
+
+  beforeEach({ msw }) {
+    msw.use(contributorsHandler)
+  },
+
   parameters: {
     layout: 'fullscreen',
-    msw: {
-      handlers: [contributorsHandler],
-    },
   },
+
   decorators: [pageDecorator],
 } satisfies Meta<typeof About>
 
@@ -21,10 +24,4 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 /** Contributors section is hidden with no API response. */
-export const WithoutContributors: Story = {
-  parameters: {
-    msw: {
-      handlers: [],
-    },
-  },
-}
+export const WithoutContributors: Story = {}

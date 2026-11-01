@@ -9,6 +9,7 @@ const props = defineProps<{
 const providerIcons: Record<string, string> = {
   'stackblitz': 'i-simple-icons:stackblitz',
   'codesandbox': 'i-simple-icons:codesandbox',
+  'effect-ts-playground': 'i-simple-icons:effect',
   'codepen': 'i-simple-icons:codepen',
   'replit': 'i-simple-icons:replit',
   'gitpod': 'i-simple-icons:gitpod',
@@ -28,6 +29,7 @@ const providerIcons: Record<string, string> = {
 const providerColors: Record<string, string> = {
   'stackblitz': 'text-provider-stackblitz',
   'codesandbox': 'text-provider-codesandbox',
+  'effect-ts-playground': 'text-provider-effect',
   'codepen': 'text-provider-codepen',
   'replit': 'text-provider-replit',
   'gitpod': 'text-provider-gitpod',

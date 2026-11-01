@@ -1,0 +1,106 @@
+/**
+ * Heuristics for identifying files and directories that are commonly shipped
+ * to npm by accident: editor configs, lint/format settings, test trees,
+ * local-only env files, etc. Used by the package code browser to surface
+ * "this is probably bloat" hints next to affected nodes.
+ *
+ * Source list: https://github.com/npmx-dev/npmx.dev/issues/2582
+ */
+
+const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
+  '.editorconfig',
+  '.prettierignore',
+  '.eslintignore',
+  '.jshintignore',
+  '.npmignore',
+  '.gitignore',
+  '.gitattributes',
+  '.travis.yml',
+  '.verb.md',
+  '.borp.yaml',
+  'Makefile',
+  'tsconfig.json',
+  'jsconfig.json',
+  'commitlint.config.js',
+  'renovate.json',
+  '.node-version',
+  '.nvmrc',
+  'mise.toml',
+  '.tool-versions',
+  '.env',
+  '.env.local',
+  '.env.development',
+  '.env.development.local',
+  '.env.test',
+  '.env.test.local',
+  '.env.production.local',
+  '.nycrc',
+  'nyc.json',
+  '.DS_Store',
+  'AUTHORS',
+  'test.js',
+  'test.ts',
+  'tests.js',
+  'tests.ts',
+  'bench.js',
+  'benchmark.js',
+  'yarn.lock',
+  'bun.lock',
+  'bun.lockb',
+  'package-lock.json',
+])
+
+const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
+  '.vscode',
+  '.claude',
+  '.github',
+  '.idea',
+  '.zed',
+  '.yarn',
+  '.husky',
+  '.changeset',
+  'test',
+  'tests',
+  'spec',
+  'specs',
+  'example',
+  'examples',
+  'benchmark',
+  'benchmarks',
+])
+
+const POSSIBLY_UNNECESSARY_DIRECTORY_PATTERNS: readonly RegExp[] = [/^__.+__$/]
+
+const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
+  /^eslint\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  /^\.eslintrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
+  /^\.prettierrc(?:\.(?:json|js|cjs|yml|yaml|toml))?$/,
+  /^prettier\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  /^oxlint\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  /^\.oxlintrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
+  /^oxfmt\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  /^\.oxfmtrc(?:\.(?:json|js|cjs|yml|yaml))?$/,
+  /^jest\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  // Match common dot-prefixed config files without flagging all dotfiles;
+  // files like .npmrc can be intentional artifacts.
+  /^\.(?!npmrc$)[a-z][a-z0-9_-]*rc$/,
+  /^\.(?!npmrc\.)[a-z][a-z0-9_-]*rc\.(?:json|js|cjs|mjs|yml|yaml|toml)$/,
+  /^\.[a-z][a-z0-9_-]*\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  // Match files ending in .test.js, .test.ts, .spec.js, .spec.ts, etc.
+  /\.(?:test|spec)\.(?:j|t)s$/,
+  // Match CHANGELOG.md, etc
+  /^(?:changelog|releasenotes|release-notes|history|contributing|contribute|news|collaborators)\.(?:md|markdown|txt)$/i,
+  // Match example.mjs, examples.js, stc
+  /^examples?\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  /^playwright\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  /^vitest\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+]
+
+export function isPossiblyUnnecessaryContent(name: string, type: 'file' | 'directory'): boolean {
+  if (type === 'directory') {
+    if (POSSIBLY_UNNECESSARY_DIRECTORIES.has(name)) return true
+    return POSSIBLY_UNNECESSARY_DIRECTORY_PATTERNS.some(pattern => pattern.test(name))
+  }
+  if (POSSIBLY_UNNECESSARY_FILES.has(name)) return true
+  return POSSIBLY_UNNECESSARY_PATTERNS.some(pattern => pattern.test(name))
+}

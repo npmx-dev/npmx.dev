@@ -18,6 +18,7 @@ export default defineNuxtModule({
   setup() {
     const nuxt = useNuxt()
 
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     if (nuxt.options._prepare || process.env.NUXT_IMAGE_PROXY_SECRET) {
       return
     }

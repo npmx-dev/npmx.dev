@@ -30,7 +30,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 💬 Post comment
-        uses: e18e/action-dependency-diff@f825d5b5c5ce0a42dc46c47ec20de24460affcd8 # v1.5.0
+        uses: e18e/action-dependency-diff@9a7f09f5f2993256322e0db17ee4c8d9339dab77 # v1.7.1
         with:
           mode: comment-from-artifact
           artifact-path: e18e-diff-result.json

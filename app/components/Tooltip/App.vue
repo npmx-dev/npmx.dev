@@ -12,6 +12,8 @@ const props = defineProps<{
   defer?: boolean
   /** Offset distance in pixels (default: 4) */
   offset?: number
+  /** Additional attributes to be applied to the tooltip element */
+  tooltipAttr?: Record<string, unknown>
 }>()
 
 const isVisible = shallowRef(false)
@@ -38,7 +40,7 @@ function hide() {
 }
 
 const tooltipAttrs = computed(() => {
-  const attrs: Record<string, unknown> = { role: 'tooltip', id: tooltipId }
+  const attrs: Record<string, unknown> = { role: 'tooltip', id: tooltipId, ...props.tooltipAttr }
   if (props.interactive) {
     attrs.onMouseenter = show
     attrs.onMouseleave = hide

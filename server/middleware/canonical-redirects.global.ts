@@ -21,6 +21,8 @@ const pages = [
   '/blog',
   '/brand',
   '/compare',
+  '/noodles',
+  '/sponsors',
   '/org',
   '/package',
   '/package-code',
@@ -29,6 +31,7 @@ const pages = [
   '/privacy',
   '/search',
   '/settings',
+  '/tools',
   '/translation-status',
   '/recharging',
 ]
@@ -36,12 +39,74 @@ const pages = [
 const cacheControl = 's-maxage=3600, stale-while-revalidate=36000'
 
 export default defineEventHandler(async event => {
+  const [path = '/', query] = event.path.split('?')
+
+  if (query) {
+    const params = new URLSearchParams(query)
+
+    switch (params.get('activeTab')) {
+      case 'versions': {
+        // /package/name?activeTab=versions → /package/name/versions
+        // /package/@scope/name?activeTab=versions → /package/@scope/name/versions
+
+        const pkgPathMatch = path.match(/^\/package\/((?:@[^/]+\/)?[^/]+)$/)
+        if (pkgPathMatch) {
+          params.delete('activeTab')
+          const remaining = params.toString()
+          setHeader(event, 'cache-control', cacheControl)
+          return sendRedirect(
+            event,
+            `/package/${pkgPathMatch[1]}/versions` + (remaining ? '?' + remaining : ''),
+            301,
+          )
+        }
+        break
+      }
+      case 'code': {
+        // /package/name/v/version?activeTab=code → /package-code/name/v/version
+        // /package/@scope/name/v/version?activeTab=code → /package-code/@scope/name/v/version
+
+        const pkgVersionPathMatch = path.match(/^\/package\/((?:@[^/]+\/)?[^/]+)\/v\/([^/]+)$/)
+        if (pkgVersionPathMatch) {
+          const [, packageName, version] = pkgVersionPathMatch
+          params.delete('activeTab')
+          const remaining = params.toString()
+          setHeader(event, 'cache-control', cacheControl)
+          return sendRedirect(
+            event,
+            `/package-code/${packageName}/v/${version}` + (remaining ? '?' + remaining : ''),
+            308,
+          )
+        }
+
+        // /package/name?activeTab=code → /package-code/name/v/<latest-version>
+        // /package/@scope/name?activeTab=code → /package-code/@scope/name/v/<latest-version>
+
+        const pkgPathMatch = path.match(/^\/package\/((?:@[^/]+\/)?[^/]+)$/)
+        const packageName = pkgPathMatch?.[1]
+        if (packageName) {
+          const latestVersion = await fetchLatestVersion(packageName)
+          if (latestVersion) {
+            params.delete('activeTab')
+            const remaining = params.toString()
+            setHeader(event, 'cache-control', cacheControl)
+            return sendRedirect(
+              event,
+              `/package-code/${packageName}/v/${latestVersion}` +
+                (remaining ? '?' + remaining : ''),
+              302, // 302 as the latest version may change over time causing the redirect to change
+            )
+          }
+        }
+        break
+      }
+    }
+  }
+
   const routeRules = getRouteRules(event)
   if (Object.keys(routeRules).length > 1) {
     return
   }
-
-  const [path = '/', query] = event.path.split('?')
 
   // username
   if (path.startsWith('/~') || path.startsWith('/_')) {

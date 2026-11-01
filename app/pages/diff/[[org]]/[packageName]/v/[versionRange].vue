@@ -116,19 +116,19 @@ const latestVersionDetailed = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
-const normalizeRoutePath = (routeLocation: RouteLocationRaw) => {
-  const resolvedHref = router.resolve(routeLocation).href
-  return resolvedHref.replace(/%7B/g, '{').replace(/%7D/g, '}')
+function diffVersionUrlPattern(from: string, to: string) {
+  const { org, packageName: name } = route.params
+  return `/diff/${org ? `${org}/` : ''}${name}/v/${from}...${to}`
 }
 
-const fromVersionUrlPattern = computed(() => {
-  return normalizeRoutePath(diffRoute(packageName.value, '{version}', toVersion.value))
-})
-const toVersionUrlPattern = computed(() => {
-  return normalizeRoutePath(diffRoute(packageName.value, fromVersion.value, '{version}'))
-})
+const fromVersionUrlPattern = computed(() => diffVersionUrlPattern('{version}', toVersion.value))
+const toVersionUrlPattern = computed(() => diffVersionUrlPattern(fromVersion.value, '{version}'))
 
-useCommandPaletteVersionCommands(commandPalettePackageContext, fromVersionUrlPattern)
+function fromVersionRoute(version: string): RouteLocationRaw {
+  return diffRoute(packageName.value, version, toVersion.value)
+}
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, fromVersionRoute)
 
 useSeoMeta({
   title: () => {

@@ -73,6 +73,23 @@
     "instant_search_turn_off": "wyłącz",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "command_palette": {
+    "keyboard_shortcuts": {},
+    "state": {},
+    "groups": {},
+    "actions": {},
+    "connections": {},
+    "navigation": {},
+    "links": {},
+    "package_links": {},
+    "theme": {},
+    "package": {},
+    "code": {},
+    "diff": {},
+    "version": {},
+    "status": {},
+    "announcements": {}
+  },
   "nav": {
     "main_navigation": "Główne",
     "popular_packages": "Popularne pakiety",
@@ -84,6 +101,14 @@
     "open_menu": "Otwórz menu",
     "links": "Linki",
     "tap_to_search": "Dotknij, aby wyszukać"
+  },
+  "tools": {
+    "deps_stats": {}
+  },
+  "deps_stats": {
+    "upload": {},
+    "dependencies": {},
+    "stats": {}
   },
   "blog": {
     "title": "Blog",
@@ -109,6 +134,9 @@
       "repost_count": "{count} udostępnień | {count} udostępnienie | {count} udostępnienia | {count} udostępnień | {count} udostępnień",
       "more_replies": "jeszcze {count} odpowiedź… | jeszcze {count} odpowiedzi… | jeszcze {count} odpowiedzi…"
     }
+  },
+  "noodles": {
+    "missing": {}
   },
   "settings": {
     "title": "ustawienia",
@@ -150,6 +178,7 @@
     "background_themes": {
       "label": "Odcień tła"
     },
+    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "Włącz skróty klawiaturowe",
     "keyboard_shortcuts_enabled_description": "Skróty klawiaturowe mogą zostać wyłączone jeśli kolidują z innymi skrótami przeglądarki lub systemu"
   },
@@ -245,15 +274,13 @@
       "size": "Rozmiar instalacji wzrósł o {percent} ({size} więcej)",
       "deps": "{count} więcej zależności"
     },
+    "size_decrease": {},
     "replacement": {
       "title": "Możliwe, że nie potrzebujesz tej zależności.",
       "native": "Można to zastąpić {replacement}, dostępne od Node {nodeVersion}.",
-      "simple": "{community} oznaczyła ten pakiet jako zbędny, z sugestią: {replacement}.",
-      "documented": "{community} wskazuje, że istnieją wydajniejsze alternatywy.",
       "none": "Ten pakiet został oznaczony jako zbędny, a jego funkcjonalność jest prawdopodobnie dostępna natywnie we wszystkich środowiskach.",
       "learn_more": "Dowiedz się więcej",
       "learn_more_above": "Dowiedz się więcej powyżej",
-      "community": "Społeczność",
       "consider_no_dep": "+ Rozważ brak zależności?"
     },
     "stats": {
@@ -322,6 +349,7 @@
       "title": "Uruchom",
       "locally": "Uruchom lokalnie"
     },
+    "command": {},
     "readme": {
       "title": "README",
       "no_readme": "Brak README.",
@@ -379,7 +407,6 @@
       "deprecated_title": "{version} (przestarzała)",
       "view_all": "Zobacz wszystkie {count} wersje | Zobacz {count} wersję | Zobacz {count} wersje | Zobacz {count} wersji | Zobacz {count} wersji",
       "distribution_title": "Grupa semver",
-      "distribution_modal_title": "Wersje",
       "distribution_range_date_same_year": "od {from} do {to}, {endYear}",
       "distribution_range_date_multiple_years": "od {from}, {startYear} do {to}, {endYear}",
       "grouping_major": "Major",
@@ -401,7 +428,12 @@
       "no_matches": "Żadna wersja nie pasuje do tego zakresu",
       "copy_alt": {
         "per_version_analysis": "Wersję {version} pobrano {downloads} razy",
-        "general_description": "Wykres słupkowy pokazujący liczbę pobrań dla każdej z {version_count} {semver_grouping_mode} wersji pakietu {package_name}, {date_range_label} od wersji {first_version} do wersji {last_version}. Najczęściej pobieraną wersją jest {max_downloaded_version}, pobrana została {max_version_downloads} razy. {per_version_analysis}. {watermark}."
+        "general_description": "Wykres słupkowy pokazujący liczbę pobrań dla każdej z {versions_count} {semver_grouping_mode} wersji pakietu {package_name}, {date_range_label} od wersji {first_version} do wersji {last_version}. Najczęściej pobieraną wersją jest {max_downloaded_version}, pobrana została {max_version_downloads} razy. {per_version_analysis}. {watermark}."
+      }
+    },
+    "timeline": {
+      "chart": {
+        "copy_alt": {}
       }
     },
     "dependencies": {
@@ -440,6 +472,7 @@
       "show_less": "(pokaż mniej)"
     },
     "trends": {
+      "chart_assistive_text": {},
       "granularity": "Agregacja",
       "granularity_daily": "Dzienna",
       "granularity_weekly": "Tygodniowa",
@@ -490,9 +523,15 @@
         "estimations": "Końcowe wartości są szacowane na podstawie danych częściowych dla bieżącego okresu.",
         "compare": "Wykres liniowy porównujący ilość pobrań dla: {packages}.",
         "single_package": "Wykres liniowy ilości pobrań dla pakietu {package}.",
-        "general_description": "Oś Y przedstawia ilość pobrań. Oś X przedstawia zakres dat, od {start_date} do {end_date}, z jednostką czasu {granularity}. {estimation_notice} {package_analysis}. {watermark}",
+        "general_description": "Oś Y przedstawia ilość pobrań. Oś X przedstawia zakres dat, od {start_date} do {end_date}, z jednostką czasu {granularity}. {estimation_notice} {packages_analysis}. {watermark}",
         "facet_bar_general_description": "Poziomy wykres słupkowy dla: {packages}, porównuje {facet} ({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} ma wartość {value}."
+      },
+      "embedding": {},
+      "sparkline_zoom_reset": {},
+      "downloads_heatmap": {
+        "legend": {},
+        "copy_alt": {}
       }
     },
     "downloads": {
@@ -589,6 +628,9 @@
       "mb": "{size} MB"
     },
     "download": {}
+  },
+  "leaderboard": {
+    "likes": {}
   },
   "connector": {
     "modal": {
@@ -941,7 +983,6 @@
     },
     "team": {
       "title": "Zespół",
-      "governance": "Zarządzanie",
       "role_steward": "steward",
       "role_maintainer": "maintainer",
       "sponsor": "sponsor",
@@ -976,6 +1017,25 @@
         "description": "Sprawdź, co nowego w npmx.",
         "cta": "Obserwuj na Bluesky"
       }
+    }
+  },
+  "sponsors_page": {
+    "what_we_do": {},
+    "what_support_means": {},
+    "what_this_means_for_you": {
+      "cards": {
+        "people": {},
+        "visitors": {},
+        "stars": {},
+        "community": {},
+        "adoption": {},
+        "default_source": {}
+      }
+    },
+    "tiers": {
+      "silver": {},
+      "gold": {},
+      "platinum": {}
     }
   },
   "account_menu": {
@@ -1054,6 +1114,9 @@
       "packages_selected": "Wybrano pakiety: {count}/{max}.",
       "add_hint": "Dodaj co najmniej 2 pakiety do porównania."
     },
+    "scatter_chart": {
+      "copy_alt": {}
+    },
     "no_dependency": {
       "label": "(brak zależności)",
       "typeahead_title": "Co zrobiłby James?",
@@ -1128,7 +1191,11 @@
         "vulnerabilities": {
           "label": "Podatności",
           "description": "Znane luki bezpieczeństwa"
-        }
+        },
+        "githubStars": {},
+        "githubForks": {},
+        "githubIssues": {},
+        "createdAt": {}
       },
       "values": {
         "any": "Dowolne",
@@ -1148,8 +1215,6 @@
     "file_changes": "Zmiany w plikach",
     "files_count": "{count} plików",
     "lines_hidden": "ukryto {count} linii",
-    "file_too_large": "Plik jest zbyt duży do porównania",
-    "file_size_warning": "{size} przekracza limit dla porównań wynoszący 250KB",
     "compare_versions": "porównaj",
     "compare_versions_title": "Porównaj z najnowszą wersją",
     "version_invalid_url_format": {},
@@ -1318,8 +1383,24 @@
       "link": "repozytorium GitHub"
     }
   },
-  "translation_status": {
-    "table": {}
+  "translation_status": {},
+  "vacations": {
+    "what": {},
+    "meantime": {},
+    "return": {},
+    "stats": {
+      "subtitle": {}
+    }
   },
-  "action_bar": {}
+  "action_bar": {},
+  "logo_menu": {},
+  "brand": {
+    "logos": {},
+    "customize": {},
+    "typography": {},
+    "guidelines": {}
+  },
+  "changelog": {
+    "error": {}
+  }
 }

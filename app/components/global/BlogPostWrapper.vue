@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { defineLink } from '@unhead/vue'
 import type { RawBlogPostFrontmatter } from '#shared/schemas/blog'
 import { generateBlogTID } from '#shared/utils/atproto'
 import { posts } from '#blog/posts'
@@ -21,10 +22,10 @@ useSeoMeta({
 
 useHead({
   link: [
-    {
+    defineLink({
       rel: 'site.standard.document',
       href: `at://${NPMX_DEV_DID}/site.standard.document/${generateBlogTID(props.frontmatter.date, props.frontmatter.slug)}`,
-    },
+    }),
   ],
 })
 

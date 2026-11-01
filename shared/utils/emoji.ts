@@ -1,5 +1,5 @@
 // copied from https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.mjs
-const emojis = {
+const emojis: Record<string, string> = {
   '100': '💯',
   '1234': '🔢',
   'grinning': '😀',
@@ -1905,15 +1905,16 @@ const emojis = {
   'wales': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
 }
 
-const emojisKeysRegex = new RegExp(
-  Object.keys(emojis)
-    .map(key => `:${key}:`)
-    .join('|'),
-  'g',
-)
-export function convertToEmoji(text: string): string {
-  return text.replace(emojisKeysRegex, match => {
-    const key = match.slice(1, -1) as keyof typeof emojis
-    return emojis[key] || match
-  })
+export function convertToEmoji(html: string): string {
+  return html.replace(
+    /(<code[\s>][\s\S]*?<\/code>|<pre[\s>][\s\S]*?<\/pre>)|(:[\w+-]+:)/gi,
+    (match, codeBlock: string | undefined, shortcode: string | undefined) => {
+      if (codeBlock) return codeBlock
+      if (shortcode) {
+        const key = shortcode.slice(1, -1)
+        return emojis[key] ?? shortcode
+      }
+      return match
+    },
+  )
 }

@@ -33,6 +33,16 @@ function readFixture(relativePath) {
 }
 
 /**
+ * @param {string} homepageUrl
+ * @returns {string}
+ */
+function microlinkFixturePath(homepageUrl) {
+  const url = new URL(homepageUrl)
+  const pathname = url.pathname === '/' ? '' : url.pathname.replaceAll('/', '_')
+  return `microlink/${url.hostname}${pathname}.json`
+}
+
+/**
  * Parse a scoped package name into its components.
  * Handles formats like: @scope/name, @scope/name@version, name, name@version
  *
@@ -625,6 +635,19 @@ function matchGitHubApi(urlString) {
 }
 
 /**
+ * @param {string} urlString
+ * @returns {MockResponse | null}
+ */
+function matchMicrolinkApi(urlString) {
+  const url = new URL(urlString)
+  const homepageUrl = url.searchParams.get('url')
+  if (!homepageUrl) return null
+
+  const fixture = readFixture(microlinkFixturePath(homepageUrl))
+  return fixture ? json(fixture) : null
+}
+
+/**
  * Route definitions mapping URL patterns to their matchers.
  * Each entry has a pattern (for Playwright's page.route) and a match function
  * that returns a MockResponse or null.
@@ -646,6 +669,7 @@ const routes = [
   },
   { name: 'Gravatar API', pattern: 'https://www.gravatar.com/**', match: matchGravatarApi },
   { name: 'GitHub API', pattern: 'https://api.github.com/**', match: matchGitHubApi },
+  { name: 'Microlink API', pattern: 'https://api.microlink.io/**', match: matchMicrolinkApi },
   { name: 'UNGH API', pattern: 'https://ungh.cc/**', match: matchUnghApi },
   {
     name: 'Constellation API',

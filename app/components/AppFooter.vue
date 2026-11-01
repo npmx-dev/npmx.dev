@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { NPMX_DOCS_SITE } from '#shared/utils/constants'
+import { SPONSORS } from '~/assets/logos/sponsors'
 
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const discord = useDiscordLink()
 const { commandPaletteShortcutLabel } = usePlatformModifierKey()
@@ -36,7 +37,12 @@ const socialLinks = computed(() => [
   },
 ])
 
-const footerSections: Array<{ label: string; links: FooterLink[] }> = [
+const sponsorList = computed(() => {
+  const names = [...SPONSORS.gold, ...SPONSORS.silver].map(s => s.name)
+  return new Intl.ListFormat(locale.value, { style: 'long', type: 'conjunction' }).format(names)
+})
+
+const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>(() => [
   {
     label: t('footer.resources'),
     links: [
@@ -47,6 +53,14 @@ const footerSections: Array<{ label: string; links: FooterLink[] }> = [
       {
         name: t('footer.about'),
         href: '/about',
+      },
+      {
+        name: t('footer.sponsors'),
+        href: '/sponsors',
+      },
+      {
+        name: t('footer.brand'),
+        href: '/brand',
       },
       {
         name: t('a11y.footer_title'),
@@ -64,6 +78,10 @@ const footerSections: Array<{ label: string; links: FooterLink[] }> = [
       {
         name: t('shortcuts.compare'),
         href: '/compare',
+      },
+      {
+        name: t('footer.tools'),
+        href: '/tools',
       },
       {
         name: t('shortcuts.settings'),
@@ -84,12 +102,16 @@ const footerSections: Array<{ label: string; links: FooterLink[] }> = [
         href: '/pds',
       },
       {
+        name: t('noodles.title'),
+        href: '/noodles',
+      },
+      {
         name: t('footer.docs'),
         href: NPMX_DOCS_SITE,
       },
     ],
   },
-]
+])
 </script>
 
 <template>
@@ -152,13 +174,23 @@ const footerSections: Array<{ label: string; links: FooterLink[] }> = [
           </div>
         </div>
       </div>
+    </div>
+    <div class="border-bg-elevated border-t mt-4">
+      <div class="container flex flex-col gap-2">
+        <NuxtLink
+          :to="{ name: 'about', hash: '#sponsors' }"
+          class="text-sm pt-4 m-0 text-fg-muted hover:text-fg text-center sm:text-start"
+        >
+          {{ $t('footer.sponsored_by', { list: sponsorList }) }}
+        </NuxtLink>
 
-      <small
-        class="border-border py-7.75 sm:border-t sm:py-4 duration-200 transition-all text-xs text-fg-muted text-center sm:text-start m-0"
-      >
-        <span class="lg:hidden">{{ $t('non_affiliation_disclaimer') }}</span>
-        <span class="hidden lg:block">{{ $t('trademark_disclaimer') }}</span>
-      </small>
+        <small
+          class="border-bg-muted border-t pt-2 pb-4 text-xs text-fg-muted text-center sm:text-start"
+        >
+          <span class="lg:hidden">{{ $t('non_affiliation_disclaimer') }}</span>
+          <span class="hidden lg:block">{{ $t('trademark_disclaimer') }}</span>
+        </small>
+      </div>
     </div>
 
     <Modal
@@ -237,8 +269,16 @@ const footerSections: Array<{ label: string; links: FooterLink[] }> = [
           <span>{{ $t('shortcuts.open_timeline') }}</span>
         </li>
         <li class="flex gap-2 items-center">
+          <kbd class="kbd">s</kbd>
+          <span>{{ $t('shortcuts.open_stats') }}</span>
+        </li>
+        <li class="flex gap-2 items-center">
           <kbd class="kbd">c</kbd>
           <span>{{ $t('shortcuts.compare_from_package') }}</span>
+        </li>
+        <li class="flex gap-2 items-center">
+          <kbd class="kbd">-</kbd>
+          <span>{{ $t('shortcuts.changelog') }}</span>
         </li>
       </ul>
       <p class="text-fg-muted leading-relaxed">

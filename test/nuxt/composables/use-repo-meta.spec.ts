@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { parseRepoUrl } from '#shared/utils/git-providers'
 
 /**
@@ -191,26 +191,27 @@ describe('useRepoMeta - URL parsing via repoRef', () => {
     })
   })
 
-  describe('Generic Gitea URLs', () => {
-    it('should parse git.* subdomain as Gitea', () => {
-      const result = parseRepoUrl('https://git.example.com/user/repo')
+  describe('Pushin URLs', () => {
+    it('should parse Pushin URL', () => {
+      const result = parseRepoUrl('https://pushin.eu/tobbe/npmx-pushin-test')
 
       expect(result).toEqual({
-        provider: 'gitea',
-        owner: 'user',
-        repo: 'repo',
-        host: 'git.example.com',
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
       })
     })
+  })
 
-    it('should parse gitea.* subdomain', () => {
-      const result = parseRepoUrl('https://gitea.example.org/org/project')
+  describe('Gitea URLs', () => {
+    it('should parse exact allowlisted Gitea hosts', () => {
+      const result = parseRepoUrl('https://gitea.com/org/project')
 
       expect(result).toEqual({
         provider: 'gitea',
         owner: 'org',
         repo: 'project',
-        host: 'gitea.example.org',
+        host: 'gitea.com',
       })
     })
   })

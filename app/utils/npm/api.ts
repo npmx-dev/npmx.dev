@@ -1,5 +1,5 @@
 import { getVersions } from 'fast-npm-meta'
-import { compare } from 'semver'
+import { compare } from 'verkit'
 
 type NpmDownloadsRangeResponse = {
   start: string
@@ -52,7 +52,11 @@ export async function fetchAllPackageVersions(packageName: string): Promise<Pack
       .map(([version, meta]) => ({
         version,
         time: meta.time,
-        hasProvenance: meta.provenance === 'trustedPublisher' || meta.provenance === true,
+        trustStatus: {
+          provenance: !!meta.provenance,
+          trustedPublisher: !!meta.trustedPublisher,
+          stagedPublish: !!meta.staged,
+        },
         deprecated: meta.deprecated,
       }))
       .sort((a, b) => compare(b.version, a.version))

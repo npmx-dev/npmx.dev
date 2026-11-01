@@ -1,5 +1,5 @@
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
 
 const {
   mockUseResolvedVersion,
@@ -84,7 +84,6 @@ describe('OgImagePackage', () => {
     mockUseRepoMeta.mockReturnValue({
       meta: computed(() => null),
       repoRef: computed(() => ({ owner: 'test', repo: 'repo' })),
-      starsLink: computed(() => ''),
       forks: computed(() => 0),
       forksLink: computed(() => ''),
       stars: computed(() => stars),

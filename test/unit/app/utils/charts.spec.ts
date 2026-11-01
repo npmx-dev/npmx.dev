@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import {
   sum,
   chunkIntoWeeks,
@@ -11,16 +11,28 @@ import {
   copyAltTextForTrendLineChart,
   createAltTextForVersionsBarChart,
   copyAltTextForVersionsBarChart,
-  loadFile,
+  createAltTextForTimelineChart,
+  copyAltTextForTimelineChart,
+  createAltTextForTimelineStackbar,
+  copyAltTextForTimelineStackbar,
+  createAltTextFromDownloadsHeatmap,
+  copyAltTextFromDownloadsHeatmap,
   sanitise,
   insertLineBreaks,
   applyEllipsis,
   type TrendLineConfig,
   type TrendLineDataset,
   type VersionsBarConfig,
-  type VersionsBarDataset,
+  type TimelineChartConfig,
+  type TimelineStackbarConfig,
+  type DownloadsHeatmapAltConfig,
+  type EnrichedTimelineSizeCacheEntry,
 } from '~/utils/charts'
-import type { AltCopyArgs } from 'vue-data-ui'
+import type {
+  AltCopyArgs,
+  VueUiHorizontalBarDatapoint,
+  VueUiStackbarFormattedDatasetItem,
+} from 'vue-data-ui'
 
 type TranslateCall = { key: string | number; named?: Record<string, unknown> }
 
@@ -33,6 +45,34 @@ function createTranslateMock() {
   }) as TrendLineConfig['$t']
 
   return { translate, calls }
+}
+
+function createTimelineConfig(overrides: Partial<TimelineChartConfig> = {}): TimelineChartConfig {
+  const { translate } = createTranslateMock()
+  const config: TimelineChartConfig = {
+    numberFormatter: (value: number) => `nf${value}`,
+    packageName: 'nuxt',
+    metric: 'totalSize',
+    copy: vi.fn(async () => undefined),
+    $t: translate,
+  } as unknown as TimelineChartConfig
+
+  return { ...config, ...overrides }
+}
+
+function createTimelineStackbarConfig(
+  overrides: Partial<TimelineStackbarConfig> = {},
+): TimelineStackbarConfig {
+  const { translate } = createTranslateMock()
+  const config: TimelineStackbarConfig = {
+    numberFormatter: (value: number) => `nf${value}`,
+    packageName: 'nuxt',
+    versions: ['4.0.0', '4.0.1', '4.1.0'],
+    copy: vi.fn(async () => undefined),
+    $t: translate,
+  } as unknown as TimelineStackbarConfig
+
+  return { ...config, ...overrides }
 }
 
 function createTrendLineConfig(overrides: Partial<TrendLineConfig> = {}): TrendLineConfig {
@@ -105,14 +145,12 @@ function createVersionsBarConfigForTests(
   const { translate } = createTranslateMock()
 
   const base: VersionsBarConfig = {
-    theme: 'dark',
-    chart: {},
     copy: vi.fn(async () => undefined),
     $t: translate as any,
     numberFormatter: (value: number) => `nf:${value}`,
-    datapointLabels: [],
     dateRangeLabel: 'RANGE',
     semverGroupingMode: 'major',
+    packageName: 'nuxt',
   } as unknown as VersionsBarConfig
 
   return { ...base, ...overrides }
@@ -120,16 +158,16 @@ function createVersionsBarConfigForTests(
 
 function createVersionsBarDatasetForTests(
   values: Array<number | null | undefined>,
-  packageName?: string,
-): VersionsBarDataset {
-  return {
-    bars: [
-      {
-        name: packageName,
-        series: values,
-      } as any,
-    ],
-  }
+  names: string[] = values.map((_, index) => `v${index + 1}`),
+): VueUiHorizontalBarDatapoint[] {
+  return values.map(
+    (value, index) =>
+      ({
+        index,
+        name: names[index] ?? `v${index + 1}`,
+        value,
+      }) as unknown as VueUiHorizontalBarDatapoint,
+  )
 }
 
 describe('sum', () => {
@@ -1014,15 +1052,15 @@ describe('copyAltTextForTrendLineChart', () => {
 })
 
 describe('createAltTextForVersionsBarChart', () => {
-  it('handles dataset with empty bars without throwing', () => {
+  it('handles an empty dataset without throwing', () => {
     const { translate } = createTranslateMock()
     const config = createVersionsBarConfigForTests({ $t: translate as any })
 
     expect(() =>
       createAltTextForVersionsBarChart({
-        dataset: { bars: [] },
+        dataset: [],
         config,
-      } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>),
+      } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>),
     ).not.toThrow()
   })
 
@@ -1033,7 +1071,7 @@ describe('createAltTextForVersionsBarChart', () => {
     const result = createAltTextForVersionsBarChart({
       dataset: null,
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as unknown as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     expect(result).toBe('')
     expect(calls).toHaveLength(0)
@@ -1046,16 +1084,16 @@ describe('createAltTextForVersionsBarChart', () => {
       $t: translate as any,
       semverGroupingMode: 'major',
       dateRangeLabel: 'from 19 Feb to 25 Feb, 2026',
-      datapointLabels: ['2.0.x', '3.0.x', '4.0.x'],
+      packageName: 'nuxt',
       numberFormatter: (value: number) => `${value}M`,
     })
 
-    const dataset = createVersionsBarDatasetForTests([10, 20, 30], 'nuxt')
+    const dataset = createVersionsBarDatasetForTests([10, 20, 30], ['2.0.x', '3.0.x', '4.0.x'])
 
     const result = createAltTextForVersionsBarChart({
       dataset,
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     expect(result).toBe('t:package.versions.copy_alt.general_description')
 
@@ -1093,9 +1131,9 @@ describe('createAltTextForVersionsBarChart', () => {
     })
 
     createAltTextForVersionsBarChart({
-      dataset: createVersionsBarDatasetForTests([1, 2], 'pkg'),
+      dataset: createVersionsBarDatasetForTests([1, 2], ['v1', 'v2']),
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     const keys = calls.map(c => c.key)
     expect(keys).toContain('package.versions.grouping_minor')
@@ -1106,14 +1144,13 @@ describe('createAltTextForVersionsBarChart', () => {
 
     const config = createVersionsBarConfigForTests({
       $t: translate as any,
-      datapointLabels: ['v1', 'v2', 'v3', 'v4'],
       numberFormatter: (value: number) => `${value}M`,
     })
 
     createAltTextForVersionsBarChart({
-      dataset: createVersionsBarDatasetForTests([10, 20, 999, 40], 'pkg'),
+      dataset: createVersionsBarDatasetForTests([10, 20, 999, 40], ['v1', 'v2', 'v3', 'v4']),
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     const perVersionCalls = calls.filter(
       c => c.key === 'package.versions.copy_alt.per_version_analysis',
@@ -1135,19 +1172,18 @@ describe('createAltTextForVersionsBarChart', () => {
     )
   })
 
-  it('treats null/undefined series values as 0 for max selection and formatting', () => {
+  it('treats null/undefined datapoint values as 0 for max selection and formatting', () => {
     const { translate, calls } = createTranslateMock()
 
     const config = createVersionsBarConfigForTests({
       $t: translate as any,
-      datapointLabels: ['v1', 'v2', 'v3'],
       numberFormatter: (value: number) => `${value}M`,
     })
 
     createAltTextForVersionsBarChart({
-      dataset: createVersionsBarDatasetForTests([null, 5, undefined], 'pkg'),
+      dataset: createVersionsBarDatasetForTests([null, 5, undefined], ['v1', 'v2', 'v3']),
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     const generalCall = calls.find(c => c.key === 'package.versions.copy_alt.general_description')
     expect(generalCall?.named).toMatchObject({
@@ -1165,76 +1201,597 @@ describe('copyAltTextForVersionsBarChart', () => {
       copy: copyMock,
       $t: ((key: string | number) => `t:${String(key)}`) as any,
       numberFormatter: (value: number) => `${value}M`,
-      datapointLabels: ['v1', 'v2', 'v3'],
       dateRangeLabel: 'RANGE',
       semverGroupingMode: 'major',
+      packageName: 'pkg',
     })
 
-    const dataset = createVersionsBarDatasetForTests([1, 2, 3], 'pkg')
+    const dataset = createVersionsBarDatasetForTests([1, 2, 3], ['v1', 'v2', 'v3'])
 
     const expected = createAltTextForVersionsBarChart({
       dataset,
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     await copyAltTextForVersionsBarChart({
       dataset,
       config,
-    } as AltCopyArgs<VersionsBarDataset, VersionsBarConfig>)
+    } as AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>)
 
     expect(copyMock).toHaveBeenCalledTimes(1)
     expect(copyMock).toHaveBeenCalledWith(expected)
   })
 })
 
-describe('loadFile', () => {
-  let createElementMock: ReturnType<typeof vi.fn>
-  let clickMock: ReturnType<typeof vi.fn>
-  let removeMock: ReturnType<typeof vi.fn>
-  let originalDocument: typeof globalThis.document | undefined
+const timelineDataset = [
+  {
+    dependencyCount: 100,
+    events: [],
+    version: '4.0.0',
+    totalSize: 120_000_000,
+  },
+  {
+    dependencyCount: 80,
+    events: [],
+    version: '4.0.1',
+    totalSize: 115_000_000,
+  },
+] as unknown as EnrichedTimelineSizeCacheEntry[]
 
-  beforeEach(() => {
-    clickMock = vi.fn()
-    removeMock = vi.fn()
+describe('createAltTextForTimelineChart', () => {
+  it('handles empty dataset without throwing', () => {
+    const { translate } = createTranslateMock()
+    const config = createTimelineConfig({ $t: translate })
 
-    createElementMock = vi.fn().mockReturnValue({
-      href: '',
-      download: '',
-      click: clickMock,
-      remove: removeMock,
+    expect(() =>
+      createAltTextForTimelineChart({
+        dataset: [],
+        config,
+      } as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>),
+    ).not.toThrow()
+  })
+
+  it('returns empty string when dataset is null', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineChart({
+      dataset: null,
+      config,
+    } as unknown as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
+
+    expect(result).toBe('')
+    expect(translateMock.calls).toHaveLength(0)
+  })
+
+  it('returns an alt text', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
+    } as unknown as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
+
+    expect(result).toBe('t:package.timeline.chart.copy_alt.general_description')
+    expect(translateMock.calls).toHaveLength(3)
+  })
+})
+
+describe('copyAltTextForTimelineChart', () => {
+  it('forwards createAltTextForTimelineChart result to config.copy', async () => {
+    const copyMock = vi.fn(async () => undefined)
+    const config = createTimelineConfig({ copy: copyMock })
+    const expected = createAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
     })
 
-    originalDocument = globalThis.document
+    await copyAltTextForTimelineChart({
+      dataset: timelineDataset,
+      config,
+    } as AltCopyArgs<EnrichedTimelineSizeCacheEntry[], TimelineChartConfig>)
 
-    Object.defineProperty(globalThis, 'document', {
-      value: {
-        createElement: createElementMock,
-      },
-      configurable: true,
-      writable: true,
+    expect(copyMock).toHaveBeenCalledTimes(1)
+    expect(copyMock).toHaveBeenCalledWith(expected)
+  })
+})
+
+const timelineStackbarDataset = [
+  {
+    name: 'vue',
+    series: [100, 150, 200],
+  },
+  {
+    name: 'vite',
+    series: [50, 80, 40],
+  },
+  {
+    name: 'nitro',
+    series: [0, 20, 60],
+  },
+  {
+    name: 'empty-package',
+    series: [0, 0, 0],
+  },
+] as unknown as VueUiStackbarFormattedDatasetItem[]
+
+describe('createAltTextForTimelineStackbar', () => {
+  it('returns empty string when dataset is null', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineStackbar({
+      dataset: null,
+      config,
+    } as unknown as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(result).toBe('')
+    expect(translateMock.calls).toHaveLength(0)
+  })
+
+  it('returns empty string when dataset is empty', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({ $t: translateMock.translate })
+
+    const result = createAltTextForTimelineStackbar({
+      dataset: [],
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(result).toBe('')
+    expect(translateMock.calls).toHaveLength(0)
+  })
+
+  it('calls general_description with expected stackbar totals and version bounds', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      versions: ['4.0.0', '4.0.1', '4.1.0'],
+      numberFormatter: (value: number) => `nf:${value}`,
+    })
+
+    const result = createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(result).toBe('t:package.timeline.chart.copy_alt.general_description')
+
+    const generalDescriptionCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.general_description',
+    )
+    expect(generalDescriptionCall).toBeTruthy()
+
+    expect(generalDescriptionCall?.named).toMatchObject({
+      metric: 't:package.timeline.chart.dependency_size',
+      package: 'nuxt',
+      first: '4.0.0',
+      last: '4.1.0',
+      first_value: 'nf:150',
+      last_value: 'nf:300',
+      overall_progress_percentage: 100,
+      watermark: 't:package.trends.copy_alt.watermark_top',
+    })
+    expect(generalDescriptionCall?.named?.key_changes).toBe(
+      [
+        't:package.timeline.chart.copy_alt.stackbar_top_segments',
+        't:package.timeline.chart.copy_alt.stackbar_largest_increase',
+        't:package.timeline.chart.copy_alt.stackbar_largest_decrease',
+      ].join(' '),
+    )
+  })
+
+  it('describes top segments sorted by last value and limited by maxSegments', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      maxSegments: 2,
+      numberFormatter: (value: number) => `nf:${value}`,
+    })
+
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const segmentShareCalls = translateMock.calls.filter(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_segment_share',
+    )
+    expect(segmentShareCalls).toHaveLength(2)
+    expect(segmentShareCalls[0]?.named).toMatchObject({
+      segment: 'vue',
+      value: 'nf:200',
+      percentage: '67%',
+    })
+    expect(segmentShareCalls[1]?.named).toMatchObject({
+      segment: 'nitro',
+      value: 'nf:60',
+      percentage: '20%',
+    })
+
+    const topSegmentsCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_top_segments',
+    )
+    expect(topSegmentsCall?.named).toMatchObject({
+      version: '4.1.0',
+      segments: [
+        't:package.timeline.chart.copy_alt.stackbar_segment_share',
+        't:package.timeline.chart.copy_alt.stackbar_segment_share',
+      ].join(', '),
     })
   })
 
-  afterEach(() => {
-    vi.restoreAllMocks()
+  it('describes the largest increase and decrease between first and last versions', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      numberFormatter: (value: number) => `nf:${value}`,
+    })
 
-    Object.defineProperty(globalThis, 'document', {
-      value: originalDocument,
-      configurable: true,
-      writable: true,
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const largestIncreaseCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_largest_increase',
+    )
+    expect(largestIncreaseCall?.named).toMatchObject({
+      segment: 'vue',
+      delta: 'nf:100',
+    })
+
+    const largestDecreaseCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_largest_decrease',
+    )
+    expect(largestDecreaseCall?.named).toMatchObject({
+      segment: 'vite',
+      delta: 'nf:10',
     })
   })
 
-  it('creates an anchor element and triggers a download', () => {
-    const link = 'https://npmx.dev/file.png'
-    const filename = 'file.png'
-    loadFile(link, filename)
-    expect(createElementMock).toHaveBeenCalledWith('a')
-    const anchor = createElementMock.mock.results[0]?.value as HTMLAnchorElement
-    expect(anchor.href).toBe(link)
-    expect(anchor.download).toBe(filename)
-    expect(clickMock).toHaveBeenCalledTimes(1)
-    expect(removeMock).toHaveBeenCalledTimes(1)
+  it('uses percentageFormatter when provided', () => {
+    const translateMock = createTranslateMock()
+    const percentageFormatter = vi.fn((value: number) => `pf:${value}`)
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      maxSegments: 1,
+      percentageFormatter,
+    })
+
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const segmentShareCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_segment_share',
+    )
+
+    expect(percentageFormatter).toHaveBeenCalledWith(67)
+    expect(segmentShareCall?.named).toHaveProperty('percentage', 'pf:67')
+  })
+
+  it('falls back to numeric positions when version labels are missing', () => {
+    const translateMock = createTranslateMock()
+    const config = createTimelineStackbarConfig({
+      $t: translateMock.translate,
+      versions: [],
+    })
+
+    createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    const generalDescriptionCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.general_description',
+    )
+    expect(generalDescriptionCall?.named).toMatchObject({
+      first: '1',
+      last: '3',
+    })
+
+    const topSegmentsCall = translateMock.calls.find(
+      call => call.key === 'package.timeline.chart.copy_alt.stackbar_top_segments',
+    )
+    expect(topSegmentsCall?.named).toHaveProperty('version', '3')
+  })
+})
+
+describe('copyAltTextForTimelineStackbar', () => {
+  it('forwards createAltTextForTimelineStackbar result to config.copy', async () => {
+    const copyMock = vi.fn(async () => undefined)
+    const config = createTimelineStackbarConfig({ copy: copyMock })
+    const expected = createAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    })
+
+    await copyAltTextForTimelineStackbar({
+      dataset: timelineStackbarDataset,
+      config,
+    } as AltCopyArgs<VueUiStackbarFormattedDatasetItem[], TimelineStackbarConfig>)
+
+    expect(copyMock).toHaveBeenCalledTimes(1)
+    expect(copyMock).toHaveBeenCalledWith(expected)
+  })
+})
+
+type DownloadsHeatmapDataset = Parameters<typeof createAltTextFromDownloadsHeatmap>[0]['dataset']
+
+// Rows match the component's Sunday-to-Saturday layout, so week starts are Sundays.
+const heatmapWeekStarts = ['2026-03-01', '2026-03-08']
+const firstHeatmapWeek = [5, 10, 20, 30, 40, 50, 5]
+const secondHeatmapWeek = [10, 20, 30, 40, 50, 60, 10]
+
+function createDownloadsHeatmapDataset(
+  weeks: Array<Array<number | null>> = [firstHeatmapWeek, secondHeatmapWeek],
+): DownloadsHeatmapDataset {
+  const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+
+  return weekdays.map((name, weekdayIndex) => ({
+    name,
+    values: weeks.map(week => week[weekdayIndex] ?? null),
+  }))
+}
+
+function createDownloadsHeatmapReportedDates(weekStarts: string[]): Set<string> {
+  return new Set(
+    weekStarts.flatMap(weekStart =>
+      Array.from({ length: 7 }, (_, weekdayIndex) => {
+        const date = new Date(`${weekStart}T00:00:00Z`)
+        date.setUTCDate(date.getUTCDate() + weekdayIndex)
+        return date.toISOString().slice(0, 10)
+      }),
+    ),
+  )
+}
+
+function createDownloadsHeatmapConfig(
+  overrides: Partial<DownloadsHeatmapAltConfig> = {},
+): DownloadsHeatmapAltConfig {
+  const { translate } = createTranslateMock()
+  const weekStarts = overrides.weekStarts ?? heatmapWeekStarts
+
+  return {
+    packageName: '@scope/example',
+    dateRange: { from: '2026-03-01', to: '2026-03-14' },
+    weekStarts,
+    reportedDates: createDownloadsHeatmapReportedDates(weekStarts),
+    anomalousDates: new Set<string>(),
+    locale: 'en-US',
+    copy: vi.fn(async () => undefined),
+    $t: translate,
+    ...overrides,
+  }
+}
+
+function findHeatmapTranslation(calls: TranslateCall[], name: string) {
+  return calls.find(call => call.key === `package.trends.downloads_heatmap.copy_alt.${name}`)
+}
+
+describe('createAltTextFromDownloadsHeatmap', () => {
+  it('returns an introduction, no-data message and watermark for an empty dataset', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({ $t: translate })
+
+    const result = createAltTextFromDownloadsHeatmap({ dataset: [], config })
+
+    expect(result).toBe(
+      't:package.trends.downloads_heatmap.copy_alt.introduction ' +
+        't:package.trends.downloads_heatmap.copy_alt.no_data ' +
+        't:package.trends.copy_alt.watermark',
+    )
+    expect(
+      calls.find(call => call.key === 'package.trends.downloads_heatmap.title')?.named,
+    ).toEqual(config.dateRange)
+    expect(findHeatmapTranslation(calls, 'introduction')?.named).toEqual({
+      package_name: '@scope/example',
+      date_range: 't:package.trends.downloads_heatmap.title',
+    })
+    expect(findHeatmapTranslation(calls, 'summary')).toBeUndefined()
+  })
+
+  it('uses the no-data message when all values are zero or null', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({ $t: translate })
+    const dataset = createDownloadsHeatmapDataset([
+      [0, 0, 0, 0, 0, 0, 0],
+      [null, null, null, null, null, null, null],
+    ])
+
+    const result = createAltTextFromDownloadsHeatmap({ dataset, config })
+
+    expect(result).toContain('t:package.trends.downloads_heatmap.copy_alt.no_data')
+    expect(findHeatmapTranslation(calls, 'summary')).toBeUndefined()
+    expect(findHeatmapTranslation(calls, 'peak')).toBeUndefined()
+  })
+
+  it('computes totals, averages, peak, busiest weekday and weekday/weekend averages', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({ $t: translate })
+
+    const result = createAltTextFromDownloadsHeatmap({
+      dataset: createDownloadsHeatmapDataset(),
+      config,
+    })
+
+    expect(findHeatmapTranslation(calls, 'summary')?.named).toEqual({
+      total: '380',
+      average: '27',
+      days: '14',
+    })
+    expect(findHeatmapTranslation(calls, 'peak')?.named).toEqual({
+      date: 'March 13, 2026',
+      downloads: '60',
+    })
+    expect(findHeatmapTranslation(calls, 'busiest_weekday')?.named).toEqual({
+      weekday: 'Friday',
+      average: '55',
+    })
+    expect(findHeatmapTranslation(calls, 'weekday_comparison')?.named).toEqual({
+      weekdays: '35',
+      weekends: '8',
+    })
+    expect(result).toContain('t:package.trends.downloads_heatmap.copy_alt.summary')
+    expect(result).toContain('t:package.trends.copy_alt.watermark')
+    expect(findHeatmapTranslation(calls, 'excluded_days')).toBeUndefined()
+  })
+
+  it('calculates the trend from complete weeks using localized signed percentages', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({ $t: translate })
+
+    createAltTextFromDownloadsHeatmap({ dataset: createDownloadsHeatmapDataset(), config })
+
+    expect(findHeatmapTranslation(calls, 'weekly_trend')?.named).toEqual({
+      change: '+37.5%',
+      first: '160',
+      last: '220',
+    })
+  })
+
+  it('excludes anomalous, unreported, null, zero and non-finite values', () => {
+    const { translate, calls } = createTranslateMock()
+    const reportedDates = createDownloadsHeatmapReportedDates(heatmapWeekStarts)
+    reportedDates.delete('2026-03-13')
+    const config = createDownloadsHeatmapConfig({
+      $t: translate,
+      reportedDates,
+      anomalousDates: new Set(['2026-03-14']),
+    })
+    const dataset = createDownloadsHeatmapDataset([
+      [5, null, 0, Number.NaN, Number.POSITIVE_INFINITY, 50, 5],
+      [80, 10, 20, 30, 40, 60, 70],
+    ])
+
+    createAltTextFromDownloadsHeatmap({ dataset, config })
+
+    expect(findHeatmapTranslation(calls, 'summary')?.named).toEqual({
+      total: '240',
+      average: '30',
+      days: '8',
+    })
+    expect(findHeatmapTranslation(calls, 'peak')?.named).toEqual({
+      date: 'March 8, 2026',
+      downloads: '80',
+    })
+    expect(findHeatmapTranslation(calls, 'excluded_days')?.named).toEqual({ count: '6' })
+    expect(findHeatmapTranslation(calls, 'weekly_trend')).toBeUndefined()
+  })
+
+  it('omits the weekly trend when there is only one complete week', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({
+      $t: translate,
+      weekStarts: ['2026-03-01'],
+    })
+
+    createAltTextFromDownloadsHeatmap({
+      dataset: createDownloadsHeatmapDataset([firstHeatmapWeek]),
+      config,
+    })
+
+    expect(findHeatmapTranslation(calls, 'summary')?.named).toHaveProperty('days', '7')
+    expect(findHeatmapTranslation(calls, 'weekly_trend')).toBeUndefined()
+  })
+
+  it('compares the first and last complete weeks even when an intermediate week is incomplete', () => {
+    const { translate, calls } = createTranslateMock()
+    const weekStarts = ['2026-03-01', '2026-03-08', '2026-03-15']
+    const reportedDates = createDownloadsHeatmapReportedDates(weekStarts)
+    reportedDates.delete('2026-03-09')
+    const config = createDownloadsHeatmapConfig({
+      $t: translate,
+      weekStarts,
+      reportedDates,
+    })
+
+    createAltTextFromDownloadsHeatmap({
+      dataset: createDownloadsHeatmapDataset([
+        firstHeatmapWeek,
+        [10, 10, 10, 10, 10, 10, 10],
+        secondHeatmapWeek,
+      ]),
+      config,
+    })
+
+    expect(findHeatmapTranslation(calls, 'weekly_trend')?.named).toEqual({
+      change: '+37.5%',
+      first: '160',
+      last: '220',
+    })
+    expect(findHeatmapTranslation(calls, 'excluded_days')?.named).toEqual({ count: '1' })
+  })
+
+  it('omits the weekday/weekend comparison if no weekend data is reported', () => {
+    const { translate, calls } = createTranslateMock()
+    const reportedDates = createDownloadsHeatmapReportedDates(heatmapWeekStarts)
+    for (const date of ['2026-03-01', '2026-03-07', '2026-03-08', '2026-03-14']) {
+      reportedDates.delete(date)
+    }
+    const config = createDownloadsHeatmapConfig({ $t: translate, reportedDates })
+
+    createAltTextFromDownloadsHeatmap({ dataset: createDownloadsHeatmapDataset(), config })
+
+    expect(findHeatmapTranslation(calls, 'weekday_comparison')).toBeUndefined()
+    expect(findHeatmapTranslation(calls, 'excluded_days')?.named).toEqual({ count: '4' })
+  })
+
+  it('formats dates, weekday names, numbers and percentages using the selected locale', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({ $t: translate, locale: 'fr-FR' })
+
+    createAltTextFromDownloadsHeatmap({ dataset: createDownloadsHeatmapDataset(), config })
+
+    expect(findHeatmapTranslation(calls, 'peak')?.named).toEqual({
+      date: '13 mars 2026',
+      downloads: '60',
+    })
+    expect(findHeatmapTranslation(calls, 'busiest_weekday')?.named).toEqual({
+      weekday: 'vendredi',
+      average: '55',
+    })
+    expect(findHeatmapTranslation(calls, 'weekly_trend')?.named).toEqual({
+      change: new Intl.NumberFormat('fr-FR', {
+        style: 'percent',
+        maximumFractionDigits: 1,
+        signDisplay: 'exceptZero',
+      }).format(0.375),
+      first: '160',
+      last: '220',
+    })
+  })
+
+  it('ignores columns that have no corresponding week start', () => {
+    const { translate, calls } = createTranslateMock()
+    const config = createDownloadsHeatmapConfig({
+      $t: translate,
+      weekStarts: ['2026-03-01'],
+    })
+
+    createAltTextFromDownloadsHeatmap({ dataset: createDownloadsHeatmapDataset(), config })
+
+    expect(findHeatmapTranslation(calls, 'summary')?.named).toEqual({
+      total: '160',
+      average: '23',
+      days: '7',
+    })
+    expect(findHeatmapTranslation(calls, 'weekly_trend')).toBeUndefined()
+  })
+})
+
+describe('copyAltTextFromDownloadsHeatmap', () => {
+  it('copies the exact generated alternative text once', async () => {
+    const copy = vi.fn(async () => undefined)
+    const config = createDownloadsHeatmapConfig({ copy })
+    const dataset = createDownloadsHeatmapDataset()
+    const expected = createAltTextFromDownloadsHeatmap({ dataset, config })
+    await copyAltTextFromDownloadsHeatmap({ dataset, config })
+    expect(copy).toHaveBeenCalledTimes(1)
+    expect(copy).toHaveBeenCalledWith(expected)
   })
 })
 

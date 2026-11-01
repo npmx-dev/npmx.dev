@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import { setResponseHeader } from 'h3'
 
 definePageMeta({
@@ -8,29 +9,11 @@ definePageMeta({
   scrollMargin: 180,
 })
 
-const route = useRoute('docs')
+const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 
-const parsedRoute = computed(() => {
-  const segments = route.params.path?.filter(Boolean)
-  const vIndex = segments.indexOf('v')
-
-  if (vIndex === -1 || vIndex >= segments.length - 1) {
-    return {
-      packageName: segments.join('/'),
-      version: null as string | null,
-    }
-  }
-
-  return {
-    packageName: segments.slice(0, vIndex).join('/'),
-    version: segments.slice(vIndex + 1).join('/'),
-  }
-})
-
-const packageName = computed(() => parsedRoute.value.packageName)
-const requestedVersion = computed(() => parsedRoute.value.version)
+const { packageName, requestedVersion } = usePackageRoute()
 
 // Validate package name on server-side for early error detection
 if (import.meta.server && packageName.value) {
@@ -48,12 +31,8 @@ if (import.meta.server && !requestedVersion.value && packageName.value) {
   const version = await fetchLatestVersion(packageName.value)
   if (version) {
     setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
-    const pathSegments = [...packageName.value.split('/'), 'v', version]
     app.runWithContext(() =>
-      navigateTo(
-        { name: 'docs', params: { path: pathSegments as [string, ...string[]] } },
-        { redirectCode: 302 },
-      ),
+      navigateTo(docsRoute(packageName.value, version), { redirectCode: 302 }),
     )
   }
 }
@@ -62,8 +41,7 @@ watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      const pathSegments = [...name.split('/'), 'v', latest]
-      router.replace({ name: 'docs', params: { path: pathSegments as [string, ...string[]] } })
+      router.replace(docsRoute(name, latest))
     }
   },
   { immediate: true },
@@ -111,6 +89,21 @@ const { data: docsData, status: docsStatus } = useLazyFetch<DocsResponse>(
     }),
   },
 )
+
+// The docs HTML is only fetched client-side, so on a direct load the router's scroll behavior runs
+// before the hash target exists. Navigate to the hash again once the content has rendered.
+if (import.meta.client) {
+  watch(
+    () => docsData.value?.html,
+    html => {
+      if (html && route.hash) {
+        navigateTo(route.hash, { replace: true })
+      }
+    },
+    { flush: 'post' },
+  )
+}
+
 // Keep latestVersion for comparison (to show "(latest)" badge)
 const latestVersionDetailed = computed(() => {
   if (!pkg.value) return null
@@ -123,7 +116,11 @@ const versionUrlPattern = computed(
   () => `/package-docs/${pkg.value?.name || packageName.value}/v/{version}`,
 )
 
-useCommandPaletteVersionCommands(commandPalettePackageContext, versionUrlPattern)
+function docsVersionRoute(version: string): RouteLocationRaw {
+  return docsRoute(pkg.value?.name || packageName.value, version)
+}
+
+useCommandPaletteVersionCommands(commandPalettePackageContext, docsVersionRoute)
 
 const pageTitle = computed(() => {
   if (!packageName.value) return t('package.docs.page_title')
@@ -149,15 +146,7 @@ defineOgImage(
     version: () => resolvedVersion.value,
     variant: 'function-tree',
   },
-  [
-    { key: 'og', alt: () => `API documentation for ${packageName.value}` },
-    {
-      key: 'whatsapp',
-      width: 800,
-      height: 800,
-      alt: () => `API documentation for ${packageName.value}`,
-    },
-  ],
+  { alt: () => `API documentation for ${packageName.value}` },
 )
 
 const showLoading = computed(
@@ -201,14 +190,14 @@ const stickyStyle = computed(() => {
 
       <!-- Main content -->
       <main class="flex-1 min-w-0">
-        <div v-if="showLoading" class="p-6 sm:p-8 lg:p-12 space-y-4">
+        <div v-if="showLoading" class="container mx-auto py-6 sm:py-8 lg:py-12 space-y-4">
           <SkeletonBlock class="h-8 w-64 rounded" />
           <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-5/6 max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-3/4 max-w-2xl rounded" />
         </div>
 
-        <div v-else-if="showEmptyState" class="p-6 sm:p-8 lg:p-12">
+        <div v-else-if="showEmptyState" class="container mx-auto py-6 sm:py-8 lg:py-12">
           <div class="max-w-xl rounded-lg border border-border bg-bg-muted p-6">
             <h2 class="font-mono text-lg mb-2">{{ $t('package.docs.not_available') }}</h2>
             <p class="text-fg-subtle text-sm">
@@ -226,8 +215,10 @@ const stickyStyle = computed(() => {
           </div>
         </div>
 
-        <!-- eslint-disable vue/no-v-html -->
-        <div v-else class="docs-content p-6 sm:p-8 lg:p-12" v-html="docsData?.html" />
+        <div v-else class="container mx-auto py-6 sm:py-8 lg:py-12">
+          <!-- eslint-disable vue/no-v-html -->
+          <div class="docs-content" v-html="docsData?.html" />
+        </div>
       </main>
     </div>
   </div>
@@ -264,6 +255,24 @@ const stickyStyle = computed(() => {
   @apply text-xs text-fg-subtle hover:text-fg block py-0.5 truncate;
 }
 
+.toc-content li.docs-toc-group:not(:first-child) {
+  @apply mt-6;
+}
+
+/* Ellipsise long entry points from the start so the subpath tail stays readable.
+   Flipping `direction` moves the overflow, and its ellipsis, to the page's
+   inline-start edge; `text-align` pulls labels that fit back to that same edge.
+   The label is wrapped in <bdi> so its own text keeps its natural direction. */
+.toc-content .docs-toc-group > a {
+  direction: rtl;
+  text-align: left;
+}
+
+html[dir='rtl'] .toc-content .docs-toc-group > a {
+  direction: ltr;
+  text-align: right;
+}
+
 /* Main docs content container - no max-width to use full space */
 .docs-content {
   @apply max-w-none;
@@ -277,6 +286,18 @@ const stickyStyle = computed(() => {
 .docs-content .docs-section-title {
   @apply text-lg font-semibold text-fg mb-8 pb-3 pt-4 border-b border-border sticky bg-bg z-[2];
   top: var(--combined-header-height);
+}
+
+.docs-content .docs-group {
+  scroll-margin-top: var(--combined-header-height);
+}
+
+.docs-content .docs-group-title {
+  @apply static mt-20;
+}
+
+.docs-content .docs-group:first-child .docs-group-title {
+  @apply mt-0;
 }
 
 /* Individual symbol articles */
@@ -500,6 +521,11 @@ const stickyStyle = computed(() => {
 
 .docs-content .docs-members pre code {
   @apply text-fg-muted;
+}
+
+/* Members linked via {@link Symbol.member} */
+.docs-content .docs-members :target {
+  @apply scroll-mt-32 bg-badge-yellow/10 rounded-md;
 }
 
 .docs-content .docs-symbol-name,

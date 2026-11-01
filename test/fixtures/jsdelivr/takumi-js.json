@@ -1,0 +1,188 @@
+{
+  "type": "npm",
+  "name": "takumi-js",
+  "version": "1.8.7",
+  "default": "/dist/index.cjs",
+  "files": [
+    {
+      "type": "directory",
+      "name": "dist",
+      "files": [
+        {
+          "type": "directory",
+          "name": "helpers",
+          "files": [
+            {
+              "type": "file",
+              "name": "emoji.cjs",
+              "hash": "YWmbexL5BVQsCOYRsiKI8Y52rE5p2pmN9rxSpNek6e0=",
+              "size": 331
+            },
+            {
+              "type": "file",
+              "name": "emoji.d.cts",
+              "hash": "cO3yxWNv5HPisyB8wYA5HVf3dvtkPZRNzRgAc5N9ONY=",
+              "size": 41
+            },
+            {
+              "type": "file",
+              "name": "emoji.d.mts",
+              "hash": "cO3yxWNv5HPisyB8wYA5HVf3dvtkPZRNzRgAc5N9ONY=",
+              "size": 41
+            },
+            {
+              "type": "file",
+              "name": "emoji.mjs",
+              "hash": "3jikK/vgsnfMGLfUblf6Qs/vX7+TOFD9s/hueeuSWUA=",
+              "size": 53
+            },
+            {
+              "type": "file",
+              "name": "html.cjs",
+              "hash": "l/m5grS3fjZ7OqR2qpNNK9EMBn3tXKmJpDESlnTpHnI=",
+              "size": 327
+            },
+            {
+              "type": "file",
+              "name": "html.d.cts",
+              "hash": "viVIcatK/fPbV3mUsIlapVf4oM3F03q1r4jVwXQVGIM=",
+              "size": 40
+            },
+            {
+              "type": "file",
+              "name": "html.d.mts",
+              "hash": "viVIcatK/fPbV3mUsIlapVf4oM3F03q1r4jVwXQVGIM=",
+              "size": 40
+            },
+            {
+              "type": "file",
+              "name": "html.mjs",
+              "hash": "7BrWpuQD4rOZYqTZwDThzQ97Tirdhn4PQswC5OWTq0s=",
+              "size": 52
+            },
+            {
+              "type": "file",
+              "name": "index.cjs",
+              "hash": "g1FQUmx9n24axKFxyorue0nLe8T4OI0ILKug6ely4+Q=",
+              "size": 307
+            },
+            {
+              "type": "file",
+              "name": "index.d.cts",
+              "hash": "qJWXngq01S6NzJYa2uo8pECATVeuQdJmYYCF1WcLy+g=",
+              "size": 35
+            },
+            {
+              "type": "file",
+              "name": "index.d.mts",
+              "hash": "qJWXngq01S6NzJYa2uo8pECATVeuQdJmYYCF1WcLy+g=",
+              "size": 35
+            },
+            {
+              "type": "file",
+              "name": "index.mjs",
+              "hash": "GkcWWhF4Jvgw/9lwWObsN9EnKY4u+TRbg8Ck2kovmtQ=",
+              "size": 47
+            },
+            {
+              "type": "file",
+              "name": "jsx.cjs",
+              "hash": "SJBXa/R/Nng5ZWa13FTOyNRSBcp6h0EEjfXG1QAmLZs=",
+              "size": 323
+            },
+            {
+              "type": "file",
+              "name": "jsx.d.cts",
+              "hash": "GKFYbk29Z+1CPF+EYzZOUD+wSNfBOwySDpd4edP4O9A=",
+              "size": 39
+            },
+            {
+              "type": "file",
+              "name": "jsx.d.mts",
+              "hash": "GKFYbk29Z+1CPF+EYzZOUD+wSNfBOwySDpd4edP4O9A=",
+              "size": 39
+            },
+            {
+              "type": "file",
+              "name": "jsx.mjs",
+              "hash": "xxxU7Vdu7uGYa26B6lrFGoZleuxWWUpZXYB+0gY7Lk8=",
+              "size": 51
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "name": "index.cjs",
+          "hash": "kfi53biC3wwq0YR3/qNULqAGFAdfOws3xGaClc9US/g=",
+          "size": 170
+        },
+        {
+          "type": "file",
+          "name": "index.d.cts",
+          "hash": "7PGO2F0zVTra6PiYEnpuvYqLtQtl96hEjuctYVFAuLQ=",
+          "size": 1364
+        },
+        {
+          "type": "file",
+          "name": "index.d.mts",
+          "hash": "CAVStMtHMTG4VExSbp9DuHIA333SstKJzZV+hvA7bPk=",
+          "size": 1364
+        },
+        {
+          "type": "file",
+          "name": "index.mjs",
+          "hash": "gHCQnPGLswOkQlFGotnVrsEnnreVfMTl/gB3xBokYQU=",
+          "size": 72
+        },
+        {
+          "type": "file",
+          "name": "node.cjs",
+          "hash": "si5aadk2LXXDHPI8RRlO3EpFfmWbaMFkAvaQfbrZArc=",
+          "size": 295
+        },
+        {
+          "type": "file",
+          "name": "node.d.cts",
+          "hash": "j5dC2ySdNBUKT8AHArfCHbhw5L/gE5u6yEoF+crBR6E=",
+          "size": 32
+        },
+        {
+          "type": "file",
+          "name": "node.d.mts",
+          "hash": "j5dC2ySdNBUKT8AHArfCHbhw5L/gE5u6yEoF+crBR6E=",
+          "size": 32
+        },
+        {
+          "type": "file",
+          "name": "node.mjs",
+          "hash": "RR7fmCc5LXHmIYINBSf+XHuILqrFaVtE95clLnIXEbE=",
+          "size": 44
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": "LICENSE-APACHE",
+      "hash": "N2P6xAv69RCIxIOxBD77vWOJDNagf5lF5mLB+/3A8Tk=",
+      "size": 11357
+    },
+    {
+      "type": "file",
+      "name": "LICENSE-MIT",
+      "hash": "oUWTJRqFaWxWj2GCDiGM5N1jcetB0akYxdF1ulD6aYk=",
+      "size": 1065
+    },
+    {
+      "type": "file",
+      "name": "package.json",
+      "hash": "J62gnpHcoVXasZBrzzWZP+RtmhaLS1H7iqJ9FtQMvz4=",
+      "size": 1900
+    },
+    {
+      "type": "file",
+      "name": "README.md",
+      "hash": "7wLntydDfWxH4wVb7AbySNbA0E4cR+upZ1ZhkL36I08=",
+      "size": 5408
+    }
+  ]
+}

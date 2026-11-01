@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { BLUESKY_API } from '#shared/utils/constants'
 import { ALL_KNOWN_GIT_API_ORIGINS } from '#shared/utils/git-providers'
@@ -10,8 +11,10 @@ import { TRUSTED_IMAGE_DOMAINS } from '#server/utils/image-proxy'
  * only applies to HTML pages (not API routes). The remaining security
  * headers are set via a catch-all route rule.
  *
- * Note: frame-ancestors is not supported in meta-tag CSP, but
- * X-Frame-Options: DENY (set via route rule) provides equivalent protection.
+ * Note: frame-ancestors is not supported in meta-tag CSP, so anti-clickjacking
+ * is delivered via response headers instead: X-Frame-Options: DENY for legacy
+ * browsers, plus a header-only CSP carrying frame-ancestors 'none' (the modern,
+ * non-deprecated mechanism) for everything else.
  *
  * Current policy uses 'unsafe-inline' for scripts and styles because:
  * - Nuxt injects inline scripts for hydration and payload transfer
@@ -30,7 +33,13 @@ export default defineNuxtModule({
       !process.env.TEST
 
     // These assets are embedded directly on blog pages and should not affect image-proxy trust.
-    const cspOnlyImgOrigins = ['https://api.star-history.com', 'https://cdn.bsky.app']
+    const cspOnlyImgOrigins = [
+      'https://api.star-history.com',
+      'https://cdn.bsky.app',
+      'https://video.bsky.app',
+      'https://video.cdn.bsky.app',
+      'https://media1.tenor.com',
+    ]
     const imgSrc = [
       "'self'",
       'data:',
@@ -44,6 +53,8 @@ export default defineNuxtModule({
       'https://registry.npmjs.org',
       'https://api.npmjs.org',
       'https://npm.antfu.dev',
+      'https://video.bsky.app',
+      'https://video.cdn.bsky.app',
       BLUESKY_API,
       ...ALL_KNOWN_GIT_API_ORIGINS,
       // Local CLI connector (npmx CLI communicates via localhost)
@@ -62,6 +73,7 @@ export default defineNuxtModule({
     const securityHeaders = {
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'DENY',
+      'Content-Security-Policy': `frame-ancestors 'none'`,
       'Referrer-Policy': 'strict-origin-when-cross-origin',
     }
 
@@ -70,7 +82,7 @@ export default defineNuxtModule({
       `script-src 'self' 'unsafe-inline'`,
       `style-src 'self' 'unsafe-inline'`,
       `img-src ${imgSrc}`,
-      `media-src 'self'`,
+      `media-src 'self' blob:`,
       `font-src 'self'`,
       `connect-src ${connectSrc}`,
       `frame-src ${frameSrc}`,
@@ -82,13 +94,15 @@ export default defineNuxtModule({
     ].join('; ')
 
     // CSP via <meta> tag — only present in HTML pages, not API responses.
-    nuxt.options.app.head ??= {}
-    const head = nuxt.options.app.head as { meta?: Array<Record<string, string>> }
-    head.meta ??= []
-    head.meta.push({
-      'http-equiv': 'Content-Security-Policy',
-      'content': csp,
-    })
+    if (!nuxt.options.test) {
+      nuxt.options.app.head ??= {}
+      const head = nuxt.options.app.head as { meta?: Array<Record<string, string>> }
+      head.meta ??= []
+      head.meta.push({
+        'http-equiv': 'Content-Security-Policy',
+        'content': csp,
+      })
+    }
 
     // Other security headers via route rules (fine on all responses).
     nuxt.options.routeRules ??= {}
@@ -111,6 +125,7 @@ export default defineNuxtModule({
         ...securityHeaders,
         ...devtoolsRule?.headers,
         'X-Frame-Options': 'SAMEORIGIN',
+        'Content-Security-Policy': `frame-ancestors 'self'`,
       },
     }
   },

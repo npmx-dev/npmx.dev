@@ -49,7 +49,7 @@ export const OSS_PARTNERS = [
     url: 'https://opensourcepledge.com/',
   },
   {
-    name: 'Void Zero',
+    name: 'VoidZero',
     items: [
       {
         name: 'Vite',

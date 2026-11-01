@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { noCorrect, noPasswordManager } from '~/utils/input'
+import {
+  noCorrect as noCorrectAttrs,
+  noPasswordManager as noPasswordManagerAttrs,
+} from '~/utils/input'
 
 const model = defineModel<string>({ default: '' })
 
@@ -44,8 +47,8 @@ defineExpose({
 })
 
 const inputAttrs = computed(() => ({
-  ...(props.noCorrect ? noCorrect : {}),
-  ...(props.noPasswordManager ? noPasswordManager : {}),
+  ...(props.noCorrect ? noCorrectAttrs : {}),
+  ...(props.noPasswordManager ? noPasswordManagerAttrs : {}),
 }))
 </script>
 
@@ -56,7 +59,7 @@ const inputAttrs = computed(() => ({
     v-bind="inputAttrs"
     @focus="emit('focus', $event)"
     @blur="emit('blur', $event)"
-    class="appearance-none bg-bg-subtle border border-border font-mono text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent outline-offset-2 focus:border-accent focus-visible:outline-accent/70 disabled:(opacity-50 cursor-not-allowed)"
+    class="appearance-none bg-bg-subtle border border-border-elevated font-mono text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent outline-offset-2 focus:border-accent focus-visible:outline-accent/70 disabled:(opacity-50 cursor-not-allowed)"
     :class="{
       'text-xs leading-[1.2] px-2 py-2 rounded-md': size === 'sm',
       'text-sm leading-none px-3 py-2.5 rounded-lg': size === 'md',

@@ -22,7 +22,7 @@ const copyToClipboard = async () => {
     class="my-8 p-5 rounded-xl border border-gray-200/60 dark:border-white/5 bg-gray-50/50 dark:bg-white/2 flex flex-col sm:flex-row items-end gap-4"
   >
     <div class="flex flex-col gap-1.5 flex-1 w-full">
-      <label class="text-[11px] font-bold uppercase tracking-wider text-gray-400 ml-1"
+      <label class="text-2xs font-bold uppercase tracking-wider text-gray-400 ms-1"
         >Package Name</label
       >
       <input
@@ -36,7 +36,7 @@ const copyToClipboard = async () => {
     </div>
 
     <div class="flex flex-col gap-1.5 flex-1 w-full">
-      <label class="text-[11px] font-bold uppercase tracking-wider text-gray-400 ml-1"
+      <label class="text-2xs font-bold uppercase tracking-wider text-gray-400 ms-1"
         >Badge Type</label
       >
       <div class="relative">
@@ -49,20 +49,20 @@ const copyToClipboard = async () => {
           </option>
         </select>
         <span
-          class="absolute right-3 top-1/2 -translate-y-1/2 i-lucide-chevron-down w-4 h-4 text-gray-400 pointer-events-none"
+          class="absolute inset-ie-3 top-1/2 -translate-y-1/2 i-lucide-chevron-down w-4 h-4 text-gray-400 pointer-events-none"
         />
       </div>
     </div>
 
     <div class="flex flex-col gap-1.5 flex-2 w-full">
-      <label class="text-[11px] font-bold uppercase tracking-wider text-gray-400 ml-1"
+      <label class="text-2xs font-bold uppercase tracking-wider text-gray-400 ms-1"
         >Preview & Action</label
       >
       <div
         class="flex items-center bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg h-10.5 overflow-hidden"
       >
         <div
-          class="flex-1 flex items-center justify-center px-3 border-r border-gray-200 dark:border-white/10 h-full bg-gray-50/50 dark:bg-transparent"
+          class="flex-1 flex items-center justify-center px-3 border-ie border-gray-200 dark:border-white/10 h-full bg-gray-50/50 dark:bg-transparent"
         >
           <img
             v-if="isValid"
@@ -71,7 +71,7 @@ const copyToClipboard = async () => {
             alt="Badge Preview"
             @error="isValid = false"
           />
-          <span v-else class="text-[10px] font-bold text-red-500 uppercase tracking-tighter"
+          <span v-else class="text-3xs font-bold text-red-500 uppercase tracking-tighter"
             >Invalid</span
           >
         </div>
@@ -79,7 +79,7 @@ const copyToClipboard = async () => {
         <button
           @click="copyToClipboard"
           :disabled="!isValid || !pkg"
-          class="px-4 h-full text-[11px] font-bold uppercase tracking-widest transition-all disabled:opacity-20 disabled:cursor-not-allowed min-w-21.25 hover:bg-gray-50 dark:hover:bg-white/5"
+          class="px-4 h-full text-2xs font-bold uppercase tracking-widest transition-all disabled:opacity-20 disabled:cursor-not-allowed min-w-21.25 hover:bg-gray-50 dark:hover:bg-white/5"
           :class="
             copied
               ? 'text-emerald-500 bg-emerald-50/50 dark:bg-emerald-500/10'

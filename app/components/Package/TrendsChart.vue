@@ -1,30 +1,41 @@
 <script setup lang="ts">
-import type { Theme as VueDataUiTheme } from 'vue-data-ui'
-import { VueUiXy, type VueUiXyConfig, type VueUiXyDatasetItem } from 'vue-data-ui/vue-ui-xy'
+import { VueUiXy, type VueUiXyConfig, type VueUiXySvgSlotProps } from 'vue-data-ui/vue-ui-xy'
+import { useTooltipPosition } from 'vue-data-ui/composables'
 import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
-import { useCssVariables } from '~/composables/useColors'
-import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch, lightenOklch } from '~/utils/colors'
-import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
+import { useColors } from '~/composables/useColors'
+import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
 import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import type { RepoRef } from '#shared/utils/git-providers'
 import type {
   ChartTimeGranularity,
-  DailyDataPoint,
   DateRangeFields,
   EvolutionData,
   EvolutionOptions,
-  MonthlyDataPoint,
   WeeklyDataPoint,
-  YearlyDataPoint,
 } from '~/types/chart'
 import { DATE_INPUT_MAX } from '~/utils/input'
-import {
-  applyDataPipeline,
-  endDateOnlyToUtcMs,
-  DEFAULT_PREDICTION_POINTS,
-} from '~/utils/chart-data-prediction'
+import { endDateOnlyToUtcMs } from '~/utils/chart-data-prediction'
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
-import { copyAltTextForTrendLineChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
+import {
+  CHART_ANNOTATOR_SLOTS,
+  copyAltTextForTrendLineChart,
+  sanitise,
+  applyEllipsis,
+} from '~/utils/charts'
+import {
+  buildNormalisedTrendsDataset,
+  buildTrendsChartConfig,
+  buildTrendsChartData,
+  isWeeklyDataset,
+  getTrendsDatetimeFormatterOptions,
+  isMissingDownloadValue,
+  isLargeDownloadSeries,
+  MULTI_PACKAGE_MODE_TOP_PADDING,
+} from '#shared/utils/trends-chart'
+import { downloadFileLink } from '~/utils/download'
+import { useCopyChartPng } from '~/composables/useCopyChartPng'
+import { getDownloadChartGaps } from '#shared/utils/download-chart-gaps'
+import { createLastDatapointLabelsSvg } from '#shared/utils/download-chart-last-label'
 
 import('vue-data-ui/style.css')
 
@@ -32,7 +43,6 @@ const props = withDefaults(
   defineProps<{
     // For single package downloads history
     weeklyDownloads?: WeeklyDataPoint[]
-    inModal?: boolean
 
     /**
      * Backward compatible single package mode.
@@ -51,9 +61,12 @@ const props = withDefaults(
     /** When true, shows facet selector (e.g. Downloads / Likes). */
     showFacetSelector?: boolean
     permalink?: boolean
+    defaultRange?: 'auto' | '52-weeks'
+    hideControls?: boolean
+    compactXAxisLabels?: boolean
   }>(),
   {
-    permalink: false,
+    defaultRange: 'auto',
   },
 )
 
@@ -64,11 +77,42 @@ const { copy, copied } = useClipboard()
 
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
+const gapPatternId = useId()
 const rootEl = shallowRef<HTMLElement | null>(null)
 const isZoomed = shallowRef(false)
+const zoomStartIndex = shallowRef(0)
+const zoomEndIndex = shallowRef<number | null>(null)
 
-function setIsZoom({ isZoom }: { isZoom: boolean }) {
-  isZoomed.value = isZoom
+const chartRef = useTemplateRef('chartRef')
+const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
+
+type ZoomRangeEvent = {
+  index: number
+  isZoom: boolean
+}
+
+function updateZoomState() {
+  const endIndex = zoomEndIndex.value ?? maxDatapoints.value
+  isZoomed.value =
+    zoomStartIndex.value > 0 || (maxDatapoints.value > 0 && endIndex < maxDatapoints.value)
+}
+
+function setZoomStart({ index }: ZoomRangeEvent) {
+  if (!Number.isFinite(index)) return
+  zoomStartIndex.value = index
+  updateZoomState()
+}
+
+function setZoomEnd({ index }: ZoomRangeEvent) {
+  if (!Number.isFinite(index)) return
+  zoomEndIndex.value = index
+  updateZoomState()
+}
+
+function resetZoomTracking() {
+  zoomStartIndex.value = 0
+  zoomEndIndex.value = null
+  isZoomed.value = false
 }
 
 const { width } = useElementSize(rootEl)
@@ -89,23 +133,7 @@ onMounted(async () => {
   loadMetric(selectedMetric.value)
 })
 
-const { colors } = useCssVariables(
-  [
-    '--bg',
-    '--fg',
-    '--bg-subtle',
-    '--bg-elevated',
-    '--fg-subtle',
-    '--fg-muted',
-    '--border',
-    '--border-subtle',
-  ],
-  {
-    element: rootEl,
-    watchHtmlAttributes: true,
-    watchResize: false,
-  },
-)
+const { colors } = useColors(rootEl)
 
 watch(
   () => colorMode.value,
@@ -143,170 +171,87 @@ const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpoin
 
 const DEFAULT_GRANULARITY: ChartTimeGranularity = 'weekly'
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
-}
+const chartData = computed(() =>
+  buildTrendsChartData({
+    packageNames: effectivePackageNames.value,
+    effectivePackageNamesForMetric: effectivePackageNamesForMetric.value,
+    isMultiPackageMode: isMultiPackageMode.value,
+    selectedMetric: selectedMetric.value,
+    selectedMetricLabel: activeMetricDef.value?.label ?? '',
+    selectedGranularity: selectedGranularity.value,
+    displayedGranularity: displayedGranularity.value,
+    singleEvolution: effectiveDataSingle.value,
+    evolutionsByPackage: activeMetricState.value.evolutionsByPackage,
+    colors: colors.value,
+    accent: accent.value,
+    isDarkMode: isDarkMode.value,
+    useAnomalyCorrection: settings.value.chartFilter.anomaliesFixed,
+    applyAnomalyCorrection: applyBlocklistCorrection,
+    chartFilter: settings.value.chartFilter,
+    t: $t,
+    compactNumberFormatter: compactNumberFormatter.value,
+  }),
+)
 
-function isWeeklyDataset(data: unknown): data is WeeklyDataPoint[] {
+const normalisedDataset = computed(() => {
+  const data = buildNormalisedTrendsDataset({
+    dataset: chartData.value.dataset,
+    dates: chartData.value.dates,
+    granularity: displayedGranularity.value,
+    selectedMetric: selectedMetric.value,
+    chartFilter: settings.value.chartFilter,
+    endDateMs: endDate.value ? endDateOnlyToUtcMs(endDate.value) : null,
+  })
+
+  data.forEach((item, index) => {
+    const packageName = getPackageNameForSeriesIndex(index)
+
+    if (selectedMetric.value !== DEFAULT_METRIC_ID || !item.series.length) return
+
+    const rawLastValue = chartData.value.dataset?.[index]?.series?.at(-1)
+
+    if (!isLargePackage.value[packageName] && rawLastValue === 0) {
+      const series = item.series as Array<number | null>
+      series[series.length - 1] = 0
+    }
+  })
+
+  return data
+})
+
+function getPackageNameForSeriesIndex(index: number): string {
   return (
-    Array.isArray(data) &&
-    data.length > 0 &&
-    isRecord(data[0]) &&
-    'weekStart' in data[0] &&
-    'weekEnd' in data[0] &&
-    'value' in data[0]
+    effectivePackageNamesForMetric.value[index] ??
+    effectivePackageNames.value[index] ??
+    `series-${index}`
   )
 }
-function isDailyDataset(data: unknown): data is DailyDataPoint[] {
-  return (
-    Array.isArray(data) &&
-    data.length > 0 &&
-    isRecord(data[0]) &&
-    'day' in data[0] &&
-    'value' in data[0]
-  )
-}
-function isMonthlyDataset(data: unknown): data is MonthlyDataPoint[] {
-  return (
-    Array.isArray(data) &&
-    data.length > 0 &&
-    isRecord(data[0]) &&
-    'month' in data[0] &&
-    'value' in data[0]
-  )
-}
-function isYearlyDataset(data: unknown): data is YearlyDataPoint[] {
-  return (
-    Array.isArray(data) &&
-    data.length > 0 &&
-    isRecord(data[0]) &&
-    'year' in data[0] &&
-    'value' in data[0]
-  )
-}
 
-/**
- * Formats a single evolution dataset into the structure expected by `VueUiXy`
- * for single-series charts.
- *
- * The dataset is interpreted based on the selected time granularity:
- * - **daily**   → uses `timestamp`
- * - **weekly**  → uses `timestampEnd`
- * - **monthly** → uses `timestamp`
- * - **yearly**  → uses `timestamp`
- *
- * Only datasets matching the expected shape for the given granularity are
- * accepted. If the dataset does not match, an empty result is returned.
- *
- * The returned structure includes:
- * - a single line-series dataset with a consistent color
- * - a list of timestamps used as the x-axis values
- *
- * @param selectedGranularity - Active chart time granularity
- * @param dataset - Raw evolution dataset to format
- * @param seriesName - Display name for the resulting series
- * @returns An object containing a formatted dataset and its associated dates,
- *          or `{ dataset: null, dates: [] }` when the input is incompatible
- */
-function formatXyDataset(
-  selectedGranularity: ChartTimeGranularity,
-  dataset: EvolutionData,
-  seriesName: string,
-): { dataset: VueUiXyDatasetItem[] | null; dates: number[] } {
-  const lightColor = isDarkMode.value ? lightenOklch(accent.value, 0.618) : undefined
+// Package size is evaluated independently for each package.
+const isLargePackage = computed<Record<string, boolean>>(() => {
+  if (selectedMetric.value !== DEFAULT_METRIC_ID) return {}
 
-  // Subtle path gradient applied in dark mode only
-  const temperatureColors = lightColor ? [lightColor, accent.value] : undefined
+  const largePackages: Record<string, boolean> = {}
 
-  const datasetItem: VueUiXyDatasetItem = {
-    name: applyEllipsis(seriesName, 32),
-    type: 'line',
-    series: dataset.map(d => d.value),
-    color: accent.value,
-    temperatureColors,
-    useArea: true,
-    dashIndices: dataset
-      .map((item, index) => (item.hasAnomaly ? index : -1))
-      .filter(index => index !== -1),
-  }
-
-  if (selectedGranularity === 'weekly' && isWeeklyDataset(dataset)) {
-    return {
-      dataset: [datasetItem],
-      dates: dataset.map(d => d.timestampEnd),
-    }
-  }
-  if (selectedGranularity === 'daily' && isDailyDataset(dataset)) {
-    return {
-      dataset: [datasetItem],
-      dates: dataset.map(d => d.timestamp),
-    }
-  }
-  if (selectedGranularity === 'monthly' && isMonthlyDataset(dataset)) {
-    return {
-      dataset: [datasetItem],
-      dates: dataset.map(d => d.timestamp),
-    }
-  }
-  if (selectedGranularity === 'yearly' && isYearlyDataset(dataset)) {
-    return {
-      dataset: [datasetItem],
-      dates: dataset.map(d => d.timestamp),
-    }
-  }
-  return { dataset: null, dates: [] }
-}
-
-/**
- * Extracts normalized time-series points from an evolution dataset based on
- * the selected time granularity.
- *
- * Each returned point contains:
- * - `timestamp`: the numeric time value used for x-axis alignment
- * - `value`: the corresponding value at that time
- *
- * The timestamp field is selected according to granularity:
- * - **daily**   → `timestamp`
- * - **weekly**  → `timestampEnd`
- * - **monthly** → `timestamp`
- * - **yearly**  → `timestamp`
- *
- * If the dataset does not match the expected shape for the given granularity,
- * an empty array is returned.
- *
- * This helper is primarily used in multi-package mode to align multiple
- * datasets on a shared time axis.
- *
- * @param selectedGranularity - Active chart time granularity
- * @param dataset - Raw evolution dataset to extract points from
- * @returns An array of normalized `{ timestamp, value }` points
- */
-function extractSeriesPoints(
-  selectedGranularity: ChartTimeGranularity,
-  dataset: EvolutionData,
-): Array<{ timestamp: number; value: number; hasAnomaly: boolean }> {
-  if (selectedGranularity === 'weekly' && isWeeklyDataset(dataset)) {
-    return dataset.map(d => ({
-      timestamp: d.timestampEnd,
-      value: d.value,
-      hasAnomaly: !!d.hasAnomaly,
-    }))
-  }
-  if (
-    (selectedGranularity === 'daily' && isDailyDataset(dataset)) ||
-    (selectedGranularity === 'monthly' && isMonthlyDataset(dataset)) ||
-    (selectedGranularity === 'yearly' && isYearlyDataset(dataset))
-  ) {
-    return (dataset as Array<{ timestamp: number; value: number; hasAnomaly?: boolean }>).map(
-      d => ({
-        timestamp: d.timestamp,
-        value: d.value,
-        hasAnomaly: !!d.hasAnomaly,
-      }),
+  for (const [index, dataset] of (chartData.value.dataset ?? []).entries()) {
+    largePackages[getPackageNameForSeriesIndex(index)] = isLargeDownloadSeries(
+      (dataset.series ?? []) as number[],
+      displayedGranularity.value,
     )
   }
-  return []
-}
+
+  return largePackages
+})
+
+const largePackageSeries = computed<boolean[]>(() =>
+  (chartData.value.dataset ?? []).map(
+    (_, index) => isLargePackage.value[getPackageNameForSeriesIndex(index)] === true,
+  ),
+)
+
+const datetimeFormatterOptions = computed(() =>
+  getTrendsDatetimeFormatterOptions(selectedGranularity.value),
+)
 
 function toIsoDateOnly(value: string): string {
   return value.slice(0, 10)
@@ -347,19 +292,21 @@ const {
 
 const repoRefsByPackage = shallowRef<Record<string, RepoRef | null>>({})
 const repoRefsRequestToken = shallowRef(0)
+const repoRefsPending = shallowRef(false)
 
 watch(
   () => effectivePackageNames.value,
   async names => {
     if (!import.meta.client) return
-    if (!isMultiPackageMode.value) {
-      repoRefsByPackage.value = {}
-      return
-    }
     const currentToken = ++repoRefsRequestToken.value
-    const refs = await fetchRepoRefsForPackages(names)
-    if (currentToken !== repoRefsRequestToken.value) return
-    repoRefsByPackage.value = refs
+    repoRefsPending.value = true
+    try {
+      const refs = await fetchRepoRefsForPackages(names)
+      if (currentToken !== repoRefsRequestToken.value) return
+      repoRefsByPackage.value = refs
+    } finally {
+      if (currentToken === repoRefsRequestToken.value) repoRefsPending.value = false
+    }
   },
   { immediate: true },
 )
@@ -407,8 +354,18 @@ const supportsEstimation = computed(
     selectedMetric.value !== 'contributors',
 )
 
-const hasDownloadAnomalies = computed(() =>
-  normalisedDataset.value?.some(datapoint => !!datapoint.dashIndices.length),
+const hasDashedSegments = computed(() =>
+  normalisedDataset.value.some((datapoint, index) => {
+    if (datapoint.dashIndices?.length) return true
+
+    return (
+      selectedMetric.value === DEFAULT_METRIC_ID &&
+      isLargePackage.value[getPackageNameForSeriesIndex(index)] === true &&
+      datapoint.series.length > 1 &&
+      isMissingDownloadValue(datapoint.series.at(-1)) &&
+      datapoint.series.slice(0, -1).some(value => !isMissingDownloadValue(value))
+    )
+  }),
 )
 
 const shouldRenderEstimationOverlay = computed(() => !pending.value && supportsEstimation.value)
@@ -514,7 +471,7 @@ function addUtcDays(date: Date, days: number): Date {
 function initDateRangeForMultiPackageWeekly52() {
   if (hasUserEditedDates.value) return
   if (!import.meta.client) return
-  if (!isMultiPackageMode.value) return
+  if (!isMultiPackageMode.value && props.defaultRange === 'auto') return
   if (startDate.value && endDate.value) return
 
   const today = new Date()
@@ -527,7 +484,7 @@ function initDateRangeForMultiPackageWeekly52() {
 }
 
 watch(
-  () => (props.packageNames ?? []).length,
+  () => (props.packageNames ?? []).length || props.defaultRange === '52-weeks',
   () => {
     initDateRangeForMultiPackageWeekly52()
   },
@@ -634,14 +591,6 @@ type MetricDef = {
   supportsMulti?: boolean
 }
 
-const hasContributorsFacet = computed(() => {
-  if (isMultiPackageMode.value) {
-    return Object.values(repoRefsByPackage.value).some(ref => ref?.provider === 'github')
-  }
-  const ref = props.repoRef
-  return ref?.provider === 'github' && ref.owner && ref.repo
-})
-
 const METRICS = computed<MetricDef[]>(() => {
   const metrics: MetricDef[] = [
     {
@@ -661,16 +610,13 @@ const METRICS = computed<MetricDef[]>(() => {
       fetch: ({ packageName }, opts) => fetchPackageLikesEvolution(packageName, opts),
       supportsMulti: true,
     },
-  ]
-
-  if (hasContributorsFacet.value) {
-    metrics.push({
+    {
       id: 'contributors',
       label: $t('package.trends.items.contributors'),
       fetch: ({ repoRef }, opts) => fetchRepoContributorsEvolution(repoRef, opts),
       supportsMulti: true,
-    })
-  }
+    },
+  ]
 
   return metrics
 })
@@ -761,7 +707,7 @@ const activeMetricState = computed(() => metricStates[selectedMetric.value])
 const activeMetricDef = computed(
   () => METRICS.value.find(m => m.id === selectedMetric.value) ?? METRICS.value[0],
 )
-const pending = computed(() => activeMetricState.value.pending)
+const pending = computed(() => activeMetricState.value?.pending)
 
 const isMounted = shallowRef(false)
 
@@ -833,6 +779,10 @@ async function loadMetric(metricId: MetricId) {
   const currentToken = ++state.requestToken
   state.pending = true
 
+  if (metricId === 'contributors' && repoRefsPending.value) {
+    return
+  }
+
   const fetchFn = (context: MetricContext) => metric.fetch(context, options.value)
 
   try {
@@ -895,7 +845,10 @@ async function loadMetric(metricId: MetricId) {
       }
     }
 
-    const result = await fetchFn({ packageName: pkg, repoRef: props.repoRef })
+    const result = await fetchFn({
+      packageName: pkg,
+      repoRef: props.repoRef || repoRefsByPackage.value[pkg],
+    })
     if (currentToken !== state.requestToken) return
 
     state.evolution = (result ?? []) as EvolutionData
@@ -954,7 +907,6 @@ watch(
   () => {
     if (!import.meta.client) return
     if (!isMounted.value) return
-    if (!isMultiPackageMode.value) return
     if (selectedMetric.value !== 'contributors') return
     debouncedLoadNow()
   },
@@ -991,126 +943,9 @@ const effectiveDataSingle = computed<EvolutionData>(() => {
   return data
 })
 
-/**
- * Normalized chart data derived from the active metric's evolution datasets.
- *
- * Adapts its behavior based on the current mode:
- * - **Single-package mode**: formats via `formatXyDataset`
- * - **Multi-package mode**: merges datasets into a shared time axis
-
- * The returned structure matches the expectations of `VueUiXy`:
- * - `dataset`: array of series definitions, or `null` when no data is available
- * - `dates`: sorted list of timestamps used as the x-axis reference
- *
- * Returning `dataset: null` explicitly signals the absence of data and allows
- * the template to handle empty states without ambiguity.
- */
-const chartData = computed<{
-  dataset: VueUiXyDatasetItem[] | null
-  dates: number[]
-}>(() => {
-  if (!isMultiPackageMode.value) {
-    const pkg = effectivePackageNames.value[0] ?? props.packageName ?? ''
-    return formatXyDataset(displayedGranularity.value, effectiveDataSingle.value, pkg)
-  }
-
-  const state = activeMetricState.value
-  const names = effectivePackageNamesForMetric.value
-  const granularity = displayedGranularity.value
-
-  const timestampSet = new Set<number>()
-  const pointsByPackage = new Map<
-    string,
-    Array<{ timestamp: number; value: number; hasAnomaly?: boolean }>
-  >()
-
-  for (const pkg of names) {
-    let data = state.evolutionsByPackage[pkg] ?? []
-    if (isDownloadsMetric.value && data.length) {
-      if (settings.value.chartFilter.anomaliesFixed) {
-        data = applyBlocklistCorrection({ data, packageName: pkg, granularity })
-      }
-    }
-    const points = extractSeriesPoints(granularity, data)
-
-    pointsByPackage.set(pkg, points)
-    for (const p of points) timestampSet.add(p.timestamp)
-  }
-
-  const dates = Array.from(timestampSet).sort((a, b) => a - b)
-  if (!dates.length) return { dataset: null, dates: [] }
-
-  const dataset: VueUiXyDatasetItem[] = names.map(pkg => {
-    const points = pointsByPackage.get(pkg) ?? []
-    const valueByTimestamp = new Map<number, number>()
-    const anomalyTimestamps = new Set<number>()
-    for (const p of points) {
-      valueByTimestamp.set(p.timestamp, p.value)
-      if (p.hasAnomaly) anomalyTimestamps.add(p.timestamp)
-    }
-
-    const series = dates.map(t => valueByTimestamp.get(t) ?? 0)
-    const dashIndices = dates
-      .map((t, index) => (anomalyTimestamps.has(t) ? index : -1))
-      .filter(index => index !== -1)
-
-    const item: VueUiXyDatasetItem = {
-      name: applyEllipsis(pkg, 32),
-      type: 'line',
-      series,
-      dashIndices,
-    } as VueUiXyDatasetItem
-
-    if (isListedFramework(pkg)) {
-      item.color = getFrameworkColor(pkg)
-    }
-    return item
-  })
-
-  return { dataset, dates }
-})
-
-const normalisedDataset = computed(() => {
-  const granularity = displayedGranularity.value
-  const endDateMs = endDate.value ? endDateOnlyToUtcMs(endDate.value) : null
-  const referenceMs = endDateMs ?? Date.now()
-  const lastDateMs = chartData.value.dates.at(-1) ?? 0
-  const isAbsoluteMetric = selectedMetric.value === 'contributors'
-
-  return (chartData.value.dataset || []).map(d => {
-    const series = applyDataPipeline(
-      d.series.map(v => v ?? 0),
-      {
-        averageWindow: settings.value.chartFilter.averageWindow,
-        smoothingTau: settings.value.chartFilter.smoothingTau,
-        predictionPoints:
-          granularity === 'weekly'
-            ? 0 // weekly buckets are end-aligned → always complete, no prediction needed
-            : (settings.value.chartFilter.predictionPoints ?? DEFAULT_PREDICTION_POINTS),
-      },
-      { granularity, lastDateMs, referenceMs, isAbsoluteMetric },
-    )
-
-    return {
-      ...d,
-      series,
-      dashIndices: d.dashIndices ?? [],
-    }
-  })
-})
-
 const maxDatapoints = computed(() =>
   Math.max(0, ...(chartData.value.dataset ?? []).map(d => d.series.length)),
 )
-
-const datetimeFormatterOptions = computed(() => {
-  return {
-    daily: { year: 'yyyy-MM-dd', month: 'yyyy-MM-dd', day: 'yyyy-MM-dd' },
-    weekly: { year: 'yyyy-MM-dd', month: 'yyyy-MM-dd', day: 'yyyy-MM-dd' },
-    monthly: { year: 'MMM yyyy', month: 'MMM yyyy', day: 'MMM yyyy' },
-    yearly: { year: 'yyyy', month: 'yyyy', day: 'yyyy' },
-  }[selectedGranularity.value]
-})
 
 // Cached date formatter for tooltip
 const tooltipDateFormatter = computed(() => {
@@ -1144,10 +979,6 @@ const granularityLabels = computed(() => ({
   yearly: $t('package.trends.granularity_yearly'),
 }))
 
-function getGranularityLabel(granularity: ChartTimeGranularity) {
-  return granularityLabels.value[granularity]
-}
-
 const granularityItems = computed(() =>
   availableGranularities.value.map(granularity => ({
     label: granularityLabels.value[granularity],
@@ -1169,6 +1000,89 @@ const granularityItems = computed(() =>
  * @returns A string containing SVG elements to be injected, or an empty string
  * when no estimation overlay should be rendered.
  */
+function getNoDataTailGeometries(svg: Record<string, any>) {
+  if (selectedMetric.value !== DEFAULT_METRIC_ID) return []
+
+  const data = Array.isArray(svg?.data) ? svg.data : []
+  if (!data.length) return []
+
+  return data.flatMap((serie: Record<string, any>, seriesIndex: number) => {
+    const renderedName = String(serie?.name ?? '').trim()
+    const packageName =
+      renderedName && isLargePackage.value[renderedName] !== undefined
+        ? renderedName
+        : getPackageNameForSeriesIndex(seriesIndex)
+
+    if (!isLargePackage.value[packageName]) return []
+
+    const plots = Array.isArray(serie?.plots) ? serie.plots : []
+    if (plots.length < 2) return []
+
+    const endpointPlot = plots.at(-1)
+    if (!endpointPlot || !isMissingDownloadValue(endpointPlot.value)) return []
+
+    const x2 = Number(endpointPlot.x)
+    if (!Number.isFinite(x2)) return []
+
+    // Ignore null plots when locating the previous validpoint. Its rendered y is used for the horizontal no-data tail
+    const lastValidPlot = [...plots]
+      .slice(0, -1)
+      .toReversed()
+      .find(plot => {
+        if (isMissingDownloadValue(plot?.value)) return false
+
+        const value = Number(plot?.value)
+        const x = Number(plot?.x)
+        const y = Number(plot?.y)
+        return Number.isFinite(value) && Number.isFinite(x) && Number.isFinite(y)
+      })
+
+    if (!lastValidPlot) return []
+
+    const x1 = Number(lastValidPlot.x)
+    const y = Number(lastValidPlot.y)
+    if (!Number.isFinite(x1) || !Number.isFinite(y)) return []
+
+    return [
+      {
+        seriesIndex,
+        x1,
+        x2,
+        y,
+        value: Number(lastValidPlot.value),
+        color: String(serie?.color ?? colors.value.fg),
+      },
+    ]
+  })
+}
+
+function drawNoDataTail(svg: Record<string, any>) {
+  return getNoDataTailGeometries(svg)
+    .map(
+      geometry => `
+        <line
+          x1="${geometry.x1}"
+          y1="${geometry.y}"
+          x2="${geometry.x2}"
+          y2="${geometry.y}"
+          stroke="${geometry.color}"
+          stroke-width="3"
+          stroke-dasharray="4 8"
+          stroke-linecap="round"
+        />
+        <circle
+          cx="${geometry.x2}"
+          cy="${geometry.y}"
+          r="4"
+          fill="${geometry.color}"
+          stroke="${colors.value.bg}"
+          stroke-width="2"
+        />
+      `,
+    )
+    .join('\n')
+}
+
 function drawEstimationLine(svg: Record<string, any>) {
   if (!shouldRenderEstimationOverlay.value) return ''
 
@@ -1177,14 +1091,19 @@ function drawEstimationLine(svg: Record<string, any>) {
 
   // Collect per-series estimates and a global max candidate for the y-axis
   const lines: string[] = []
+  const visibleNoDataSeriesIndices = new Set(
+    getNoDataTailGeometries(svg).map(({ seriesIndex }) => seriesIndex),
+  )
 
-  for (const serie of data) {
+  for (const [seriesIndex, serie] of data.entries()) {
+    if (visibleNoDataSeriesIndices.has(seriesIndex)) continue
+
     const plots = serie?.plots
     if (!Array.isArray(plots) || plots.length < 2) continue
 
     const previousPoint = plots.at(-2)
     const lastPoint = plots.at(-1)
-    if (!previousPoint || !lastPoint) continue
+    if (previousPoint?.value == null || lastPoint?.value == null) continue
 
     const stroke = String(serie?.color ?? colors.value.fg)
 
@@ -1243,39 +1162,72 @@ function drawEstimationLine(svg: Record<string, any>) {
  * - renders a text label slightly offset to the right of the point
  * - formats the value using the compact number formatter
  *
+ * In case of label collisions for multiple series:
+ * - labels are evenly distributed vertically
+ * - an elbowed marker connects the last point to its label
+ *
  * Return an empty string when no series data is available.
  *
  * @param svg - SVG context object provided by `VueUiXy` via the `#svg` slot
  * @returns A string containing SVG `<text>` elements, or an empty string when
  * no labels should be rendered.
  */
-function drawLastDatapointLabel(svg: Record<string, any>) {
+function drawLastDatapointLabel(svg: VueUiXySvgSlotProps['svg']) {
   const data = Array.isArray(svg?.data) ? svg.data : []
   if (!data.length) return ''
 
-  const dataLabels: string[] = []
+  // Keep all end labels in one call so `createLastDatapointLabelsSvg` can resolve
+  // collisions across regular values and missing-endpoint labels together.
+  const noDataGeometries = getNoDataTailGeometries(svg)
+  const labelSeries = data.slice()
+  const missingEndpointLabels = new Map<number, string>()
 
-  for (const serie of data) {
-    const lastPlot = serie.plots.at(-1)
+  for (const geometry of noDataGeometries) {
+    const serie = data[geometry.seriesIndex]
+    if (!serie || !Array.isArray(serie.plots) || !serie.plots.length) continue
 
-    dataLabels.push(`
-      <text
-        text-anchor="start"
-        dominant-baseline="middle"
-        x="${lastPlot.x + 12}"
-        y="${lastPlot.y}"
-        font-size="24"
-        fill="${colors.value.fg}"
-        stroke="${colors.value.bg}"
-        stroke-width="1"
-        paint-order="stroke fill"
-      >
-        ${compactNumberFormatter.value.format(Number.isFinite(lastPlot.value) ? lastPlot.value : 0)}
-      </text>
-    `)
+    const plots = serie.plots.slice()
+    const endpointIndex = plots.length - 1
+    const endpointPlot = plots[endpointIndex]
+    if (!endpointPlot) continue
+
+    // Use a unique synthetic value only for the label formatter. The endpoint
+    // remains positioned at the final x index and at the previous valid y.
+    const labelValueSentinel = Number.MIN_SAFE_INTEGER + geometry.seriesIndex
+    missingEndpointLabels.set(
+      labelValueSentinel,
+      `${compactNumberFormatter.value.format(geometry.value)}*`,
+    )
+
+    const labelEndpointPlot = Object.assign({}, endpointPlot)
+    labelEndpointPlot.x = geometry.x2
+    labelEndpointPlot.y = geometry.y
+    labelEndpointPlot.value = labelValueSentinel
+
+    plots[endpointIndex] = labelEndpointPlot
+
+    const labelSerie = Object.assign({}, serie)
+    labelSerie.plots = plots
+
+    labelSeries[geometry.seriesIndex] = labelSerie
   }
 
-  return dataLabels.join('\n')
+  return createLastDatapointLabelsSvg({
+    series: labelSeries,
+    missingValueLabel: isDownloadsMetric.value ? $t('package.trends.no_data_short') : undefined,
+    drawingArea: svg.drawingArea,
+    svgWidth: svg.width,
+    fontSize: 20,
+    labelOffset: isMultiPackageMode.value ? 24 : 16,
+    colors: {
+      foreground: colors.value.fg!,
+      background: colors.value.bg!,
+      fallbackSerieColor: colors.value.fg!,
+    },
+    formatValue: value =>
+      missingEndpointLabels.get(value) ?? compactNumberFormatter.value.format(value),
+    isDarkMode: isDarkMode.value,
+  })
 }
 
 /**
@@ -1319,7 +1271,7 @@ function drawSvgPrintLegend(svg: Record<string, any>) {
   // Inject the estimation legend item when necessary
   if (
     (supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value) ||
-    hasDownloadAnomalies.value
+    hasDashedSegments.value
   ) {
     seriesNames.push(`
         <line
@@ -1357,7 +1309,13 @@ const chartHeight = computed(() => {
   if (isMobile.value) {
     return 950
   }
-  return showCorrectionControls.value && props.inModal ? 494 : 600
+
+  const additionalHeight = isMultiPackageMode.value ? MULTI_PACKAGE_MODE_TOP_PADDING : 0
+
+  if (props.hideControls) {
+    return 460 + additionalHeight
+  }
+  return 600 + additionalHeight
 })
 
 const { start } = useTimeoutFn(
@@ -1384,80 +1342,70 @@ watch(
   { immediate: true },
 )
 
+const tooltipPosition = useTooltipPosition(chartRef)
+
+const keepZoomState = shallowRef(true)
+
 // VueUiXy chart component configuration
 const chartConfig = computed<VueUiXyConfig>(() => {
+  const baseConfig = buildTrendsChartConfig({
+    packageNames: effectivePackageNames.value,
+    effectivePackageNamesForMetric: effectivePackageNamesForMetric.value,
+    isMultiPackageMode: isMultiPackageMode.value,
+    selectedMetric: selectedMetric.value,
+    selectedMetricLabel: activeMetricDef.value?.label ?? '',
+    selectedGranularity: selectedGranularity.value,
+    displayedGranularity: displayedGranularity.value,
+    singleEvolution: effectiveDataSingle.value,
+    evolutionsByPackage: activeMetricState.value.evolutionsByPackage,
+    dates: chartData.value.dates,
+    colors: colors.value,
+    accent: accent.value,
+    isDarkMode: isDarkMode.value,
+    isMobile: isMobile.value,
+    pending: pending.value,
+    locale: locale.value,
+    chartHeight: chartHeight.value,
+    chartFilter: settings.value.chartFilter,
+    t: $t,
+    compactNumberFormatter: compactNumberFormatter.value,
+    tooltipPosition: tooltipPosition.value,
+    compactXAxisLabels: props.compactXAxisLabels,
+  })
+
   return {
-    theme: isDarkMode.value ? 'dark' : ('' as VueDataUiTheme),
-    a11y: {
-      translations: {
-        keyboardNavigation: $t(
-          'package.trends.chart_assistive_text.keyboard_navigation_horizontal',
-        ),
-        tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
-        tableCaption: $t('package.trends.chart_assistive_text.table_caption'),
-      },
-    },
+    ...baseConfig,
     chart: {
-      height: chartHeight.value,
-      backgroundColor: colors.value.bg,
-      padding: { bottom: displayedGranularity.value === 'yearly' ? 84 : 64, right: 128 }, // padding right is set to leave space of last datapoint label(s)
+      ...baseConfig.chart,
       userOptions: {
-        buttons: {
-          pdf: false,
-          labels: false,
-          fullscreen: false,
-          table: false,
-          tooltip: false,
-          altCopy: true,
-        },
-        buttonTitles: {
-          csv: $t('package.trends.download_file', { fileType: 'CSV' }),
-          img: $t('package.trends.download_file', { fileType: 'PNG' }),
-          svg: $t('package.trends.download_file', { fileType: 'SVG' }),
-          annotator: $t('package.trends.toggle_annotator'),
-          stack: $t('package.trends.toggle_stack_mode'),
-          altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependent on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
-          open: $t('package.trends.open_options'),
-          close: $t('package.trends.close_options'),
-        },
+        ...baseConfig?.chart?.userOptions,
         callbacks: {
           img: args => {
             const imageUri = args?.imageUri
             if (!imageUri) return
-            loadFile(imageUri, buildExportFilename('png'))
+            downloadFileLink(imageUri, buildExportFilename('png'))
           },
           csv: csvStr => {
             if (!csvStr) return
-            const PLACEHOLDER_CHAR = '\0'
-            const multilineDateTemplate = $t('package.trends.date_range_multiline', {
-              start: PLACEHOLDER_CHAR,
-              end: PLACEHOLDER_CHAR,
-            })
-              .replaceAll(PLACEHOLDER_CHAR, '')
-              .trim()
-            const blob = new Blob([
-              csvStr
-                .replace('data:text/csv;charset=utf-8,', '')
-                .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
-            ])
+            const blob = new Blob([csvStr.replace('data:text/csv;charset=utf-8,', '')])
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('csv'))
+            downloadFileLink(url, buildExportFilename('csv'))
             URL.revokeObjectURL(url)
           },
           svg: args => {
             const blob = args?.blob
             if (!blob) return
             const url = URL.createObjectURL(blob)
-            loadFile(url, buildExportFilename('svg'))
+            downloadFileLink(url, buildExportFilename('svg'))
             URL.revokeObjectURL(url)
           },
-          altCopy: ({ dataset: dst, config: cfg }) =>
+          altCopy: ({ dataset: copiedDataset, config: copiedConfig }) =>
             copyAltTextForTrendLineChart({
-              dataset: dst,
+              dataset: copiedDataset,
               config: {
-                ...cfg,
-                formattedDatasetValues: (dst?.lines || []).map(d =>
-                  d.series.map(n => compactNumberFormatter.value.format(n ?? 0)),
+                ...copiedConfig,
+                formattedDatasetValues: (copiedDataset?.lines || []).map(serie =>
+                  serie.series.map(value => compactNumberFormatter.value.format(value ?? 0)),
                 ),
                 hasEstimation:
                   supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value,
@@ -1469,132 +1417,101 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             }),
         },
       },
-      grid: {
-        stroke: colors.value.border,
-        showHorizontalLines: true,
-        labels: {
-          fontSize: isMobile.value ? 24 : 16,
-          color: pending.value ? colors.value.border : colors.value.fgSubtle,
-          axis: {
-            yLabel: $t('package.trends.y_axis_label', {
-              granularity: getGranularityLabel(selectedGranularity.value),
-              facet: activeMetricDef.value?.label,
-            }),
-            yLabelOffsetX: 12,
-            fontSize: isMobile.value ? 32 : 24,
-          },
-          xAxisLabels: {
-            show: true,
-            showOnlyAtModulo: true,
-            modulo: 12,
-            values: chartData.value?.dates,
-            datetimeFormatter: {
-              enable: true,
-              locale: locale.value,
-              useUTC: true,
-              options: datetimeFormatterOptions.value,
-            },
-          },
-          yAxis: {
-            formatter: ({ value }: { value: number }) => {
-              return compactNumberFormatter.value.format(Number.isFinite(value) ? value : 0)
-            },
-            useNiceScale: true, // daily/weekly -> true, monthly/yearly -> false
-            gap: 24, // vertical gap between individual series in stacked mode
-          },
-        },
-      },
-      timeTag: {
-        show: true,
-        backgroundColor: colors.value.bgElevated,
-        color: colors.value.fg,
-        fontSize: 16,
-        circleMarker: { radius: 3, color: colors.value.border },
-        useDefaultFormat: true,
-        timeFormat: 'yyyy-MM-dd HH:mm:ss',
-      },
-      highlighter: { useLine: true },
-      legend: { show: false, position: 'top' },
       tooltip: {
-        teleportTo: props.inModal ? '#chart-modal' : undefined,
-        borderColor: 'transparent',
-        backdropFilter: false,
-        backgroundColor: 'transparent',
+        ...baseConfig?.chart?.tooltip,
         customFormat: ({ datapoint: items, absoluteIndex }) => {
           if (!items || pending.value) return ''
 
           const hasMultipleItems = items.length > 1
-
-          // Format date for multiple series datasets
           let formattedDate = ''
+
           if (hasMultipleItems && absoluteIndex !== undefined) {
             const index = Number(absoluteIndex)
-            if (Number.isInteger(index) && index >= 0 && index < chartData.value.dates.length) {
-              const timestamp = chartData.value.dates[index]
-              if (typeof timestamp === 'number') {
-                formattedDate = tooltipDateFormatter.value.format(new Date(timestamp))
-              }
+            const timestamp = chartData.value.dates[index]
+
+            if (Number.isInteger(index) && typeof timestamp === 'number') {
+              formattedDate = tooltipDateFormatter.value.format(new Date(timestamp))
             }
           }
 
           const rows = items
-            .map((d: Record<string, any>) => {
-              const label = String(d?.name ?? '').trim()
-              const raw = Number(d?.value ?? 0)
-              const v = compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
+            .map((datapoint: Record<string, any>, itemIndex: number) => {
+              const label = String(datapoint?.name ?? '').trim()
+              const matchingSeriesIndex = normalisedDataset.value.findIndex(
+                serie => String((serie as Record<string, any>)?.name ?? '').trim() === label,
+              )
+              const seriesIndex = matchingSeriesIndex >= 0 ? matchingSeriesIndex : itemIndex
+              const packageName = getPackageNameForSeriesIndex(seriesIndex)
+              const rawSeries = chartData.value.dataset?.[seriesIndex]?.series ?? []
+              const absoluteDataIndex =
+                absoluteIndex !== undefined ? Number(absoluteIndex) : Number.NaN
+              const rawDataValue = Number.isInteger(absoluteDataIndex)
+                ? rawSeries[absoluteDataIndex]
+                : datapoint?.value
+              const isNoDataValue =
+                selectedMetric.value === DEFAULT_METRIC_ID &&
+                (rawDataValue == null ||
+                  (isLargePackage.value[packageName] === true &&
+                    isMissingDownloadValue(rawDataValue)))
+              const rawValue = Number(datapoint?.value ?? 0)
+              const value = isNoDataValue
+                ? $t('package.trends.no_data_short')
+                : compactNumberFormatter.value.format(Number.isFinite(rawValue) ? rawValue : 0)
 
               if (!hasMultipleItems) {
-                // We don't need the name of the package in this case, since it is shown in the xAxis label
                 return `<div>
-                  <span class="text-base text-[var(--fg)] font-mono tabular-nums">${v}</span>
+                  <span class="text-base text-[var(--fg)] font-mono tabular-nums">${value}</span>
                 </div>`
               }
 
               return `<div class="grid grid-cols-[12px_minmax(0,1fr)_max-content] items-center gap-x-3">
                 <div class="w-3 h-3">
                   <svg viewBox="0 0 2 2" class="w-full h-full">
-                    <rect x="0" y="0" width="2" height="2" rx="0.3" fill="${d.color}" />
+                    <rect x="0" y="0" width="2" height="2" rx="0.3" fill="${datapoint.color}" />
                   </svg>
                 </div>
-
-                <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">
-                  ${label}
-                </span>
-
-                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-end">
-                  ${v}
-                </span>
+                <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">${label}</span>
+                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-end">${value}</span>
               </div>`
             })
             .join('')
 
           return `<div class="font-mono text-xs p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
             ${formattedDate ? `<div class="text-2xs text-[var(--fg-subtle)] mb-2">${formattedDate}</div>` : ''}
-            <div class="${hasMultipleItems ? 'flex flex-col gap-2' : ''}">
-              ${rows}
-            </div>
+            <div class="${hasMultipleItems ? 'flex flex-col gap-2' : ''}">${rows}</div>
           </div>`
         },
       },
       zoom: {
-        maxWidth: isMobile.value ? 350 : 500,
+        show: !props.hideControls,
+        autoFit: true,
         highlightColor: colors.value.bgElevated,
         useResetSlot: true,
+        keepState: keepZoomState.value,
         minimap: {
           show: true,
           lineColor: '#FAFAFA',
           selectedColor: accent.value,
           selectedColorOpacity: 0.06,
           frameColor: colors.value.border,
-          handleWidth: isMobile.value ? 40 : 20, // does not affect the size of the touch area
+          handleWidth: isMobile.value ? 40 : 20,
           handleBorderColor: colors.value.fgSubtle,
-          handleType: 'grab', // 'empty' | 'chevron' | 'arrow' | 'grab'
+          handleType: 'grab',
         },
         preview: {
           fill: transparentizeOklch(accent.value, isDarkMode.value ? 0.95 : 0.92),
           stroke: transparentizeOklch(accent.value, 0.5),
           strokeWidth: 1,
           strokeDasharray: 3,
+        },
+        dragToZoom: {
+          show: true,
+          selection: {
+            fill: accent.value,
+            fillOpacity: isDarkMode.value ? 0.05 : 0.08,
+            stroke: accent.value,
+            strokeDasharray: 3,
+          },
         },
       },
     },
@@ -1631,6 +1548,107 @@ const isSparklineLayout = computed({
     chartLayout.value = v ? 'split' : 'combined'
   },
 })
+
+const { start: resetZoomState } = useTimeoutFn(
+  () => {
+    keepZoomState.value = true
+  },
+  1000,
+  { immediate: false },
+)
+
+async function resetZoom() {
+  keepZoomState.value = false
+  resetZoomTracking()
+  await nextTick()
+  chartRef.value?.resetZoom?.()
+  resetZoomState()
+}
+
+onMounted(resetZoom)
+
+watch([selectedGranularity, startDate, endDate], async () => {
+  if (!isMounted.value) return
+  await resetZoom()
+})
+
+watch(
+  () => activeMetricState.value?.pending,
+  async (currentPending, previousPending) => {
+    if (previousPending && !currentPending) {
+      await resetZoom()
+    }
+  },
+)
+
+const embedQuery = reactive({
+  metric: 'downloads',
+  startDate: startDate.value,
+  endDate: endDate.value,
+  mode: isDarkMode.value ? 'dark' : 'light',
+})
+
+watch(startDate, value => {
+  embedQuery.startDate = value
+})
+
+watch(endDate, value => {
+  embedQuery.endDate = value
+})
+
+const isEmbedDarkMode = shallowRef(true)
+
+watch(isEmbedDarkMode, value => {
+  embedQuery.mode = value ? 'dark' : 'light'
+})
+
+watch(
+  isDarkMode,
+  value => {
+    isEmbedDarkMode.value = value
+  },
+  { immediate: true },
+)
+
+function getGranularityLabel(granularity: ChartTimeGranularity): string {
+  switch (granularity) {
+    case 'daily':
+      return $t('package.trends.granularity_daily')
+    case 'weekly':
+      return $t('package.trends.granularity_weekly')
+    case 'monthly':
+      return $t('package.trends.granularity_monthly')
+    case 'yearly':
+      return $t('package.trends.granularity_yearly')
+  }
+}
+
+const embedUrl = computed(() => {
+  const query = new URLSearchParams({
+    packages: effectivePackageNames.value.join(','),
+    metric: embedQuery.metric,
+    startDate: embedQuery.startDate,
+    endDate: embedQuery.endDate,
+    mode: embedQuery.mode,
+    granularity: selectedGranularity.value,
+    locale: locale.value,
+    accent: accent.value,
+    yLabel: $t('package.trends.y_axis_label', {
+      granularity: getGranularityLabel(selectedGranularity.value),
+      facet: METRICS.value.find(metric => metric.id === selectedMetric.value)?.label,
+    }),
+  })
+
+  const path = `/api/embed/downloads.svg?${query.toString()}`
+
+  return import.meta.client ? new URL(path, window.location.origin).toString() : path
+})
+
+const showEmbedFields = shallowRef(false)
+const { copy: copyEmbed, copied: copiedEmbedUrl } = useClipboard({
+  copiedDuring: 2000,
+})
+const copyEmbedUrl = () => copyEmbed(embedUrl.value)
 </script>
 
 <template>
@@ -1659,7 +1677,7 @@ const isSparklineLayout = computed({
       </TabList>
     </TabRoot>
 
-    <div class="w-full mb-4 flex flex-col gap-3">
+    <div class="w-full mb-4 flex flex-col gap-3" v-if="!hideControls">
       <div class="grid grid-cols-2 sm:flex sm:flex-row gap-3 sm:gap-2 sm:items-end">
         <SelectField
           v-if="showFacetSelector"
@@ -1805,11 +1823,7 @@ const isSparklineLayout = computed({
                   class="text-2xs font-mono text-fg-subtle tracking-wide uppercase flex items-center justify-between"
                 >
                   {{ $t('package.trends.known_anomalies') }}
-                  <TooltipApp
-                    interactive
-                    :to="inModal ? '#chart-modal' : undefined"
-                    v-if="showCorrectionControls"
-                  >
+                  <TooltipApp interactive v-if="showCorrectionControls">
                     <button
                       type="button"
                       class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
@@ -1892,19 +1906,7 @@ const isSparklineLayout = computed({
     </h2>
 
     <!-- Chart panel (active metric) -->
-    <div
-      role="region"
-      aria-labelledby="trends-chart-title"
-      :class="
-        isSparklineLayout || !inModal
-          ? undefined
-          : isMobile === false && width > 0
-            ? showCorrectionControls
-              ? 'h-[491px]'
-              : 'h-[567px]'
-            : 'min-h-[260px]'
-      "
-    >
+    <div role="region" aria-labelledby="trends-chart-title">
       <ClientOnly v-if="chartData.dataset">
         <div
           v-if="isSparklineLayout"
@@ -1917,6 +1919,8 @@ const isSparklineLayout = computed({
             :dates="chartData.dates"
             :datetimeFormatterOptions
             :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
+            :granularity="selectedGranularity"
+            :large-package-series="largePackageSeries"
           />
         </div>
 
@@ -1929,15 +1933,16 @@ const isSparklineLayout = computed({
           :aria-labelledby="isMultiPackageMode ? 'combined-chart-layout-tab' : undefined"
         >
           <VueUiXy
+            ref="chartRef"
             :dataset="normalisedDataset"
             :config="chartConfig"
             :class="{
               '[direction:ltr]': true,
               'no-transition': isResizing,
             }"
-            @zoomStart="setIsZoom"
-            @zoomEnd="setIsZoom"
-            @zoomReset="isZoomed = false"
+            @zoomStart="setZoomStart"
+            @zoomEnd="setZoomEnd"
+            @zoomReset="resetZoomTracking"
           >
             <!-- Keyboard navigation hint -->
             <template #hint="{ isVisible }">
@@ -1946,13 +1951,73 @@ const isSparklineLayout = computed({
               </p>
             </template>
 
-            <!-- Injecting custom svg elements -->
+            <!-- Injecting custom svg elements on the bottom layer -->
+            <template #svg-underlayer="{ svg }">
+              <g v-if="!pending && isDownloadsMetric" pointer-events="none" aria-hidden="true">
+                <template v-for="(gap, index) in getDownloadChartGaps(svg)" :key="index">
+                  <defs>
+                    <pattern
+                      :id="`${gapPatternId}-${index}`"
+                      width="6"
+                      height="6"
+                      patternUnits="userSpaceOnUse"
+                      patternTransform="rotate(45)"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        :stroke="colors.borderHover"
+                        stroke-width="5"
+                      />
+                    </pattern>
+                  </defs>
+                  <rect
+                    :x="gap.x"
+                    :y="gap.y"
+                    :width="gap.width"
+                    :height="gap.height"
+                    :fill="`url(#${gapPatternId}-${index})`"
+                    opacity="0.45"
+                  />
+                  <line
+                    v-for="x in [gap.x, gap.x + gap.width]"
+                    :key="x"
+                    :x1="x"
+                    :x2="x"
+                    :y1="gap.y"
+                    :y2="gap.y + gap.height"
+                    :stroke="colors.borderHover"
+                    stroke-width="0.5"
+                  />
+                </template>
+              </g>
+            </template>
+
+            <!-- Injecting custom svg elements on the top layer -->
             <template #svg="{ svg }">
               <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
               <g
                 v-if="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd && !isZoomed"
                 v-html="drawEstimationLine(svg)"
               />
+
+              <!-- Flat dashed tail for large packages when the final downloads bucket has no data -->
+              <g v-if="!pending && isDownloadsMetric" v-html="drawNoDataTail(svg)" />
+
+              <!-- Asterisk explaination for the last label value when the last value is null -->
+              <g v-if="!pending && isDownloadsMetric && selectedGranularity === 'daily'">
+                <text
+                  :x="svg.drawingArea.left"
+                  :y="svg.height - 12"
+                  :fill="colors.fgSubtle"
+                  :font-size="16"
+                  text-anchor="start"
+                >
+                  {{ $t('package.trends.last_recorded_value') }}
+                </text>
+              </g>
 
               <!-- Last value label for all other cases -->
               <g v-if="!pending" v-html="drawLastDatapointLabel(svg)" />
@@ -1962,7 +2027,7 @@ const isSparklineLayout = computed({
 
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
-                v-if="svg.isPrintingSvg || svg.isPrintingImg"
+                v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
                 v-html="
                   drawNpmxLogoAndTaglineWatermark({
                     svg,
@@ -1976,9 +2041,9 @@ const isSparklineLayout = computed({
               <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->
               <rect
                 v-if="pending"
-                :x="svg.drawingArea.left"
+                :x="svg.drawingArea.left - 3"
                 :y="svg.drawingArea.top - 12"
-                :width="svg.drawingArea.width + 12"
+                :width="svg.drawingArea.width + 15"
                 :height="svg.drawingArea.height + 48"
                 :fill="colors.bg"
               />
@@ -1994,7 +2059,7 @@ const isSparklineLayout = computed({
 
             <!-- Custom legend for multiple series -->
             <template #legend="{ legend }">
-              <div class="flex gap-x-6 gap-y-2 flex-wrap justify-center text-sm">
+              <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
                 <template v-if="isMultiPackageMode">
                   <button
                     v-for="datapoint in legend"
@@ -2002,15 +2067,17 @@ const isSparklineLayout = computed({
                     :aria-pressed="datapoint.isSegregated"
                     :aria-label="datapoint.name"
                     type="button"
-                    class="flex gap-1 place-items-center"
+                    class="flex shrink-0 items-center gap-1 whitespace-nowrap"
                     @click="datapoint.segregate()"
                   >
-                    <div class="h-3 w-3">
+                    <div class="h-3 w-3 shrink-0">
                       <svg viewBox="0 0 2 2" class="w-full">
                         <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="datapoint.color" />
                       </svg>
                     </div>
+
                     <span
+                      class="shrink-0 whitespace-nowrap"
                       :style="{
                         textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
                       }"
@@ -2022,13 +2089,13 @@ const isSparklineLayout = computed({
 
                 <!-- Single series legend (no user interaction) -->
                 <template v-else-if="legend.length > 0">
-                  <div class="flex gap-1 place-items-center">
-                    <div class="h-3 w-3">
+                  <div class="flex shrink-0 items-center gap-1 whitespace-nowrap">
+                    <div class="h-3 w-3 shrink-0">
                       <svg viewBox="0 0 2 2" class="w-full">
                         <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="legend[0]?.color" />
                       </svg>
                     </div>
-                    <span>
+                    <span class="shrink-0 whitespace-nowrap">
                       {{ legend[0]?.name }}
                     </span>
                   </div>
@@ -2036,10 +2103,10 @@ const isSparklineLayout = computed({
 
                 <!-- Estimation extra legend item -->
                 <div
-                  class="flex gap-1 place-items-center"
-                  v-if="supportsEstimation || hasDownloadAnomalies"
+                  class="flex shrink-0 items-center gap-1 whitespace-nowrap"
+                  v-if="supportsEstimation || hasDashedSegments"
                 >
-                  <svg viewBox="0 0 20 2" width="20">
+                  <svg viewBox="0 0 20 2" width="20" class="shrink-0">
                     <line
                       x1="0"
                       y1="1"
@@ -2050,7 +2117,9 @@ const isSparklineLayout = computed({
                       stroke-linecap="round"
                     />
                   </svg>
-                  <span class="text-fg-subtle">{{ $t('package.trends.legend_estimation') }}</span>
+                  <span class="shrink-0 whitespace-nowrap text-fg-subtle">
+                    {{ $t('package.trends.legend_estimation') }}
+                  </span>
                 </div>
               </div>
             </template>
@@ -2060,7 +2129,7 @@ const isSparklineLayout = computed({
               <button
                 type="button"
                 aria-label="reset minimap"
-                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-20 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-16 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
                 style="pointer-events: all !important"
                 @click="resetMinimap"
               >
@@ -2074,6 +2143,16 @@ const isSparklineLayout = computed({
             </template>
             <template #optionCsv>
               <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+            </template>
+            <template #custom-menu-before>
+              <ChartCopyPngButton
+                :copied="copiedPng"
+                :copying="isCopyingPng"
+                @click="copyChartPng"
+              />
+            </template>
+            <template #optionFullscreen="{ isFullscreen }">
+              <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
             </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
@@ -2094,72 +2173,8 @@ const isSparklineLayout = computed({
               />
             </template>
 
-            <template #annotator-action-close>
-              <span
-                class="i-lucide:x w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-color="{ color }">
-              <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
-            </template>
-            <template #annotator-action-draw="{ mode }">
-              <span
-                v-if="mode === 'arrow'"
-                class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'text'"
-                class="i-lucide:type text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'line'"
-                class="i-lucide:pen-line text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'draw'"
-                class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-undo>
-              <span
-                class="i-lucide:undo-2 w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-redo>
-              <span
-                class="i-lucide:redo-2 w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-delete>
-              <span
-                class="i-lucide:trash w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #optionAnnotator="{ isAnnotator }">
-              <span
-                v-if="isAnnotator"
-                class="i-lucide:pen-off w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-              <span
-                v-else
-                class="i-lucide:pen w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
+            <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
+              <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
             </template>
             <template #optionAltCopy>
               <span
@@ -2195,6 +2210,84 @@ const isSparklineLayout = computed({
     >
       {{ $t('package.trends.loading') }}
     </div>
+
+    <!-- Chart embedding -->
+    <div v-if="isDownloadsMetric && !!chartData.dataset && !hideControls">
+      <div class="flex flex-col gap-2">
+        <button
+          type="button"
+          :aria-expanded="showEmbedFields"
+          aria-controls="trends-embed-chart"
+          class="self-start flex items-center gap-1 text-2xs font-mono text-fg-subtle hover:text-fg transition-colors"
+          @click="showEmbedFields = !showEmbedFields"
+        >
+          <span
+            class="w-3.5 h-3.5 transition-transform"
+            :class="showEmbedFields ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
+            aria-hidden="true"
+          />
+          {{ $t('package.trends.embedding.chart') }}
+        </button>
+      </div>
+      <div
+        class="overflow-hidden transition-[opacity] duration-200 ease-out"
+        id="trends-embed-chart"
+        :aria-hidden="!showEmbedFields"
+        :inert="!showEmbedFields"
+        :class="
+          showEmbedFields ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+        "
+      >
+        <div class="flex flex-col gap-2">
+          <div class="flex flex-row flex-wrap gap-2 mt-2">
+            <SettingsToggle v-model="isEmbedDarkMode" :label="$t('command_palette.theme.dark')" />
+          </div>
+          <div class="text-sm text-fg-subtle flex gap-1">
+            {{ $t('package.trends.embedding.copy_url') }}
+            <TooltipApp
+              :text="$t('package.trends.embedding.tip')"
+              interactive
+              :to="undefined"
+              position="top"
+            >
+              <span
+                tabindex="0"
+                class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle hover:text-fg transition-colors cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
+              >
+                <span class="i-lucide:info w-3 h-3" aria-hidden="true" />
+              </span>
+            </TooltipApp>
+          </div>
+          <div class="flex flex-row gap-4 flex-wrap">
+            <div
+              class="bg-bg-subtle border border-border rounded-md shadow-lg text-xs break-all p-4 pt-8 relative"
+            >
+              <ButtonBase
+                class="absolute top-1 force-right-1"
+                size="sm"
+                @click="copyEmbedUrl"
+                :aria-pressed="copiedEmbedUrl"
+                :aria-label="copiedEmbedUrl ? $t('common.copied') : $t('common.copy')"
+                :classicon="copiedEmbedUrl ? 'i-lucide:check' : 'i-lucide:chart-line'"
+              >
+                <span>{{ copiedEmbedUrl ? $t('common.copied') : $t('common.copy') }}</span>
+              </ButtonBase>
+              {{ embedUrl }}
+            </div>
+            <div>
+              <span class="text-xs text-fg-subtle mb-2">
+                {{ $t('package.trends.embedding.preview') }}
+              </span>
+              <img
+                class="rounded border border-border w-full max-w-50"
+                :src="embedUrl"
+                :alt="$t('package.trends.embedding.preview')"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -2216,7 +2309,8 @@ const isSparklineLayout = computed({
   background: var(--bg-elevated) !important;
 }
 
-.vue-ui-pen-and-paper-action {
+.vue-ui-pen-and-paper-action,
+.vue-ui-pen-and-paper-drag-handle {
   background: var(--bg-elevated) !important;
   border: none !important;
 }

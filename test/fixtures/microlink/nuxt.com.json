@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "data": {
+    "image": null,
+    "logo": {
+      "url": "https://images.example.com/nuxt-logo.svg",
+      "width": 256,
+      "height": 256
+    }
+  }
+}

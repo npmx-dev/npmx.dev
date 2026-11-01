@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi } from 'vite-plus/test'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { computed, nextTick } from 'vue'
 import { HeaderMobileMenu } from '#components'
@@ -24,6 +24,7 @@ vi.mock('@vueuse/integrations/useFocusTrap', () => ({
 }))
 
 describe('MobileMenu', () => {
+  // oxlint-disable-next-line unicorn/consistent-function-scoping
   async function mountMenu(open = false) {
     return mountSuspended(HeaderMobileMenu, {
       props: {
