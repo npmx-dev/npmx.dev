@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import {
   normalizeGitUrl,
   parseRepositoryInfo,
@@ -95,6 +95,37 @@ describe('normalizeGitUrl', () => {
     expect
       .soft(normalizeGitUrl('github:user/repo.git#readme'))
       .toBe('https://github.com/user/repo#readme')
+  })
+
+  it('should expand bare owner/repo GitHub shorthand', () => {
+    expect.soft(normalizeGitUrl('wevm/ox')).toBe('https://github.com/wevm/ox')
+    expect.soft(normalizeGitUrl('user/repo.git')).toBe('https://github.com/user/repo')
+    expect.soft(normalizeGitUrl(' user/repo ')).toBe('https://github.com/user/repo')
+    expect.soft(normalizeGitUrl('user/repo#readme')).toBe('https://github.com/user/repo#readme')
+    expect
+      .soft(normalizeGitUrl('user/repo?path=packages/core'))
+      .toBe('https://github.com/user/repo?path=packages/core')
+    expect
+      .soft(normalizeGitUrl('user/repo/tree/main'))
+      .toBe('https://github.com/user/repo/tree/main')
+  })
+
+  it('should convert scp-style shorthand with a dotless host', () => {
+    expect.soft(normalizeGitUrl('git@localhost:owner/repo')).toBe('https://localhost/owner/repo')
+  })
+
+  it('should not treat host-prefixed paths as owner/repo shorthand', () => {
+    expect.soft(normalizeGitUrl('git.sr.ht/~user/repo')).toBe('https://git.sr.ht/~user/repo')
+    expect.soft(normalizeGitUrl('example.com/user/repo')).toBe('https://example.com/user/repo')
+  })
+
+  it('should parse bare shorthand repository fields', () => {
+    const info = parseRepositoryInfo('wevm/ox')
+    expect.soft(info?.provider).toBe('github')
+    expect.soft(info?.owner).toBe('wevm')
+    expect.soft(info?.repo).toBe('ox')
+    expect.soft(info?.rawBaseUrl).toBe('https://raw.githubusercontent.com/wevm/ox/HEAD')
+    expect.soft(info?.blobBaseUrl).toBe('https://github.com/wevm/ox/blob/HEAD')
   })
 })
 

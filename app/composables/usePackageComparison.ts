@@ -1,8 +1,6 @@
+import { NO_DEPENDENCY_ID } from '#shared/utils/compare'
 import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
-
-/** Special identifier for the "What Would James Do?" comparison column */
-export const NO_DEPENDENCY_ID = '__no_dependency__'
 
 /**
  * Special display values for the "no dependency" column.

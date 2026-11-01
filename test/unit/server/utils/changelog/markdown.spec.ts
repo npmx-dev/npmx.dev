@@ -1,5 +1,5 @@
 import type { MarkdownRepoInfo } from '~~/server/utils/changelog/markdown'
-import { describe, expect, it, vi, beforeAll, test } from 'vitest'
+import { describe, expect, it, vi, beforeAll, test } from 'vite-plus/test'
 import {
   createGithubRepoInfo,
   createGitLabRepoInfo,

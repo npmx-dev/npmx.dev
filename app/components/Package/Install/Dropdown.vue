@@ -77,6 +77,7 @@ onPrehydrate(el => {
     <h2 :id="headingId" class="sr-only">{{ $t('package.get_started.title') }}</h2>
 
     <PackageSecurityDowngradeAlert
+      :package-name="packageName"
       :downgrade="publishSecurityDowngrade ?? null"
       :fallback-install-text="downgradeFallbackInstallText"
     />

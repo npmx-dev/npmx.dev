@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import fixture from '~~/test/fixtures/algolia/search/security-holder.json'
 
 const mockSearch = vi.fn()

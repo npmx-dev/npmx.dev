@@ -3,7 +3,12 @@ import { useColors } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK } from '~/utils/colors'
 import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import TooltipApp from '~/components/Tooltip/App.vue'
-import { copyAltTextForVersionsBarChart, sanitise, applyEllipsis } from '~/utils/charts'
+import {
+  CHART_ANNOTATOR_SLOTS,
+  copyAltTextForVersionsBarChart,
+  sanitise,
+  applyEllipsis,
+} from '~/utils/charts'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import VueUiHorizontalBar, {
@@ -155,13 +160,14 @@ const barConfig = computed<VueUiHorizontalBarConfig>(() => ({
     buttons: {
       pdf: false,
       labels: false,
-      fullscreen: false,
+      fullscreen: true,
       table: false,
       tooltip: false,
       altCopy: true,
       sort: false,
     },
     buttonTitles: {
+      fullscreen: $t('package.trends.toggle_fullscreen'),
       csv: $t('package.trends.download_file', { fileType: 'CSV' }),
       img: $t('package.trends.download_file', { fileType: 'PNG' }),
       svg: $t('package.trends.download_file', { fileType: 'SVG' }),
@@ -449,6 +455,9 @@ const barConfig = computed<VueUiHorizontalBarConfig>(() => ({
                 @click="copyChartPng"
               />
             </template>
+            <template #optionFullscreen="{ isFullscreen }">
+              <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+            </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
             </template>
@@ -456,79 +465,9 @@ const barConfig = computed<VueUiHorizontalBarConfig>(() => ({
               <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
             </template>
 
-            <!-- Annotator action icons -->
-            <template #annotator-action-close>
-              <span
-                class="i-lucide:x w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-
-            <template #annotator-action-color="{ color }">
-              <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
-            </template>
-
-            <template #annotator-action-draw="{ mode }">
-              <span
-                v-if="mode === 'arrow'"
-                class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'text'"
-                class="i-lucide:type text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'line'"
-                class="i-lucide:pen-line text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'draw'"
-                class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-            </template>
-
-            <template #annotator-action-undo>
-              <span
-                class="i-lucide:undo-2 w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-
-            <template #annotator-action-redo>
-              <span
-                class="i-lucide:redo-2 w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-
-            <template #annotator-action-delete>
-              <span
-                class="i-lucide:trash w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-
-            <template #optionAnnotator="{ isAnnotator }">
-              <span
-                v-if="isAnnotator"
-                class="i-lucide:pen-off w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-              <span
-                v-else
-                class="i-lucide:pen w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
+            <!-- Annotator icons -->
+            <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
+              <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
             </template>
             <template #optionAltCopy>
               <span

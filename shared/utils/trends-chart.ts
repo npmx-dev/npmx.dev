@@ -410,12 +410,13 @@ export function buildTrendsChartConfig(
         buttons: {
           pdf: false,
           labels: false,
-          fullscreen: false,
+          fullscreen: true,
           table: false,
           tooltip: false,
           altCopy: true,
         },
         buttonTitles: {
+          fullscreen: options.t('package.trends.toggle_fullscreen'),
           csv: options.t('package.trends.download_file', { fileType: 'CSV' }),
           img: options.t('package.trends.download_file', { fileType: 'PNG' }),
           svg: options.t('package.trends.download_file', { fileType: 'SVG' }),
