@@ -163,9 +163,6 @@
       "changelog": "Endringslogg",
       "stats": "Statistikk"
     },
-    "package_actions": {
-      "copy_run": "Kopier kjørekommando"
-    },
     "code": {
       "copy_file": "Kopier filinnhold"
     },
@@ -1669,18 +1666,10 @@
     "p2": "Før du begynner, vennligst les vår {guide} for å lære om oversettelsesprosessen vår og hvordan du kan bli involvert.",
     "guide": "lokaliseringsguide (i18n)",
     "by_locale": "Oversettelsesfremdrift etter språk",
-    "by_file": "Oversettelsesfremdrift etter fil",
     "complete_text": "Denne oversettelsen er fullført, fantastisk jobb!",
     "missing_text": "mangler",
     "missing_keys": "Det er ingen manglende oversettelser | Manglende oversettelse | Manglende oversettelser",
-    "progress_label": "Fremdriftsstatus for {locale}",
-    "table": {
-      "file": "Fil",
-      "status": "Status",
-      "error": "Feil ved lasting av filliste.",
-      "empty": "Ingen filer funnet",
-      "file_link": "Rediger {file} ({lang}) på GitHub"
-    }
+    "progress_label": "Fremdriftsstatus for {locale}"
   },
   "vacations": {
     "title": "på ferie",
@@ -1781,7 +1770,9 @@
       "p1": "Beklager, endringsloggen for {package} kunne ikke lastes",
       "p2": "Prøv igjen senere eller {viewon}"
     },
-    "rate_limit_ungh": "Beklager, GitHubs rate limit er nådd, prøv igjen om et øyeblikk",
-    "version_unavailable": "Den forespurte versjonen er ikke tilgjengelig."
+    "version_unavailable": "Den forespurte versjonen er ikke tilgjengelig.",
+    "ungh": {
+      "rate_limit": "Beklager, GitHubs rate limit er nådd, prøv igjen om et øyeblikk"
+    }
   }
 }

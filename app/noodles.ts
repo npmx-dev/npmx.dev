@@ -187,6 +187,27 @@ const entries: Noodle[] = [
       },
     ],
   },
+  {
+    key: 'blender',
+    title: 'Blender Goes Open Source',
+    slug: 'blender',
+    date: '2026-10-13',
+    timezone: 'auto',
+    tagline: false,
+    occasion:
+      "On 13 October 2002, Blender's source code was released under the GNU GPL - free for everyone, forever",
+    authors: [ALEX],
+    references: [
+      {
+        label: "Blender's History - blender.org",
+        url: 'https://www.blender.org/about/history/',
+      },
+      {
+        label: 'Blender - Wikipedia',
+        url: 'https://en.wikipedia.org/wiki/Blender_(software)',
+      },
+    ],
+  },
 ]
 
 export const noodles: Noodle[] = [...entries].sort(

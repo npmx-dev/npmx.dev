@@ -1,4 +1,4 @@
-export type DevDependencySuggestionReason = 'known-package' | 'readme-hint'
+type DevDependencySuggestionReason = 'known-package' | 'readme-hint'
 
 export interface DevDependencySuggestion {
   recommended: boolean

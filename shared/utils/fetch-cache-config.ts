@@ -5,6 +5,8 @@
  * using Nitro's storage layer (backed by Vercel's runtime cache in production).
  */
 
+import type { FetchOptions } from 'ofetch'
+import { withBase, withQuery } from 'ufo'
 import {
   CONSTELLATION_HOST,
   LIKES_LEADERBOARD_API_URL,
@@ -32,6 +34,7 @@ export const FETCH_CACHE_ALLOWED_DOMAINS = [
   'codeberg.org', // Codeberg (Gitea-based)
   'gitea.com', // Gitea API
   'gitee.com', // Gitee API
+  'pushin.eu', // Pushin API
   // microcosm endpoints for atproto data
   CONSTELLATION_HOST,
   SLINGSHOT_HOST,
@@ -66,6 +69,32 @@ export function isAllowedDomain(url: string | URL): boolean {
     return FETCH_CACHE_ALLOWED_DOMAINS.some(domain => urlObj.host === domain)
   } catch {
     return false
+  }
+}
+
+/**
+ * Resolve a request URL to the absolute URL `$fetch` will request, so cache decisions are made
+ * on the real host and the cache key covers the full path and query.
+ *
+ * Callers may pass a relative path together with a `baseURL` option (e.g. `$npmRegistry`,
+ * `$npmApi`). `isAllowedDomain`/cache keys need the resolved absolute URL — a bare relative
+ * path can't be parsed and would otherwise be treated as not-cacheable.
+ *
+ * This mirrors ofetch: `params` and `query` are merged, then `withBase` and `withQuery` are
+ * applied. `new URL(url, baseURL)` would drop a path in `baseURL` and is not equivalent.
+ */
+export function resolveRequestUrl(
+  url: string,
+  options: Pick<FetchOptions, 'baseURL' | 'params' | 'query'> = {},
+): URL | null {
+  const { baseURL, params, query } = options
+  const joined = baseURL ? withBase(url, baseURL) : url
+  const request = params || query ? withQuery(joined, { ...params, ...query }) : joined
+
+  try {
+    return new URL(request)
+  } catch {
+    return null
   }
 }
 

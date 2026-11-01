@@ -76,23 +76,6 @@
     "instant_search_turn_off": "nonaktifkan",
     "instant_search_advisory": "{label} {state} — {action}"
   },
-  "command_palette": {
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "package_actions": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
-  },
   "nav": {
     "main_navigation": "Utama",
     "popular_packages": "Paket populer",
@@ -282,7 +265,6 @@
       "size": "Ukuran instalasi meningkat sebesar {percent} ({size} lebih besar)",
       "deps": "{count} lebih banyak dependensi"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "Mungkin Anda tidak butuh dependensi ini.",
       "native": "Paket ini dapat diganti dengan {replacement}, tersedia sejak Node {nodeVersion}.",
@@ -454,11 +436,6 @@
       "page_title": "Riwayat Versi",
       "current_tags": "Tag Saat Ini",
       "no_match_filter": "Tidak ada versi yang cocok dengan {filter}"
-    },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
     },
     "dependencies": {
       "title": "Dependensi ({count})",
@@ -661,9 +638,6 @@
       "button": "Unduh",
       "tarball": "Unduh Tarball sebagai .tar.gz"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1137,9 +1111,6 @@
       "packages_selected": "{count}/{max} paket dipilih.",
       "add_hint": "Tambah setidaknya 2 paket untuk dibandingkan."
     },
-    "scatter_chart": {
-      "copy_alt": {}
-    },
     "no_dependency": {
       "label": "(Tanpa Ketergantungan)",
       "typeahead_title": "Apa yang Akan Anda Lakukan?",
@@ -1218,10 +1189,7 @@
         "vulnerabilities": {
           "label": "Kerentanan",
           "description": "Kerentanan keamanan yang diketahui"
-        },
-        "githubStars": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "Apa saja",
@@ -1438,18 +1406,10 @@
     "p2": "Sebelum memulai, silakan baca {guide} kami untuk mempelajari proses penerjemahan dan bagaimana Anda dapat berkontribusi.",
     "guide": "panduan lokalisasi (i18n)",
     "by_locale": "Progres terjemahan per locale",
-    "by_file": "Progres terjemahan per file",
     "complete_text": "Terjemahan ini sudah lengkap, pekerjaan yang luar biasa!",
     "missing_text": "tidak ditemukan",
     "missing_keys": "Tidak ada terjemahan yang hilang | Terjemahan hilang | Terjemahan hilang",
-    "progress_label": "Status progres untuk {locale}",
-    "table": {
-      "file": "File",
-      "status": "Status",
-      "error": "Terjadi kesalahan saat memuat daftar file.",
-      "empty": "Tidak ada file yang ditemukan",
-      "file_link": "Ubah {file} ({lang}) di GitHub"
-    }
+    "progress_label": "Status progres untuk {locale}"
   },
   "vacations": {
     "title": "sedang liburan",
@@ -1540,8 +1500,5 @@
       "message": "Aksesibilitas penting bagi kami, dan kami ingin Anda ikut mendukung visi ini. Saat menggunakan media yang disebutkan, pastikan kontras dengan latar cukup, dan jangan gunakan ukuran kurang dari 24px. Jika Anda membutuhkan sumber daya lain atau informasi tambahan tentang proyek ini, silakan hubungi kami di {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  },
-  "changelog": {
-    "error": {}
   }
 }

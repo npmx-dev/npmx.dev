@@ -23,8 +23,6 @@ import {
   type TimelineSizeCacheValue,
   CHART_ANNOTATOR_SLOTS,
   E18E_GRADIENT_COLORS,
-  getAnnotatorIcon,
-  getAnnotatorStyle,
   type TimelineChartMetric,
   type StackbarTooltipPoint,
   type TimelinePlotItem,
@@ -430,6 +428,7 @@ const commonConfig = computed<CommonUserOptions>(() => ({
     },
   },
   buttonTitles: {
+    fullscreen: $t('package.trends.toggle_fullscreen'),
     csv: $t('package.trends.download_file', { fileType: 'CSV' }),
     img: $t('package.trends.download_file', { fileType: 'PNG' }),
     svg: $t('package.trends.download_file', { fileType: 'SVG' }),
@@ -535,7 +534,7 @@ const config = computed<VueUiXyConfig>(() => {
         buttons: {
           pdf: false,
           labels: false,
-          fullscreen: false,
+          fullscreen: true,
           table: false,
           tooltip: false,
           altCopy: true,
@@ -729,7 +728,7 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
     buttons: {
       pdf: false,
       labels: false,
-      fullscreen: false,
+      fullscreen: true,
       table: false,
       tooltip: false,
       annotator: !isMobile.value,
@@ -1018,6 +1017,9 @@ const timelineMetricTabs = computed(() => [
         <template #custom-menu-before>
           <ChartCopyPngButton :copied="copiedPng" :copying="isCopyingPng" @click="copyChartPng" />
         </template>
+        <template #optionFullscreen="{ isFullscreen }">
+          <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+        </template>
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
         </template>
@@ -1038,16 +1040,7 @@ const timelineMetricTabs = computed(() => [
         </template>
 
         <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
-          <span
-            v-if="getAnnotatorIcon(slotName, slotProps)"
-            class="w-6 h-6"
-            :class="[
-              getAnnotatorIcon(slotName, slotProps),
-              slotName === 'annotator-action-color' ? null : 'text-fg-subtle',
-            ]"
-            :style="getAnnotatorStyle(slotName, slotProps)"
-            aria-hidden="true"
-          />
+          <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
         </template>
 
         <template #optionAltCopy>
@@ -1127,6 +1120,9 @@ const timelineMetricTabs = computed(() => [
         <template #custom-menu-before>
           <ChartCopyPngButton :copied="copiedPng" :copying="isCopyingPng" @click="copyChartPng" />
         </template>
+        <template #optionFullscreen="{ isFullscreen }">
+          <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+        </template>
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
         </template>
@@ -1146,16 +1142,7 @@ const timelineMetricTabs = computed(() => [
         </template>
 
         <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
-          <span
-            v-if="getAnnotatorIcon(slotName, slotProps)"
-            class="w-6 h-6"
-            :class="[
-              getAnnotatorIcon(slotName, slotProps),
-              slotName === 'annotator-action-color' ? null : 'text-fg-subtle',
-            ]"
-            :style="getAnnotatorStyle(slotName, slotProps)"
-            aria-hidden="true"
-          />
+          <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
         </template>
       </VueUiStackbar>
 
