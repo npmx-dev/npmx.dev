@@ -84,7 +84,11 @@ export async function fetchReadmeFromJsdelivr(
  * for many versions, and callers then link to the default branch.
  */
 export function publishedRevision(packageData: Packument, version?: string): string | undefined {
-  const resolved = version ?? packageData['dist-tags']?.latest
+  const requested = version ?? packageData['dist-tags']?.latest
+  const resolved =
+    requested && packageData.versions[requested]
+      ? requested
+      : packageData['dist-tags']?.[requested ?? '']
   return resolved ? packageData.versions[resolved]?.gitHead : undefined
 }
 
