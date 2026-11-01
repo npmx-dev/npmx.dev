@@ -1,4 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { createStaticVueUiXy } from 'vue-data-ui/ssr/vue-ui-xy'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import {
   buildNormalisedTrendsDataset,
   buildTrendsChartConfig,
@@ -290,13 +291,13 @@ describe('buildTrendsChartData', () => {
     expect(result.dataset).toEqual([
       expect.objectContaining({
         name: 'vue',
-        series: [10, 0],
+        series: [10, null],
         dashIndices: [0],
         color: '#42b883',
       }),
       expect.objectContaining({
         name: 'react',
-        series: [0, 20],
+        series: [null, 20],
         dashIndices: [],
       }),
     ])
@@ -320,12 +321,12 @@ describe('buildTrendsChartData', () => {
     expect(result.dataset).toEqual([
       expect.objectContaining({
         name: 'vue',
-        series: [10, 0],
+        series: [10, null],
         dashIndices: [0],
       }),
       expect.objectContaining({
         name: 'react',
-        series: [0, 20],
+        series: [null, 20],
         dashIndices: [],
       }),
     ])
@@ -349,12 +350,12 @@ describe('buildTrendsChartData', () => {
     expect(result.dataset).toEqual([
       expect.objectContaining({
         name: 'vue',
-        series: [10, 0],
+        series: [10, null],
         dashIndices: [0],
       }),
       expect.objectContaining({
         name: 'react',
-        series: [0, 20],
+        series: [null, 20],
         dashIndices: [],
       }),
     ])
@@ -397,12 +398,12 @@ describe('buildTrendsChartData', () => {
     expect(result.dataset).toEqual([
       expect.objectContaining({
         name: 'vue',
-        series: [10, 0],
+        series: [10, null],
         dashIndices: [0],
       }),
       expect.objectContaining({
         name: 'react',
-        series: [0, 20],
+        series: [null, 20],
         dashIndices: [],
       }),
     ])
@@ -444,7 +445,7 @@ describe('buildTrendsChartData', () => {
       }),
       expect.objectContaining({
         name: 'react',
-        series: [0],
+        series: [null],
       }),
     ])
   })
@@ -536,7 +537,7 @@ describe('buildNormalisedTrendsDataset', () => {
   })
 
   it('normalizes number, object, and invalid values before applying the pipeline', () => {
-    applyDataPipelineMock.mockReturnValue([1, 2, 0])
+    applyDataPipelineMock.mockReturnValue([1, 2, null])
 
     const result = buildNormalisedTrendsDataset({
       dataset: [
@@ -554,7 +555,7 @@ describe('buildNormalisedTrendsDataset', () => {
     })
 
     expect(applyDataPipelineMock).toHaveBeenCalledWith(
-      [1, 2, 0],
+      [1, 2, null],
       {
         averageWindow: 2,
         smoothingTau: 3,
@@ -570,10 +571,29 @@ describe('buildNormalisedTrendsDataset', () => {
 
     expect(result).toEqual([
       expect.objectContaining({
-        series: [1, 2, 0],
+        series: [1, 2, null],
         dashIndices: [],
       }),
     ])
+  })
+
+  it.each([
+    ['downloads', [1000, 0, 2000], [1000, null, 2000]],
+    ['downloads', [10, 0, 20], [10, 0, 20]],
+    ['contributors', [1000, 0, 2000], [1000, 0, 2000]],
+  ] as const)('classifies zero values before processing %s', (metric, series, expected) => {
+    buildNormalisedTrendsDataset({
+      dataset: [{ name: 'vue', type: 'line', series: [...series] }],
+      dates: [1, 2, 3],
+      granularity: 'daily',
+      selectedMetric: metric,
+      chartFilter: { averageWindow: 2, smoothingTau: 3 },
+    })
+    expect(applyDataPipelineMock).toHaveBeenCalledWith(
+      expected,
+      expect.anything(),
+      expect.anything(),
+    )
   })
 
   it('uses Date.now when endDateMs is missing', () => {
@@ -660,6 +680,8 @@ describe('buildTrendsChartConfig', () => {
   it('builds a light desktop config with default tooltip behavior', () => {
     const config = buildTrendsChartConfig(baseConfigOptions())
 
+    expect(config.line?.cutNullValues).toBe(true)
+    expect(config.line?.nullDashes?.show).toBe(false)
     expect(config.theme).toBe('')
     expect(config.chart?.height).toBe(400)
     expect(config.chart?.padding?.bottom).toBe(64)
@@ -668,6 +690,26 @@ describe('buildTrendsChartConfig', () => {
     expect(config.chart?.tooltip?.position).toBe('center')
     expect(config.chart?.tooltip?.offsetY).toBe(-24)
     expect(config.chart?.timeTag?.backgroundColor).toBe('#f8f8f8')
+  })
+
+  it.each([false, true])('breaks SVG stroke and fill across gaps (smooth: %s)', async smooth => {
+    const svg = await createStaticVueUiXy({
+      dataset: [
+        {
+          name: 'vue',
+          type: 'line',
+          useArea: true,
+          smooth,
+          series: [100, 200, null, 300, 400],
+        },
+      ],
+      config: buildTrendsChartConfig(baseConfigOptions()),
+    })
+    const areas = svg.match(/<g data-layer="line-areas">(.*?)<\/g>/)?.[1] ?? ''
+    const lines = svg.match(/<g data-layer="lines">(.*?)<\/g>/)?.[1] ?? ''
+    expect(areas.match(/<path /g)).toHaveLength(2)
+    // Separate SVG move commands start disconnected stroke segments.
+    expect(lines.match(/M/g)).toHaveLength(2)
   })
 
   it('falls back to bg when bgElevated is not provided', () => {
@@ -745,8 +787,8 @@ describe('drawTrendsEstimationLine', () => {
           {
             color: '#ff0000',
             plots: [
-              { x: 1, y: 2 },
-              { x: 3, y: 4 },
+              { x: 1, y: 2, value: 10 },
+              { x: 3, y: 4, value: 20 },
             ],
           },
         ],
@@ -767,12 +809,12 @@ describe('drawTrendsEstimationLine', () => {
         series: [
           {
             plots: [
-              { x: 1, y: 2 },
-              { x: 3, y: 4 },
+              { x: 1, y: 2, value: 10 },
+              { x: 3, y: 4, value: 20 },
             ],
           },
           {
-            plots: [{ x: 1, y: 2 }],
+            plots: [{ x: 1, y: 2, value: 10 }],
           },
           {
             plots: null,
@@ -792,11 +834,11 @@ describe('drawTrendsEstimationLine', () => {
         data: [
           {
             color: '#ff0000',
-            plots: [{ x: 1, y: 2 }, undefined],
+            plots: [{ x: 1, y: 2, value: 10 }, undefined],
           },
           {
             color: '#00ff00',
-            plots: [null, { x: 3, y: 4 }],
+            plots: [null, { x: 3, y: 4, value: 20 }],
           },
         ],
       },
@@ -805,6 +847,47 @@ describe('drawTrendsEstimationLine', () => {
     })
 
     expect(result).toBe('')
+  })
+  it.each([
+    [null, 20],
+    [10, null],
+    [null, null],
+  ])('skips null endpoints even when they have rendered coordinates (%s, %s)', (previous, last) => {
+    expect(
+      drawTrendsEstimationLine({
+        svg: {
+          data: [
+            {
+              plots: [
+                { x: 1, y: 0, value: previous },
+                { x: 3, y: 0, value: last },
+              ],
+            },
+          ],
+        },
+        colors,
+        shouldRender: true,
+      }),
+    ).toBe('')
+  })
+
+  it('keeps a genuine zero endpoint', () => {
+    expect(
+      drawTrendsEstimationLine({
+        svg: {
+          data: [
+            {
+              plots: [
+                { x: 1, y: 2, value: 10 },
+                { x: 3, y: 0, value: 0 },
+              ],
+            },
+          ],
+        },
+        colors,
+        shouldRender: true,
+      }),
+    ).toContain('<circle')
   })
 })
 

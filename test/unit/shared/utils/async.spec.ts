@@ -1,5 +1,5 @@
 import { setTimeout } from 'node:timers/promises'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import * as fc from 'fast-check'
 import { mapWithConcurrency } from '#shared/utils/async'
 

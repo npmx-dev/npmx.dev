@@ -5,6 +5,7 @@ import { downloadPackageTarball } from '~/utils/package-download'
 const props = defineProps<{
   packageName: string
   version: SlimPackumentVersion
+  iconOnly?: boolean
 }>()
 
 const loading = shallowRef(false)
@@ -24,6 +25,18 @@ async function downloadPackage() {
 <template>
   <TooltipApp :text="$t('package.download.tarball')">
     <ButtonBase
+      v-if="iconOnly"
+      ref="triggerRef"
+      v-bind="$attrs"
+      type="button"
+      @click="downloadPackage"
+      :disabled="loading"
+      :aria-label="$t('package.download.button')"
+      :classicon="loading ? 'i-lucide:loader-circle animate-spin' : 'i-lucide:download'"
+      class="border-border-subtle bg-bg-subtle! text-fg-muted hover:enabled:(text-fg border-border-hover)"
+    />
+    <ButtonBase
+      v-else
       ref="triggerRef"
       v-bind="$attrs"
       type="button"

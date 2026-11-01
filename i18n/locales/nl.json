@@ -24,6 +24,7 @@
     "brand": "merk",
     "resources": "Informatie",
     "features": "Functies",
+    "tools": "hulpmiddelen",
     "other": "Overig",
     "sponsored_by": "Gesponsord door {list}"
   },
@@ -40,13 +41,14 @@
     "show_kbd_hints": "Toetsenbordtips uitlichten",
     "settings": "Open instellingen",
     "compare": "Open vergelijken",
+    "deps_stats": "Open dependency statistieken hulpmiddel",
     "compare_from_package": "Vergelijking openen (vooraf ingevuld met het huidige pakket)",
     "changelog": "Open wijzigingen",
     "navigate_results": "Navigeer resultaten",
     "go_to_result": "Ga naar resultaten",
     "open_code_view": "Open code weergaven",
     "open_docs": "Open documentatie",
-    "disable_shortcuts": "U kunt toetsenbordnavigatie uitschakelen in {instellingen}.",
+    "disable_shortcuts": "U kunt toetsenbordnavigatie uitschakelen in {settings}.",
     "open_main": "Open pakket overzicht",
     "open_diff": "Open versie verschillen",
     "open_timeline": "Open tijdlijn",
@@ -166,9 +168,6 @@
       "changelog": "Wijzigingen",
       "stats": "Statistieken"
     },
-    "package_actions": {
-      "copy_run": "Kopieer uitvoor command"
-    },
     "code": {
       "copy_file": "Kopieer bestand inhoud"
     },
@@ -207,12 +206,53 @@
     "popular_packages": "Populaire pakketten",
     "settings": "instellingen",
     "compare": "vergelijken",
+    "tools": "hulpmiddelen",
     "back": "terug",
     "menu": "Menu",
     "mobile_menu": "Navigatie menu",
     "open_menu": "Open menu",
     "links": "Links",
     "tap_to_search": "Tik om te zoeken"
+  },
+  "tools": {
+    "title": "hulpmiddelen",
+    "tagline": "hulpprogramma's voor het verkennen van pakketten en project-dependencies",
+    "meta_title": "Hulpmiddelen - npmx",
+    "meta_description": "Bekijk de npmx-tools om pakketten en project-dependencies te verkennen",
+    "deps_stats": {
+      "name": "dependency statistieken",
+      "description": "Upload een package.json en inspecteer de statistieken voor elke dependency"
+    }
+  },
+  "deps_stats": {
+    "title": "dependencies statistieken",
+    "meta_title": "Dependencies statistieken - npmx",
+    "meta_description": "Bekijk de npmx-tools om pakketten en project-dependencies te verkennen",
+    "upload": {
+      "section": "Package.json",
+      "label": "Upload package.json",
+      "hint": "Plaats hier een package.json bestand, of kies een bestand. Alleen de velden met dependencies worden gelezen — er wordt niets naar een server geüpload",
+      "clear": "leegmaken",
+      "invalid_package_json": "Ongeldige package.json"
+    },
+    "dependencies": {
+      "title": "Dependencies",
+      "count": "Geen deps | 1 dep | {count} deps",
+      "filter_label": "Filter dependencies",
+      "filter_placeholder": "Filter dependencies...",
+      "empty": "Geen dependencies gevonden in deze package.json",
+      "no_matches": "Geen dependencies voldoet aan je filter",
+      "non_registry": "Niet een npm register package"
+    },
+    "stats": {
+      "empty_title": "Selecteer een dependency",
+      "empty_description": "Kies een pakket uit de lijst om informatie te bekijken over downloads, bestandsgrootte, kwetsbaarheden, trends en meer",
+      "non_registry_title": "Lokale of externe dependency",
+      "non_registry_description": "Dit onderdeel verwijst naar een bestand, werkruimte, Git-repository of URL-afhankelijkheid, waardoor er geen registratiestatistieken beschikbaar zijn",
+      "declared_range": "Verklaard",
+      "resolved_version": "Laatste",
+      "open_full_stats": "Volledige statistieken openen"
+    }
   },
   "blog": {
     "title": "Blog",
@@ -385,6 +425,7 @@
       "forgejo": "Bekijk op Forgejo",
       "gitea": "Bekijk op Gitea",
       "gitee": "Bekijk op Gitee",
+      "pushin": "Bekijk op Pushin",
       "radicle": "Bekijk op Radicle",
       "socket_dev": "Bekijk op socket.dev",
       "sourcehut": "Bekijk op SourceHut",
@@ -467,7 +508,8 @@
       },
       "main_information": "Hoofdinformatie",
       "trends": "Trends",
-      "version_distribution": "Versieverdeling"
+      "version_distribution": "Versieverdeling",
+      "daily_downloads_heatmap": "Heatmap van dagelijkse downloads"
     },
     "skills": {
       "title": "Agent Skills",
@@ -524,8 +566,12 @@
       "pm_label": "Pakketbeheerder",
       "copy_command": "Kopieer installatie command",
       "copy_dev_command": "Kopieer developer installatie command",
+      "copy_types_command": "Kopieer types installatie command",
       "dev_dependency_hint": "Wordt meestal geïnstalleerd als developer dependency",
-      "view_types": "Bekijk {package}"
+      "view_types": "Bekijk {package}",
+      "types_label": "Types",
+      "collapse_commands": "Aanvullende commands inklappen",
+      "expand_commands": "Aanvullende commands weergeven"
     },
     "create": {
       "title": "Nieuw project aanmaken",
@@ -534,9 +580,17 @@
     },
     "run": {
       "title": "Uitvoeren",
-      "locally": "Lokaal uitvoeren"
+      "locally": "Lokaal uitvoeren",
+      "copy_command": "Kopieer command om lokaal uit te voeren"
     },
-    "command": {},
+    "command": {
+      "copied_install": "Installatie command gekopieerd",
+      "copied_dev_install": "Dev Installatie command gekopieerd",
+      "copied_run": "Start command gekopieerd",
+      "copied_create": "Aanmaak command gekopieerd",
+      "copied_execute": "Uitvoer command gekopieerd",
+      "copied_skills": "Skills command gekopieerd"
+    },
     "readme": {
       "title": "Readme",
       "no_readme": "Geen README beschikbaar.",
@@ -567,6 +621,7 @@
       "description_to_none_provenance": "Deze versie is gepubliceerd zonder {provenance}.",
       "description_to_none_trustedPublisher": "Deze versie is gepubliceerd zonder {trustedPublishing}.",
       "description_to_provenance_trustedPublisher": "Deze versie gebruikt {provenance} maar niet {trustedPublishing}.",
+      "description_to_trustedPublisher_without_provenance": "Deze versie gebruikt {trustedPublishing} maar was gepubliceerd zonder {provenance}.",
       "fallback_install_provenance": "Installatie commands zijn vastgezet op {version}, de laatste versie met geverifieerde herkomst.",
       "fallback_install_trustedPublisher": "Installatie commands zijn vastgezet op {version}, the last version with vertrouwd publiceren.",
       "provenance_link_text": "herkomstverificatie",
@@ -611,6 +666,7 @@
       "grouping_usage_about": "Over gebruiksgroepering",
       "grouping_usage_all": "Alle",
       "grouping_usage_most_used": "Meest gebruikt",
+      "order_by_downloads": "Sorteren op aantal downloads",
       "recent_versions_only_tooltip": "Toon alleen versies die in het afgelopen jaar zijn gepubliceerd.",
       "show_low_usage_tooltip": "Inclusief versiegroepen met minder dan 1% van het totale aantal downloads.",
       "y_axis_label": "Downloads",
@@ -634,6 +690,7 @@
     "timeline": {
       "load_more": "Laad meer",
       "load_error": "De tijdlijn kan niet worden geladen. Probeer het later nog eens.",
+      "no_stable_versions": "Er zijn geen stabiele versies om weer te geven. Schakel ‘alleen stabiele versies’ uit om Ontwikkelversies mee te nemen.",
       "size_increase": "De installatiegrootte is toegenomen met {percent}% ({size})",
       "size_decrease": "De installatiegrootte is afgenomen met {percent}% ({size})",
       "dep_increase": "{count} dependency toegevoegd | {count} dependencies toegevoegd",
@@ -647,6 +704,7 @@
       "trusted_publisher_removed": "Vertrouwd publiceren gedeactiveerd",
       "provenance_added": "Herkomst verificatie geactiveerd",
       "provenance_removed": "Herkomst verificatie gedeactiveerd",
+      "deprecated": "Afgeraden",
       "chart": {
         "tab_aria_label": "Selecteer statistiek",
         "dependency_size": "Dependencygrootte",
@@ -655,6 +713,9 @@
         "zoom": "zoom",
         "reset_minimap": "minimap resetten",
         "ordered_versions": "Alleen stabiele versies",
+        "sort_label": "Sorteer bij",
+        "sort_time": "Publicatietijdstip",
+        "sort_semver": "Semver",
         "copy_alt": {
           "key_changes": "Belangrijkste wijzigingen: {version_events}.",
           "version_events": "versie {version}: {events}",
@@ -676,7 +737,8 @@
       "outdated_minor": "{count} subversie achter (nieuwste: {latest}) | {count} subversies achter (nieuwste: {latest})",
       "outdated_patch": "Patch update beschikbaar (nieuwste: {latest})",
       "has_replacement": "Deze dedependency heeft voorgesteld alternatieven",
-      "vulnerabilities_count": "{count} kwetsbaarheid | {count} kwetsbaarheden"
+      "vulnerabilities_count": "{count} kwetsbaarheid | {count} kwetsbaarheden",
+      "aliased_to": "Alias naar {name}"
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
@@ -720,6 +782,7 @@
       "granularity_yearly": "Jaarlijks",
       "start_date": "Van",
       "end_date": "T/m",
+      "last_recorded_value": "* Laatst geregistreerde waarde",
       "loading": "Laden...",
       "date_range": "{start} t/m {end}",
       "date_range_multiline": "{start}\nt/m {end}",
@@ -731,6 +794,7 @@
       "close_options": "Sluit opties",
       "legend_estimation": "Schatting",
       "no_data": "Geen gegevens beschikbaar",
+      "no_data_short": "Geen gegevens",
       "y_axis_label": "{granularity} {facet}",
       "facet": "Aspect",
       "title": "Trends",
@@ -774,6 +838,29 @@
         "copy_url": "Kopieer deze URL om de grafiek in uw website in te sluiten",
         "preview": "Voorbeeld",
         "tip": "Als startDate en endDate niet zijn opgegeven in de URL, toont de grafiek de laatste 12 maanden."
+      },
+      "sparkline_zoom_reset": {
+        "title": "Zoom resetten · dubbelklik op de grafiek of druk op Esc",
+        "aria_label": "Zoom resetten"
+      },
+      "downloads_heatmap": {
+        "title": "Dagelijkse downloads: laatste 52 weken, van {from} t/m {to}",
+        "legend": {
+          "anomalies": "Dagen met ontbrekende of afwijkende downloadcijfers",
+          "max": "Max: {value} downloads op {date}",
+          "min": "Min: {value} downloads op {date}"
+        },
+        "nav_hint": "Gebruik ← → ↑ ↓",
+        "copy_alt": {
+          "introduction": "Downloadheatmap voor het pakket {package_name}. {date_range}.",
+          "no_data": "Er zijn geen betrouwbare downloadgegevens beschikbaar voor deze periode.",
+          "summary": "In totaal zijn er {total} downloads geregistreerd over {days} dagen, gemiddeld {average} downloads per dag.",
+          "peak": "De meeste activiteit vond plaats op {date}, met {downloads} downloads.",
+          "busiest_weekday": "De drukste dag van de week was {weekday}, met gemiddeld {average} downloads.",
+          "weekday_comparison": "Doordeweeks waren er gemiddeld {weekdays} downloads per dag, tegenover {weekends} in het weekend.",
+          "weekly_trend": "Tussen de eerste en laatste volledige week met betrouwbare gegevens veranderde het aantal wekelijkse downloads met {change}, van {first} naar {last}.",
+          "excluded_days": "{count} kalenderdagen zijn buiten deze statistieken gehouden vanwege ontbrekende, afwijkende of nog niet beschikbare gegevens."
+        }
       }
     },
     "downloads": {
@@ -1102,6 +1189,10 @@
       "verified_title": "geverifieerde herkomstgegevens",
       "verified_via": "Geverifieerd: gepubliceerd via {provider}"
     },
+    "staged_publish": {
+      "label": "Gefaseerde publicatie",
+      "title": "Gepubliceerd via gefaseerde publicatie met goedkeuring via 2FA"
+    },
     "jsr": {
       "title": "Ook verkrijgbaar op JSR"
     }
@@ -1197,7 +1288,7 @@
       "paginated": "Genummerde pagina's",
       "items_per_page": "Aantal resultaten per pagina",
       "per_page": "{count} / pagina",
-      "showing": "{start}-{end} van {total}",
+      "showing": "{range} van {total}",
       "previous": "Voriga pagina",
       "next": "Volgende pagina",
       "nav_label": "Paginering"
@@ -1752,18 +1843,10 @@
     "p2": "Voordat u begint, raden we u aan onze {guide} te lezen om meer te weten te komen over ons vertaalproces en hoe u hieraan kunt bijdragen.",
     "guide": "Handleiding voor lokalisatie (i18n)",
     "by_locale": "Voortgang van de vertaling per taal",
-    "by_file": "Voortgang van de vertaling per bestand",
     "complete_text": "Deze vertaling is compleet, fantastisch werk!",
     "missing_text": "ontbrekend",
     "missing_keys": "Er ontbreken geen vertalingen | Ontbrekende vertaling | Ontbrekende vertalingen",
-    "progress_label": "Voortgangsstatus voor {locale}",
-    "table": {
-      "file": "Bestand",
-      "status": "Status",
-      "error": "Fout bij het laden van de bestandslijst.",
-      "empty": "Geen bestanden gevonden",
-      "file_link": "Bewerk {file} ({lang}) op GitHub"
-    }
+    "progress_label": "Voortgangsstatus voor {locale}"
   },
   "vacations": {
     "title": "op vakantie",
@@ -1808,7 +1891,8 @@
   "logo_menu": {
     "copy_svg": "Kopieer logo als SVG",
     "copied": "Gekopieerd!",
-    "browse_brand": "Bekijk brand kit"
+    "browse_brand": "Bekijk brand kit",
+    "open_new_tab": "Open npmx in nieuw tabblad"
   },
   "brand": {
     "title": "Merk",
@@ -1864,8 +1948,12 @@
       "p1": "Sorry, de wijzigingenoverzicht van {package} kon niet geladen worden.",
       "p2": "Probeer later opnieuw of {viewon}"
     },
-    "rate_limit_ungh": "Sorry, de opvraaglimiet (rate limit) van GitHub is bereikt. Probeer het over een ogenblik opnieuw.",
-    "version_unavailable": "De gevraagde is niet beschikbaar.",
-    "copy_as_markdown": "Kopieer wijzigingen als Markdown"
+    "version_unavailable": "De gevraagde versie is niet beschikbaar.",
+    "copy_as_markdown": "Kopieer wijzigingen als Markdown",
+    "ungh": {
+      "rate_limit": "Sorry, de opvraaglimiet (rate limit) van GitHub is bereikt. Probeer het later opnieuw.",
+      "hint": "U kunt helpen de opvraaglimiet te verhogen door de UNGH GitHub-app te installeren.",
+      "install": "Installeer UNGH GitHub-app"
+    }
   }
 }

@@ -1,5 +1,5 @@
 import type { RequestedVersion as RequestedVersionNullable } from '~/composables/useRepositoryUrl'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 
 type RequestedVersion = NonNullable<RequestedVersionNullable>
 

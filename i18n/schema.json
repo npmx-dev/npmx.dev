@@ -508,15 +508,6 @@
           },
           "additionalProperties": false
         },
-        "package_actions": {
-          "type": "object",
-          "properties": {
-            "copy_run": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
         "code": {
           "type": "object",
           "properties": {
@@ -1288,6 +1279,9 @@
             "gitee": {
               "type": "string"
             },
+            "pushin": {
+              "type": "string"
+            },
             "radicle": {
               "type": "string"
             },
@@ -1536,6 +1530,9 @@
             },
             "version_distribution": {
               "type": "string"
+            },
+            "daily_downloads_heatmap": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1705,10 +1702,22 @@
             "copy_dev_command": {
               "type": "string"
             },
+            "copy_types_command": {
+              "type": "string"
+            },
             "dev_dependency_hint": {
               "type": "string"
             },
             "view_types": {
+              "type": "string"
+            },
+            "types_label": {
+              "type": "string"
+            },
+            "collapse_commands": {
+              "type": "string"
+            },
+            "expand_commands": {
               "type": "string"
             }
           },
@@ -1856,6 +1865,9 @@
               "type": "string"
             },
             "description_to_provenance_trustedPublisher": {
+              "type": "string"
+            },
+            "description_to_trustedPublisher_without_provenance": {
               "type": "string"
             },
             "fallback_install_provenance": {
@@ -2359,6 +2371,9 @@
             "toggle_annotator": {
               "type": "string"
             },
+            "toggle_fullscreen": {
+              "type": "string"
+            },
             "toggle_stack_mode": {
               "type": "string"
             },
@@ -2505,6 +2520,75 @@
                 },
                 "tip": {
                   "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "sparkline_zoom_reset": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "aria_label": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "downloads_heatmap": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "legend": {
+                  "type": "object",
+                  "properties": {
+                    "anomalies": {
+                      "type": "string"
+                    },
+                    "max": {
+                      "type": "string"
+                    },
+                    "min": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "nav_hint": {
+                  "type": "string"
+                },
+                "copy_alt": {
+                  "type": "object",
+                  "properties": {
+                    "introduction": {
+                      "type": "string"
+                    },
+                    "no_data": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "peak": {
+                      "type": "string"
+                    },
+                    "busiest_weekday": {
+                      "type": "string"
+                    },
+                    "weekday_comparison": {
+                      "type": "string"
+                    },
+                    "weekly_trend": {
+                      "type": "string"
+                    },
+                    "excluded_days": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
                 }
               },
               "additionalProperties": false
@@ -3490,6 +3574,18 @@
           },
           "additionalProperties": false
         },
+        "staged_publish": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "jsr": {
           "type": "object",
           "properties": {
@@ -4460,6 +4556,9 @@
               "type": "string"
             },
             "add_hint": {
+              "type": "string"
+            },
+            "version_hint": {
               "type": "string"
             }
           },
@@ -5440,9 +5539,6 @@
         "by_locale": {
           "type": "string"
         },
-        "by_file": {
-          "type": "string"
-        },
         "complete_text": {
           "type": "string"
         },
@@ -5454,27 +5550,6 @@
         },
         "progress_label": {
           "type": "string"
-        },
-        "table": {
-          "type": "object",
-          "properties": {
-            "file": {
-              "type": "string"
-            },
-            "status": {
-              "type": "string"
-            },
-            "error": {
-              "type": "string"
-            },
-            "empty": {
-              "type": "string"
-            },
-            "file_link": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -5609,6 +5684,9 @@
           "type": "string"
         },
         "browse_brand": {
+          "type": "string"
+        },
+        "open_new_tab": {
           "type": "string"
         }
       },
@@ -5776,14 +5854,26 @@
           },
           "additionalProperties": false
         },
-        "rate_limit_ungh": {
-          "type": "string"
-        },
         "version_unavailable": {
           "type": "string"
         },
         "copy_as_markdown": {
           "type": "string"
+        },
+        "ungh": {
+          "type": "object",
+          "properties": {
+            "rate_limit": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "install": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

@@ -31,6 +31,8 @@ export function useViewOnGitProvider(
         return t('common.view_on.tangled')
       case 'radicle':
         return t('common.view_on.radicle')
+      case 'pushin':
+        return t('common.view_on.pushin')
       case 'git':
         return t('common.view_on.git_repo')
     }

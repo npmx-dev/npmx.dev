@@ -7,19 +7,19 @@ export type Backlink = {
   rkey: string
 }
 
-export type BacklinksResponse = {
+type BacklinksResponse = {
   total: number
   records: Backlink[]
   cursor: string | undefined
 }
 
-export type LinksDistinctDidsResponse = {
+type LinksDistinctDidsResponse = {
   total: number
   linking_dids: string[]
   cursor: string | undefined
 }
 
-export type AllLinksResponse = {
+type AllLinksResponse = {
   links: Record<
     string,
     Record<

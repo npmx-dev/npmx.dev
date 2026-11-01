@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
+
+const props = defineProps<{
+  isVersionComparison?: boolean
+}>()
+
 const {
   isFacetSelected,
   toggleFacet,
@@ -10,16 +15,31 @@ const {
   getCategoryLabel,
 } = useFacetSelection()
 
+// Filter out repository/package-level metrics during version comparisons
+const filteredFacetsByCategory = computed(() => {
+  const result: Record<string, (typeof facetsByCategory.value)[string]> = {}
+  for (const category of categoryOrder) {
+    const facets = facetsByCategory.value[category] ?? []
+    result[category] = facets.filter(facet => {
+      if (props.isVersionComparison && shouldHideFacetInVersionComparison(facet.id)) {
+        return false
+      }
+      return true
+    })
+  }
+  return result
+})
+
 // Check if all non-comingSoon facets in a category are selected
 function isCategoryAllSelected(category: string): boolean {
-  const facets = facetsByCategory.value[category] ?? []
+  const facets = filteredFacetsByCategory.value[category] ?? []
   const selectableFacets = facets.filter(f => !f.comingSoon)
   return selectableFacets.length > 0 && selectableFacets.every(f => isFacetSelected(f.id))
 }
 
 // Check if no facets in a category are selected
 function isCategoryNoneSelected(category: string): boolean {
-  const facets = facetsByCategory.value[category] ?? []
+  const facets = filteredFacetsByCategory.value[category] ?? []
   const selectableFacets = facets.filter(f => !f.comingSoon)
   return selectableFacets.length > 0 && selectableFacets.every(f => !isFacetSelected(f.id))
 }
@@ -102,7 +122,7 @@ function deselectAllFacet(category: string) {
         data-facet-category-facets
       >
         <ButtonBase
-          v-for="facet in facetsByCategory[category]"
+          v-for="facet in filteredFacetsByCategory[category]"
           :key="facet.id"
           size="sm"
           role="checkbox"
