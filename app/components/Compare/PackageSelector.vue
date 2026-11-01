@@ -306,7 +306,6 @@ const versionHintId = useId()
             v-if="showNoDependencyOption"
             data-navigable
             role="option"
-            tabindex="-1"
             :id="`${listboxId}-option-0`"
             :aria-selected="highlightedIndex === 0"
             class="block w-full text-start !border-transparent"
@@ -335,7 +334,6 @@ const versionHintId = useId()
             :key="result.name"
             data-navigable
             role="option"
-            tabindex="-1"
             :id="`${listboxId}-option-${index + resultIndexOffset}`"
             :aria-selected="highlightedIndex === index + resultIndexOffset"
             class="block w-full text-start my-0.5 !border-transparent"

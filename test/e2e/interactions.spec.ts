@@ -198,7 +198,13 @@ test.describe('Search Pages', () => {
     await page.keyboard.press('j')
     await expect(firstResult).toBeFocused()
 
-    // k moves focus to the previous result (does nothing at the first item)
+    // k at the first item does nothing
+    await page.keyboard.press('k')
+    await expect(firstResult).toBeFocused()
+
+    // j then k moves focus back to the previous result
+    await page.keyboard.press('j')
+    await expect(page.locator('[data-result-index="1"]').first()).toBeFocused()
     await page.keyboard.press('k')
     await expect(firstResult).toBeFocused()
 
@@ -231,6 +237,22 @@ test.describe('Search Pages', () => {
     // Second j focuses the second result (not a keyword button within the first)
     await page.keyboard.press('j')
     await expect(secondResult).toBeFocused()
+  })
+
+  test('/search?q=vue → j inside the search input is typed as text', async ({ page, goto }) => {
+    await goto('/search?q=vue', { waitUntil: 'hydration' })
+
+    await expect(page.locator('text=/found \\d+|showing \\d+/i').first()).toBeVisible({
+      timeout: 15000,
+    })
+
+    const searchInput = page.locator('input[type="search"]')
+    await searchInput.focus()
+    await page.keyboard.press('End')
+    await page.keyboard.press('j')
+
+    await expect(searchInput).toHaveValue('vuej')
+    await expect(page.locator('[data-result-index="0"]').first()).not.toBeFocused()
   })
 
   test('/search?q=vue → k at first result does nothing (focus stays on first result)', async ({

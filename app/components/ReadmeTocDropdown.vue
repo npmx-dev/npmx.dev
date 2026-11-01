@@ -37,13 +37,6 @@ function buildTocTree(items: TocItem[]): TocNode[] {
 
 const tocTree = computed(() => buildTocTree(props.toc))
 
-// Create a map from id to index for efficient lookup
-const idToIndex = computed(() => {
-  const map = new Map<string, number>()
-  props.toc.forEach((item, index) => map.set(item.id, index))
-  return map
-})
-
 const menuRef = useTemplateRef('menuRef')
 const triggerRef = useTemplateRef('triggerRef')
 const isOpen = shallowRef(false)
@@ -66,7 +59,10 @@ function handleScroll(event: Event) {
   if (menuRef.value && event.target instanceof Node && menuRef.value.contains(event.target)) {
     return
   }
+  // The focused item unmounts with the menu, so don't let focus fall back to <body>
+  const hasFocusInMenu = menuRef.value?.contains(document.activeElement) ?? false
   close()
+  if (hasFocusInMenu) triggerRef.value?.focus({ preventScroll: true })
 }
 useEventListener('scroll', handleScroll, { passive: true })
 
@@ -164,6 +160,8 @@ function handleMenuKeydown(event: KeyboardEvent) {
 }
 
 function handleMenuFocusout(event: FocusEvent) {
+  // Let the trigger's click toggle the menu closed instead of closing and reopening it here
+  if (event.relatedTarget === triggerRef.value?.$el) return
   if (!menuRef.value?.contains(event.relatedTarget as Node | null)) {
     close()
   }
@@ -173,8 +171,9 @@ watch(isOpen, isNowOpen => {
   if (isNowOpen) {
     nextTick(() => {
       const items = getMenuItems()
-      const activeIndex = props.activeId ? (idToIndex.value.get(props.activeId) ?? 0) : 0
-      const target = shouldFocusLastOnOpen.value ? items.at(-1) : (items[activeIndex] ?? items[0])
+      // Headings deeper than three levels are not rendered, so look the active item up by id
+      const activeItem = items.find(item => item.id === `${menuId}-${props.activeId}`)
+      const target = shouldFocusLastOnOpen.value ? items.at(-1) : (activeItem ?? items[0])
       shouldFocusLastOnOpen.value = false
       target?.focus()
       target?.scrollIntoView({ block: 'nearest' })
