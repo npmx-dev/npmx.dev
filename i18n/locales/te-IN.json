@@ -18,9 +18,6 @@
     "social": "సోషల్",
     "chat": "చాట్"
   },
-  "shortcuts": {
-    "section": {}
-  },
   "search": {
     "label": "npm ప్యాకేజ్‌ను శోధించండి",
     "placeholder": "ప్యాకేజ్‌ను శోధించండి...",
@@ -42,23 +39,6 @@
       "view_org_packages": "ఈ సంస్థ ప్యాకేజ్‌లను వీక్షించండి"
     }
   },
-  "command_palette": {
-    "keyboard_shortcuts": {},
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
-  },
   "nav": {
     "main_navigation": "ప్రధాన",
     "popular_packages": "జనాదరణ ప్యాకేజ్‌లు",
@@ -71,21 +51,6 @@
     "links": "లింక్‌లు",
     "tap_to_search": "శోధించడానికి టాప్ చేయండి"
   },
-  "tools": {
-    "deps_stats": {}
-  },
-  "deps_stats": {
-    "upload": {},
-    "dependencies": {},
-    "stats": {}
-  },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
-  "noodles": {
-    "missing": {}
-  },
   "settings": {
     "title": "సెట్టింగ్‌లు",
     "tagline": "మీ npmx అనుభవాన్ని అనుకూలీకరించండి",
@@ -95,7 +60,6 @@
       "display": "ప్రదర్శన",
       "language": "భాష"
     },
-    "data_source": {},
     "relative_dates": "సాపేక్ష తేదీలు",
     "include_types": "ఇన్‌స్టాల్‌లో {'@'}types చేర్చండి",
     "include_types_description": "టైప్ చేయని ప్యాకేజ్‌కు ఇన్‌స్టాల్ కమాండ్‌లో {'@'}types ప్యాకేజ్‌ను జోడించండి",
@@ -111,9 +75,7 @@
       "label": "యాక్సెంట్ రంగులు"
     },
     "clear_accent": "యాక్సెంట్ రంగును క్లియర్ చేయండి",
-    "translation_progress": "అనువాద పురోగతి",
-    "background_themes": {},
-    "foreground_themes": {}
+    "translation_progress": "అనువాద పురోగతి"
   },
   "i18n": {
     "missing_keys": "{count} అనువాదం లేదు | {count} అనువాదాలు లేవు",
@@ -123,7 +85,6 @@
     "edit_on_github": "GitHub లో సవరించండి",
     "view_guide": "అనువాద గైడ్"
   },
-  "error": {},
   "common": {
     "loading": "లోడ్ అవుతున్నది...",
     "loading_more": "మరిన్ని లోడ్ అవుతున్నది...",
@@ -150,9 +111,6 @@
       "github": "GitHub లో వీక్షించండి"
     }
   },
-  "profile": {
-    "invite": {}
-  },
   "package": {
     "not_found": "ప్యాకేజ్ కనుగొనబడలేదు",
     "not_found_message": "ప్యాకేజ్ కనుగొనబడలేదు.",
@@ -165,8 +123,6 @@
       "version": "ఈ వెర్షన్ డిప్రికేట్ చేయబడింది.",
       "no_reason": "కారణం అందించబడలేదు"
     },
-    "size_increase": {},
-    "size_decrease": {},
     "replacement": {
       "title": "మీకు ఈ డిపెండెన్సీ అవసరం లేకపోవచ్చు.",
       "native": "దీనిని {replacement} తో భర్తీ చేయవచ్చు, ఇది Node {nodeVersion} నుండి అందుబాటులో ఉంది.",
@@ -212,7 +168,6 @@
       "fund": "దానం చేయండి",
       "compare": "పోల్చండి"
     },
-    "likes": {},
     "docs": {
       "not_available": "డాక్యుమెంటేషన్ అందుబాటులో లేదు",
       "not_available_detail": "మేము ఈ వెర్షన్ కోసం డాక్యుమెంటేషన్‌ను జెనరేట్ చేయలేకపోయాము."
@@ -231,14 +186,10 @@
       "title": "అమలు చేయండి",
       "locally": "స్థానికంగా అమలు చేయండి"
     },
-    "command": {},
     "readme": {
       "title": "రీడ్మీ",
-      "no_readme": "README అందుబాటులో లేదు.",
-      "callout": {}
+      "no_readme": "README అందుబాటులో లేదు."
     },
-    "provenance_section": {},
-    "security_downgrade": {},
     "keywords_title": "కీవర్డ్‌లు",
     "compatibility": "అనుకూలత",
     "card": {
@@ -259,13 +210,7 @@
       "more_tagged": "{count} మరిన్ని ట్యాగ్ చేయబడ్డాయి",
       "all_covered": "అన్ని వెర్షన్‌లు పైన ఉన్న ట్యాగ్‌ల ద్వారా కవర్ చేయబడ్డాయి",
       "deprecated_title": "{version} (డిప్రికేటెడ్)",
-      "view_all": "{count} వెర్షన్‌లను వీక్షించండి | అన్ని {count} వెర్షన్‌లను వీక్షించండి",
-      "copy_alt": {}
-    },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
+      "view_all": "{count} వెర్షన్‌లను వీక్షించండి | అన్ని {count} వెర్షన్‌లను వీక్షించండి"
     },
     "dependencies": {
       "title": "డిపెండెన్సీలు ({count})",
@@ -302,7 +247,6 @@
       "show_less": "(తక్కువ చూపించండి)"
     },
     "trends": {
-      "chart_assistive_text": {},
       "granularity": "గ్రాన్యులారిటీ",
       "granularity_daily": "రోజువారీ",
       "granularity_weekly": "వారపు",
@@ -314,15 +258,7 @@
       "date_range": "{start} నుండి {end}",
       "date_range_multiline": "{start}\nనుండి {end}",
       "download_file": "{fileType} డౌన్‌లోడ్ చేయండి",
-      "toggle_annotator": "అనోటేటర్‌ను టాగుల్ చేయండి",
-      "items": {},
-      "copy_alt": {},
-      "embedding": {},
-      "sparkline_zoom_reset": {},
-      "downloads_heatmap": {
-        "legend": {},
-        "copy_alt": {}
-      }
+      "toggle_annotator": "అనోటేటర్‌ను టాగుల్ చేయండి"
     },
     "downloads": {
       "title": "వారపు డౌన్‌లోడ్‌లు"
@@ -407,12 +343,7 @@
       "downloads": "అత్యధికంగా డౌన్‌లోడ్ చేయబడినవి",
       "name_asc": "పేరు (A-Z)",
       "name_desc": "పేరు (Z-A)"
-    },
-    "size": {},
-    "download": {}
-  },
-  "leaderboard": {
-    "likes": {}
+    }
   },
   "connector": {
     "modal": {
@@ -644,7 +575,6 @@
     "more_keywords": "+{count} మరిన్ని",
     "clear_all": "అన్నింటిని క్లియర్ చేయండి",
     "remove_filter": "{label} ఫిల్టర్‌ను తీసివేయండి",
-    "chips": {},
     "download_range": {
       "any": "ఏదైనా",
       "lt100": "< 100",
@@ -744,9 +674,6 @@
         "managers": "మేనేజర్‌లు"
       }
     },
-    "sponsors": {},
-    "oss_partners": {},
-    "team": {},
     "contributors": {
       "title": "కంట్రిబ్యూటర్‌లు",
       "description": "npmx పూర్తిగా ఓపెన్ సోర్స్, అద్భుతమైన కంట్రిబ్యూటర్‌ల కమ్యూనిటీ ద్వారా నిర్మించబడింది. మాతో చేరండి మరియు మేము ఎప్పుడూ కోరుకున్న npm బ్రౌజింగ్ అనుభవాన్ని కలిసి సృష్టిద్దాం.",
@@ -766,31 +693,11 @@
         "description": "చాట్ చేయండి, ప్రశ్నలు అడగండి, మరియు ఆలోచనలను పంచుకోండి.",
         "cta": "Discord లో చేరండి"
       },
-      "builders": {},
       "follow": {
         "title": "నవీకరణలతో ఉండండి",
         "description": "npmx లో తాజా సమాచారాన్ని పొందండి.",
         "cta": "Bluesky లో ఫాలో చేయండి"
       }
-    }
-  },
-  "sponsors_page": {
-    "what_we_do": {},
-    "what_support_means": {},
-    "what_this_means_for_you": {
-      "cards": {
-        "people": {},
-        "visitors": {},
-        "stars": {},
-        "community": {},
-        "adoption": {},
-        "default_source": {}
-      }
-    },
-    "tiers": {
-      "silver": {},
-      "gold": {},
-      "platinum": {}
     }
   },
   "account_menu": {
@@ -864,10 +771,6 @@
       "packages_selected": "{count}/{max} ప్యాకేజ్‌లు ఎంచుకోబడ్డాయి.",
       "add_hint": "పోల్చడానికి కనీసం 2 ప్యాకేజ్‌లను జోడించండి."
     },
-    "scatter_chart": {
-      "copy_alt": {}
-    },
-    "no_dependency": {},
     "facets": {
       "all": "అన్నీ",
       "none": "ఏదీ లేదు",
@@ -879,76 +782,7 @@
         "health": "ఆరోగ్యం",
         "compatibility": "అనుకూలత",
         "security": "భద్రత మరియు అనుసరణ"
-      },
-      "items": {
-        "packageSize": {},
-        "installSize": {},
-        "dependencies": {},
-        "totalDependencies": {},
-        "downloads": {},
-        "totalLikes": {},
-        "lastUpdated": {},
-        "deprecated": {},
-        "engines": {},
-        "types": {},
-        "moduleFormat": {},
-        "license": {},
-        "vulnerabilities": {},
-        "githubStars": {},
-        "githubForks": {},
-        "githubIssues": {},
-        "createdAt": {}
-      },
-      "values": {},
-      "trends": {}
-    },
-    "version_invalid_url_format": {},
-    "file_filter_option": {},
-    "filter": {}
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
-  },
-  "privacy_policy": {
-    "cookies": {
-      "what_are": {},
-      "types": {},
-      "local_storage": {},
-      "management": {}
-    },
-    "analytics": {},
-    "authenticated": {},
-    "data_retention": {},
-    "your_rights": {},
-    "contact": {},
-    "changes": {}
-  },
-  "a11y": {
-    "approach": {},
-    "measures": {},
-    "limitations": {},
-    "contact": {}
-  },
-  "translation_status": {},
-  "vacations": {
-    "what": {},
-    "meantime": {},
-    "return": {},
-    "stats": {
-      "subtitle": {}
+      }
     }
-  },
-  "action_bar": {},
-  "logo_menu": {},
-  "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
-  },
-  "changelog": {
-    "error": {}
   }
 }

@@ -76,22 +76,6 @@
     "instant_search_turn_off": "nonaktifkan",
     "instant_search_advisory": "{label} {state} — {action}"
   },
-  "command_palette": {
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
-  },
   "nav": {
     "main_navigation": "Utama",
     "popular_packages": "Paket populer",
@@ -281,7 +265,6 @@
       "size": "Ukuran instalasi meningkat sebesar {percent} ({size} lebih besar)",
       "deps": "{count} lebih banyak dependensi"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "Mungkin Anda tidak butuh dependensi ini.",
       "native": "Paket ini dapat diganti dengan {replacement}, tersedia sejak Node {nodeVersion}.",
@@ -453,11 +436,6 @@
       "page_title": "Riwayat Versi",
       "current_tags": "Tag Saat Ini",
       "no_match_filter": "Tidak ada versi yang cocok dengan {filter}"
-    },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
     },
     "dependencies": {
       "title": "Dependensi ({count})",
@@ -660,9 +638,6 @@
       "button": "Unduh",
       "tarball": "Unduh Tarball sebagai .tar.gz"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1135,9 +1110,6 @@
       "packages_selected": "{count}/{max} paket dipilih.",
       "add_hint": "Tambah setidaknya 2 paket untuk dibandingkan."
     },
-    "scatter_chart": {
-      "copy_alt": {}
-    },
     "no_dependency": {
       "label": "(Tanpa Ketergantungan)",
       "typeahead_title": "Apa yang Akan Anda Lakukan?",
@@ -1216,10 +1188,7 @@
         "vulnerabilities": {
           "label": "Kerentanan",
           "description": "Kerentanan keamanan yang diketahui"
-        },
-        "githubStars": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "Apa saja",
@@ -1530,8 +1499,5 @@
       "message": "Aksesibilitas penting bagi kami, dan kami ingin Anda ikut mendukung visi ini. Saat menggunakan media yang disebutkan, pastikan kontras dengan latar cukup, dan jangan gunakan ukuran kurang dari 24px. Jika Anda membutuhkan sumber daya lain atau informasi tambahan tentang proyek ini, silakan hubungi kami di {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  },
-  "changelog": {
-    "error": {}
   }
 }

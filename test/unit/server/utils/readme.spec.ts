@@ -1,5 +1,5 @@
 import type { RepositoryInfo } from '#shared/utils/git-providers'
-import { describe, expect, it, vi, beforeAll } from 'vitest'
+import { describe, expect, it, vi, beforeAll } from 'vite-plus/test'
 
 // Mock the global Nuxt auto-imports before importing the module
 beforeAll(() => {

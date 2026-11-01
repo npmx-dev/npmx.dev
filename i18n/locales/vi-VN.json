@@ -76,22 +76,6 @@
     "instant_search_turn_off": "tắt",
     "instant_search_advisory": "{label} {state} — {action}"
   },
-  "command_palette": {
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
-  },
   "nav": {
     "main_navigation": "Trang chính",
     "popular_packages": "Package phổ biến",
@@ -281,7 +265,6 @@
       "size": "Kích thước cài đặt tăng {percent} (lớn hơn {size})",
       "deps": "Thêm {count} dependency"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "Bạn có thể không cần dependency này.",
       "native": "Có thể thay thế bằng {replacement}, có sẵn từ Node {nodeVersion}.",
@@ -453,11 +436,6 @@
       "page_title": "Lịch sử phiên bản",
       "current_tags": "Thẻ hiện tại",
       "no_match_filter": "Không có phiên bản khớp {filter}"
-    },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependency ({count})",
@@ -657,9 +635,6 @@
       "button": "Tải xuống",
       "tarball": "Tải tarball dạng .tar.gz"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1131,9 +1106,6 @@
       "packages_selected": "Đã chọn {count}/{max} package.",
       "add_hint": "Thêm ít nhất 2 package để so sánh."
     },
-    "scatter_chart": {
-      "copy_alt": {}
-    },
     "no_dependency": {
       "label": "(Không dependency)",
       "typeahead_title": "Văn sẽ làm gì?",
@@ -1212,10 +1184,7 @@
         "vulnerabilities": {
           "label": "Lỗ hổng",
           "description": "Các lỗ hổng bảo mật phổ biến"
-        },
-        "githubStars": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "Bất kỳ",
@@ -1526,8 +1495,5 @@
       "message": "Trợ năng là vấn đề rất quan trọng đối với chúng tôi và chúng tôi rất mong bạn cùng chia sẻ tầm nhìn này. Khi sử dụng các phương tiện truyền thông đã đề cập, hãy đảm bảo có đủ độ tương phản với nền và không để kích thước nhỏ hơn 24px. Nếu bạn cần bất kỳ tài nguyên nào khác hoặc thông tin bổ sung về dự án, vui lòng liên hệ với chúng tôi tại {link}.",
       "discord_link_text": "chat.npmx.dev"
     }
-  },
-  "changelog": {
-    "error": {}
   }
 }

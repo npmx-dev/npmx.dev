@@ -65,23 +65,6 @@
       "view_org_packages": "عرض حزم هذه المؤسسة"
     }
   },
-  "command_palette": {
-    "keyboard_shortcuts": {},
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
-  },
   "nav": {
     "main_navigation": "الصفحة الرئيسية",
     "popular_packages": "الحزم الشائعة",
@@ -93,21 +76,6 @@
     "open_menu": "فتح القائمة",
     "links": "روابط",
     "tap_to_search": "اضغط للبحث"
-  },
-  "tools": {
-    "deps_stats": {}
-  },
-  "deps_stats": {
-    "upload": {},
-    "dependencies": {},
-    "stats": {}
-  },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
-  "noodles": {
-    "missing": {}
   },
   "settings": {
     "title": "الإعدادات",
@@ -145,8 +113,7 @@
     "translation_progress": "تقدم الترجمة",
     "background_themes": {
       "label": "درجة خلفية الصفحة"
-    },
-    "foreground_themes": {}
+    }
   },
   "i18n": {
     "missing_keys": "{count} ترجمات مفقودة | ترجمة واحدة مفقودة | ترجمتان مفقودتان | {count} ترجمات مفقودة | {count} ترجمة مفقودة | {count} ترجمة مفقودة",
@@ -156,7 +123,6 @@
     "edit_on_github": "تعديل على GitHub",
     "view_guide": "دليل الترجمة"
   },
-  "error": {},
   "common": {
     "loading": "جارٍ التحميل…",
     "loading_more": "جارٍ تحميل المزيد…",
@@ -184,9 +150,6 @@
       "github": "عرض على GitHub"
     }
   },
-  "profile": {
-    "invite": {}
-  },
   "package": {
     "not_found": "لم يتم العثور على الحزمة",
     "not_found_message": "تعذّر العثور على الحزمة.",
@@ -199,8 +162,6 @@
       "version": "تم إهمال هذا الإصدار.",
       "no_reason": "لم يتم تقديم سبب"
     },
-    "size_increase": {},
-    "size_decrease": {},
     "replacement": {
       "title": "قد لا تحتاج إلى هذه التبعية.",
       "native": "يمكن استبدالها بـ {replacement}، المتوفرة منذ Node {nodeVersion}.",
@@ -275,7 +236,6 @@
       "title": "تشغيل",
       "locally": "تشغيل محليًا"
     },
-    "command": {},
     "readme": {
       "title": "README (إقرأني)",
       "no_readme": "لا يتوفر README.",
@@ -343,13 +303,7 @@
       "filter_help": "مساعدة فلتر نطاق semver",
       "filter_tooltip": "فلترة الإصدارات باستخدام {link}. مثلاً ^3.0.0 يعرض كل إصدارات 3.x.",
       "filter_tooltip_link": "نطاق semver",
-      "no_matches": "لا توجد إصدارات تطابق هذا النطاق",
-      "copy_alt": {}
-    },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
+      "no_matches": "لا توجد إصدارات تطابق هذا النطاق"
     },
     "dependencies": {
       "title": "التبعيات ({count})",
@@ -387,7 +341,6 @@
       "show_less": "(عرض أقل)"
     },
     "trends": {
-      "chart_assistive_text": {},
       "granularity": "مستوى التفصيل",
       "granularity_daily": "يومي",
       "granularity_weekly": "أسبوعي",
@@ -410,13 +363,6 @@
         "downloads": "التنزيلات",
         "likes": "الإعجابات",
         "contributors": "المساهمون"
-      },
-      "copy_alt": {},
-      "embedding": {},
-      "sparkline_zoom_reset": {},
-      "downloads_heatmap": {
-        "legend": {},
-        "copy_alt": {}
       }
     },
     "downloads": {
@@ -510,11 +456,7 @@
       "b": "{size} بايت",
       "kb": "{size} كيلوبايت",
       "mb": "{size} ميجابايت"
-    },
-    "download": {}
-  },
-  "leaderboard": {
-    "likes": {}
+    }
   },
   "connector": {
     "modal": {
@@ -857,8 +799,6 @@
         "managers": "مديري"
       }
     },
-    "sponsors": {},
-    "oss_partners": {},
     "team": {
       "title": "الفريق",
       "role_steward": "راعي",
@@ -885,31 +825,11 @@
         "description": "تحدث، اطرح الأسئلة، وشارك الأفكار.",
         "cta": "انضم إلى Discord"
       },
-      "builders": {},
       "follow": {
         "title": "ابقَ على اطلاع",
         "description": "اكتشف آخر الأخبار عن npmx.",
         "cta": "تابع على Bluesky"
       }
-    }
-  },
-  "sponsors_page": {
-    "what_we_do": {},
-    "what_support_means": {},
-    "what_this_means_for_you": {
-      "cards": {
-        "people": {},
-        "visitors": {},
-        "stars": {},
-        "community": {},
-        "adoption": {},
-        "default_source": {}
-      }
-    },
-    "tiers": {
-      "silver": {},
-      "gold": {},
-      "platinum": {}
     }
   },
   "account_menu": {
@@ -983,9 +903,6 @@
       "remove_package": "إزالة {package}",
       "packages_selected": "{count}/{max} حزمة محددة.",
       "add_hint": "أضف حزمتين على الأقل للمقارنة."
-    },
-    "scatter_chart": {
-      "copy_alt": {}
     },
     "no_dependency": {
       "label": "(بدون تبعية)",
@@ -1061,11 +978,7 @@
         "vulnerabilities": {
           "label": "الثغرات",
           "description": "ثغرات أمنية معروفة"
-        },
-        "githubStars": {},
-        "githubForks": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "أي من",
@@ -1081,15 +994,7 @@
       "trends": {
         "title": "مقارنة التوجهات"
       }
-    },
-    "version_invalid_url_format": {},
-    "file_filter_option": {},
-    "filter": {}
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    }
   },
   "privacy_policy": {
     "title": "سياسة الخصوصية",
@@ -1200,25 +1105,5 @@
       "p1": "إذا واجهت عائقاً في إمكانية الوصول على {app}، يرجى إبلاغنا بفتح بلاغ في {link}. نأخذ هذه البلاغات على محمل الجد وسنبذل قصارى جهدنا لمعالجتها.",
       "link": "مستودع GitHub"
     }
-  },
-  "translation_status": {},
-  "vacations": {
-    "what": {},
-    "meantime": {},
-    "return": {},
-    "stats": {
-      "subtitle": {}
-    }
-  },
-  "action_bar": {},
-  "logo_menu": {},
-  "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
-  },
-  "changelog": {
-    "error": {}
   }
 }

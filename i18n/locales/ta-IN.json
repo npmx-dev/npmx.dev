@@ -64,23 +64,6 @@
       "view_org_packages": "இந்த நிறுவனத்தின் தொகுப்புகளைக் காண்க"
     }
   },
-  "command_palette": {
-    "keyboard_shortcuts": {},
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
-  },
   "nav": {
     "main_navigation": "முதன்மை",
     "popular_packages": "பிரபலமான தொகுப்புகள்",
@@ -92,21 +75,6 @@
     "open_menu": "பட்டியைத் திற",
     "links": "இணைப்புகள்",
     "tap_to_search": "தேட தட்டவும்"
-  },
-  "tools": {
-    "deps_stats": {}
-  },
-  "deps_stats": {
-    "upload": {},
-    "dependencies": {},
-    "stats": {}
-  },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
-  "noodles": {
-    "missing": {}
   },
   "settings": {
     "title": "அமைப்புகள்",
@@ -144,8 +112,7 @@
     "translation_progress": "மொழிபெயர்ப்பு முன்னேற்றம்",
     "background_themes": {
       "label": "பின்புல நிழல்"
-    },
-    "foreground_themes": {}
+    }
   },
   "i18n": {
     "missing_keys": "{count} விடுபட்ட மொழிபெயர்ப்பு | {count} விடுபட்ட மொழிபெயர்ப்புகள்",
@@ -155,7 +122,6 @@
     "edit_on_github": "GitHub-ல் திருத்து",
     "view_guide": "மொழிபெயர்ப்பு வழிகாட்டி"
   },
-  "error": {},
   "common": {
     "loading": "ஏற்றுகிறது...",
     "loading_more": "மேலும் ஏற்றுகிறது...",
@@ -182,9 +148,6 @@
       "github": "GitHub-ல் காண்க"
     }
   },
-  "profile": {
-    "invite": {}
-  },
   "package": {
     "not_found": "தொகுப்பு கிடைக்கவில்லை",
     "not_found_message": "தொகுப்பைக் கண்டுபிடிக்க இயலவில்லை.",
@@ -197,8 +160,6 @@
       "version": "இந்தப் பதிப்பு நிறுத்தப்பட்டது.",
       "no_reason": "காரணம் வழங்கப்படவில்லை"
     },
-    "size_increase": {},
-    "size_decrease": {},
     "replacement": {
       "title": "இந்த சார்பு உங்களுக்குத் தேவைப்படாமல் இருக்கலாம்.",
       "native": "இதை {replacement} மூலம் மாற்றலாம், Node {nodeVersion} முதல் கிடைக்கிறது.",
@@ -271,7 +232,6 @@
       "title": "இயக்கு",
       "locally": "உள்ளூரில் இயக்கு"
     },
-    "command": {},
     "readme": {
       "title": "Readme",
       "no_readme": "README கிடைக்கவில்லை.",
@@ -327,13 +287,7 @@
       "more_tagged": "{count} மேலும் குறியிடப்பட்டவை",
       "all_covered": "அனைத்து பதிப்புகளும் மேலே உள்ள குறிச்சொற்களால் உள்ளடக்கப்பட்டுள்ளன",
       "deprecated_title": "{version} (நிறுத்தப்பட்டது)",
-      "view_all": "{count} பதிப்பைக் காண்க | அனைத்து {count} பதிப்புகளையும் காண்க",
-      "copy_alt": {}
-    },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
+      "view_all": "{count} பதிப்பைக் காண்க | அனைத்து {count} பதிப்புகளையும் காண்க"
     },
     "dependencies": {
       "title": "சார்பு ({count}) | சார்புகள் ({count})",
@@ -370,7 +324,6 @@
       "show_less": "(குறைவாகக் காண்பி)"
     },
     "trends": {
-      "chart_assistive_text": {},
       "granularity": "நுண்ணிலை",
       "granularity_daily": "தினசரி",
       "granularity_weekly": "வாராந்திர",
@@ -388,13 +341,6 @@
       "y_axis_label": "{granularity} {facet}",
       "items": {
         "downloads": "பதிவிறக்கங்கள்"
-      },
-      "copy_alt": {},
-      "embedding": {},
-      "sparkline_zoom_reset": {},
-      "downloads_heatmap": {
-        "legend": {},
-        "copy_alt": {}
       }
     },
     "downloads": {
@@ -488,11 +434,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
-  },
-  "leaderboard": {
-    "likes": {}
+    }
   },
   "connector": {
     "modal": {
@@ -832,9 +774,6 @@
         "managers": "மேலாளர்கள்"
       }
     },
-    "sponsors": {},
-    "oss_partners": {},
-    "team": {},
     "contributors": {
       "title": "{count} பங்களிப்பாளர் | {count} பங்களிப்பாளர்கள்",
       "description": "npmx முழுமையாக திறந்த மூலமாகும், அற்புதமான பங்களிப்பாளர்கள் சமூகத்தால் உருவாக்கப்பட்டது. எங்களுடன் சேர்ந்து நாம் எப்போதும் விரும்பிய npm உலாவல் அனுபவத்தை ஒன்றாகக் கட்டமைப்போம்.",
@@ -854,31 +793,11 @@
         "description": "அரட்டையடிக்கவும், கேள்விகள் கேட்கவும், யோசனைகளைப் பகிரவும்.",
         "cta": "Discord-ல் சேரவும்"
       },
-      "builders": {},
       "follow": {
         "title": "புதுப்பிப்புகளைப் பெறுங்கள்",
         "description": "npmx பற்றிய சமீபத்திய தகவல்களைக் கண்டறியுங்கள்.",
         "cta": "Bluesky-ல் பின்தொடரவும்"
       }
-    }
-  },
-  "sponsors_page": {
-    "what_we_do": {},
-    "what_support_means": {},
-    "what_this_means_for_you": {
-      "cards": {
-        "people": {},
-        "visitors": {},
-        "stars": {},
-        "community": {},
-        "adoption": {},
-        "default_source": {}
-      }
-    },
-    "tiers": {
-      "silver": {},
-      "gold": {},
-      "platinum": {}
     }
   },
   "account_menu": {
@@ -952,9 +871,6 @@
       "remove_package": "{package} ஐ நீக்கு",
       "packages_selected": "{count}/{max} தொகுப்புகள் தேர்ந்தெடுக்கப்பட்டன.",
       "add_hint": "ஒப்பிட குறைந்தது 2 தொகுப்புகளைச் சேர்க்கவும்."
-    },
-    "scatter_chart": {
-      "copy_alt": {}
     },
     "no_dependency": {
       "label": "(சார்பு இல்லை)",
@@ -1030,11 +946,7 @@
         "vulnerabilities": {
           "label": "பாதிப்புகள்",
           "description": "அறியப்பட்ட பாதுகாப்பு பாதிப்புகள்"
-        },
-        "githubStars": {},
-        "githubForks": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "எதுவும்",
@@ -1050,15 +962,7 @@
       "trends": {
         "title": "வாராந்திர பதிவிறக்கங்கள்"
       }
-    },
-    "version_invalid_url_format": {},
-    "file_filter_option": {},
-    "filter": {}
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    }
   },
   "privacy_policy": {
     "title": "தனியுரிமைக் கொள்கை",
@@ -1139,31 +1043,5 @@
       "title": "இந்தக் கொள்கையில் மாற்றங்கள்",
       "p1": "இந்த தனியுரிமைக் கொள்கையை அவ்வப்போது புதுப்பிக்கலாம். எந்த மாற்றங்களும் புதுப்பிக்கப்பட்ட திருத்தத் தேதியுடன் இந்தப் பக்கத்தில் வெளியிடப்படும்."
     }
-  },
-  "a11y": {
-    "approach": {},
-    "measures": {},
-    "limitations": {},
-    "contact": {}
-  },
-  "translation_status": {},
-  "vacations": {
-    "what": {},
-    "meantime": {},
-    "return": {},
-    "stats": {
-      "subtitle": {}
-    }
-  },
-  "action_bar": {},
-  "logo_menu": {},
-  "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
-  },
-  "changelog": {
-    "error": {}
   }
 }

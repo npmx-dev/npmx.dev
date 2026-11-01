@@ -11,3 +11,16 @@ index 3d627e2a5febb492e4f8630c1301701c2770f4e2..5cacae1577070faebaa034e4eb665391
  					prefix: "NUXT_",
  					env: await setupDotenv(defu$1(loadNuxtOptions.dotenv, {
  						cwd: rootDir,
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 41a0b0315cb30ebf87777ae4519205c1e136ded3..07fc6a8b9f488061c96b490244c77b840517a9b8 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -49,7 +49,7 @@ const createMockPlugin = (ctx) => createUnplugin(() => {
+ 				const importPathsList = /* @__PURE__ */ new Set();
+ 				walk(ast, { enter: (node, parent) => {
+ 					if (isImportDeclaration(node)) {
+-						if (node.source.value === "vitest" && !hasViImport) {
++						if ((node.source.value === "vitest" || node.source.value === "vite-plus/test") && !hasViImport) {
+ 							if (node.specifiers.find((i) => isImportSpecifier(i) && i.imported.type === "Identifier" && i.imported.name === "vi")) {
+ 								insertionPoint = endOf(node);
+ 								hasViImport = true;

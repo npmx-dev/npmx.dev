@@ -1,6 +1,6 @@
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { defineComponent, h } from 'vue'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 
 const { mockFetchPackageDownloadEvolution } = vi.hoisted(() => ({
   mockFetchPackageDownloadEvolution: vi.fn(),
