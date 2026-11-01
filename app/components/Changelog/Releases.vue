@@ -65,7 +65,10 @@ if (import.meta.client) {
 
       if (goToVersion) {
         for (const match of uMatchingDateReleases) {
-          if (match.title.toLowerCase().includes(goToVersion)) {
+          if (
+            match.tag.toLowerCase().includes(goToVersion) ||
+            match.title.toLowerCase().includes(goToVersion)
+          ) {
             navigateTo(`#release-${slugify(match.title)}`, { replace: true })
             return
           }

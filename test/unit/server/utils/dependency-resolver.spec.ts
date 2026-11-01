@@ -1,12 +1,15 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
-import type { Packument, PackumentVersion } from '#shared/types'
+import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
+import type { AbbreviatedPackument, AbbreviatedPackumentVersion } from '#shared/types'
 
 // Mock Nitro globals before importing the module
 vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
 vi.stubGlobal('$fetch', vi.fn())
 
-const mockFetchNpmPackage = vi.fn<(name: string) => Promise<Packument | null>>()
-vi.stubGlobal('fetchNpmPackage', mockFetchNpmPackage)
+const mockAbbreviatedPackument = vi.fn<(name: string) => Promise<AbbreviatedPackument | null>>()
+vi.stubGlobal('fetchNpmPackageAbbreviated', mockAbbreviatedPackument)
+
+const mockVersionLibc = vi.fn<(name: string, version: string) => Promise<string[] | undefined>>()
+vi.stubGlobal('fetchNpmPackageVersionLibc', mockVersionLibc)
 
 const {
   TARGET_PLATFORM,
@@ -22,7 +25,7 @@ const day = (n: number) => new Date(Date.UTC(2026, 0, n)).toISOString()
 const minutes = (n: number) => n * 60 * 1000
 
 /**
- * Helper to build a minimal Packument for mocking.
+ * Helper to build a minimal abbreviated packument for mocking.
  */
 function makePackument(
   name: string,
@@ -37,8 +40,8 @@ function makePackument(
     deprecated?: string
     time?: string
   }>,
-): Packument {
-  const versionsMap: Record<string, PackumentVersion> = {}
+): AbbreviatedPackument {
+  const versionsMap: Record<string, AbbreviatedPackumentVersion> = {}
   const time: Record<string, string> = {}
   for (const v of versions) {
     if (v.time) time[v.version] = v.time
@@ -48,12 +51,12 @@ function makePackument(
       optionalDependencies: v.optionalDeps,
       os: v.os,
       cpu: v.cpu,
-      ...(v.libc ? { libc: v.libc } : {}),
+      libc: v.libc,
       dist: { unpackedSize: v.unpackedSize },
       ...(v.deprecated ? { deprecated: v.deprecated } : {}),
-    } as unknown as PackumentVersion
+    }
   }
-  return { name, versions: versionsMap, time } as Packument
+  return { name, versions: versionsMap, time } as AbbreviatedPackument
 }
 
 describe('dependency-resolver', () => {
@@ -69,61 +72,61 @@ describe('dependency-resolver', () => {
 
   describe('matchesPlatform', () => {
     it('returns true for packages without platform restrictions', () => {
-      const version = {} as PackumentVersion
+      const version = {}
       expect(matchesPlatform(version)).toBe(true)
     })
 
     it('returns true when os includes linux', () => {
-      const version = { os: ['linux', 'darwin'] } as PackumentVersion
+      const version = { os: ['linux', 'darwin'] }
       expect(matchesPlatform(version)).toBe(true)
     })
 
     it('returns false when os excludes linux', () => {
-      const version = { os: ['darwin', 'win32'] } as PackumentVersion
+      const version = { os: ['darwin', 'win32'] }
       expect(matchesPlatform(version)).toBe(false)
     })
 
     it('handles negated os values (!linux)', () => {
-      const version = { os: ['!win32'] } as PackumentVersion
+      const version = { os: ['!win32'] }
       expect(matchesPlatform(version)).toBe(true)
 
-      const excluded = { os: ['!linux'] } as PackumentVersion
+      const excluded = { os: ['!linux'] }
       expect(matchesPlatform(excluded)).toBe(false)
     })
 
     it('returns true when cpu includes x64', () => {
-      const version = { cpu: ['x64', 'arm64'] } as PackumentVersion
+      const version = { cpu: ['x64', 'arm64'] }
       expect(matchesPlatform(version)).toBe(true)
     })
 
     it('returns false when cpu excludes x64', () => {
-      const version = { cpu: ['arm64', 'arm'] } as PackumentVersion
+      const version = { cpu: ['arm64', 'arm'] }
       expect(matchesPlatform(version)).toBe(false)
     })
 
     it('handles negated cpu values (!x64)', () => {
-      const version = { cpu: ['!arm64'] } as PackumentVersion
+      const version = { cpu: ['!arm64'] }
       expect(matchesPlatform(version)).toBe(true)
 
-      const excluded = { cpu: ['!x64'] } as PackumentVersion
+      const excluded = { cpu: ['!x64'] }
       expect(matchesPlatform(excluded)).toBe(false)
     })
 
     it('returns true when libc includes glibc', () => {
-      const version = { libc: ['glibc'] } as unknown as PackumentVersion
+      const version = { libc: ['glibc'] }
       expect(matchesPlatform(version)).toBe(true)
     })
 
     it('returns false when libc is musl only', () => {
-      const version = { libc: ['musl'] } as unknown as PackumentVersion
+      const version = { libc: ['musl'] }
       expect(matchesPlatform(version)).toBe(false)
     })
 
     it('handles negated libc values (!glibc)', () => {
-      const version = { libc: ['!musl'] } as unknown as PackumentVersion
+      const version = { libc: ['!musl'] }
       expect(matchesPlatform(version)).toBe(true)
 
-      const excluded = { libc: ['!glibc'] } as unknown as PackumentVersion
+      const excluded = { libc: ['!glibc'] }
       expect(matchesPlatform(excluded)).toBe(false)
     })
 
@@ -131,12 +134,12 @@ describe('dependency-resolver', () => {
       const version = {
         os: ['linux'],
         cpu: ['arm64'], // doesn't match x64
-      } as PackumentVersion
+      }
       expect(matchesPlatform(version)).toBe(false)
     })
 
     it('ignores empty arrays', () => {
-      const version = { os: [], cpu: [], libc: [] } as unknown as PackumentVersion
+      const version = { os: [], cpu: [], libc: [] }
       expect(matchesPlatform(version)).toBe(true)
     })
   })
@@ -395,11 +398,13 @@ describe('dependency-resolver', () => {
 
   describe('resolveDependencyTree', () => {
     beforeEach(() => {
-      mockFetchNpmPackage.mockReset()
+      mockAbbreviatedPackument.mockReset()
+      mockVersionLibc.mockReset()
+      mockVersionLibc.mockResolvedValue(undefined)
     })
 
     it('resolves a single package with no dependencies', async () => {
-      mockFetchNpmPackage.mockResolvedValue(
+      mockAbbreviatedPackument.mockResolvedValue(
         makePackument('root', [{ version: '1.0.0', unpackedSize: 5000 }]),
       )
 
@@ -417,7 +422,7 @@ describe('dependency-resolver', () => {
     })
 
     it('resolves direct dependencies', async () => {
-      mockFetchNpmPackage.mockImplementation(async (name: string) => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'root')
           return makePackument('root', [
             {
@@ -451,8 +456,40 @@ describe('dependency-resolver', () => {
       })
     })
 
+    it('resolves npm aliases against the aliased package', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [
+            {
+              version: '1.0.0',
+              deps: { vite: 'npm:@scope/vite-fork@^1.0.0' },
+              optionalDeps: { fsevents: 'npm:fsevents-fork@2.0.0' },
+            },
+          ])
+        if (name === '@scope/vite-fork')
+          return makePackument('@scope/vite-fork', [{ version: '1.2.0' }])
+        if (name === 'fsevents-fork') return makePackument('fsevents-fork', [{ version: '2.0.0' }])
+        // The dependency keys are real packages too, with matching versions
+        if (name === 'vite')
+          return makePackument('vite', [{ version: '1.2.0', deps: { unrelated: '^1.0.0' } }])
+        if (name === 'fsevents') return makePackument('fsevents', [{ version: '2.0.0' }])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      expect([...result.keys()].sort()).toEqual([
+        '@scope/vite-fork@1.2.0',
+        'fsevents-fork@2.0.0',
+        'root@1.0.0',
+      ])
+      expect(result.get('fsevents-fork@2.0.0')).toMatchObject({ optional: true })
+      expect(mockAbbreviatedPackument).not.toHaveBeenCalledWith('vite')
+      expect(mockAbbreviatedPackument).not.toHaveBeenCalledWith('fsevents')
+    })
+
     it('resolves transitive dependencies (A → B → C)', async () => {
-      mockFetchNpmPackage.mockImplementation(async (name: string) => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'a') return makePackument('a', [{ version: '1.0.0', deps: { b: '^1.0.0' } }])
         if (name === 'b') return makePackument('b', [{ version: '1.0.0', deps: { c: '^1.0.0' } }])
         if (name === 'c') return makePackument('c', [{ version: '1.0.0' }])
@@ -468,7 +505,7 @@ describe('dependency-resolver', () => {
     })
 
     it('handles circular dependencies without infinite loop', async () => {
-      mockFetchNpmPackage.mockImplementation(async (name: string) => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'a') return makePackument('a', [{ version: '1.0.0', deps: { b: '^1.0.0' } }])
         if (name === 'b') return makePackument('b', [{ version: '1.0.0', deps: { a: '^1.0.0' } }])
         return null
@@ -482,7 +519,7 @@ describe('dependency-resolver', () => {
     })
 
     it('marks optional dependencies with optional: true', async () => {
-      mockFetchNpmPackage.mockImplementation(async (name: string) => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'root')
           return makePackument('root', [
             { version: '1.0.0', optionalDeps: { 'opt-dep': '^1.0.0' } },
@@ -499,7 +536,7 @@ describe('dependency-resolver', () => {
     })
 
     it('skips dependencies that do not match the target platform', async () => {
-      mockFetchNpmPackage.mockImplementation(async (name: string) => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'root')
           return makePackument('root', [
             { version: '1.0.0', deps: { 'darwin-only': '^1.0.0', 'linux-ok': '^1.0.0' } },
@@ -517,8 +554,94 @@ describe('dependency-resolver', () => {
       expect(result.has('linux-ok@1.0.0')).toBe(true)
     })
 
+    it('uses per-version libc to distinguish platform builds (glibc vs musl)', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [
+            {
+              version: '1.0.0',
+              optionalDeps: { 'native-gnu': '^1.0.0', 'native-musl': '^1.0.0' },
+            },
+          ])
+        if (name === 'native-gnu')
+          return makePackument('native-gnu', [
+            { version: '1.0.0', os: ['linux'], cpu: ['x64'], unpackedSize: 100 },
+          ])
+        if (name === 'native-musl')
+          return makePackument('native-musl', [
+            { version: '1.0.0', os: ['linux'], cpu: ['x64'], unpackedSize: 200 },
+          ])
+        return null
+      })
+      // Abbreviated metadata omits `libc`, so it comes from the per-version manifest.
+      mockVersionLibc.mockImplementation(async (name: string) =>
+        name === 'native-gnu' ? ['glibc'] : ['musl'],
+      )
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      expect(result.has('native-gnu@1.0.0')).toBe(true)
+      expect(result.has('native-musl@1.0.0')).toBe(false)
+    })
+
+    it('does not fetch libc for versions without platform restrictions', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [{ version: '1.0.0', deps: { plain: '^1.0.0' } }])
+        if (name === 'plain') return makePackument('plain', [{ version: '1.0.0' }])
+        return null
+      })
+
+      await resolveDependencyTree('root', '1.0.0')
+
+      expect(mockVersionLibc).not.toHaveBeenCalled()
+    })
+
+    it('keeps required deps but skips optional ones when the libc lookup fails', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [
+            {
+              version: '1.0.0',
+              deps: { 'linux-required': '^1.0.0' },
+              optionalDeps: { 'linux-optional': '^1.0.0' },
+            },
+          ])
+        if (name === 'linux-required')
+          return makePackument('linux-required', [{ version: '1.0.0', os: ['linux'] }])
+        if (name === 'linux-optional')
+          return makePackument('linux-optional', [{ version: '1.0.0', os: ['linux'] }])
+        return null
+      })
+      mockVersionLibc.mockRejectedValue(new Error('registry unavailable'))
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      // npm installs or fails on a required dep, so it must not silently vanish (with its vulns).
+      expect(result.has('linux-required@1.0.0')).toBe(true)
+      // An unknown libc could be the incompatible build, so optional deps are skipped.
+      expect(result.has('linux-optional@1.0.0')).toBe(false)
+    })
+
+    it('does not fetch libc when os/cpu already exclude the target platform', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [{ version: '1.0.0', deps: { 'darwin-only': '^1.0.0' } }])
+        if (name === 'darwin-only')
+          return makePackument('darwin-only', [
+            { version: '1.0.0', os: ['darwin'], cpu: ['arm64'] },
+          ])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0')
+
+      expect(result.has('darwin-only@1.0.0')).toBe(false)
+      expect(mockVersionLibc).not.toHaveBeenCalled()
+    })
+
     it('skips dependencies with unresolvable version ranges', async () => {
-      mockFetchNpmPackage.mockImplementation(async (name: string) => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'root')
           return makePackument('root', [{ version: '1.0.0', deps: { missing: '^99.0.0' } }])
         if (name === 'missing') return makePackument('missing', [{ version: '1.0.0' }])
@@ -532,7 +655,7 @@ describe('dependency-resolver', () => {
     })
 
     it('continues resolving when fetchPackument fails for a dependency', async () => {
-      mockFetchNpmPackage.mockImplementation(async (name: string) => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'root')
           return makePackument('root', [
             { version: '1.0.0', deps: { broken: '^1.0.0', healthy: '^1.0.0' } },
@@ -551,7 +674,7 @@ describe('dependency-resolver', () => {
     })
 
     it('assigns depth and path when trackDepth is enabled', async () => {
-      mockFetchNpmPackage.mockImplementation(async (name: string) => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'root')
           return makePackument('root', [{ version: '1.0.0', deps: { mid: '^1.0.0' } }])
         if (name === 'mid')
@@ -577,7 +700,7 @@ describe('dependency-resolver', () => {
     })
 
     it('does not include depth/path when trackDepth is not enabled', async () => {
-      mockFetchNpmPackage.mockResolvedValue(makePackument('root', [{ version: '1.0.0' }]))
+      mockAbbreviatedPackument.mockResolvedValue(makePackument('root', [{ version: '1.0.0' }]))
 
       const result = await resolveDependencyTree('root', '1.0.0')
 
@@ -587,7 +710,7 @@ describe('dependency-resolver', () => {
     })
 
     it('includes deprecated field on deprecated versions', async () => {
-      mockFetchNpmPackage.mockResolvedValue(
+      mockAbbreviatedPackument.mockResolvedValue(
         makePackument('root', [{ version: '1.0.0', deprecated: 'Use v2 instead' }]),
       )
 
@@ -597,7 +720,7 @@ describe('dependency-resolver', () => {
     })
 
     it('defaults size to 0 when unpackedSize is missing', async () => {
-      mockFetchNpmPackage.mockResolvedValue(makePackument('root', [{ version: '1.0.0' }]))
+      mockAbbreviatedPackument.mockResolvedValue(makePackument('root', [{ version: '1.0.0' }]))
 
       const result = await resolveDependencyTree('root', '1.0.0')
 
@@ -606,7 +729,7 @@ describe('dependency-resolver', () => {
 
     it('deduplicates the same name@version appearing via multiple paths', async () => {
       // root → a, root → b, both a and b depend on shared@1.0.0
-      mockFetchNpmPackage.mockImplementation(async (name: string) => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
         if (name === 'root')
           return makePackument('root', [{ version: '1.0.0', deps: { a: '^1.0.0', b: '^1.0.0' } }])
         if (name === 'a')

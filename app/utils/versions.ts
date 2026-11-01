@@ -48,7 +48,7 @@ export function getPrereleaseChannel(version: string): string {
  * Lower number = higher priority in display order.
  * Unknown tags fall back to Infinity and are sorted by publish date descending.
  */
-export const TAG_PRIORITY: Record<string, number> = {
+const TAG_PRIORITY: Record<string, number> = {
   latest: 0,
   stable: 1,
   rc: 2,
@@ -67,7 +67,7 @@ export const TAG_PRIORITY: Record<string, number> = {
  * @param tag - The tag name (e.g., "beta", "v2-legacy")
  * @returns Numeric priority (lower = higher priority); Infinity for unknown tags
  */
-export function getTagPriority(tag: string | undefined): number {
+function getTagPriority(tag: string | undefined): number {
   if (!tag) return Infinity
   for (const [key, priority] of Object.entries(TAG_PRIORITY)) {
     if (tag.toLowerCase().includes(key)) return priority
