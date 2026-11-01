@@ -7,6 +7,7 @@ export function createLastDatapointLabelsSvg({
   drawingArea,
   colors,
   formatValue,
+  missingValueLabel,
   isDarkMode,
   fontSize = 20,
   labelOffset = 24,
@@ -20,6 +21,7 @@ export function createLastDatapointLabelsSvg({
   }
   colors: LastDatapointLabelColors
   formatValue: (value: number) => string
+  missingValueLabel?: string
   isDarkMode: boolean
   svgWidth?: number
   fontSize?: number
@@ -34,12 +36,20 @@ export function createLastDatapointLabelsSvg({
 
   const labels = series
     .map(serie => {
-      const lastPlot = Array.isArray(serie.plots) ? serie.plots.at(-1) : null
+      if (!serie.plots) return null
+      const nonNullPlots = serie.plots.filter(p => p.value != null)
+      const endpoint = serie.plots.at(-1)
+      const isMissingEndpoint =
+        endpoint != null && endpoint.value == null && missingValueLabel !== undefined
+      const lastValidPlot = nonNullPlots.at(-1)
+      const lastPlot = isMissingEndpoint
+        ? { ...endpoint, y: lastValidPlot?.y ?? endpoint.y }
+        : lastValidPlot
       if (!lastPlot) return null
 
       const value = Number(lastPlot.value ?? 0)
       const safeValue = Number.isFinite(value) ? value : 0
-      const text = formatValue(safeValue)
+      const text = isMissingEndpoint ? missingValueLabel : formatValue(safeValue)
 
       return {
         x: Number(lastPlot.x ?? 0),

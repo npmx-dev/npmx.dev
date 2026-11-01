@@ -97,7 +97,7 @@ function handleKeydown(event: KeyboardEvent) {
   <button
     ref="triggerRef"
     type="button"
-    class="cursor-pointer flex items-center gap-1.5 px-2 py-2 font-mono text-xs text-fg-muted bg-bg-subtle border border-border-subtle border-solid rounded-md transition-colors duration-150 hover:(text-fg border-border-hover) active:scale-95 focus:border-border-hover focus-visible:outline-accent/70"
+    class="cursor-pointer flex items-center gap-1.5 px-2 py-1.75 font-mono text-xs text-fg-muted bg-bg-subtle border border-border-subtle border-solid rounded-md transition-colors duration-150 hover:(text-fg border-border-hover) active:scale-95 focus:border-border-hover focus-visible:outline-accent/70"
     :aria-expanded="isOpen"
     aria-haspopup="listbox"
     :aria-label="$t('package.get_started.pm_label')"
@@ -193,8 +193,9 @@ function handleKeydown(event: KeyboardEvent) {
 :root[data-pm='deno'] [data-pm-select='deno'],
 :root[data-pm='vlt'] [data-pm-select='vlt'],
 :root[data-pm='vp'] [data-pm-select='vp'],
+:root[data-pm='nub'] [data-pm-select='nub'],
 :root[data-pm='ni'] [data-pm-select='ni'],
-:root[data-pm='nub'] [data-pm-select='nub'] {
+:root[data-pm='upm'] [data-pm-select='upm'] {
   display: inline-block;
 }
 

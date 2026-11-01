@@ -8,11 +8,12 @@ import type {
   PackageVulnerabilityInfo,
   VulnerabilityTreeResult,
   DeprecatedPackageInfo,
+  DirectDependencyHealthResult,
   OsvAffected,
-  OsvRange,
 } from '#shared/types/dependency-analysis'
 import { mapWithConcurrency } from '#shared/utils/async'
-import { resolveDependencyTree } from './dependency-resolver'
+import { resolveDependencyTree, resolveVersion } from './dependency-resolver'
+import { isExcludedByLastKnownAffectedRange, parseRangeIntervals } from './osv'
 import { compare, isGreaterOrEqual, isLess } from 'verkit'
 
 /** Maximum concurrent requests for fetching vulnerability details */
@@ -87,8 +88,10 @@ async function queryOsvDetails(pkg: PackageQueryInfo): Promise<PackageVulnerabil
       },
     })
 
-    const vulns = response.vulns || []
-    if (vulns.length === 0) return null
+    if (!response.vulns?.length) return null
+    const vulns = response.vulns.filter(
+      vuln => !isExcludedByLastKnownAffectedRange(vuln, pkg.name, pkg.version),
+    )
 
     const counts = { total: vulns.length, critical: 0, high: 0, moderate: 0, low: 0 }
     const vulnerabilities: VulnerabilitySummary[] = []
@@ -146,38 +149,6 @@ function getVulnerabilityUrl(vuln: OsvVulnerability): string {
     return `https://nvd.nist.gov/vuln/detail/${cveAlias}`
   }
   return `https://osv.dev/vulnerability/${vuln.id}`
-}
-
-/**
- * Parse OSV range events into introduced/fixed pairs.
- * OSV events form a timeline: [introduced, fixed, introduced, fixed, ...]
- * A single range can have multiple introduced/fixed pairs representing
- * periods where the vulnerability was active, was fixed, and was reintroduced.
- * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
- */
-function parseRangeIntervals(range: OsvRange): Array<{ introduced: string; fixed?: string }> {
-  const intervals: Array<{ introduced: string; fixed?: string }> = []
-  let currentIntroduced: string | undefined
-
-  for (const event of range.events) {
-    if (event.introduced !== undefined) {
-      // Start a new interval (close previous open one if any)
-      if (currentIntroduced !== undefined) {
-        intervals.push({ introduced: currentIntroduced })
-      }
-      currentIntroduced = event.introduced
-    } else if (event.fixed !== undefined && currentIntroduced !== undefined) {
-      intervals.push({ introduced: currentIntroduced, fixed: event.fixed })
-      currentIntroduced = undefined
-    }
-  }
-
-  // Handle trailing introduced with no fixed (still vulnerable)
-  if (currentIntroduced !== undefined) {
-    intervals.push({ introduced: currentIntroduced })
-  }
-
-  return intervals
 }
 
 /**
@@ -306,10 +277,10 @@ export const analyzeDependencyTree = defineCachedFunction(
       )
 
       for (const result of detailResults) {
-        if (result) {
-          vulnerablePackages.push(result)
-        } else {
+        if (!result) {
           failedQueries++
+        } else if (result.counts.total > 0) {
+          vulnerablePackages.push(result)
         }
       }
     }
@@ -359,3 +330,82 @@ export const analyzeDependencyTree = defineCachedFunction(
     getKey: (name: string, version: string) => `v2:${name}@${version}`,
   },
 )
+
+const DIRECT_DEPS_RESOLVE_CONCURRENCY = 20
+
+export async function analyzeDirectDependencyHealth(
+  dependencies: Record<string, string>,
+): Promise<DirectDependencyHealthResult> {
+  const entries = Object.entries(dependencies)
+  const resolved = await mapWithConcurrency(
+    entries,
+    async ([name, range]) => {
+      try {
+        const packument = await fetchNpmPackageAbbreviated(name)
+        const versions = Object.keys(packument.versions)
+        const version = packument['dist-tags']?.[range] ?? resolveVersion(range, versions)
+        if (!version) return null
+
+        const versionData = packument.versions[version]
+        if (!versionData) return null
+
+        return {
+          name,
+          version,
+          deprecated: versionData?.deprecated,
+        }
+      } catch {
+        return null
+      }
+    },
+    DIRECT_DEPS_RESOLVE_CONCURRENCY,
+  )
+
+  const packages: PackageQueryInfo[] = []
+  const deprecated: DirectDependencyHealthResult['deprecated'] = {}
+
+  for (const pkg of resolved) {
+    if (!pkg) continue
+    packages.push({
+      name: pkg.name,
+      version: pkg.version,
+      depth: 'direct',
+      path: [],
+    })
+    if (pkg.deprecated) {
+      deprecated[pkg.name] = {
+        name: pkg.name,
+        version: pkg.version,
+        message: pkg.deprecated,
+      }
+    }
+  }
+
+  const vulnerable: DirectDependencyHealthResult['vulnerable'] = {}
+
+  if (packages.length === 0) {
+    return { vulnerable, deprecated }
+  }
+
+  const { vulnerableIndices, failed: batchFailed } = await queryOsvBatch(packages)
+  if (batchFailed || vulnerableIndices.length === 0) {
+    return { vulnerable, deprecated }
+  }
+
+  const detailResults = await mapWithConcurrency(
+    vulnerableIndices,
+    i => queryOsvDetails(packages[i]!),
+    OSV_DETAIL_CONCURRENCY,
+  )
+
+  for (const result of detailResults) {
+    if (!result?.counts.total) continue
+    vulnerable[result.name] = {
+      name: result.name,
+      version: result.version,
+      counts: result.counts,
+    }
+  }
+
+  return { vulnerable, deprecated }
+}

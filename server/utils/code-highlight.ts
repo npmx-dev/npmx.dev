@@ -69,9 +69,11 @@ const FILENAME_MAP: Record<string, string> = {
   'package-lock.json': 'json',
   'pnpm-lock.yaml': 'yaml',
   'yarn.lock': 'yaml',
+  'bun.lock': 'jsonc',
   'Makefile': 'bash',
   'Dockerfile': 'bash',
   'LICENSE': 'text',
+  'LICENCE': 'text',
   'CHANGELOG': 'markdown',
   'CHANGELOG.md': 'markdown',
   'README': 'markdown',
@@ -135,19 +137,19 @@ function getPackageName(specifier: string): string {
 /**
  * Resolved dependency info for linking imports to specific versions
  */
-export interface ResolvedDependency {
+interface ResolvedDependency {
   version: string
 }
 
 /**
  * Map of package name to resolved version for import linking
  */
-export type DependencyVersions = Record<string, ResolvedDependency>
+type DependencyVersions = Record<string, ResolvedDependency>
 
 /**
  * Function to resolve relative imports to URLs
  */
-export type RelativeImportResolver = (specifier: string) => string | null
+type RelativeImportResolver = (specifier: string) => string | null
 
 interface LinkifyOptions {
   dependencies?: DependencyVersions

@@ -7,6 +7,7 @@ import {
   FETCH_CACHE_VERSION,
   isAllowedDomain,
   isCacheEntryStale,
+  resolveRequestUrl,
 } from '#shared/utils/fetch-cache-config'
 
 /**
@@ -64,14 +65,19 @@ export default defineNitroPlugin(nitroApp => {
       options: Parameters<typeof $fetch>[1] = {},
       ttl: number = FETCH_CACHE_DEFAULT_TTL,
     ): Promise<CachedFetchResult<T>> => {
+      // Resolve the (possibly relative) request URL against `baseURL` so the allowlist check
+      // and cache key operate on the real host. Callers like `$npmRegistry`/`$npmApi` pass a
+      // relative path plus a `baseURL`, which `isAllowedDomain` can't parse on its own.
+      const absoluteUrl = resolveRequestUrl(url, options)
+
       // Check if this URL should be cached
-      if (!isAllowedDomain(url)) {
+      if (!absoluteUrl || !isAllowedDomain(absoluteUrl)) {
         const data = (await $fetch(url, options)) as T
         return { data, isStale: false, cachedAt: null }
       }
 
       const method = options.method || 'GET'
-      const cacheKey = generateFetchCacheKey(url, method, options.body)
+      const cacheKey = generateFetchCacheKey(absoluteUrl, method, options.body)
 
       // Try to get cached response (with error handling for storage failures)
       let cached: CachedFetchEntry<T> | null = null

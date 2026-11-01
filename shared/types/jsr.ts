@@ -20,7 +20,7 @@ export interface JsrPackageMeta {
 /**
  * JSR version metadata (minimal, from meta.json)
  */
-export interface JsrVersionMeta {
+interface JsrVersionMeta {
   /** If true, the version has been yanked */
   yanked?: boolean
 }

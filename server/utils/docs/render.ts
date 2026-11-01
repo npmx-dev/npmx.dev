@@ -10,8 +10,8 @@ import type { DenoDocNode, JsDocTag } from '#shared/types/deno-doc'
 import { highlightCodeBlock } from '../shiki'
 import { formatParams, formatType, getNodeSignature } from './format'
 import { groupMergedByKind } from './processing'
-import { escapeHtml, createSymbolId, parseJsDocLinks, renderMarkdown } from './text'
-import type { MergedSymbol, SymbolLookup } from './types'
+import { createMemberId, createSymbolId, escapeHtml, parseJsDocLinks, renderMarkdown } from './text'
+import type { MergedSymbol, ProcessedEntry, SymbolLookup } from './types'
 
 // =============================================================================
 // Configuration
@@ -55,16 +55,38 @@ const KIND_TITLES: Record<string, string> = {
 export async function renderDocNodes(
   symbols: MergedSymbol[],
   symbolLookup: SymbolLookup,
+  prefix = '',
 ): Promise<string> {
   const grouped = groupMergedByKind(symbols)
   const sectionPromises = KIND_DISPLAY_ORDER.map(async kind => {
     const kindSymbols = grouped[kind]
     if (!kindSymbols || kindSymbols.length === 0) return ''
-    return renderKindSection(kind, kindSymbols, symbolLookup)
+    return renderKindSection(kind, kindSymbols, symbolLookup, prefix)
   })
 
   const sections = await Promise.all(sectionPromises)
   return sections.filter(Boolean).join('\n')
+}
+
+/**
+ * Render a package's entry points, grouping each prefixed entry under its own section.
+ */
+export async function renderEntries(entries: ProcessedEntry[]): Promise<string> {
+  const groups = await Promise.all(
+    entries.map(async entry => {
+      const body = await renderDocNodes(entry.symbols, entry.lookup, entry.prefix)
+      if (!body || !entry.prefix) return body
+
+      return [
+        `<section class="docs-group" id="group-${entry.prefix}">`,
+        `<h2 class="docs-section-title docs-group-title">${escapeHtml(entry.entryPoint.replace(/^\.\//, ''))}</h2>`,
+        body,
+        `</section>`,
+      ].join('\n')
+    }),
+  )
+
+  return groups.filter(Boolean).join('\n')
 }
 
 /**
@@ -74,14 +96,16 @@ async function renderKindSection(
   kind: string,
   symbols: MergedSymbol[],
   symbolLookup: SymbolLookup,
+  prefix = '',
 ): Promise<string> {
   const title = KIND_TITLES[kind] || kind
   const lines: string[] = []
   const renderedSymbols = await Promise.all(
-    symbols.map(symbol => renderMergedSymbol(symbol, symbolLookup)),
+    symbols.map(symbol => renderMergedSymbol(symbol, symbolLookup, prefix)),
   )
 
-  lines.push(`<section class="docs-section" id="section-${kind}">`)
+  const sectionId = prefix ? `section-${prefix}-${kind}` : `section-${kind}`
+  lines.push(`<section class="docs-section" id="${sectionId}">`)
   lines.push(`<h2 class="docs-section-title">${title}</h2>`)
   lines.push(...renderedSymbols)
 
@@ -96,12 +120,13 @@ async function renderKindSection(
 async function renderMergedSymbol(
   symbol: MergedSymbol,
   symbolLookup: SymbolLookup,
+  prefix = '',
 ): Promise<string> {
   const primaryNode = symbol.nodes[0]
   if (!primaryNode) return '' // Safety check - should never happen
 
   const lines: string[] = []
-  const id = createSymbolId(symbol.kind, symbol.name)
+  const id = createSymbolId(symbol.kind, symbol.name, prefix)
   const hasOverloads = symbol.nodes.length > 1
 
   lines.push(`<article class="docs-symbol" id="${id}">`)
@@ -162,11 +187,11 @@ async function renderMergedSymbol(
 
   // Type-specific members
   if (symbol.kind === 'class' && primaryNode.classDef) {
-    lines.push(renderClassMembers(primaryNode.classDef))
+    lines.push(renderClassMembers(primaryNode.classDef, id, symbolLookup))
   } else if (symbol.kind === 'interface' && primaryNode.interfaceDef) {
-    lines.push(renderInterfaceMembers(primaryNode.interfaceDef))
+    lines.push(renderInterfaceMembers(primaryNode.interfaceDef, id, symbolLookup))
   } else if (symbol.kind === 'enum' && primaryNode.enumDef) {
-    lines.push(renderEnumMembers(primaryNode.enumDef))
+    lines.push(renderEnumMembers(primaryNode.enumDef, id))
   }
 
   lines.push(`</article>`)
@@ -269,11 +294,16 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
 // =============================================================================
 
 type DefinitionListItem = {
+  id?: string
   signature: string
   description?: string
 }
 
-function renderMemberList(title: string, items: DefinitionListItem[]): string {
+function renderMemberList(
+  title: string,
+  items: DefinitionListItem[],
+  symbolLookup: SymbolLookup,
+): string {
   const lines: string[] = []
 
   if (items.length === 0) {
@@ -284,9 +314,9 @@ function renderMemberList(title: string, items: DefinitionListItem[]): string {
   lines.push(`<h4>${title}</h4>`)
   lines.push(`<dl>`)
   for (const item of items) {
-    lines.push(`<dt><code>${escapeHtml(item.signature)}</code></dt>`)
+    lines.push(`<dt${renderIdAttribute(item.id)}><code>${escapeHtml(item.signature)}</code></dt>`)
     if (item.description) {
-      lines.push(`<dd>${escapeHtml(item.description.split('\n')[0] ?? '')}</dd>`)
+      lines.push(`<dd>${renderMemberDescription(item.description, symbolLookup)}</dd>`)
     }
   }
   lines.push(`</dl>`)
@@ -296,18 +326,51 @@ function renderMemberList(title: string, items: DefinitionListItem[]): string {
 }
 
 /**
+ * Render the first line of a member's JSDoc, resolving {@link} tags.
+ */
+function renderMemberDescription(doc: string, symbolLookup: SymbolLookup): string {
+  return parseJsDocLinks(doc.split('\n')[0] ?? '', symbolLookup)
+}
+
+function renderIdAttribute(id: string | undefined): string {
+  return id ? ` id="${id}"` : ''
+}
+
+/**
+ * Hand out each member anchor ID only once, so overloads and getter/setter pairs
+ * sharing a name don't produce duplicate IDs. The first occurrence gets the anchor.
+ */
+function createMemberIdClaimer(symbolId: string): (memberName: string) => string | undefined {
+  const claimed = new Set<string>()
+
+  return memberName => {
+    const id = createMemberId(symbolId, memberName)
+    if (claimed.has(id)) return undefined
+    claimed.add(id)
+    return id
+  }
+}
+
+/**
  * Render class members (constructor, properties, methods).
  */
-function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
+function renderClassMembers(
+  def: NonNullable<DenoDocNode['classDef']>,
+  symbolId: string,
+  symbolLookup: SymbolLookup,
+): string {
   const lines: string[] = []
   const { constructors, properties, methods } = def
+  const claimMemberId = createMemberIdClaimer(symbolId)
 
   if (constructors && constructors.length > 0) {
     lines.push(`<div class="docs-members">`)
     lines.push(`<h4>Constructor</h4>`)
     for (const ctor of constructors) {
       const params = formatParams(ctor.params)
-      lines.push(`<pre><code>constructor(${escapeHtml(params)})</code></pre>`)
+      lines.push(
+        `<pre${renderIdAttribute(claimMemberId('constructor'))}><code>constructor(${escapeHtml(params)})</code></pre>`,
+      )
     }
     lines.push(`</div>`)
   }
@@ -323,12 +386,13 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
       const typeStr = type ? `: ${type}` : ''
 
       return {
+        id: claimMemberId(prop.name),
         signature: `${modStr}${prop.name}${opt}${typeStr}`,
         description: prop.jsDoc?.doc,
       }
     })
 
-    lines.push(renderMemberList('Properties', propertyItems))
+    lines.push(renderMemberList('Properties', propertyItems, symbolLookup))
   }
 
   const getters = methods?.filter(m => m.kind === 'getter') || []
@@ -340,12 +404,13 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
       const staticStr = getter.isStatic ? 'static ' : ''
 
       return {
+        id: claimMemberId(getter.name),
         signature: `${staticStr}get ${getter.name}: ${ret}`,
         description: getter.jsDoc?.doc,
       }
     })
 
-    lines.push(renderMemberList('Getters', getterItems))
+    lines.push(renderMemberList('Getters', getterItems, symbolLookup))
   }
 
   if (regularMethods.length > 0) {
@@ -355,12 +420,13 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
       const staticStr = method.isStatic ? 'static ' : ''
 
       return {
+        id: claimMemberId(method.name),
         signature: `${staticStr}${method.name}(${params}): ${ret}`,
         description: method.jsDoc?.doc,
       }
     })
 
-    lines.push(renderMemberList('Methods', methodItems))
+    lines.push(renderMemberList('Methods', methodItems, symbolLookup))
   }
 
   return lines.join('\n')
@@ -369,9 +435,14 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
 /**
  * Render interface members (properties, methods).
  */
-function renderInterfaceMembers(def: NonNullable<DenoDocNode['interfaceDef']>): string {
+function renderInterfaceMembers(
+  def: NonNullable<DenoDocNode['interfaceDef']>,
+  symbolId: string,
+  symbolLookup: SymbolLookup,
+): string {
   const lines: string[] = []
   const { properties, methods } = def
+  const claimMemberId = createMemberIdClaimer(symbolId)
 
   if (properties && properties.length > 0) {
     lines.push(`<div class="docs-members">`)
@@ -382,10 +453,10 @@ function renderInterfaceMembers(def: NonNullable<DenoDocNode['interfaceDef']>): 
       const opt = prop.optional ? '?' : ''
       const ro = prop.readonly ? 'readonly ' : ''
       lines.push(
-        `<dt><code>${escapeHtml(ro)}${escapeHtml(prop.name)}${opt}: ${escapeHtml(type)}</code></dt>`,
+        `<dt${renderIdAttribute(claimMemberId(prop.name))}><code>${escapeHtml(ro)}${escapeHtml(prop.name)}${opt}: ${escapeHtml(type)}</code></dt>`,
       )
       if (prop.jsDoc?.doc) {
-        lines.push(`<dd>${escapeHtml(prop.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
+        lines.push(`<dd>${renderMemberDescription(prop.jsDoc.doc, symbolLookup)}</dd>`)
       }
     }
     lines.push(`</dl>`)
@@ -400,10 +471,10 @@ function renderInterfaceMembers(def: NonNullable<DenoDocNode['interfaceDef']>): 
       const params = formatParams(method.params)
       const ret = formatType(method.returnType) || 'void'
       lines.push(
-        `<dt><code>${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`,
+        `<dt${renderIdAttribute(claimMemberId(method.name))}><code>${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`,
       )
       if (method.jsDoc?.doc) {
-        lines.push(`<dd>${escapeHtml(method.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
+        lines.push(`<dd>${renderMemberDescription(method.jsDoc.doc, symbolLookup)}</dd>`)
       }
     }
     lines.push(`</dl>`)
@@ -416,7 +487,7 @@ function renderInterfaceMembers(def: NonNullable<DenoDocNode['interfaceDef']>): 
 /**
  * Render enum members.
  */
-function renderEnumMembers(def: NonNullable<DenoDocNode['enumDef']>): string {
+function renderEnumMembers(def: NonNullable<DenoDocNode['enumDef']>, symbolId: string): string {
   const lines: string[] = []
   const { members } = def
 
@@ -425,7 +496,9 @@ function renderEnumMembers(def: NonNullable<DenoDocNode['enumDef']>): string {
     lines.push(`<h4>Members</h4>`)
     lines.push(`<ul class="docs-enum-members">`)
     for (const member of members) {
-      lines.push(`<li><code>${escapeHtml(member.name)}</code></li>`)
+      lines.push(
+        `<li id="${createMemberId(symbolId, member.name)}"><code>${escapeHtml(member.name)}</code></li>`,
+      )
     }
     lines.push(`</ul>`)
     lines.push(`</div>`)
@@ -439,29 +512,27 @@ function renderEnumMembers(def: NonNullable<DenoDocNode['enumDef']>): string {
 // =============================================================================
 
 /**
- * Render table of contents.
+ * Render the per-kind `<li>` items for a set of symbols, without a wrapping `<ul>`.
  */
-export function renderToc(symbols: MergedSymbol[]): string {
+function renderTocKindItems(symbols: MergedSymbol[], prefix = ''): string[] {
   const grouped = groupMergedByKind(symbols)
   const lines: string[] = []
-
-  lines.push(`<nav class="toc text-sm" aria-label="Table of contents">`)
-  lines.push(`<ul class="space-y-3">`)
 
   for (const kind of KIND_DISPLAY_ORDER) {
     const kindSymbols = grouped[kind]
     if (!kindSymbols || kindSymbols.length === 0) continue
 
     const title = KIND_TITLES[kind] || kind
+    const sectionId = prefix ? `section-${prefix}-${kind}` : `section-${kind}`
     lines.push(`<li>`)
     lines.push(
-      `<a href="#section-${kind}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${title} <span class="text-fg-subtle font-normal">(${kindSymbols.length})</span></a>`,
+      `<a href="#${sectionId}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${title} <span class="text-fg-subtle font-normal">(${kindSymbols.length})</span></a>`,
     )
 
     const showSymbols = kindSymbols.slice(0, MAX_TOC_ITEMS_PER_KIND)
     lines.push(`<ul class="ps-3 space-y-0.5 border-is border-border/50">`)
     for (const symbol of showSymbols) {
-      const id = createSymbolId(symbol.kind, symbol.name)
+      const id = createSymbolId(symbol.kind, symbol.name, prefix)
       lines.push(
         `<li><a href="#${id}" class="text-fg-subtle hover:text-fg font-mono text-xs block py-0.5 truncate">${escapeHtml(symbol.name)}</a></li>`,
       )
@@ -473,6 +544,32 @@ export function renderToc(symbols: MergedSymbol[]): string {
     lines.push(`</ul>`)
 
     lines.push(`</li>`)
+  }
+
+  return lines
+}
+
+/**
+ * Render a table of contents covering every entry point.
+ */
+export function renderEntriesToc(entries: ProcessedEntry[]): string {
+  const lines: string[] = []
+
+  // Group labels and kind items are siblings under one top-level `<ul>`, so the
+  // page's positional `.toc-content > ul > li` styles apply unchanged.
+  lines.push(`<nav class="toc text-sm" aria-label="Table of contents">`)
+  lines.push(`<ul class="space-y-3">`)
+
+  for (const entry of entries) {
+    if (entry.prefix) {
+      lines.push(`<li class="docs-toc-group">`)
+      lines.push(
+        `<a href="#group-${entry.prefix}" class="font-mono font-semibold text-fg-muted hover:text-fg block mb-1 truncate"><bdi>${escapeHtml(entry.entryPoint)}</bdi></a>`,
+      )
+      lines.push(`</li>`)
+    }
+
+    lines.push(...renderTocKindItems(entry.symbols, entry.prefix))
   }
 
   lines.push(`</ul>`)

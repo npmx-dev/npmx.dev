@@ -1,5 +1,5 @@
 import type { RouteLocationRaw } from 'vue-router'
-import { valid as isValidSingleVersion } from 'semver'
+import { isValid as isValidSingleVersion } from 'verkit'
 import { splitPackageName } from '~/utils/package-name'
 
 export function packageRoute(

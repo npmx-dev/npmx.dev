@@ -23,7 +23,7 @@ permissions:
 jobs:
   lint:
     name: 🔠 Lint project
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -32,7 +32,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           sfw: true
           # root only, no scripts
           run-install: |
@@ -43,7 +43,7 @@ jobs:
 
   types:
     name: 💪 Type check
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -52,7 +52,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -61,7 +61,7 @@ jobs:
 
   unit:
     name: 🧪 Unit tests
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -70,37 +70,38 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
       - name: 🧪 Unit tests
         run: vp test --project unit --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
-      - name: ⬆︎ Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          disable_search: true
-          files: test-report.junit.xml
-          flags: unit
-          report_type: test_results
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - parallel:
+          - name: ⬆︎ Upload test results to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: test-report.junit.xml
+              flags: unit
+              report_type: test_results
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: ⬆︎ Upload coverage reports to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          disable_search: true
-          files: coverage/clover.xml
-          flags: unit
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          - name: ⬆︎ Upload coverage reports to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: coverage/clover.xml
+              flags: unit
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   test:
     name: 🧪 Component tests
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -109,7 +110,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -119,30 +120,31 @@ jobs:
       - name: 🧪 Component tests
         run: vp test --project nuxt --coverage --reporter=default --reporter=junit --outputFile=test-report.junit.xml
 
-      - name: ⬆︎ Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          disable_search: true
-          files: test-report.junit.xml
-          flags: component
-          report_type: test_results
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - parallel:
+          - name: ⬆︎ Upload test results to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: test-report.junit.xml
+              flags: component
+              report_type: test_results
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: ⬆︎ Upload coverage reports to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          disable_search: true
-          files: coverage/clover.xml
-          flags: component
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          - name: ⬆︎ Upload coverage reports to Codecov
+            if: ${{ !cancelled() }}
+            uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+            with:
+              disable_search: true
+              files: coverage/clover.xml
+              flags: component
+            env:
+              CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   browser:
     name: 🖥️ Browser tests
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     container:
       image: mcr.microsoft.com/playwright:v1.62.1-noble@sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e
 
@@ -163,7 +165,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -201,7 +203,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -216,7 +218,7 @@ jobs:
 
   knip:
     name: 🧹 Unused code check
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -225,7 +227,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           cache: true
           sfw: true
 
@@ -234,7 +236,7 @@ jobs:
 
   i18n:
     name: 🌐 i18n validation
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-slim
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -243,7 +245,7 @@ jobs:
 
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
-          node-version: lts/*
+          node-version-file: .node-version
           sfw: true
           # root only, no scripts
           run-install: |

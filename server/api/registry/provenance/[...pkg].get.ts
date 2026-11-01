@@ -27,7 +27,7 @@ export default defineCachedEventHandler(
       }) as { packageName: string; version: string }
       const { packageName, version } = parsed
 
-      const packument = await fetchNpmPackage(packageName)
+      const packument = await fetchNpmPackageAbbreviated(packageName)
       const versionData = packument.versions[version]
       if (!versionData) {
         throw createError({

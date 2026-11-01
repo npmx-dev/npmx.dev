@@ -1,6 +1,14 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import * as fc from 'fast-check'
-import { escapeHtml, parseJsDocLinks, renderMarkdown, stripAnsi } from '#server/utils/docs/text'
+import {
+  computeEntryPrefixes,
+  createSymbolId,
+  entrySlug,
+  escapeHtml,
+  parseJsDocLinks,
+  renderMarkdown,
+  stripAnsi,
+} from '#server/utils/docs/text'
 import type { SymbolLookup } from '#server/utils/docs/types'
 
 describe('stripAnsi', () => {
@@ -92,6 +100,40 @@ describe('parseJsDocLinks', () => {
     expect(result).toContain('>Example Site</a>')
   })
 
+  it('should handle pipe syntax for external URLs', () => {
+    const result = parseJsDocLinks('{@link https://example.com | Pipe Syntax}', emptyLookup)
+    expect(result).toBe(
+      '<a href="https://example.com" target="_blank" rel="noreferrer" class="docs-link">Pipe Syntax</a>',
+    )
+  })
+
+  it.each([
+    '{@link Command | entry command}',
+    '{@link Command|entry command}',
+    '{@link Command |entry command}',
+    '{@link Command| entry command}',
+    '{@link Command  |  entry command }',
+  ])('should handle pipe syntax for symbol references: %s', input => {
+    const lookup: SymbolLookup = new Map([['Command', 'interface-Command']])
+    expect(parseJsDocLinks(input, lookup)).toBe(
+      '<a href="#interface-Command" class="docs-symbol-link">entry command</a>',
+    )
+  })
+
+  it('should keep pipes inside a pipe syntax label', () => {
+    const result = parseJsDocLinks('{@link Command | a | b}', emptyLookup)
+    expect(result).toBe('<code class="docs-symbol-ref">a | b</code>')
+  })
+
+  it.each(['{@link Command |}', '{@link Command | }', '{@link Command|}'])(
+    'should fall back to the target when the pipe syntax label is empty: %s',
+    input => {
+      expect(parseJsDocLinks(input, emptyLookup)).toBe(
+        '<code class="docs-symbol-ref">Command</code>',
+      )
+    },
+  )
+
   it('should convert internal symbol references to anchor links', () => {
     const lookup: SymbolLookup = new Map([['MyFunction', 'function-MyFunction']])
     const result = parseJsDocLinks('{@link MyFunction}', lookup)
@@ -144,13 +186,28 @@ describe('parseJsDocLinks', () => {
 
   it('should convert external URLs using {@link url text} to links', () => {
     fc.assert(
-      fc.property(fc.webUrl(), fc.stringMatching(/^[^}\s][^}]+[^}\s]$/), (url, text) => {
+      fc.property(fc.webUrl(), fc.stringMatching(/^[^}\s|][^}]+[^}\s]$/), (url, text) => {
         const result = parseJsDocLinks(`{@link ${url} ${text}}`, emptyLookup)
         expect(result).toContain(`href="${escapeHtml(url)}"`)
         expect(result).toContain('target="_blank"')
         expect(result).toContain('rel="noreferrer"')
         expect(result).toContain(escapeHtml(text))
       }),
+    )
+  })
+
+  it('should convert external URLs using {@link url | text} to links', () => {
+    fc.assert(
+      fc.property(
+        fc.webUrl(),
+        fc.constantFrom('|', ' |', '| ', ' | '),
+        fc.stringMatching(/^[^}\s][^}]+[^}\s]$/),
+        (url, separator, text) => {
+          const result = parseJsDocLinks(`{@link ${url}${separator}${text}}`, emptyLookup)
+          expect(result).toContain(`href="${escapeHtml(url)}"`)
+          expect(result).toContain(`>${escapeHtml(text)}</a>`)
+        },
+      ),
     )
   })
 
@@ -324,6 +381,84 @@ describe('renderMarkdown', () => {
     )
     expect(result).toContain(
       'This <a href="https://example.com" target="_blank" rel="noreferrer" class="docs-link">thing</a> is really important',
+    )
+  })
+})
+
+describe('createSymbolId', () => {
+  it('builds an ID without a prefix', () => {
+    expect(createSymbolId('function', 'make')).toBe('function-make')
+  })
+
+  it('namespaces the ID when a prefix is given', () => {
+    expect(createSymbolId('function', 'make', 'traceparent')).toBe('traceparent-function-make')
+  })
+
+  it('sanitises unsafe characters', () => {
+    expect(createSymbolId('typeAlias', 'Foo.Bar', 'a/b')).toBe('a_b-typeAlias-Foo_Bar')
+  })
+
+  it('produces distinct IDs for same-named symbols across prefixes', () => {
+    expect(createSymbolId('function', 'make', 'traceparent')).not.toBe(
+      createSymbolId('function', 'make', 'tracestate'),
+    )
+  })
+})
+
+describe('entrySlug', () => {
+  it('strips the leading "./" from subpath exports', () => {
+    expect(entrySlug('./traceparent')).toBe('traceparent')
+  })
+
+  it('maps the root export to "root"', () => {
+    expect(entrySlug('.')).toBe('root')
+  })
+
+  it('slugifies nested subpaths', () => {
+    expect(entrySlug('./sub/path')).toBe('sub-path')
+  })
+
+  it('always yields a URL-safe slug', () => {
+    fc.assert(
+      fc.property(fc.string(), input => {
+        expect(entrySlug(input)).toMatch(/^[a-z0-9-]+$/)
+      }),
+    )
+  })
+})
+
+describe('computeEntryPrefixes', () => {
+  it('maps the root entry to an empty prefix', () => {
+    const prefixes = computeEntryPrefixes(['.', './sub'])
+    expect(prefixes.get('.')).toBe('')
+    expect(prefixes.get('./sub')).toBe('sub')
+  })
+
+  it('keeps distinct entries on distinct prefixes', () => {
+    const prefixes = computeEntryPrefixes(['./traceparent', './tracestate'])
+    expect(prefixes.get('./traceparent')).toBe('traceparent')
+    expect(prefixes.get('./tracestate')).toBe('tracestate')
+  })
+
+  it('disambiguates entries whose slugs would otherwise collide', () => {
+    const prefixes = computeEntryPrefixes(['./foo-bar', './foo/bar'])
+    expect(prefixes.get('./foo-bar')).toBe('foo-bar')
+    expect(prefixes.get('./foo/bar')).toBe('foo-bar-2')
+  })
+
+  it('keeps wildcard entries from colliding with a concrete subpath', () => {
+    const prefixes = computeEntryPrefixes(['./foo', './foo/*'])
+    expect(prefixes.get('./foo')).toBe('foo')
+    expect(prefixes.get('./foo/*')).toBe('foo-2')
+  })
+
+  it('produces a unique prefix for every entry point', () => {
+    fc.assert(
+      fc.property(fc.uniqueArray(fc.string(), { minLength: 1, maxLength: 12 }), entryPoints => {
+        const prefixes = computeEntryPrefixes(entryPoints)
+        const values = [...prefixes.values()].filter(value => value !== '')
+        expect(new Set(values).size).toBe(values.length)
+      }),
     )
   })
 })
