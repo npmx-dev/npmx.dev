@@ -50,13 +50,14 @@ const {
   committedModel: committedQuery,
   provider: searchProvider,
 } = useGlobalSearch()
-const query = computed(() => searchQuery.value)
+const query = computed(() => searchQuery.value.trim().replace(/!$/, ''))
 
+// A trailing "!" only asks for the "I'm feeling lucky" redirect, it is not part of the search
 const {
   scope: packageScope,
   name: queryPackageName,
   trailing: queryTrailing,
-} = useParsedSearchQuery(committedQuery)
+} = useParsedSearchQuery(() => committedQuery.value.trim().replace(/!$/, ''))
 
 const versionStrippedQuery = computed(() =>
   `${queryPackageName.value}${queryTrailing.value ?? ''}`.trim(),
@@ -447,35 +448,46 @@ function focusElement(el: HTMLElement) {
 }
 
 // Navigate to package page
-async function navigateToPackage(packageName: string) {
-  await navigateTo(packageRoute(packageName))
+async function navigateToPackage(packageName: string, options: { replace?: boolean } = {}) {
+  await navigateTo(packageRoute(packageName), options)
 }
 
 // Track the input value when user pressed Enter (for navigating when results arrive)
 const pendingEnterQuery = shallowRef<string | null>(null)
 
-// Watch for results to navigate when Enter was pressed before results arrived
-watch(displayResults, newResults => {
-  if (!pendingEnterQuery.value) return
+// Watch for results to navigate when Enter was pressed before results arrived,
+// or for "I'm feeling lucky" redirection when the query ends with "!" and there is the exact match.
+watch(
+  displayResults,
+  newResults => {
+    const rawQuery = normalizeSearchParam(route.query.q)
+    const isFeelingLucky = rawQuery.endsWith('!')
+    if (!pendingEnterQuery.value && !isFeelingLucky) return
 
-  // Check if input is still focused (user hasn't started navigating or clicked elsewhere)
-  if (document.activeElement?.tagName !== 'INPUT') {
-    pendingEnterQuery.value = null
-    return
-  }
+    // Drop a pending Enter once the user has moved on (clicked or tabbed away from the input)
+    if (pendingEnterQuery.value && document.activeElement?.tagName !== 'INPUT') {
+      pendingEnterQuery.value = null
+      if (!isFeelingLucky) return
+    }
 
-  // Navigate if first result matches the query that was entered
-  const firstResult = newResults[0]
-  // eslint-disable-next-line no-console
-  console.log('[search] watcher fired', {
-    pending: pendingEnterQuery.value,
-    firstResult: firstResult?.package.name,
-  })
-  if (firstResult?.package.name === pendingEnterQuery.value) {
-    pendingEnterQuery.value = null
-    navigateToPackage(firstResult.package.name)
-  }
-})
+    const target = pendingEnterQuery.value || rawQuery.replace(/!$/, '')
+    if (!target) return
+
+    // Navigate if first result matches the query that was entered
+    const firstResult = newResults[0]
+    // eslint-disable-next-line no-console
+    console.log('[search] watcher fired', {
+      pending: pendingEnterQuery.value,
+      firstResult: firstResult?.package.name,
+    })
+    if (firstResult?.package.name === target) {
+      pendingEnterQuery.value = null
+      // Replace the `q=name!` entry so going back doesn't land on it and redirect again
+      navigateToPackage(firstResult.package.name, { replace: isFeelingLucky })
+    }
+  },
+  { immediate: true },
+)
 
 /**
  * Focus the header search input
@@ -503,14 +515,15 @@ function handleResultsKeydown(e: KeyboardEvent) {
     committedQuery.value = inputValue
 
     // Check if first result matches the input value exactly
+    const cleanedInputValue = inputValue.replace(/!$/, '')
     const firstResult = displayResults.value[0]
-    if (firstResult?.package.name === committedQuery.value) {
+    if (firstResult?.package.name === cleanedInputValue) {
       pendingEnterQuery.value = null
       return navigateToPackage(firstResult.package.name)
     }
 
-    // No match yet - store input value, watcher will handle navigation when results arrive
-    pendingEnterQuery.value = committedQuery.value
+    // No match yet - store cleaned input value, watcher will handle navigation when results arrive
+    pendingEnterQuery.value = cleanedInputValue
     return
   }
 
