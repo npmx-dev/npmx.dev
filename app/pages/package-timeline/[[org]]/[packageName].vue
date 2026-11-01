@@ -79,35 +79,52 @@ const stableOnly = useTimelineStableOnly()
 // size metrics depend on it, not the versions list.
 const frozenHistory = useTimelineFrozenHistory()
 
-// Paginated timeline data from server
+// Paginated timeline data from server, anchored on the selected version: the
+// initial page is the page-aligned slice containing it (`around=<version>`),
+// and more pages can be loaded in both directions. All follow-up requests use
+// plain page-aligned offsets so every user shares the same page cache entries.
 const PAGE_SIZE = 25
 
 const timelineEntries = ref<TimelineVersion[]>([])
+// Offset of the first loaded entry in the full sorted list (page-aligned)
+const timelineOffset = ref(0)
 const totalVersions = ref(0)
-const loadingMore = ref(false)
-const loadError = ref(false)
+const loadingNewer = ref(false)
+const loadingOlder = ref(false)
+const loadError = ref<false | 'newer' | 'older'>(false)
 
-const hasMore = computed(() => timelineEntries.value.length < totalVersions.value)
+// Bumped whenever the list is replaced wholesale (package/version/sort/filter
+// change) so in-flight load-more requests from the old window are discarded.
+let listEpoch = 0
+// Set while a re-anchor request is pending: load-more waits for the new window
+// instead of appending a page computed from the old one.
+const reanchoring = shallowRef(false)
+let anchorRequest = 0
+
+const hasNewer = computed(() => timelineOffset.value > 0)
+const hasOlder = computed(
+  () => timelineOffset.value + timelineEntries.value.length < totalVersions.value,
+)
 
 async function fetchTimeline(
-  offset: number,
+  page: { offset: number } | { around: string },
   pkgName: string = packageName.value,
   sortOrder: TimelineSort = sort.value,
   stable: boolean = stableOnly.value,
 ): Promise<TimelineResponse> {
   return $fetch<TimelineResponse>(`/api/registry/timeline/${pkgName}`, {
-    query: { offset, 'limit': PAGE_SIZE, 'sort': sortOrder, 'stable-only': String(stable) },
+    query: { ...page, 'limit': PAGE_SIZE, 'sort': sortOrder, 'stable-only': String(stable) },
   })
 }
 
 // Initial load - useAsyncData serializes the full response across SSR to client.
-// The key is a stable string (evaluated once); subsequent package/sort/filter
-// changes are handled by the reload watcher below so we control the page size.
+// The key is a stable string (evaluated once); subsequent package/version/sort/
+// filter changes are handled by the re-anchor watcher below.
 const initialLoadError = ref(false)
 
 const { data: initialTimeline, status: initialStatus } = await useAsyncData(
-  `timeline:${packageName.value}:${sort.value}:${stableOnly.value}`,
-  () => fetchTimeline(0),
+  `timeline:${packageName.value}:${version.value}:${sort.value}:${stableOnly.value}`,
+  () => fetchTimeline({ around: version.value }),
 )
 
 watch(
@@ -115,7 +132,9 @@ watch(
   data => {
     initialLoadError.value = false
     if (data) {
+      listEpoch++
       timelineEntries.value = data.versions
+      timelineOffset.value = data.offset
       totalVersions.value = data.total
     } else {
       initialLoadError.value = true
@@ -124,28 +143,44 @@ watch(
   { immediate: true },
 )
 
-async function loadMore() {
-  if (loadingMore.value) return
-  loadingMore.value = true
-  loadError.value = false
-  // Capture the request context; the package, sort or filter can change while
-  // the request is in flight, after which the reload watcher replaces the list.
-  const pkgName = packageName.value
-  const sortOrder = sort.value
-  const stable = stableOnly.value
-  const isStale = () =>
-    pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value
+async function loadMore(direction: 'newer' | 'older') {
+  const loading = direction === 'newer' ? loadingNewer : loadingOlder
+  if (loading.value || reanchoring.value) return
+  loading.value = true
+  if (loadError.value === direction) loadError.value = false
+  // Capture the window generation; a package, version, sort or filter change
+  // while the request is in flight replaces the window and bumps the epoch.
+  const epoch = listEpoch
   try {
-    const offset = timelineEntries.value.length
-    const data = await fetchTimeline(offset, pkgName, sortOrder, stable)
-    if (isStale()) return
-    timelineEntries.value = [...timelineEntries.value, ...data.versions]
+    const offset =
+      direction === 'newer'
+        ? Math.max(0, timelineOffset.value - PAGE_SIZE)
+        : timelineOffset.value + timelineEntries.value.length
+    const data = await fetchTimeline({ offset })
+    if (epoch !== listEpoch) return
+    if (direction === 'newer') {
+      // Guard against overlap in case the boundary shifted (never in practice,
+      // both offsets are page-aligned)
+      const prepended = data.versions.slice(0, timelineOffset.value - offset)
+      // Keep the viewport where it is so the newly loaded versions show up right
+      // below the button and it can be clicked again without scrolling back up.
+      // Restore the position explicitly, since native scroll anchoring could
+      // otherwise latch onto content further down and follow it.
+      const previousScrollY = window.scrollY
+      timelineEntries.value = [...prepended, ...timelineEntries.value]
+      timelineOffset.value = offset
+      await nextTick()
+      window.scrollTo({ top: previousScrollY })
+    } else {
+      timelineEntries.value = [...timelineEntries.value, ...data.versions]
+    }
     totalVersions.value = data.total
-    fetchSizes(offset, pkgName, sortOrder, stable)
+    fetchSizes(offset)
   } catch {
-    if (!isStale()) loadError.value = true
+    if (epoch === listEpoch) loadError.value = direction
   } finally {
-    loadingMore.value = false
+    // A re-anchor already reset the flags; don't clear one set by the new window
+    if (epoch === listEpoch) loading.value = false
   }
 }
 
@@ -201,8 +236,9 @@ async function fetchSizes(
   }
 }
 
-// Fetch sizes for the first `pageCount` pages (one request per page).
+// Fetch sizes for `pageCount` pages starting at `startOffset` (one request per page).
 function fetchSizesPages(
+  startOffset: number,
   pageCount: number,
   pkgName: string = packageName.value,
   sortOrder: TimelineSort = sort.value,
@@ -210,7 +246,7 @@ function fetchSizesPages(
   frozen: boolean = frozenHistory.value,
 ) {
   for (let page = 0; page < pageCount; page++) {
-    fetchSizes(page * PAGE_SIZE, pkgName, sortOrder, stable, frozen)
+    fetchSizes(startOffset + page * PAGE_SIZE, pkgName, sortOrder, stable, frozen)
   }
 }
 
@@ -218,36 +254,57 @@ function fetchSizesPages(
 if (import.meta.client) {
   watch(
     initialTimeline,
-    () => {
-      fetchSizes(0)
+    data => {
+      if (data) fetchSizes(data.offset)
     },
     { immediate: true },
   )
 
-  // When the package, sort or stable-only filter changes, re-fetch as many
-  // PAGE_SIZE pages as the user had already paginated (a package change starts
-  // fresh from page one) so their position is preserved. Fetching per page reuses
-  // each page's cache instead of issuing one oversized request.
-  watch([packageName, sort, stableOnly], async ([pkgName, sortOrder, stable], [previousPkg]) => {
-    loadError.value = false
-    const pageCount =
-      pkgName === previousPkg ? Math.max(1, Math.ceil(timelineEntries.value.length / PAGE_SIZE)) : 1
-    const isStale = () =>
-      pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value
-    try {
-      const pages = await Promise.all(
-        Array.from({ length: pageCount }, (_, page) =>
-          fetchTimeline(page * PAGE_SIZE, pkgName, sortOrder, stable),
-        ),
-      )
-      if (isStale()) return
-      timelineEntries.value = pages.flatMap(page => page.versions)
-      totalVersions.value = pages[0]?.total ?? 0
-      fetchSizesPages(pageCount, pkgName, sortOrder, stable)
-    } catch {
-      if (!isStale()) initialLoadError.value = true
-    }
-  })
+  // When the package, selected version, sort or stable-only filter changes,
+  // re-anchor the timeline on the page containing the selected version. A
+  // version change alone keeps the current window when the version is already
+  // loaded (no refetch needed).
+  watch(
+    [packageName, version, sort, stableOnly],
+    async ([pkgName, ver, sortOrder, stable], [previousPkg, , previousSort, previousStable]) => {
+      if (
+        pkgName === previousPkg &&
+        sortOrder === previousSort &&
+        stable === previousStable &&
+        timelineEntries.value.some(entry => entry.version === ver)
+      ) {
+        return
+      }
+      // Invalidate any in-flight load-more from the previous window before the
+      // request goes out, so a stale response can't commit while we re-anchor.
+      listEpoch++
+      loadError.value = false
+      loadingNewer.value = false
+      loadingOlder.value = false
+      const request = ++anchorRequest
+      reanchoring.value = true
+      const isStale = () =>
+        pkgName !== packageName.value ||
+        ver !== version.value ||
+        sortOrder !== sort.value ||
+        stable !== stableOnly.value
+      try {
+        const data = await fetchTimeline({ around: ver }, pkgName, sortOrder, stable)
+        if (isStale()) return
+        // A load-more started while this request was pending computed its offset from
+        // the old window, so discard it before committing the new one.
+        listEpoch++
+        timelineEntries.value = data.versions
+        timelineOffset.value = data.offset
+        totalVersions.value = data.total
+        fetchSizes(data.offset, pkgName, sortOrder, stable)
+      } catch {
+        if (!isStale()) initialLoadError.value = true
+      } finally {
+        if (request === anchorRequest) reanchoring.value = false
+      }
+    },
+  )
 
   // Toggling frozen history does not affect the list of versions, only their sizes
   watch(frozenHistory, () => {
@@ -256,7 +313,10 @@ if (import.meta.client) {
     const covered = timelineEntries.value.every(entry => cache.has(sizeKey(entry.version)))
     if (covered) return
 
-    fetchSizesPages(Math.max(1, Math.ceil(timelineEntries.value.length / PAGE_SIZE)))
+    fetchSizesPages(
+      timelineOffset.value,
+      Math.max(1, Math.ceil(timelineEntries.value.length / PAGE_SIZE)),
+    )
   })
 }
 
@@ -464,8 +524,26 @@ useSeoMeta({
     </div>
 
     <div class="container w-full py-8">
+      <!-- Load newer -->
+      <div v-if="hasNewer" class="mb-4 ms-10">
+        <button
+          type="button"
+          class="text-sm text-accent hover:text-accent/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          :disabled="loadingNewer"
+          @click="loadMore('newer')"
+        >
+          {{ $t('package.timeline.load_newer') }}
+        </button>
+        <p v-if="loadError === 'newer'" class="text-xs text-red-600 dark:text-red-400 mt-1">
+          {{ $t('package.timeline.load_error') }}
+        </p>
+      </div>
+
       <!-- Timeline -->
-      <ol v-if="timelineEntries.length" class="relative border-s border-border ms-4">
+      <ol
+        v-if="timelineEntries.length"
+        class="relative border-s border-border ms-4 [overflow-anchor:none]"
+      >
         <li v-for="entry in timelineEntries" :key="entry.version" class="mb-6 ms-6">
           <!-- Dot -->
           <span
@@ -541,17 +619,17 @@ useSeoMeta({
         </li>
       </ol>
 
-      <!-- Load more -->
-      <div v-if="hasMore" class="mt-4 ms-10">
+      <!-- Load older -->
+      <div v-if="hasOlder" class="mt-4 ms-10">
         <button
           type="button"
           class="text-sm text-accent hover:text-accent/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          :disabled="loadingMore"
-          @click="loadMore"
+          :disabled="loadingOlder"
+          @click="loadMore('older')"
         >
           {{ $t('package.timeline.load_more') }}
         </button>
-        <p v-if="loadError" class="text-xs text-red-600 dark:text-red-400 mt-1">
+        <p v-if="loadError === 'older'" class="text-xs text-red-600 dark:text-red-400 mt-1">
           {{ $t('package.timeline.load_error') }}
         </p>
       </div>
