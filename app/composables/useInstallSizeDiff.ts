@@ -82,11 +82,24 @@ export function useInstallSizeDiff(
 
   if (import.meta.client) {
     watch(
-      [comparisonVersion, () => toValue(packageName), currentIsLatest],
-      ([v, , isLatest]) => {
-        if (!v) return
-        fetchComparisonSize()
-        if (!isLatest) fetchFrozenCurrentSize()
+      [comparisonVersion, () => toValue(packageName)],
+      ([v]) => {
+        if (v) fetchComparisonSize()
+      },
+      { immediate: true },
+    )
+
+    // Watch the current version too: two prereleases can share a comparison
+    // version, and the size of the previous one would be discarded by `diff`.
+    watch(
+      [
+        comparisonVersion,
+        () => toValue(resolvedVersion),
+        () => toValue(packageName),
+        currentIsLatest,
+      ],
+      ([v, , , isLatest]) => {
+        if (v && !isLatest) fetchFrozenCurrentSize()
       },
       { immediate: true },
     )

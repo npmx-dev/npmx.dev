@@ -494,6 +494,36 @@ describe('useInstallSizeDiff', () => {
       expect(diff.value?.sizeRatio).toBeCloseTo(0.4)
     })
 
+    it('re-reads the current version when it changes but the comparison does not', async () => {
+      const pkg = createPackage('my-pkg', {
+        '1.0.0': '2020-01-01',
+        '1.1.0': '2021-01-01',
+        '2.0.0-beta.1': '2022-01-01',
+        '2.0.0-beta.2': '2022-02-01',
+      })
+      fetchSpy.mockImplementation((url: string) => {
+        if (url.includes('/v/2.0.0-beta.1'))
+          return Promise.resolve(
+            createInstallSize('my-pkg', { version: '2.0.0-beta.1', totalSize: 13000 }),
+          )
+        if (url.includes('/v/2.0.0-beta.2'))
+          return Promise.resolve(
+            createInstallSize('my-pkg', { version: '2.0.0-beta.2', totalSize: 14000 }),
+          )
+        return Promise.resolve(createInstallSize('my-pkg', { version: '1.1.0', totalSize: 10000 }))
+      })
+      const version = ref('2.0.0-beta.1')
+
+      const { diff } = useInstallSizeDiff('my-pkg', version, pkg, null)
+      await vi.waitFor(() => expect(diff.value?.currentSize).toBe(13000))
+
+      // Both prereleases compare against 1.1.0, so only the current version changes.
+      version.value = '2.0.0-beta.2'
+
+      await vi.waitFor(() => expect(diff.value?.currentSize).toBe(14000))
+      expect(diff.value?.comparisonVersion).toBe('1.1.0')
+    })
+
     it('does not fetch when there is no comparison version', () => {
       const pkg = createPackage('my-pkg', { '1.0.0': '2020-01-01' })
 
