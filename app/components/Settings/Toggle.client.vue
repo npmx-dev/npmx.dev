@@ -66,3 +66,12 @@ const id = useId()
     {{ description }}
   </p>
 </template>
+
+<style scoped>
+/* The switch polyfill animates its thumb without honouring reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  input.switch:is(:hover, :active, :focus) {
+    transition: none;
+  }
+}
+</style>
