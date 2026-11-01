@@ -1963,6 +1963,9 @@
             "view_all_versions": {
               "type": "string"
             },
+            "preview_releases": {
+              "type": "string"
+            },
             "distribution_title": {
               "type": "string"
             },

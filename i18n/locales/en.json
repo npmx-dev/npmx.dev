@@ -653,6 +653,7 @@
       "deprecated_title": "{version} (deprecated)",
       "view_all": "View {count} version | View all {count} versions",
       "view_all_versions": "View all versions",
+      "preview_releases": "Preview releases",
       "distribution_title": "Semver Group",
       "distribution_range_date_same_year": "from {from} to {to}, {endYear}",
       "distribution_range_date_multiple_years": "from {from}, {startYear} to {to}, {endYear}",
