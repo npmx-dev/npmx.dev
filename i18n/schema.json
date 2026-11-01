@@ -162,6 +162,9 @@
         },
         "open_stats": {
           "type": "string"
+        },
+        "share": {
+          "type": "string"
         }
       },
       "additionalProperties": false

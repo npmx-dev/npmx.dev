@@ -52,7 +52,8 @@
     "open_main": "Open main information",
     "open_diff": "Open version differences",
     "open_timeline": "Open timeline",
-    "open_stats": "Open stats"
+    "open_stats": "Open stats",
+    "share": "Share package"
   },
   "search": {
     "label": "Search npm packages",

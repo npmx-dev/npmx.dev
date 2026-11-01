@@ -282,7 +282,7 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
         </li>
         <li class="flex gap-2 items-center">
           <kbd class="kbd">v</kbd>
-          <span>{{ $t('package.share_aria_label') }}</span>
+          <span>{{ $t('shortcuts.share') }}</span>
         </li>
       </ul>
       <p class="text-fg-muted leading-relaxed">
