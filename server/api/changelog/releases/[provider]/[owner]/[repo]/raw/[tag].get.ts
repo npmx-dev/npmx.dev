@@ -5,7 +5,7 @@ import { GithubReleaseCollectionSchama } from '~~/shared/schemas/changelog/relea
 import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
 
-const TIMEOUT_TIME = 15_000
+const TIMEOUT_MS = 15_000
 
 export default defineCachedEventHandler(
   async event => {
@@ -71,7 +71,7 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string) {
   const ref: RepoRef = { provider: 'github', owner, repo }
 
   try {
-    const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_TIME })
+    const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_MS })
     if (forgeProvider?.can('releases.getByTag')) {
       const release = await forgeProvider.releases.getByTag(toForgeRepoRef(ref), tag)
       if (typeof release.body === 'string') {
@@ -87,7 +87,7 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string) {
       'Accept': '*/*',
       'User-Agent': 'npmx.dev',
     },
-    timeout: TIMEOUT_TIME,
+    timeout: TIMEOUT_MS,
   })
 
   const { releases } = v.parse(GithubReleaseCollectionSchama, responseUngh)
@@ -113,7 +113,7 @@ async function getMarkdownViaForges(
   host?: string,
 ) {
   const ref: RepoRef = { provider, owner, repo, host }
-  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_TIME })
+  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_MS })
   if (!forgeProvider?.can('releases.getByTag')) {
     throw createError({
       status: 404,

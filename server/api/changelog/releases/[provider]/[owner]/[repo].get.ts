@@ -11,7 +11,7 @@ import { changelogRenderer } from '~~/server/utils/changelog/markdown'
 import { createRepoInfo } from '~~/server/utils/changelog/mdRepoInfo'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
 
-const TIMEOUT_TIME = 15_000
+const TIMEOUT_MS = 15_000
 
 export default defineCachedEventHandler(
   async event => {
@@ -71,7 +71,7 @@ async function getReleasesFromGithub(owner: string, repo: string) {
       'Accept': '*/*',
       'User-Agent': 'npmx.dev',
     },
-    timeout: TIMEOUT_TIME,
+    timeout: TIMEOUT_MS,
   })
 
   const { releases } = v.parse(GithubReleaseCollectionSchama, data)
@@ -109,7 +109,7 @@ async function getReleasesViaForges(
   host?: string,
 ) {
   const ref: RepoRef = { provider, owner, repo, host }
-  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_TIME })
+  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_MS })
   if (!forgeProvider?.can('releases.list')) {
     throw createError({
       status: 404,
