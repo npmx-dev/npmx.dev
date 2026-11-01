@@ -18,7 +18,7 @@ const props = defineProps<{
   dataset?: Array<
     VueUiXyDatasetItem & {
       color?: string
-      series: number[]
+      series: Array<number | null>
       dashIndices?: number[]
     }
   >
@@ -29,7 +29,6 @@ const props = defineProps<{
     day: string
   }
   showLastDatapointEstimation: boolean
-  nullifyZeroValues?: boolean
   largePackageSeries?: boolean[]
   granularity: ChartTimeGranularity
 }>()
@@ -59,7 +58,7 @@ const { colors } = useColors(rootEl)
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
-const selectedIndex = ref<number | undefined | null>(null)
+const selectedIndex = ref<number | undefined>()
 const isInteracting = ref(false)
 
 function isLargeSeries(seriesIndex: number): boolean {
@@ -94,12 +93,13 @@ function formatDataLabel(seriesIndex: number, value: number): string {
       }
     }
 
+    if (rawLastValue == null) return $t('package.trends.no_data_short')
     return numberFormatter.value.format(value)
   }
 
   // Hover | kbd interaction: show the actual value at the hovered index
   const rawValue = series[selectedIndex.value]
-  if (isLargeSeries(seriesIndex) && isMissingDownloadValue(rawValue)) {
+  if (rawValue == null || (isLargeSeries(seriesIndex) && isMissingDownloadValue(rawValue))) {
     return $t('package.trends.no_data_short')
   }
 
@@ -124,14 +124,7 @@ const datasets = computed<VueUiSparklineDatasetItem[][]>(() => {
 
       return {
         period,
-        value:
-          rawValue === 0
-            ? props.nullifyZeroValues && hasNoDataTail
-              ? index === props.dates.length - 1
-                ? 0
-                : null
-              : 0
-            : rawValue || (index === props.dates.length - 1 ? 0 : null),
+        value: rawValue ?? null,
       }
     })
   })
@@ -149,7 +142,7 @@ function startInteraction() {
 
 function resetHover() {
   isInteracting.value = false
-  selectedIndex.value = null
+  selectedIndex.value = undefined
   step.value += 1 // required to reset all chart instances
 }
 
@@ -175,6 +168,7 @@ const configs = computed(() => {
       : (lightenColor(seriesColor, 0.5) ?? seriesColor) // palette uses hex colours
 
     return {
+      useCursorPointer: true,
       a11y: {
         translations: {
           keyboardNavigation: $t(
@@ -230,11 +224,12 @@ const configs = computed(() => {
         },
         line: {
           color: seriesColor,
+          strokeWidth: 1,
           dashIndices,
           dashArray: 3,
-          cutNullValues: false,
+          cutNullValues: true,
           nullDashes: {
-            show: true,
+            show: false,
           },
         },
         plot: {
@@ -252,14 +247,24 @@ const configs = computed(() => {
         },
         padding: {
           left: 0,
-          right: 0,
+          right: 24,
           top: 0,
           bottom: 0,
+        },
+        // Drag to zoom
+        zoom: {
+          show: true,
+          resetButton: {
+            title: $t('package.trends.sparkline_zoom_reset.title'),
+            ariaLabel: $t('package.trends.sparkline_zoom_reset.aria_label'),
+          },
         },
       },
     }
   })
 })
+
+const zoomState = ref<any>(null)
 </script>
 
 <template>
@@ -308,6 +313,7 @@ const configs = computed(() => {
         </div>
         <VueUiSparkline
           v-if="datasets[i]"
+          v-model:zoom-state="zoomState"
           :key="`${i}_${step}`"
           :config
           :dataset="datasets[i]"

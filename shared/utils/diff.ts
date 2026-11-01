@@ -163,10 +163,7 @@ function mergeAdjacentLines(changes: RawChange[], options: ParseOptions): DiffLi
   return out
 }
 
-export function parseUnifiedDiff(
-  diffText: string,
-  options: Partial<ParseOptions> = {},
-): FileDiff[] {
+function parseUnifiedDiff(diffText: string, options: Partial<ParseOptions> = {}): FileDiff[] {
   const opts = { ...defaultOptions, ...options }
   const files: FileDiff[] = []
 
