@@ -1,6 +1,7 @@
 import { CACHE_MAX_AGE_ONE_MINUTE } from '#shared/utils/constants'
 import { createForgeProvider, toForgeRepoRef } from '#shared/utils/forges'
 import type { TangledStats } from '#shared/utils/repository-meta'
+import { guardedFetch } from '#server/utils/guarded-fetch'
 
 // Proxied because Tangled reads go to each author's PDS and knot, whose hosts
 // can be anything, so the browser's CSP cannot allow them.
@@ -13,7 +14,7 @@ export default defineCachedEventHandler(
     }
 
     const ref = { provider: 'tangled' as const, owner, repo }
-    const provider = await createForgeProvider(ref)
+    const provider = await createForgeProvider(ref, { fetch: guardedFetch })
     if (!provider) {
       throw createError({ statusCode: 500, message: 'Tangled is not supported' })
     }
