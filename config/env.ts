@@ -1,6 +1,6 @@
 // TODO(serhalp): Extract most of this module to https://github.com/unjs/std-env.
 
-import Git from 'simple-git'
+import { simpleGit } from 'simple-git'
 import * as process from 'node:process'
 
 import { version as packageVersion } from '../package.json'
@@ -115,7 +115,7 @@ export const getProductionUrl = () =>
         : undefined
     : undefined
 
-const git = Git()
+const git = simpleGit()
 async function getGitInfo() {
   let branch
   try {

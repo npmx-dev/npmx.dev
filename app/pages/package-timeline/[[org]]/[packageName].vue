@@ -75,6 +75,10 @@ const sort = usePermalink<TimelineSort>('sort', 'semver')
 // server-side so pagination totals and pages already exclude pre-releases.
 const stableOnly = useTimelineStableOnly()
 
+// "Frozen history" toggle, shared with the chart via the query string. Only the
+// size metrics depend on it, not the versions list.
+const frozenHistory = useTimelineFrozenHistory()
+
 // Paginated timeline data from server, anchored on the selected version: the
 // initial page is the page-aligned slice containing it (`around=<version>`),
 // and more pages can be loaded in both directions. All follow-up requests use
@@ -92,6 +96,10 @@ const loadError = ref<false | 'newer' | 'older'>(false)
 // Bumped whenever the list is replaced wholesale (package/version/sort/filter
 // change) so in-flight load-more requests from the old window are discarded.
 let listEpoch = 0
+// Set while a re-anchor request is pending: load-more waits for the new window
+// instead of appending a page computed from the old one.
+const reanchoring = shallowRef(false)
+let anchorRequest = 0
 
 const hasNewer = computed(() => timelineOffset.value > 0)
 const hasOlder = computed(
@@ -137,7 +145,7 @@ watch(
 
 async function loadMore(direction: 'newer' | 'older') {
   const loading = direction === 'newer' ? loadingNewer : loadingOlder
-  if (loading.value) return
+  if (loading.value || reanchoring.value) return
   loading.value = true
   if (loadError.value === direction) loadError.value = false
   // Capture the window generation; a package, version, sort or filter change
@@ -171,7 +179,8 @@ async function loadMore(direction: 'newer' | 'older') {
   } catch {
     if (epoch === listEpoch) loadError.value = direction
   } finally {
-    loading.value = false
+    // A re-anchor already reset the flags; don't clear one set by the new window
+    if (epoch === listEpoch) loading.value = false
   }
 }
 
@@ -179,7 +188,9 @@ const SIZE_INCREASE_THRESHOLD = 0.25
 const DEP_INCREASE_THRESHOLD = 5
 const NO_LICENSE_VALUES = new Set(['', 'UNLICENSED'])
 
-const sizeCache = shallowReactive(new Map<string, TimelineSizeCacheValue>())
+const frozenSizeCache = shallowReactive(new Map<string, TimelineSizeCacheValue>())
+const liveSizeCache = shallowReactive(new Map<string, TimelineSizeCacheValue>())
+const sizeCache = computed(() => (frozenHistory.value ? frozenSizeCache : liveSizeCache))
 const sizeFetchesInFlight = ref(0)
 const sizesLoading = computed(() => sizeFetchesInFlight.value > 0)
 
@@ -192,18 +203,26 @@ async function fetchSizes(
   pkgName: string = packageName.value,
   sortOrder: TimelineSort = sort.value,
   stable: boolean = stableOnly.value,
+  frozen: boolean = frozenHistory.value,
 ) {
   sizeFetchesInFlight.value++
   try {
     const data = await $fetch<TimelineSizeResponse>(`/api/registry/timeline/sizes/${pkgName}`, {
-      query: { offset, 'limit': PAGE_SIZE, 'sort': sortOrder, 'stable-only': String(stable) },
+      query: {
+        offset,
+        'limit': PAGE_SIZE,
+        'sort': sortOrder,
+        'stable-only': String(stable),
+        'frozen-history': String(frozen),
+      },
     })
     if (pkgName !== packageName.value || sortOrder !== sort.value || stable !== stableOnly.value) {
       return
     }
 
+    const cache = frozen ? frozenSizeCache : liveSizeCache
     for (const entry of data.sizes) {
-      sizeCache.set(`${pkgName}@${entry.version}`, {
+      cache.set(`${pkgName}@${entry.version}`, {
         totalSize: entry.totalSize,
         dependencyCount: entry.dependencyCount,
         selfSize: entry.selfSize,
@@ -214,6 +233,20 @@ async function fetchSizes(
     // silently skip - size data is best-effort
   } finally {
     sizeFetchesInFlight.value--
+  }
+}
+
+// Fetch sizes for `pageCount` pages starting at `startOffset` (one request per page).
+function fetchSizesPages(
+  startOffset: number,
+  pageCount: number,
+  pkgName: string = packageName.value,
+  sortOrder: TimelineSort = sort.value,
+  stable: boolean = stableOnly.value,
+  frozen: boolean = frozenHistory.value,
+) {
+  for (let page = 0; page < pageCount; page++) {
+    fetchSizes(startOffset + page * PAGE_SIZE, pkgName, sortOrder, stable, frozen)
   }
 }
 
@@ -246,6 +279,10 @@ if (import.meta.client) {
       // request goes out, so a stale response can't commit while we re-anchor.
       listEpoch++
       loadError.value = false
+      loadingNewer.value = false
+      loadingOlder.value = false
+      const request = ++anchorRequest
+      reanchoring.value = true
       const isStale = () =>
         pkgName !== packageName.value ||
         ver !== version.value ||
@@ -263,9 +300,24 @@ if (import.meta.client) {
         fetchSizes(data.offset, pkgName, sortOrder, stable)
       } catch {
         if (!isStale()) initialLoadError.value = true
+      } finally {
+        if (request === anchorRequest) reanchoring.value = false
       }
     },
   )
+
+  // Toggling frozen history does not affect the list of versions, only their sizes
+  watch(frozenHistory, () => {
+    // only re-fetch if this cache is missing some values for the currently visible timeline
+    const cache = sizeCache.value
+    const covered = timelineEntries.value.every(entry => cache.has(sizeKey(entry.version)))
+    if (covered) return
+
+    fetchSizesPages(
+      timelineOffset.value,
+      Math.max(1, Math.ceil(timelineEntries.value.length / PAGE_SIZE)),
+    )
+  })
 }
 
 const bytesFormatter = useBytesFormatter()
@@ -301,8 +353,8 @@ const versionSubEvents = computed(() => {
     }
 
     // Size changes
-    const currentSize = sizeCache.get(sizeKey(current.version))
-    const previousSize = sizeCache.get(sizeKey(previous.version))
+    const currentSize = sizeCache.value.get(sizeKey(current.version))
+    const previousSize = sizeCache.value.get(sizeKey(previous.version))
     if (currentSize && previousSize) {
       const sizeRatio =
         previousSize.totalSize > 0
