@@ -203,6 +203,11 @@ async function checkLatestGithubRelease(
           'User-Agent': 'npmx.dev',
         },
         timeout: TIMEOUT,
+        // with 403/429, the specific token from ungh could be exhausted, so we retry in case a different one does work
+        retryDelay: 300,
+        retry: 3,
+        // only 403 has been added, others status codes are defaults from ofetch
+        retryStatusCodes: [403, 408, 409, 425, 429, 500, 502, 503, 504],
       },
     )
 
@@ -251,6 +256,7 @@ async function checkLatestGithubRelease(
       if (e.statusCode === 403 || e.statusCode === 429) {
         throw createError({
           statusCode: 502,
+          message: ERROR_UNGH_API_KEY_EXHAUSTED,
           statusMessage: ERROR_UNGH_API_KEY_EXHAUSTED,
         })
       }

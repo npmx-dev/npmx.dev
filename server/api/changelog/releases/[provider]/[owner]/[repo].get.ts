@@ -1,6 +1,7 @@
 import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
 import type { ReleaseData } from '~~/shared/types/changelog'
 import * as v from 'valibot'
+import { FetchError } from 'ofetch'
 import {
   ERROR_CHANGELOG_RELEASES_FAILED,
   ERROR_THROW_INCOMPLETE_PARAM,
@@ -66,40 +67,56 @@ export default defineCachedEventHandler(
 )
 
 async function getReleasesFromGithub(owner: string, repo: string) {
-  const data = await $fetch(`https://ungh.cc/repos/${owner}/${repo}/releases`, {
-    headers: {
-      'Accept': '*/*',
-      'User-Agent': 'npmx.dev',
-    },
-    timeout: TIMEOUT_MS,
-  })
-
-  const { releases } = v.parse(GithubReleaseCollectionSchama, data)
-
-  const repoInfo = createRepoInfo({ provider: 'github', owner, repo })
-  if (!repoInfo) {
-    throw createError({
-      status: 404,
-      statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+  try {
+    const data = await $fetch(`https://ungh.cc/repos/${owner}/${repo}/releases`, {
+      headers: {
+        'Accept': '*/*',
+        'User-Agent': 'npmx.dev',
+      },
+      // with 403/429, the specific token from ungh could be exhausted, so we retry in case a different one does work
+      retryDelay: 300,
+      retry: 3,
+      // only 403 has been added, others status codes are defaults from ofetch
+      retryStatusCodes: [403, 408, 409, 425, 429, 500, 502, 503, 504],
+      timeout: TIMEOUT_MS,
     })
-  }
-  const render = await changelogRenderer(repoInfo)
 
-  return releases.map(r => {
-    const { html, toc } = render(r.markdown, r.id)
-    return {
-      id: r.id,
-      // replace single \n within <p> like with Vue's releases
-      html: html?.replace(/(?<!>)\n/g, '<br>') ?? null,
-      title: r.name || r.tag,
-      draft: r.draft,
-      prerelease: r.prerelease,
-      toc,
-      publishedAt: r.publishedAt,
-      link: `https://github.com/${owner}/${repo}/releases/tag/${r.tag}`,
-      tag: r.tag,
-    } satisfies ReleaseData
-  })
+    const { releases } = v.parse(GithubReleaseCollectionSchama, data)
+
+    const repoInfo = createRepoInfo({ provider: 'github', owner, repo })
+    if (!repoInfo) {
+      throw createError({
+        status: 404,
+        statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+      })
+    }
+    const render = await changelogRenderer(repoInfo)
+
+    return releases.map(r => {
+      const { html, toc } = render(r.markdown, r.id)
+      return {
+        id: r.id,
+        // replace single \n within <p> like with Vue's releases
+        html: html?.replace(/(?<!>)\n/g, '<br>') ?? null,
+        title: r.name || r.tag,
+        draft: r.draft,
+        prerelease: r.prerelease,
+        toc,
+        publishedAt: r.publishedAt,
+        link: `https://github.com/${owner}/${repo}/releases/tag/${r.tag}`,
+        tag: r.tag,
+      } satisfies ReleaseData
+    })
+  } catch (error) {
+    if (error instanceof FetchError && (error.statusCode == 403 || error.statusCode == 429)) {
+      throw createError({
+        statusCode: 502,
+        message: ERROR_UNGH_API_KEY_EXHAUSTED,
+        statusMessage: ERROR_UNGH_API_KEY_EXHAUSTED,
+      })
+    }
+    throw error
+  }
 }
 
 async function getReleasesViaForges(
