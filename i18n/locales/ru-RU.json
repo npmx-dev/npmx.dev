@@ -432,6 +432,7 @@
       "tangled": "Открыть на Tangled"
     },
     "collapse": "Свернуть",
+    "expand": "Развернуть",
     "copyMdError": "Не удалось загрузить markdown, попробуйте позже"
   },
   "profile": {
@@ -579,7 +580,14 @@
       "locally": "Запустить локально",
       "copy_command": "Скопировать команду для локального запуска"
     },
-    "command": {},
+    "command": {
+      "copied_install": "Команда установки скопирована",
+      "copied_dev_install": "Команда dev-установки скопирована",
+      "copied_run": "Команда запуска скопирована",
+      "copied_create": "Команда создания скопирована",
+      "copied_execute": "Команда выполнения скопирована",
+      "copied_skills": "Команда skills скопирована"
+    },
     "readme": {
       "title": "Readme",
       "no_readme": "README недоступен.",
@@ -830,10 +838,6 @@
       "sparkline_zoom_reset": {
         "title": "Сбросить масштаб · дважды кликните на графике или нажмите Esc",
         "aria_label": "Сбросить масштаб"
-      },
-      "downloads_heatmap": {
-        "legend": {},
-        "copy_alt": {}
       }
     },
     "downloads": {
@@ -1162,7 +1166,6 @@
       "verified_title": "Подтвержденное происхождение",
       "verified_via": "Подтверждено: опубликовано через {provider}"
     },
-    "staged_publish": {},
     "jsr": {
       "title": "также доступно на JSR"
     }

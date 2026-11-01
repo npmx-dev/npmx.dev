@@ -94,7 +94,6 @@
     "current": "目前",
     "here": "你所在的位置",
     "connected": "已連線",
-    "keyboard_shortcuts": {},
     "state": {
       "on": "開",
       "off": "關"
@@ -196,14 +195,6 @@
     "links": "連結",
     "tap_to_search": "點擊以搜尋"
   },
-  "tools": {
-    "deps_stats": {}
-  },
-  "deps_stats": {
-    "upload": {},
-    "dependencies": {},
-    "stats": {}
-  },
   "blog": {
     "title": "部落格",
     "heading": "部落格",
@@ -229,9 +220,6 @@
       "repost_count": "{count} 次轉發 | {count} 次轉發",
       "more_replies": "還有 {count} 則回覆⋯⋯ | 還有 {count} 則回覆⋯⋯"
     }
-  },
-  "noodles": {
-    "missing": {}
   },
   "settings": {
     "title": "設定",
@@ -288,7 +276,6 @@
       "slate": "板岩灰",
       "black": "黑色"
     },
-    "foreground_themes": {},
     "keyboard_shortcuts_enabled": "啟用鍵盤快速鍵",
     "keyboard_shortcuts_enabled_description": "若與其他瀏覽器或系統快捷鍵衝突，可停用鍵盤快速鍵"
   },
@@ -469,7 +456,6 @@
       "title": "執行",
       "locally": "在本機執行"
     },
-    "command": {},
     "readme": {
       "title": "README",
       "no_readme": "沒有可用的 README。",
@@ -662,8 +648,7 @@
         "general_description": "Y 軸代表下載次數。X 軸代表日期範圍，從 {start_date} 至 {end_date}，以 {granularity} 為時間單位。 {estimation_notice} {packages_analysis}. {watermark}.",
         "facet_bar_general_description": "水平長條圖: {packages} 的 {facet} 對比({description}). {facet_analysis} {watermark}.",
         "facet_bar_analysis": "{package_name} 值為 {value}."
-      },
-      "embedding": {}
+      }
     },
     "downloads": {
       "title": "每週下載量",
@@ -1160,25 +1145,6 @@
         "description": "掌握 npmx 的最新動態。",
         "cta": "在 Bluesky 上關注"
       }
-    }
-  },
-  "sponsors_page": {
-    "what_we_do": {},
-    "what_support_means": {},
-    "what_this_means_for_you": {
-      "cards": {
-        "people": {},
-        "visitors": {},
-        "stars": {},
-        "community": {},
-        "adoption": {},
-        "default_source": {}
-      }
-    },
-    "tiers": {
-      "silver": {},
-      "gold": {},
-      "platinum": {}
     }
   },
   "account_menu": {

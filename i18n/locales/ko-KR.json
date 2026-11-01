@@ -211,14 +211,6 @@
     "links": "링크",
     "tap_to_search": "탭해서 검색"
   },
-  "tools": {
-    "deps_stats": {}
-  },
-  "deps_stats": {
-    "upload": {},
-    "dependencies": {},
-    "stats": {}
-  },
   "blog": {
     "title": "블로그",
     "heading": "블로그",
