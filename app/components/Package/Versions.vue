@@ -51,6 +51,14 @@ const effectiveCurrentVersion = computed(
 // Semver range filter (initialized from ?semver= query param if present)
 const semverFilter = ref((typeof route.query.semver === 'string' ? route.query.semver : '') || '')
 
+// Navigating to another ?semver= on the same page (e.g. searching `pkg@^2`) reuses this component
+watch(
+  () => route.query.semver,
+  semver => {
+    if (typeof semver === 'string') semverFilter.value = semver
+  },
+)
+
 // Load all versions when a valid semver filter is entered
 watch(semverFilter, loadVersionsForFilter)
 // A filter from ?semver= is set before mount, so the watcher never sees it change
