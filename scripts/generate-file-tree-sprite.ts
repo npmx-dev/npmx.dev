@@ -7,6 +7,7 @@ import {
   ADDITIONAL_ICONS,
   EXTENSION_ICONS,
   FILENAME_ICONS,
+  FILENAME_ICON_PATTERNS,
   COMPOUND_EXTENSIONS,
   DEFAULT_ICON,
 } from '../app/utils/file-icons.ts'
@@ -77,6 +78,7 @@ const collections = await loadCollections()
 const iconNames = [
   ...Object.values(EXTENSION_ICONS),
   ...Object.values(FILENAME_ICONS),
+  ...FILENAME_ICON_PATTERNS.map(p => p.icon),
   ...Object.values(COMPOUND_EXTENSIONS),
   ...Object.values(ADDITIONAL_ICONS),
   DEFAULT_ICON,

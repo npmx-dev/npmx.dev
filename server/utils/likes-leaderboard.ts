@@ -29,7 +29,7 @@ const NpmDownloadCountSchema = v.object({
   downloads: v.number(),
 })
 
-export const LIKES_LEADERBOARD_MAX_ENTRIES = 10
+const LIKES_LEADERBOARD_MAX_ENTRIES = 10
 
 export function extractPackageNameFromSubjectRef(subjectRef: string): string | null {
   const match = /^https:\/\/npmx\.dev\/package\/(.+)$/.exec(subjectRef)

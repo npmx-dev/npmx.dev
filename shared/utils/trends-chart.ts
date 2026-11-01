@@ -257,7 +257,7 @@ export function buildTrendsChartData(options: TrendChartDataOptions): {
       }
     }
 
-    const series = dates.map(timestamp => valueByTimestamp.get(timestamp) ?? 0)
+    const series = dates.map(timestamp => valueByTimestamp.get(timestamp) ?? null)
     const dashIndices = dates
       .map((timestamp, index) => (anomalyTimestamps.has(timestamp) ? index : -1))
       .filter(index => index !== -1)
@@ -281,7 +281,7 @@ export function buildTrendsChartData(options: TrendChartDataOptions): {
 
 type TrendsNormalisedDatasetItem = VueUiXyDatasetItem & {
   color?: string
-  series: number[]
+  series: Array<number | null>
   dashIndices?: number[]
 }
 
@@ -311,11 +311,14 @@ export function buildNormalisedTrendsDataset(options: {
         return value.y
       }
 
-      return 0
+      return null
     })
+    const hasMissingZeros =
+      options.selectedMetric === 'downloads' &&
+      isLargeDownloadSeries(sourceSeries, options.granularity)
 
     const series = applyDataPipeline(
-      sourceSeries,
+      sourceSeries.map(value => (hasMissingZeros && value === 0 ? null : value)),
       {
         averageWindow: options.chartFilter.averageWindow,
         smoothingTau: options.chartFilter.smoothingTau,
@@ -407,12 +410,13 @@ export function buildTrendsChartConfig(
         buttons: {
           pdf: false,
           labels: false,
-          fullscreen: false,
+          fullscreen: true,
           table: false,
           tooltip: false,
           altCopy: true,
         },
         buttonTitles: {
+          fullscreen: options.t('package.trends.toggle_fullscreen'),
           csv: options.t('package.trends.download_file', { fileType: 'CSV' }),
           img: options.t('package.trends.download_file', { fileType: 'PNG' }),
           svg: options.t('package.trends.download_file', { fileType: 'SVG' }),
@@ -492,8 +496,9 @@ export function buildTrendsChartConfig(
     line: {
       radius: 4,
       useGradient: true,
+      cutNullValues: true,
       nullDashes: {
-        show: true,
+        show: false,
       },
       dot: {
         useSerieColor: true,
@@ -540,7 +545,7 @@ export function drawTrendsEstimationLine(options: {
     const previousPoint = plots.at(-2)
     const lastPoint = plots.at(-1)
 
-    if (!previousPoint || !lastPoint) {
+    if (previousPoint?.value == null || lastPoint?.value == null) {
       continue
     }
 
@@ -729,7 +734,7 @@ export function nullifyZeroValues({
   // Keeping the last value as zero is required if the chart displays the last value label (if not, the last label would show the last valid value, which can mislead users into thinking the last datapoint is valid)
   keepLastZero?: boolean
 
-  values: number[]
+  values: Array<number | null>
 }) {
   if (!enabled) return values
   return values.map((n, i) => (keepLastZero && i === values.length - 1 ? n : n || null))
@@ -741,9 +746,9 @@ export function isMissingDownloadValue(value: unknown): boolean {
 }
 
 // This is somehow arbitrary: fixes the threshold above which a package is considered "large", which means any day with 0 downloads must imply a npm recording anomaly. If a package has a median daily downloads above this threshold, the last label on the charts will be the last valid one (see implementations in TrendsChart.vue, SplitSparkline.vue, embed-downloads-svg.ts)
-export const LARGE_PACKAGE_DAILY_DOWNLOADS_THRESHOLD = 500
+const LARGE_PACKAGE_DAILY_DOWNLOADS_THRESHOLD = 500
 
-export const DAYS_PER_GRANULARITY: Record<ChartTimeGranularity, number> = {
+const DAYS_PER_GRANULARITY: Record<ChartTimeGranularity, number> = {
   daily: 1,
   weekly: 7,
   monthly: 365.25 / 12,

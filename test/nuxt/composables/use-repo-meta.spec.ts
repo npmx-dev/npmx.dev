@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { parseRepoUrl } from '#shared/utils/git-providers'
 
 /**
@@ -187,6 +187,18 @@ describe('useRepoMeta - URL parsing via repoRef', () => {
         owner: '',
         repo: 'rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT',
         host: 'app.radicle.at',
+      })
+    })
+  })
+
+  describe('Pushin URLs', () => {
+    it('should parse Pushin URL', () => {
+      const result = parseRepoUrl('https://pushin.eu/tobbe/npmx-pushin-test')
+
+      expect(result).toEqual({
+        provider: 'pushin',
+        owner: 'tobbe',
+        repo: 'npmx-pushin-test',
       })
     })
   })

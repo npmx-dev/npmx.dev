@@ -157,9 +157,6 @@
       "download": "Télécharger le tarball",
       "changelog": "Changements"
     },
-    "package_actions": {
-      "copy_run": "Copier la commande d'exécution"
-    },
     "code": {
       "copy_file": "Copier le contenu du fichier"
     },
@@ -430,7 +427,8 @@
       "size_tooltip": {
         "unpacked": "{size} taille décompressée (ce paquet)",
         "total": "{size} taille totale décompressée (incluant les {count} dépendances pour linux-x64)"
-      }
+      },
+      "daily_downloads_heatmap": "Carte thermique des téléchargements quotidiens"
     },
     "skills": {
       "title": "Compétences de l'agent",
@@ -683,6 +681,7 @@
       "date_range_multiline": "{start}\nau {end}",
       "download_file": "Télécharger {fileType}",
       "toggle_annotator": "Afficher/Masquer l'annotateur",
+      "toggle_fullscreen": "Activer/désactiver le plein écran",
       "toggle_stack_mode": "Basculer le mode empilé",
       "open_options": "Ouvrir les options",
       "close_options": "Fermer les options",
@@ -735,6 +734,25 @@
       "sparkline_zoom_reset": {
         "title": "Réinitialiser le zoom · double-cliquez sur le graphique ou appuyez sur Esc",
         "aria_label": "Réinitialiser le zoom"
+      },
+      "downloads_heatmap": {
+        "title": "Téléchargements quotidiens: dernières 52 semaines, du {from} au {to}",
+        "legend": {
+          "anomalies": "Jours avec des données manquantes ou en anomalie",
+          "max": "Max: {value} téléchargements le {date}",
+          "min": "Min: {value} téléchargements le {date}"
+        },
+        "nav_hint": "Utilisez ← → ↑ ↓",
+        "copy_alt": {
+          "introduction": "Carte thermique des téléchargements quotidiens du paquet {package_name}. {date_range}.",
+          "no_data": "Aucune donnée de téléchargement fiable n'est disponible pour cette période.",
+          "summary": "Un total de {total} téléchargements a été enregistré sur {days} jours, soit une moyenne de {average} téléchargements par jour.",
+          "peak": "Le pic d'activité a été atteint le {date}, avec {downloads} téléchargements.",
+          "busiest_weekday": "Le jour de la semaine le plus actif était le {weekday}, avec une moyenne de {average} téléchargements.",
+          "weekday_comparison": "En moyenne, les jours de semaine ont enregistré {weekdays} téléchargements par jour, contre {weekends} le week-end.",
+          "weekly_trend": "Entre la première et la dernière semaine complète disposant de données fiables, le nombre de téléchargements hebdomadaires a varié de {change}, passant de {first} à {last}.",
+          "excluded_days": "{count} jours calendaires ont été exclus de ces statistiques en raison de données manquantes, anormales ou pas encore disponibles."
+        }
       }
     },
     "downloads": {
@@ -1665,18 +1683,10 @@
     "p2": "Avant de commencer, veuillez lire notre {guide} pour en savoir plus sur notre processus de traduction et sur la façon de contribuer.",
     "guide": "guide de localisation (i18n)",
     "by_locale": "Progression des traductions par langue",
-    "by_file": "Progression des traductions par fichier",
     "complete_text": "Cette traduction est complète, bravo !",
     "missing_text": "manquantes",
     "missing_keys": "Aucune traduction manquante | Traduction manquante | Traductions manquantes",
-    "progress_label": "État d'avancement pour {locale}",
-    "table": {
-      "file": "Fichier",
-      "status": "Statut",
-      "error": "Erreur lors du chargement de la liste des fichiers.",
-      "empty": "Aucun fichier trouvé",
-      "file_link": "Modifier {file} ({lang}) sur GitHub"
-    }
+    "progress_label": "État d'avancement pour {locale}"
   },
   "vacations": {
     "title": "en vacances",

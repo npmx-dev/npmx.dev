@@ -18,7 +18,7 @@ const props = defineProps<{
   dataset?: Array<
     VueUiXyDatasetItem & {
       color?: string
-      series: number[]
+      series: Array<number | null>
       dashIndices?: number[]
     }
   >
@@ -29,7 +29,6 @@ const props = defineProps<{
     day: string
   }
   showLastDatapointEstimation: boolean
-  nullifyZeroValues?: boolean
   largePackageSeries?: boolean[]
   granularity: ChartTimeGranularity
 }>()
@@ -94,12 +93,13 @@ function formatDataLabel(seriesIndex: number, value: number): string {
       }
     }
 
+    if (rawLastValue == null) return $t('package.trends.no_data_short')
     return numberFormatter.value.format(value)
   }
 
   // Hover | kbd interaction: show the actual value at the hovered index
   const rawValue = series[selectedIndex.value]
-  if (isLargeSeries(seriesIndex) && isMissingDownloadValue(rawValue)) {
+  if (rawValue == null || (isLargeSeries(seriesIndex) && isMissingDownloadValue(rawValue))) {
     return $t('package.trends.no_data_short')
   }
 
@@ -124,14 +124,7 @@ const datasets = computed<VueUiSparklineDatasetItem[][]>(() => {
 
       return {
         period,
-        value:
-          rawValue === 0
-            ? props.nullifyZeroValues && hasNoDataTail
-              ? index === props.dates.length - 1
-                ? 0
-                : null
-              : 0
-            : rawValue || (index === props.dates.length - 1 ? 0 : null),
+        value: rawValue ?? null,
       }
     })
   })
@@ -234,9 +227,9 @@ const configs = computed(() => {
           strokeWidth: 1,
           dashIndices,
           dashArray: 3,
-          cutNullValues: false,
+          cutNullValues: true,
           nullDashes: {
-            show: true,
+            show: false,
           },
         },
         plot: {
