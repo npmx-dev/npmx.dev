@@ -7,7 +7,7 @@ const REPO_META_TTL = 60 * 10
 // Other TTLs for known sources
 const UNGH_REPO_META_TTL = 60 * 60 * 3 // 3 hours (ungh caches 6 hours server-side, but we run it half more frequently)
 
-export type RepoMetaLinks = {
+type RepoMetaLinks = {
   repo: string
   stars: string
   forks: string
@@ -549,11 +549,6 @@ const providers = {
 
 function getProviderAdapter(ref: RepoRef): ProviderAdapter | null {
   return providers[ref.provider] ?? null
-}
-
-export function getRepoMetaLinks(ref: RepoRef): RepoMetaLinks | null {
-  const adapter = getProviderAdapter(ref)
-  return adapter?.links(ref) ?? null
 }
 
 export async function getRepoMeta(

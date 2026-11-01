@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
@@ -31,6 +30,10 @@ const packages = computed({
   },
 })
 
+function isChartPackage(_: unknown, index: number): boolean {
+  return packages.value[index] !== NO_DEPENDENCY_ID
+}
+
 // Facet selection and info
 const { selectedFacets, selectAll, deselectAll, isAllSelected, isNoneSelected } =
   useFacetSelection()
@@ -51,13 +54,27 @@ const gridColumns = computed(() =>
     .map((pkg, i) => ({ pkg, originalIndex: i }))
     .filter(({ pkg }) => pkg !== NO_DEPENDENCY_ID)
     .map(({ pkg, originalIndex }) => {
+      const parsed = parsePackageSpec(pkg)
       const data = packagesData.value?.[originalIndex]
       return {
-        name: data?.package.name || pkg,
-        version: data?.package.version,
-        replacement: replacements.value.get(pkg) ?? null,
+        name: data?.package.name || parsed.name,
+        version: data?.package.version || parsed.version,
+        replacement: replacements.value.get(parsed.name) ?? null,
       }
     }),
+)
+
+const uniqueBasePackages = computed(() => getUniqueBasePackages(packages.value))
+const canShowTrends = computed(() => uniqueBasePackages.value.length >= 2)
+const isVersionComparisonComputed = computed(() => isVersionComparison(packages.value))
+
+const filteredFacets = computed(() =>
+  selectedFacets.value.filter(facet => {
+    if (isVersionComparisonComputed.value && shouldHideFacetInVersionComparison(facet.id)) {
+      return false
+    }
+    return true
+  }),
 )
 
 // Whether we can add the no-dep column (not already added and have room)
@@ -84,7 +101,7 @@ const canCopyTable = computed(
 )
 
 const comparisonView = usePermalink<'table' | 'charts'>('view', 'table')
-const hasChartableFacets = computed(() => selectedFacets.value.some(facet => facet.chartable))
+const hasChartableFacets = computed(() => filteredFacets.value.some(facet => facet.chartable))
 
 // Extract headers from columns for facet rows
 const gridHeaders = computed(() =>
@@ -104,7 +121,7 @@ async function exportComparisonDataAsMarkdown() {
   mdData.push(headers)
   const maxLengths = headers.map(item => item.length)
 
-  selectedFacets.value.forEach((facet, index) => {
+  filteredFacets.value.forEach((facet, index) => {
     const label = facet.label
     const data = getFacetValues(facet.id)
     mdData.push([
@@ -336,7 +353,7 @@ useSeoMeta({
             {{ $t('compare.facets.none') }}
           </ButtonBase>
         </div>
-        <CompareFacetSelector />
+        <CompareFacetSelector :is-version-comparison="isVersionComparisonComputed" />
       </section>
 
       <!-- Comparison grid -->
@@ -402,7 +419,7 @@ useSeoMeta({
                   :show-no-dependency="showNoDependency"
                 >
                   <CompareFacetRow
-                    v-for="facet in selectedFacets"
+                    v-for="facet in filteredFacets"
                     :key="facet.id"
                     :label="facet.label"
                     :description="facet.description"
@@ -418,7 +435,7 @@ useSeoMeta({
               <!-- Mobile: Card-based layout -->
               <div class="md:hidden space-y-3 mt-4">
                 <CompareFacetCard
-                  v-for="facet in selectedFacets"
+                  v-for="facet in filteredFacets"
                   :key="facet.id"
                   :label="facet.label"
                   :description="facet.description"
@@ -434,19 +451,21 @@ useSeoMeta({
             <!-- Charts: per-facet bars & scatter -->
             <TabPanel value="charts" panel-id="comparison-panel-charts">
               <div
-                v-if="selectedFacets.some(facet => facet.chartable)"
+                v-if="filteredFacets.some(facet => facet.chartable)"
                 class="sm:grid grid-cols-2 gap-x-4"
               >
                 <div
-                  v-for="facet in selectedFacets.filter(facet => facet.chartable)"
+                  v-for="facet in filteredFacets.filter(facet => facet.chartable)"
                   :key="facet.id"
                   class="my-6"
                 >
                   <FacetBarChart
-                    :values="getFacetValues(facet.id)"
-                    :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
+                    :values="getFacetValues(facet.id).filter(isChartPackage)"
+                    :packages="packages.filter(isChartPackage)"
+                    :packages-data="packagesData.filter(isChartPackage)"
                     :label="facet.label"
                     :description="facet.description"
+                    :facet-id="facet.id"
                     :facet-loading="isFacetLoading(facet.id)"
                   />
                 </div>
@@ -457,21 +476,23 @@ useSeoMeta({
               <div>
                 <FacetScatterChart
                   v-if="packages.length"
-                  :packages-data="packagesData"
-                  :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
+                  :packages="packages.filter(isChartPackage)"
+                  :packages-data="packagesData.filter(isChartPackage)"
                 />
               </div>
             </TabPanel>
           </TabRoot>
 
-          <h2
-            id="trends-comparison-heading"
-            class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
-          >
-            {{ $t('compare.facets.trends.title') }}
-          </h2>
+          <template v-if="canShowTrends">
+            <h2
+              id="trends-comparison-heading"
+              class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
+            >
+              {{ $t('compare.facets.trends.title') }}
+            </h2>
 
-          <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
+            <CompareLineChart :packages="uniqueBasePackages" />
+          </template>
         </div>
 
         <div v-else-if="status === 'error'" class="text-center py-12" role="alert">

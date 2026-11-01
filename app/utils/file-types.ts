@@ -21,7 +21,13 @@ const BINARY_MIME_PREFIXES = new Set([
   'application/octet-stream',
 ])
 
-export function isBinaryContentType(contentType: string): boolean {
+export function isBinaryContentType(contentType: string, language?: string): boolean {
+  // CDNs use octet-stream for source formats they don't recognize. The server
+  // already identifies their language from the path; 'text' is its unknown fallback.
+  if (contentType.startsWith('application/octet-stream') && language && language !== 'text') {
+    return false
+  }
+
   for (const prefix of BINARY_MIME_PREFIXES) {
     if (contentType.startsWith(prefix)) {
       return true

@@ -427,9 +427,9 @@ export type TrendLineDataset = {
   [key: string]: unknown
 } | null
 
-export type TrendTranslateKey = number | 'package.trends.y_axis_label' | (string & {})
+type TrendTranslateKey = number | 'package.trends.y_axis_label' | (string & {})
 
-export type TrendTranslateFunction = {
+type TrendTranslateFunction = {
   (key: TrendTranslateKey): string
   (key: TrendTranslateKey, named: Record<string, unknown>): string
   (key: TrendTranslateKey, named: Record<string, unknown>, options: Record<string, unknown>): string
@@ -461,7 +461,7 @@ export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
   $t: TrendTranslateFunction
 }
 
-export type TimelineSizeDependencyBreakdown = {
+type TimelineSizeDependencyBreakdown = {
   name: string
   size: number
 }
@@ -473,7 +473,7 @@ export type TimelineSizeCacheValue = {
   dependencies: TimelineSizeDependencyBreakdown[]
 }
 
-export type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {
+type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {
   name: string
 }
 
@@ -684,7 +684,7 @@ export async function copyAltTextForVersionsBarChart({
 }
 
 // Used for FacetBarChart.vue
-export function createAltTextForCompareFacetBarChart({
+function createAltTextForCompareFacetBarChart({
   dataset,
   config,
 }: AltCopyArgs<VueUiHorizontalBarDatapoint[], FacetBarChartConfig>) {
@@ -734,7 +734,7 @@ type CompareScatterChartConfig = VueUiScatterConfig & {
 }
 
 // Used for FacetScatterChart.vue
-export function createAltTextForCompareScatterChart({
+function createAltTextForCompareScatterChart({
   dataset,
   config,
 }: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
@@ -1216,13 +1216,16 @@ export const CHART_PATTERN_CONFIG = {
  * Chart annotator slots
  */
 
-type AnnotatorSlotName =
+export type AnnotatorSlotName =
   | 'annotator-action-close'
   | 'annotator-action-color'
   | 'annotator-action-draw'
   | 'annotator-action-undo'
   | 'annotator-action-redo'
   | 'annotator-action-delete'
+  | 'annotator-action-select-multiple'
+  | 'annotator-action-group'
+  | 'annotator-action-ungroup'
   | 'optionAnnotator'
 
 export const CHART_ANNOTATOR_SLOTS = [
@@ -1232,6 +1235,9 @@ export const CHART_ANNOTATOR_SLOTS = [
   'annotator-action-undo',
   'annotator-action-redo',
   'annotator-action-delete',
+  'annotator-action-select-multiple',
+  'annotator-action-group',
+  'annotator-action-ungroup',
   'optionAnnotator',
 ] as const satisfies readonly AnnotatorSlotName[]
 
@@ -1264,6 +1270,14 @@ export function getAnnotatorIcon(slotName: AnnotatorSlotName, props?: unknown) {
       return 'i-lucide:redo-2'
     case 'annotator-action-delete':
       return 'i-lucide:trash'
+    case 'annotator-action-select-multiple':
+      return getSlotProp<boolean>(props, 'isSelecting')
+        ? 'i-lucide:square-dashed-mouse-pointer'
+        : 'i-lucide:square-mouse-pointer'
+    case 'annotator-action-group':
+      return 'i-lucide:group'
+    case 'annotator-action-ungroup':
+      return 'i-lucide:ungroup'
     case 'optionAnnotator':
       return getSlotProp<boolean>(props, 'isAnnotator') ? 'i-lucide:pen-off' : 'i-lucide:pen'
   }

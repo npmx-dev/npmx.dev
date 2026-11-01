@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { normalizeLicense, parseDependencyVersion } from '#shared/utils/npm'
 import type { PackumentLicense } from '#shared/types/npm-registry'
 

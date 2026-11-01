@@ -1737,18 +1737,10 @@
     "p2": "Antes de comenzar, por favor lee nuestra {guide} para aprender sobre nuestro proceso de traducción y cómo puedes participar.",
     "guide": "guía de localización (i18n)",
     "by_locale": "Progreso de traducción por idioma",
-    "by_file": "Progreso de traducción por archivo",
     "complete_text": "Esta traducción está completa, ¡gran trabajo!",
     "missing_text": "faltante",
     "missing_keys": "No hay traducciones faltantes | Traducción faltante | Traducciones faltantes",
-    "progress_label": "Estado de progreso para {locale}",
-    "table": {
-      "file": "Archivo",
-      "status": "Estado",
-      "error": "Error al cargar la lista de archivos.",
-      "empty": "No se encontraron archivos",
-      "file_link": "Editar {file} ({lang}) en GitHub"
-    }
+    "progress_label": "Estado de progreso para {locale}"
   },
   "vacations": {
     "title": "de vacaciones",
@@ -1849,7 +1841,9 @@
       "p1": "Lo sentimos, no se pudo cargar el registro de cambios de {package}",
       "p2": "Inténtalo de nuevo más tarde o {viewon}"
     },
-    "rate_limit_ungh": "Lo sentimos, se alcanzó el límite de tasa de GitHub, inténtalo de nuevo en un momento",
-    "version_unavailable": "La versión solicitada no está disponible."
+    "version_unavailable": "La versión solicitada no está disponible.",
+    "ungh": {
+      "rate_limit": "Lo sentimos, se alcanzó el límite de tasa de GitHub, inténtalo de nuevo en un momento"
+    }
   }
 }

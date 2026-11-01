@@ -24,7 +24,7 @@ type ChartGranularity = 'daily' | 'weekly' | 'monthly' | 'yearly'
 type Metric = 'downloads' | 'likes' | 'contributors'
 type QueryParameters = Record<string, unknown>
 
-export function parsePackageNames(value: unknown): string[] {
+function parsePackageNames(value: unknown): string[] {
   return String(value ?? '')
     .split(',')
     .map(name => name.trim().toLowerCase())
@@ -32,7 +32,7 @@ export function parsePackageNames(value: unknown): string[] {
     .slice(0, 8)
 }
 
-export function parseFetchGranularity(value: unknown): FetchGranularity {
+function parseFetchGranularity(value: unknown): FetchGranularity {
   if (value === 'daily' || value === 'day') return 'day'
   if (value === 'weekly' || value === 'week') return 'week'
   if (value === 'monthly' || value === 'month') return 'month'
@@ -40,7 +40,7 @@ export function parseFetchGranularity(value: unknown): FetchGranularity {
   return 'week'
 }
 
-export function toChartGranularity(granularity: FetchGranularity): ChartGranularity {
+function toChartGranularity(granularity: FetchGranularity): ChartGranularity {
   const mapping: Record<FetchGranularity, ChartGranularity> = {
     day: 'daily',
     week: 'weekly',
@@ -51,7 +51,7 @@ export function toChartGranularity(granularity: FetchGranularity): ChartGranular
   return mapping[granularity]
 }
 
-export function parseLocale(value: unknown): string {
+function parseLocale(value: unknown): string {
   if (typeof value !== 'string') return 'en'
 
   try {
@@ -61,7 +61,7 @@ export function parseLocale(value: unknown): string {
   }
 }
 
-export function parseAccent(value: unknown): string {
+function parseAccent(value: unknown): string {
   if (typeof value !== 'string') {
     return OKLCH_NEUTRAL_FALLBACK
   }
@@ -83,7 +83,7 @@ export function parseAccent(value: unknown): string {
   return OKLCH_NEUTRAL_FALLBACK
 }
 
-export function parseSafeText(value: unknown, fallback = '', maximumLength = 100): string {
+function parseSafeText(value: unknown, fallback = '', maximumLength = 100): string {
   if (typeof value !== 'string') return fallback
 
   return (
@@ -96,7 +96,7 @@ export function parseSafeText(value: unknown, fallback = '', maximumLength = 100
   )
 }
 
-export function parseDateQuery(value: unknown): string | undefined {
+function parseDateQuery(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined
 
   const date = value.trim()
@@ -104,12 +104,7 @@ export function parseDateQuery(value: unknown): string | undefined {
   return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : undefined
 }
 
-export function clampNumber(
-  value: unknown,
-  minimum: number,
-  maximum: number,
-  fallback: number,
-): number {
+function clampNumber(value: unknown, minimum: number, maximum: number, fallback: number): number {
   const parsed = Number(value)
 
   if (!Number.isFinite(parsed)) {
@@ -119,7 +114,7 @@ export function clampNumber(
   return Math.min(maximum, Math.max(minimum, parsed))
 }
 
-export function parseMetric(value: unknown): Metric {
+function parseMetric(value: unknown): Metric {
   if (value === 'likes') return 'likes'
   if (value === 'contributors') return 'contributors'
 

@@ -375,7 +375,6 @@
       "size": "安裝大小增加了 {percent}（多出 {size}）",
       "deps": "增加了 {count} 個相依套件"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "你可能不需要這個相依套件。",
       "native": "此功能自 Node.js {nodeVersion} 起已內建，可直接使用 {replacement} 取代。",
@@ -549,9 +548,6 @@
       "no_match_filter": "沒有版本符合 {filter}"
     },
     "timeline": {
-      "chart": {
-        "copy_alt": {}
-      },
       "deprecated": "已棄用"
     },
     "dependencies": {
@@ -756,9 +752,6 @@
       "button": "下載",
       "tarball": "下載 Tarball（.tar.gz）"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1325,10 +1318,7 @@
         "vulnerabilities": {
           "label": "漏洞",
           "description": "已知安全漏洞"
-        },
-        "githubStars": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "不限",
@@ -1545,18 +1535,10 @@
     "p2": "開始之前，請先閱讀我們的 {guide}，瞭解翻譯流程以及參與方式。",
     "guide": "在地化（i18n）指南",
     "by_locale": "依語言的翻譯進度",
-    "by_file": "依檔案的翻譯進度",
     "complete_text": "這個翻譯已經完成，超棒的！",
     "missing_text": "缺少",
     "missing_keys": "沒有缺少的翻譯 | 缺少 1 處翻譯 | 缺少 {count} 處翻譯",
-    "progress_label": "{locale} 的翻譯進度狀態",
-    "table": {
-      "file": "檔案",
-      "status": "狀態",
-      "error": "載入檔案清單時發生錯誤。",
-      "empty": "找不到任何檔案",
-      "file_link": "在 GitHub 上編輯 {file}（{lang}）"
-    }
+    "progress_label": "{locale} 的翻譯進度狀態"
   },
   "vacations": {
     "title": "休假中",
@@ -1648,8 +1630,5 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "一個可愛、圓潤且色彩繽紛的 npmx 標誌版本。",
-  "changelog": {
-    "error": {}
-  }
+  "alt_logo_kawaii": "一個可愛、圓潤且色彩繽紛的 npmx 標誌版本。"
 }
