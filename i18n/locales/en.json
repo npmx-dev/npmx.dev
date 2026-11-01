@@ -52,7 +52,8 @@
     "open_main": "Open main information",
     "open_diff": "Open version differences",
     "open_timeline": "Open timeline",
-    "open_stats": "Open stats"
+    "open_stats": "Open stats",
+    "share": "Share package"
   },
   "search": {
     "label": "Search npm packages",
@@ -541,8 +542,10 @@
       "compare": "compare",
       "timeline": "timeline",
       "stats": "stats",
-      "changelog": "changelog"
+      "changelog": "changelog",
+      "share": "share"
     },
+    "share_aria_label": "Share {package}",
     "likes": {
       "like": "Like this package",
       "unlike": "Unlike this package",
