@@ -392,6 +392,8 @@ const sizeTooltip = computed(() => {
       }),
     frozenSize.value &&
       installSize.value &&
+      installSize.value.package === packageName.value &&
+      installSize.value.version === resolvedVersion.value &&
       frozenSize.value !== installSize.value.totalSize &&
       $t('package.stats.size_tooltip.frozen', {
         size: bytesFormatter.format(frozenSize.value),

@@ -284,12 +284,16 @@ describe('dependency-resolver', () => {
         ).toBe('1.1.0')
       })
 
-      it('falls back to the full list when nothing satisfies the range yet', () => {
+      it('falls back to the first later release when nothing satisfies the range yet', () => {
         // A dependency published moments after its dependent (monorepos publish a
         // release in topological order) must stay in the tree, not disappear.
         expect(
           resolveVersion('^3.0.0', versions, { before: Date.parse(day(5)), versionsTimes: time }),
         ).toBe('3.0.0')
+        // ...but as close to the limit as possible, not today's newest match.
+        expect(
+          resolveVersion('>=2.0.0', versions, { before: Date.parse(day(5)), versionsTimes: time }),
+        ).toBe('2.0.0')
       })
     })
   })
@@ -426,6 +430,15 @@ describe('dependency-resolver', () => {
       mockVersionsMeta.mockResolvedValue(null)
 
       await expect(getDependenciesResolutionLimit('pkg', '1.0.0')).resolves.toBeUndefined()
+    })
+
+    it('rejects when the versions metadata cannot be fetched', async () => {
+      // Resolving against today's registry instead would be cached as frozen history.
+      mockVersionsMeta.mockRejectedValue(new Error('fast-npm-meta is down'))
+
+      await expect(getDependenciesResolutionLimit('pkg', '1.0.0')).rejects.toThrow(
+        'fast-npm-meta is down',
+      )
     })
   })
 
@@ -849,6 +862,30 @@ describe('dependency-resolver', () => {
         })
 
         expect(result.has('lib@1.1.0')).toBe(true)
+      })
+
+      it('rejects when the publish times of a dependency cannot be fetched', async () => {
+        mockVersionsMeta.mockImplementation(async name => {
+          if (name === 'lib') throw new Error('fast-npm-meta is down')
+          return { versions: ['1.0.0', '1.1.0'], time: { '1.0.0': day(1) }, distTags: {} }
+        })
+
+        await expect(
+          resolveDependencyTree('core', '1.0.0', { before: Date.parse(day(5)) }),
+        ).rejects.toThrow('fast-npm-meta is down')
+      })
+
+      it('ignores releases newer than the publish times snapshot', async () => {
+        // The packument already lists lib@1.1.0, but the cached publish times predate it.
+        mockVersionsMeta.mockResolvedValue({
+          versions: ['1.0.0'],
+          time: { '1.0.0': day(1) },
+          distTags: { latest: '1.0.0' },
+        })
+
+        const result = await resolveDependencyTree('core', '1.0.0', { before: Date.parse(day(5)) })
+
+        expect([...result.keys()].sort()).toEqual(['core@1.0.0', 'lib@1.0.0'])
       })
     })
 

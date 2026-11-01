@@ -1,6 +1,6 @@
 import { mapWithConcurrency } from '#shared/utils/async'
 import { parseDependencyVersion } from '#shared/utils/npm'
-import { findMaxSatisfying, isGreater, isStable } from 'verkit'
+import { findMaxSatisfying, findMinSatisfying, isGreater, isStable } from 'verkit'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
 const PACKUMENT_FETCH_CONCURRENCY = 20
@@ -27,24 +27,6 @@ async function fetchPackument(name: string): Promise<AbbreviatedPackument | null
     if (import.meta.dev) {
       // oxlint-disable-next-line no-console -- log npm registry failures for debugging
       console.warn(`[dep-resolver] Failed to fetch packument for ${name}:`, error)
-    }
-    return null
-  }
-}
-
-/**
- * Fetch the version list and publish times (returns null on error). The abbreviated
- * packument has no `time`, so `before` resolution reads it from here instead.
- */
-async function fetchVersionsMeta(
-  name: string,
-): Promise<Awaited<ReturnType<typeof fetchNpmPackageVersionsMeta>> | null> {
-  try {
-    return await fetchNpmPackageVersionsMeta(name)
-  } catch (error) {
-    if (import.meta.dev) {
-      // oxlint-disable-next-line no-console -- log npm registry failures for debugging
-      console.warn(`[dep-resolver] Failed to fetch publish times for ${name}:`, error)
     }
     return null
   }
@@ -113,12 +95,21 @@ function parsePublishTime(value: string | undefined): number | undefined {
  * Prereleases are not counted as superseding a stable release, since an install
  * keeps resolving to the stable one: 1.0.0 is limited by 1.1.0, not by the
  * 1.1.0-beta.1 that may have come months earlier.
+ *
+ * Monorepos publish a release over a few minutes, so the limit is moved
+ * `RESOLUTION_GRACE_MS` before the next release and never earlier than
+ * `RESOLUTION_GRACE_MS` after this one. When the next release follows within that
+ * grace period, the limit therefore falls after it, and dependency releases
+ * published in between are still included.
+ *
+ * Throws when the publish times cannot be fetched, so that a size resolved
+ * against today's registry is never cached as frozen history.
  */
 export async function getDependenciesResolutionLimit(
   name: string,
   version: string,
 ): Promise<number | undefined> {
-  const meta = await fetchVersionsMeta(name)
+  const meta = await fetchNpmPackageVersionsMeta(name)
   // A fully unpublished package still has a `time` (carrying `unpublished`) but
   // no `versions` at all.
   if (!meta?.time || !meta.versions.length) return undefined
@@ -194,6 +185,8 @@ export function getDependenciesResolutionLimitPure(
  *
  * When `before` is set, only versions published at or before that timestamp are
  * considered. An exact version is always respected, regardless of its publish time.
+ * If no such version satisfies the range, the lowest version that does is used, which
+ * is the first one that became available after `before`.
  */
 export function resolveVersion(
   range: string,
@@ -234,8 +227,9 @@ export function resolveVersion(
     return published === undefined || published <= before
   })
 
-  // Fallback to the full list of dependencies, ignoring the `before` limit
-  return findMaxSatisfying(eligible, range) ?? findMaxSatisfying(versions, range)
+  // Nothing in range was published yet, e.g. a monorepo sibling published moments
+  // after its dependent. Keep the dependency, with the first release that came after.
+  return findMaxSatisfying(eligible, range) ?? findMinSatisfying(versions, range)
 }
 
 /** Resolved package info */
@@ -312,11 +306,18 @@ export async function resolveDependencyTree(
       async ({ name, range, optional, path }) => {
         const [packument, versionsMeta] = await Promise.all([
           fetchPackument(name),
-          options.before === undefined ? null : fetchVersionsMeta(name),
+          // Let a failure reject the whole tree, so that it isn't cached as frozen history.
+          options.before === undefined ? null : fetchNpmPackageVersionsMeta(name),
         ])
         if (!packument) return
 
-        const versions = Object.keys(packument.versions)
+        // With `before`, only pick from the versions the publish times were read with: a
+        // release newer than that snapshot has no publish time and would pass as an old one.
+        // Exact pins are still honoured, like `resolveVersion` does.
+        const snapshot = versionsMeta && new Set(versionsMeta.versions)
+        const versions = Object.keys(packument.versions).filter(
+          version => !snapshot || snapshot.has(version) || version === range,
+        )
         const version = resolveVersion(range, versions, {
           before: options.before,
           versionsTimes: versionsMeta?.time,
