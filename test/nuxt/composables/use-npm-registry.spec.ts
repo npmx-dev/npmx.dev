@@ -56,4 +56,14 @@ describe('usePackageDownloads', () => {
     expect(fetchSpy).toHaveBeenCalled()
     expect(fetchSpy.mock.calls[0]?.[0]).toBe('/downloads/point/last-week/@vue%2Fcore')
   })
+
+  it('lets the registry cache headers decide freshness', async () => {
+    const { status } = usePackageDownloads('nuxt')
+
+    await vi.waitFor(() => {
+      expect(status.value).toBe('success')
+    })
+
+    expect(fetchSpy.mock.calls[0]?.[1]).not.toHaveProperty('cache')
+  })
 })
