@@ -4,7 +4,13 @@ rules:
   stale-action-refs:
     ignore:
       # lunariajs/action has no tag refs; keep the branch commit hash-pinned.
-      - lunaria.yml:39
+      - lunaria.yml:40
+  concurrency-limits:
+    ignore:
+      # Stateless, idempotent check. Concurrency groups cancel superseded pending
+      # runs even with `cancel-in-progress: false`, which would leave a failed
+      # check on the release PR's head commit (`main`).
+      - enforce-release-source.yml
   dangerous-triggers:
     ignore:
       - enforce-release-source.yml

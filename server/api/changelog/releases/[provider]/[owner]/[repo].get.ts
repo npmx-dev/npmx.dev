@@ -1,6 +1,7 @@
 import type { ProviderId } from '~~/shared/utils/git-providers'
 import type { ReleaseData } from '~~/shared/types/changelog'
 import * as v from 'valibot'
+import { FetchError } from 'ofetch'
 import {
   ERROR_CHANGELOG_RELEASES_FAILED,
   ERROR_THROW_INCOMPLETE_PARAM,
@@ -9,10 +10,18 @@ import {
   GithubReleaseCollectionSchama,
   ForgejoReleaseCollectionSchema,
   GitlabReleaseCollectionSchema,
+  GiteaReleaseCollectionSchema,
+  GiteeReleaseCollectionSchema,
 } from '~~/shared/schemas/changelog/release'
 import { changelogRenderer } from '~~/server/utils/changelog/markdown'
-import { createForgejoRepoInfo, createGithubRepoInfo } from '~~/server/utils/changelog/mdRepoInfo'
+import {
+  createForgejoRepoInfo,
+  createGiteaRepoInfo,
+  createGithubRepoInfo,
+} from '~~/server/utils/changelog/mdRepoInfo'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
+
+const TIMEOUT_TIME = 15_000
 
 export default defineCachedEventHandler(
   async event => {
@@ -39,6 +48,10 @@ export default defineCachedEventHandler(
           return await getReleasesFromForgejo(owner, repo, host)
         case 'gitlab':
           return await getReleasesFromGitlab(owner, repo, host)
+        case 'gitea':
+          return await getReleasesFromGitea(owner, repo, host)
+        case 'gitee':
+          return await getReleasesFromGitee(owner, repo)
 
         default:
           throw createError({
@@ -74,32 +87,49 @@ export default defineCachedEventHandler(
 )
 
 async function getReleasesFromGithub(owner: string, repo: string) {
-  const data = await $fetch(`https://ungh.cc/repos/${owner}/${repo}/releases`, {
-    headers: {
-      'Accept': '*/*',
-      'User-Agent': 'npmx.dev',
-    },
-  })
+  try {
+    const data = await $fetch(`https://ungh.cc/repos/${owner}/${repo}/releases`, {
+      headers: {
+        'Accept': '*/*',
+        'User-Agent': 'npmx.dev',
+      },
+      // with 403/429, the specific token from ungh could be exhausted, so we retry in case a different one does work
+      retryDelay: 300,
+      retry: 3,
+      // only 403 has been added, others status codes are defaults from ofetch
+      retryStatusCodes: [403, 408, 409, 425, 429, 500, 502, 503, 504],
+      timeout: TIMEOUT_TIME,
+    })
 
-  const { releases } = v.parse(GithubReleaseCollectionSchama, data)
+    const { releases } = v.parse(GithubReleaseCollectionSchama, data)
 
-  const render = await changelogRenderer(createGithubRepoInfo(owner, repo))
+    const render = await changelogRenderer(createGithubRepoInfo(owner, repo))
 
-  return releases.map(r => {
-    const { html, toc } = render(r.markdown, r.id)
-    return {
-      id: r.id,
-      // replace single \n within <p> like with Vue's releases
-      html: html?.replace(/(?<!>)\n/g, '<br>') ?? null,
-      title: r.name || r.tag,
-      draft: r.draft,
-      prerelease: r.prerelease,
-      toc,
-      publishedAt: r.publishedAt,
-      link: `https://github.com/${owner}/${repo}/releases/tag/${r.tag}`,
-      tag: r.tag,
-    } satisfies ReleaseData
-  })
+    return releases.map(r => {
+      const { html, toc } = render(r.markdown, r.id)
+      return {
+        id: r.id,
+        // replace single \n within <p> like with Vue's releases
+        html: html?.replace(/(?<!>)\n/g, '<br>') ?? null,
+        title: r.name || r.tag,
+        draft: r.draft,
+        prerelease: r.prerelease,
+        toc,
+        publishedAt: r.publishedAt,
+        link: `https://github.com/${owner}/${repo}/releases/tag/${r.tag}`,
+        tag: r.tag,
+      } satisfies ReleaseData
+    })
+  } catch (error) {
+    if (error instanceof FetchError && (error.statusCode == 403 || error.statusCode == 429)) {
+      throw createError({
+        statusCode: 502,
+        message: ERROR_UNGH_API_KEY_EXHAUSTED,
+        statusMessage: ERROR_UNGH_API_KEY_EXHAUSTED,
+      })
+    }
+    throw error
+  }
 }
 
 async function getReleasesFromForgejo(owner: string, repo: string, host: string) {
@@ -107,6 +137,7 @@ async function getReleasesFromForgejo(owner: string, repo: string, host: string)
     headers: {
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
   const releases = v.parse(ForgejoReleaseCollectionSchema, data)
 
@@ -137,6 +168,7 @@ async function getReleasesFromGitlab(owner: string, repo: string, host: string) 
     headers: {
       'User-Agent': 'npmx.dev',
     },
+    timeout: TIMEOUT_TIME,
   })
 
   const releases = v.parse(GitlabReleaseCollectionSchema, data)
@@ -154,6 +186,63 @@ async function getReleasesFromGitlab(owner: string, repo: string, host: string) 
       publishedAt: r.released_at,
       // oxlint-disable-next-line no-underscore-dangle
       link: r._links.self,
+      tag: r.tag_name,
+    } satisfies ReleaseData
+  })
+}
+
+async function getReleasesFromGitea(owner: string, repo: string, host: string) {
+  const data = await $fetch(`https://${host}/api/v1/repos/${owner}/${repo}/releases?draft=false`, {
+    headers: {
+      'User-Agent': 'npmx.dev',
+    },
+    timeout: TIMEOUT_TIME,
+  })
+  const releases = v.parse(GiteaReleaseCollectionSchema, data)
+
+  const render = await changelogRenderer(createGiteaRepoInfo(host, owner, repo))
+
+  return releases.map(r => {
+    const { html, toc } = render(r.body, r.id)
+    return {
+      id: r.id,
+      html: html?.replace(/(?<!>)\n/g, '<br>') ?? null,
+      title: r.name || r.tag_name,
+      prerelease: r.prerelease,
+      toc,
+      link: r.html_url,
+      publishedAt: r.published_at,
+      draft: r.draft,
+      tag: r.tag_name,
+    } satisfies ReleaseData
+  })
+}
+
+async function getReleasesFromGitee(owner: string, repo: string) {
+  const data = await $fetch(
+    `https://gitee.com/api/v5/repos/${owner}/${repo}/releases?per_page=30`,
+    {
+      headers: {
+        'User-Agent': 'npmx.dev',
+      },
+      timeout: TIMEOUT_TIME,
+    },
+  )
+
+  const releases = v.parse(GiteeReleaseCollectionSchema, data)
+
+  const render = await changelogRenderer(createGiteeRepoInfo(owner, repo))
+
+  return releases.map(r => {
+    const { html, toc } = render(r.body, r.id)
+    return {
+      id: r.id,
+      html: html?.replace(/(?<!>)\n/g, '<br>') ?? null,
+      title: r.name || r.tag_name,
+      prerelease: r.prerelease,
+      toc,
+      link: `https://gitee.com/${owner}/${repo}/releases/tag/${r.tag_name}`,
+      publishedAt: r.created_at,
       tag: r.tag_name,
     } satisfies ReleaseData
   })

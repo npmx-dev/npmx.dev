@@ -1,5 +1,18 @@
 <script setup lang="ts">
-import type { FilterChip, SortOption } from '#shared/types/preferences'
+import {
+  type ColumnConfig,
+  type FilterChip,
+  type SortOption,
+  type StructuredFilters,
+  DEFAULT_COLUMNS,
+  DEFAULT_FILTERS,
+  parseDownloadRange,
+  parseSearchScope,
+  parseSecurityFilter,
+  parseUpdatedWithin,
+  parseColumns,
+  serializeVisibleColumns,
+} from '#shared/types/preferences'
 import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
 
@@ -39,8 +52,60 @@ const packages = computed(() => results.value?.objects ?? [])
 const packageCount = computed(() => packages.value.length)
 
 // Preferences (persisted to localStorage)
-const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns } =
+const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns, isHydrated } =
   usePackageListPreferences()
+
+const initialFilters: Partial<StructuredFilters> = {}
+const searchScope = parseSearchScope(normalizeSearchParam(route.query.scope))
+const downloadRange = parseDownloadRange(normalizeSearchParam(route.query.downloads))
+const security = parseSecurityFilter(normalizeSearchParam(route.query.security))
+const updatedWithin = parseUpdatedWithin(normalizeSearchParam(route.query.updated))
+
+if (searchScope) initialFilters.searchScope = searchScope
+if (downloadRange) initialFilters.downloadRange = downloadRange
+if (security) initialFilters.security = security
+if (updatedWithin) initialFilters.updatedWithin = updatedWithin
+
+const columnOverride = shallowRef<ColumnConfig[] | null>(null)
+
+watch(
+  [isHydrated, () => route.query.columns],
+  ([hydrated]) => {
+    if (!hydrated) return
+    const ids = parseColumns(
+      route.query.columns === undefined ? undefined : normalizeSearchParam(route.query.columns),
+    )
+    if (!ids) {
+      columnOverride.value = null
+      return
+    }
+    columnOverride.value = columns.value.map(col => ({
+      ...col,
+      visible: col.id === 'name' || ids.includes(col.id),
+    }))
+  },
+  { immediate: true },
+)
+
+const viewColumns = computed(() => columnOverride.value ?? columns.value)
+
+function handleToggleColumn(columnId: ColumnConfig['id']) {
+  if (!columnOverride.value) {
+    toggleColumn(columnId)
+    return
+  }
+  columnOverride.value = columnOverride.value.map(col =>
+    col.id === columnId ? { ...col, visible: !col.visible } : col,
+  )
+}
+
+function handleResetColumns() {
+  if (!columnOverride.value) {
+    resetColumns()
+    return
+  }
+  columnOverride.value = DEFAULT_COLUMNS.map(col => ({ ...col }))
+}
 
 // Structured filters and sorting
 const {
@@ -61,6 +126,7 @@ const {
 } = useStructuredFilters({
   packages,
   initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? DEFAULT_SORT,
+  initialFilters,
 })
 
 // Pagination state
@@ -84,24 +150,61 @@ watch(totalPages, newTotal => {
 })
 
 // Debounced URL update for filter/sort
-const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
-  router.replace({
-    query: {
-      ...route.query,
-      q: updates.filter || undefined,
-      sort: updates.sort && updates.sort !== DEFAULT_SORT ? updates.sort : undefined,
-    },
-  })
-}, 300)
+const updateUrl = debounce(
+  (updates: {
+    filter?: string
+    sort?: string
+    scope?: string
+    downloads?: string
+    security?: string
+    updated?: string
+  }) => {
+    router.replace({
+      query: {
+        ...route.query,
+        q: updates.filter || undefined,
+        sort: updates.sort && updates.sort !== DEFAULT_SORT ? updates.sort : undefined,
+        columns: serializeVisibleColumns(viewColumns.value),
+        scope:
+          updates.scope && updates.scope !== DEFAULT_FILTERS.searchScope
+            ? updates.scope
+            : undefined,
+        downloads:
+          updates.downloads && updates.downloads !== DEFAULT_FILTERS.downloadRange
+            ? updates.downloads
+            : undefined,
+        security:
+          updates.security && updates.security !== DEFAULT_FILTERS.security
+            ? updates.security
+            : undefined,
+        updated:
+          updates.updated && updates.updated !== DEFAULT_FILTERS.updatedWithin
+            ? updates.updated
+            : undefined,
+      },
+    })
+  },
+  300,
+)
 
-// Update URL when filter/sort changes (debounced)
+// Update URL when filter/sort/columns change (debounced)
 watch(
-  [() => filters.value.text, () => filters.value.keywords, () => sortOption.value] as const,
-  ([text, keywords, sort]) => {
+  [
+    () => filters.value.text,
+    () => filters.value.keywords,
+    () => sortOption.value,
+    () => filters.value.searchScope,
+    () => filters.value.downloadRange,
+    () => filters.value.security,
+    () => filters.value.updatedWithin,
+    // serialize so visibility toggles (same array ref) still trigger
+    () => serializeVisibleColumns(viewColumns.value),
+  ] as const,
+  ([text, keywords, sort, scope, downloads, security, updated]) => {
     const filter = [text, ...keywords.map(keyword => `keyword:${keyword}`)]
       .filter(Boolean)
       .join(' ')
-    updateUrl({ filter, sort })
+    updateUrl({ filter, sort, scope, downloads, security, updated })
   },
 )
 
@@ -298,15 +401,15 @@ defineOgImage(
         :filters="filters"
         v-model:sort-option="sortOption"
         v-model:view-mode="viewMode"
-        :columns="columns"
+        :columns="viewColumns"
         v-model:pagination-mode="paginationMode"
         v-model:page-size="pageSize"
         :total-count="packageCount"
         :filtered-count="filteredCount"
         :available-keywords="availableKeywords"
         :active-filters="activeFilters"
-        @toggle-column="toggleColumn"
-        @reset-columns="resetColumns"
+        @toggle-column="handleToggleColumn"
+        @reset-columns="handleResetColumns"
         @clear-filter="handleClearFilter"
         @clear-all-filters="clearAllFilters"
         @update:text="setTextFilter"
@@ -328,7 +431,7 @@ defineOgImage(
         <PackageList
           :results="sortedPackages"
           :view-mode="viewMode"
-          :columns="columns"
+          :columns="viewColumns"
           :filters="filters"
           v-model:sort-option="sortOption"
           :pagination-mode="paginationMode"

@@ -23,8 +23,6 @@ import {
   type TimelineSizeCacheValue,
   CHART_ANNOTATOR_SLOTS,
   E18E_GRADIENT_COLORS,
-  getAnnotatorIcon,
-  getAnnotatorStyle,
   type TimelineChartMetric,
   type StackbarTooltipPoint,
   type TimelinePlotItem,
@@ -272,7 +270,6 @@ function stackbarTooltipPoints(
       }
     })
     .filter(point => point.size > 0)
-    .toReversed()
 }
 
 function areAllValuesEqual(array: number[]): boolean {
@@ -431,6 +428,7 @@ const commonConfig = computed<CommonUserOptions>(() => ({
     },
   },
   buttonTitles: {
+    fullscreen: $t('package.trends.toggle_fullscreen'),
     csv: $t('package.trends.download_file', { fileType: 'CSV' }),
     img: $t('package.trends.download_file', { fileType: 'PNG' }),
     svg: $t('package.trends.download_file', { fileType: 'SVG' }),
@@ -441,6 +439,15 @@ const commonConfig = computed<CommonUserOptions>(() => ({
     close: $t('package.trends.close_options'),
   },
 }))
+
+const XAXIS_LABELS_MOD_THRESHOLD = 32
+
+const xAxisLabelsModulo = computed(() => {
+  const count = versions.value.length
+  if (count <= XAXIS_LABELS_MOD_THRESHOLD) return 1
+  const targetLabelCount = Math.min(XAXIS_LABELS_MOD_THRESHOLD, Math.round(count / 2))
+  return Math.max(1, Math.round(count / targetLabelCount))
+})
 
 const config = computed<VueUiXyConfig>(() => {
   return {
@@ -480,8 +487,8 @@ const config = computed<VueUiXyConfig>(() => {
           xAxisLabels: {
             color: colors.value.fgSubtle,
             fontSize: isMobile.value ? 12 : 10,
-            modulo: Math.min(32, Math.round(versions.value.length / 2)),
-            showOnlyAtModulo: versions.value.length > 32,
+            modulo: xAxisLabelsModulo.value,
+            showOnlyAtModulo: versions.value.length > XAXIS_LABELS_MOD_THRESHOLD,
             values: versions.value.map(v => applyEllipsis(v, 20)),
             rotation: -30,
             autoRotate: {
@@ -527,7 +534,7 @@ const config = computed<VueUiXyConfig>(() => {
         buttons: {
           pdf: false,
           labels: false,
-          fullscreen: false,
+          fullscreen: true,
           table: false,
           tooltip: false,
           altCopy: true,
@@ -721,7 +728,7 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
     buttons: {
       pdf: false,
       labels: false,
-      fullscreen: false,
+      fullscreen: true,
       table: false,
       tooltip: false,
       annotator: !isMobile.value,
@@ -803,8 +810,8 @@ const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
             color: colors.value.fgSubtle,
             fontSize: isMobile.value ? 12 : 10,
             rotation: -30,
-            modulo: Math.min(32, Math.round(versions.value.length / 2)),
-            showOnlyAtModulo: versions.value.length > 32,
+            modulo: xAxisLabelsModulo.value,
+            showOnlyAtModulo: versions.value.length > XAXIS_LABELS_MOD_THRESHOLD,
             autoRotate: { enable: false },
           },
         },
@@ -1010,6 +1017,9 @@ const timelineMetricTabs = computed(() => [
         <template #custom-menu-before>
           <ChartCopyPngButton :copied="copiedPng" :copying="isCopyingPng" @click="copyChartPng" />
         </template>
+        <template #optionFullscreen="{ isFullscreen }">
+          <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+        </template>
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
         </template>
@@ -1030,16 +1040,7 @@ const timelineMetricTabs = computed(() => [
         </template>
 
         <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
-          <span
-            v-if="getAnnotatorIcon(slotName, slotProps)"
-            class="w-6 h-6"
-            :class="[
-              getAnnotatorIcon(slotName, slotProps),
-              slotName === 'annotator-action-color' ? null : 'text-fg-subtle',
-            ]"
-            :style="getAnnotatorStyle(slotName, slotProps)"
-            aria-hidden="true"
-          />
+          <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
         </template>
 
         <template #optionAltCopy>
@@ -1119,6 +1120,9 @@ const timelineMetricTabs = computed(() => [
         <template #custom-menu-before>
           <ChartCopyPngButton :copied="copiedPng" :copying="isCopyingPng" @click="copyChartPng" />
         </template>
+        <template #optionFullscreen="{ isFullscreen }">
+          <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+        </template>
         <template #optionImg>
           <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
         </template>
@@ -1138,16 +1142,7 @@ const timelineMetricTabs = computed(() => [
         </template>
 
         <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
-          <span
-            v-if="getAnnotatorIcon(slotName, slotProps)"
-            class="w-6 h-6"
-            :class="[
-              getAnnotatorIcon(slotName, slotProps),
-              slotName === 'annotator-action-color' ? null : 'text-fg-subtle',
-            ]"
-            :style="getAnnotatorStyle(slotName, slotProps)"
-            aria-hidden="true"
-          />
+          <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
         </template>
       </VueUiStackbar>
 

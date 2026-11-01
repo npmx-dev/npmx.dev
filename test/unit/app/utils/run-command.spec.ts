@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { getExecutableInfo, getRunCommand, getRunCommandParts } from '~/utils/run-command'
 import { isBinaryOnlyPackage, isCreatePackage } from '#shared/utils/binary-detection'
 import type { JsrPackageInfo } from '#shared/types/jsr'

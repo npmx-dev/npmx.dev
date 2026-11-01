@@ -1,9 +1,9 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import {
   extractInstallScriptsInfo,
   getInstallScriptFilePath,
   parseNodeScript,
-} from '~/utils/install-scripts'
+} from '#shared/utils/install-scripts'
 
 describe('extractInstallScriptsInfo', () => {
   it('returns null when no install scripts exist', () => {

@@ -9,6 +9,7 @@ definePageMeta({
   scrollMargin: 180,
 })
 
+const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 
@@ -88,6 +89,21 @@ const { data: docsData, status: docsStatus } = useLazyFetch<DocsResponse>(
     }),
   },
 )
+
+// The docs HTML is only fetched client-side, so on a direct load the router's scroll behavior runs
+// before the hash target exists. Navigate to the hash again once the content has rendered.
+if (import.meta.client) {
+  watch(
+    () => docsData.value?.html,
+    html => {
+      if (html && route.hash) {
+        navigateTo(route.hash, { replace: true })
+      }
+    },
+    { flush: 'post' },
+  )
+}
+
 // Keep latestVersion for comparison (to show "(latest)" badge)
 const latestVersionDetailed = computed(() => {
   if (!pkg.value) return null
@@ -239,6 +255,24 @@ const stickyStyle = computed(() => {
   @apply text-xs text-fg-subtle hover:text-fg block py-0.5 truncate;
 }
 
+.toc-content li.docs-toc-group:not(:first-child) {
+  @apply mt-6;
+}
+
+/* Ellipsise long entry points from the start so the subpath tail stays readable.
+   Flipping `direction` moves the overflow, and its ellipsis, to the page's
+   inline-start edge; `text-align` pulls labels that fit back to that same edge.
+   The label is wrapped in <bdi> so its own text keeps its natural direction. */
+.toc-content .docs-toc-group > a {
+  direction: rtl;
+  text-align: left;
+}
+
+html[dir='rtl'] .toc-content .docs-toc-group > a {
+  direction: ltr;
+  text-align: right;
+}
+
 /* Main docs content container - no max-width to use full space */
 .docs-content {
   @apply max-w-none;
@@ -252,6 +286,18 @@ const stickyStyle = computed(() => {
 .docs-content .docs-section-title {
   @apply text-lg font-semibold text-fg mb-8 pb-3 pt-4 border-b border-border sticky bg-bg z-[2];
   top: var(--combined-header-height);
+}
+
+.docs-content .docs-group {
+  scroll-margin-top: var(--combined-header-height);
+}
+
+.docs-content .docs-group-title {
+  @apply static mt-20;
+}
+
+.docs-content .docs-group:first-child .docs-group-title {
+  @apply mt-0;
 }
 
 /* Individual symbol articles */
@@ -475,6 +521,11 @@ const stickyStyle = computed(() => {
 
 .docs-content .docs-members pre code {
   @apply text-fg-muted;
+}
+
+/* Members linked via {@link Symbol.member} */
+.docs-content .docs-members :target {
+  @apply scroll-mt-32 bg-badge-yellow/10 rounded-md;
 }
 
 .docs-content .docs-symbol-name,
