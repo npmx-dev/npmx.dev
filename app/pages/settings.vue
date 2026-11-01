@@ -2,7 +2,7 @@
 import type { LocaleObject } from '@nuxtjs/i18n'
 
 const router = useRouter()
-const { settings } = useSettings()
+const { settings, resetSettings } = useSettings()
 const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
@@ -28,6 +28,29 @@ const currentLocale = computed<string>({
   },
 })
 
+const isConfirmingReset = shallowRef(false)
+const resetTriggerRef = useTemplateRef('resetTriggerRef')
+const resetCancelRef = useTemplateRef('resetCancelRef')
+
+async function startResetConfirmation() {
+  isConfirmingReset.value = true
+  // The trigger button is replaced by the confirmation, so move focus into it
+  await nextTick()
+  resetCancelRef.value?.focus()
+}
+
+async function endResetConfirmation() {
+  isConfirmingReset.value = false
+  await nextTick()
+  resetTriggerRef.value?.focus()
+}
+
+function confirmResetSettings() {
+  resetSettings()
+  colorMode.preference = 'system'
+  endResetConfirmation()
+}
+
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
   e =>
@@ -37,6 +60,11 @@ onKeyStroke(
     !document.documentElement.matches('html:has(:modal)'),
   e => {
     e.preventDefault()
+    // Escape cancels a pending reset instead of leaving the page
+    if (isConfirmingReset.value) {
+      endResetConfirmation()
+      return
+    }
     router.back()
   },
   { dedupe: true },
@@ -331,6 +359,42 @@ useSeoMeta({
               :description="$t('settings.keyboard_shortcuts_enabled_description')"
               v-model="settings.keyboardShortcuts"
             />
+          </div>
+        </section>
+
+        <!-- RESET Section -->
+        <section>
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
+            {{ $t('settings.sections.reset') }}
+          </h2>
+          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-3">
+            <p class="text-xs text-fg-muted">
+              {{ $t('settings.reset_settings_description') }}
+            </p>
+            <div
+              v-if="isConfirmingReset"
+              role="group"
+              aria-labelledby="reset-settings-confirm"
+              class="flex flex-wrap items-center gap-2"
+            >
+              <span id="reset-settings-confirm" class="text-sm text-fg">
+                {{ $t('settings.reset_settings_confirm') }}
+              </span>
+              <ButtonBase variant="primary" @click="confirmResetSettings">
+                {{ $t('settings.sections.reset') }}
+              </ButtonBase>
+              <ButtonBase ref="resetCancelRef" @click="endResetConfirmation">
+                {{ $t('common.cancel') }}
+              </ButtonBase>
+            </div>
+            <ButtonBase
+              v-else
+              ref="resetTriggerRef"
+              classicon="i-lucide:rotate-ccw"
+              @click="startResetConfirmation"
+            >
+              {{ $t('settings.reset_settings') }}
+            </ButtonBase>
           </div>
         </section>
       </div>
