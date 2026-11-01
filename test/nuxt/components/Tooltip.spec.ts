@@ -90,6 +90,18 @@ describe('TooltipApp hides when the page loses focus', () => {
     }
   })
 
+  it('hides when the page is hidden for navigation', async () => {
+    const wrapper = await mountVisibleTooltip()
+    try {
+      window.dispatchEvent(new Event('pagehide'))
+      await nextTick()
+
+      expect(findTooltip()).toBeNull()
+    } finally {
+      wrapper.unmount()
+    }
+  })
+
   it('hides when the document becomes hidden', async () => {
     const wrapper = await mountVisibleTooltip()
     // `hidden` normally lives on the prototype, so there is no own descriptor to
