@@ -234,6 +234,23 @@ export default defineConfig({
       () =>
         defineVitestProject({
           plugins: [liveDollarFetch()],
+          // @nuxt/test-utils 4.3 enables dependency discovery for Vitest browser mode. Deps found
+          // only after tests start make Vite re-optimize mid-run, which reloads the browser and
+          // fails the suite on a cold cache (always the case in CI), so pre-bundle the ones found late.
+          optimizeDeps: {
+            include: [
+              '@atcute/bluesky-richtext-segmenter',
+              '@atcute/tid',
+              '@vue/compiler-dom',
+              '@vueuse/integrations/useFuse',
+              'axe-core',
+              'module-replacements',
+              'packumeta',
+              'vue-data-ui/composables',
+              'vue-data-ui/utils',
+              'vue-data-ui/vue-ui-pattern-seed',
+            ],
+          },
           resolve: {
             alias: {
               // Work around Vitest mixing browser and CommonJS Vue compiler builds.

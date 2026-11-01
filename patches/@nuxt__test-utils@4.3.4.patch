@@ -1,0 +1,13 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 75e0afb97ce266a5aaf77806d7fd61774b158657..8f8587d559987fec56a419c7ea5c0212bbce00b7 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -62,7 +62,7 @@ const createMockPlugin = (ctx) => createUnplugin(() => {
+ 						};
+ 					};
+ 					if (isImportDeclaration(node)) {
+-						if (node.source.value === "vitest" && !hasViImport) {
++						if ((node.source.value === "vitest" || node.source.value === "vite-plus/test") && !hasViImport) {
+ 							if (node.specifiers.find((i) => isImportSpecifier(i) && i.imported.type === "Identifier" && i.imported.name === "vi")) {
+ 								insertionPoint = node.end;
+ 								hasViImport = true;
