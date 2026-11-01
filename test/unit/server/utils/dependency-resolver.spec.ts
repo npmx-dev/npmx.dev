@@ -11,6 +11,39 @@ vi.stubGlobal('fetchNpmPackageAbbreviated', mockAbbreviatedPackument)
 const mockVersionLibc = vi.fn<(name: string, version: string) => Promise<string[] | undefined>>()
 vi.stubGlobal('fetchNpmPackageVersionLibc', mockVersionLibc)
 
+interface VersionsMeta {
+  versions: string[]
+  time: Record<string, string>
+  distTags: Record<string, string>
+}
+const mockVersionsMeta = vi.fn<(name: string) => Promise<VersionsMeta | null>>()
+vi.stubGlobal('fetchNpmPackageVersionsMeta', mockVersionsMeta)
+
+type MockPackument = AbbreviatedPackument & { time: Record<string, string> }
+
+/**
+ * Serves both the abbreviated packument and the publish-time lookup from one fixture,
+ * like the registry and fast-npm-meta would for the same package.
+ */
+function mockRegistry(resolve: (name: string) => Promise<MockPackument | null>) {
+  // The real abbreviated packument has no `time`, so neither does the mock.
+  mockAbbreviatedPackument.mockImplementation(async name => {
+    const packument = await resolve(name)
+    if (!packument) return null
+    const { time: _time, ...abbreviated } = packument
+    return abbreviated
+  })
+  mockVersionsMeta.mockImplementation(async name => {
+    const packument = await resolve(name)
+    if (!packument) return null
+    return {
+      versions: Object.keys(packument.versions),
+      time: packument.time,
+      distTags: packument['dist-tags'] ?? {},
+    }
+  })
+}
+
 const {
   TARGET_PLATFORM,
   matchesPlatform,
@@ -40,7 +73,7 @@ function makePackument(
     deprecated?: string
     time?: string
   }>,
-): AbbreviatedPackument {
+): MockPackument {
   const versionsMap: Record<string, AbbreviatedPackumentVersion> = {}
   const time: Record<string, string> = {}
   for (const v of versions) {
@@ -56,7 +89,7 @@ function makePackument(
       ...(v.deprecated ? { deprecated: v.deprecated } : {}),
     }
   }
-  return { name, versions: versionsMap, time } as AbbreviatedPackument
+  return { name, versions: versionsMap, time }
 }
 
 describe('dependency-resolver', () => {
@@ -372,11 +405,11 @@ describe('dependency-resolver', () => {
 
   describe('getDependenciesResolutionLimit', () => {
     beforeEach(() => {
-      mockFetchNpmPackage.mockReset()
+      mockVersionsMeta.mockReset()
     })
 
-    it('reads publish times from the packument', async () => {
-      mockFetchNpmPackage.mockResolvedValue(
+    it('reads publish times from the versions metadata', async () => {
+      mockRegistry(async () =>
         makePackument('pkg', [
           { version: '1.0.0', time: day(1) },
           { version: '1.1.0', time: day(10) },
@@ -389,8 +422,8 @@ describe('dependency-resolver', () => {
       await expect(getDependenciesResolutionLimit('pkg', '1.1.0')).resolves.toBeUndefined()
     })
 
-    it('returns undefined when the packument is unavailable', async () => {
-      mockFetchNpmPackage.mockResolvedValue(null)
+    it('returns undefined when the versions metadata is unavailable', async () => {
+      mockVersionsMeta.mockResolvedValue(null)
 
       await expect(getDependenciesResolutionLimit('pkg', '1.0.0')).resolves.toBeUndefined()
     })
@@ -765,7 +798,7 @@ describe('dependency-resolver', () => {
       }
 
       beforeEach(() => {
-        mockFetchNpmPackage.mockImplementation(monorepo)
+        mockRegistry(monorepo)
       })
 
       it('resolves a superseded version against the registry of its own time', async () => {
@@ -795,7 +828,7 @@ describe('dependency-resolver', () => {
 
       it('keeps a sibling published later in the same release batch', async () => {
         // lib@1.1.0 landing after core@1.1.0 must not drop lib from the tree.
-        mockFetchNpmPackage.mockImplementation(async (name: string) => {
+        mockRegistry(async (name: string) => {
           if (name === 'core')
             return makePackument('core', [
               { version: '1.1.0', deps: { lib: '^1.1.0' }, unpackedSize: 500, time: day(10) },

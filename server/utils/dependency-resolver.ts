@@ -32,6 +32,24 @@ async function fetchPackument(name: string): Promise<AbbreviatedPackument | null
   }
 }
 
+/**
+ * Fetch the version list and publish times (returns null on error). The abbreviated
+ * packument has no `time`, so `before` resolution reads it from here instead.
+ */
+async function fetchVersionsMeta(
+  name: string,
+): Promise<Awaited<ReturnType<typeof fetchNpmPackageVersionsMeta>> | null> {
+  try {
+    return await fetchNpmPackageVersionsMeta(name)
+  } catch (error) {
+    if (import.meta.dev) {
+      // oxlint-disable-next-line no-console -- log npm registry failures for debugging
+      console.warn(`[dep-resolver] Failed to fetch publish times for ${name}:`, error)
+    }
+    return null
+  }
+}
+
 /** The subset of version fields used to decide platform compatibility. */
 interface PlatformRestrictions {
   os?: string[]
@@ -100,17 +118,12 @@ export async function getDependenciesResolutionLimit(
   name: string,
   version: string,
 ): Promise<number | undefined> {
-  const packument = await fetchPackument(name)
+  const meta = await fetchVersionsMeta(name)
   // A fully unpublished package still has a `time` (carrying `unpublished`) but
   // no `versions` at all.
-  if (!packument?.time || !packument.versions) return undefined
+  if (!meta?.time || !meta.versions.length) return undefined
 
-  return getDependenciesResolutionLimitPure(
-    version,
-    Object.keys(packument.versions),
-    packument.time,
-    packument['dist-tags']?.latest,
-  )
+  return getDependenciesResolutionLimitPure(version, meta.versions, meta.time, meta.distTags.latest)
 }
 
 export const RESOLUTION_GRACE_MS = 5 * 60 * 1000
@@ -275,13 +288,16 @@ export async function resolveDependencyTree(
     await mapWithConcurrency(
       entries,
       async ([name, { range, optional, path }]) => {
-        const packument = await fetchPackument(name)
+        const [packument, versionsMeta] = await Promise.all([
+          fetchPackument(name),
+          options.before === undefined ? null : fetchVersionsMeta(name),
+        ])
         if (!packument) return
 
         const versions = Object.keys(packument.versions)
         const version = resolveVersion(range, versions, {
           before: options.before,
-          versionsTimes: packument.time,
+          versionsTimes: versionsMeta?.time,
         })
         if (!version) return
 
