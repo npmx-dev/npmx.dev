@@ -328,6 +328,7 @@ const deprecationNotice = computed(() => {
 const deprecationNoticeMessage = useMarkdown(() => ({
   text: deprecationNotice.value?.message ?? '',
   linkifyPackages: true,
+  excludePackage: packageName.value,
 }))
 
 const publishSecurityDowngrade = computed(() => {

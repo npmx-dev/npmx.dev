@@ -188,6 +188,28 @@ describe('useMarkdown', () => {
       expect(processed.value).toBe('<code>mdast</code> was renamed to <code>remark</code>')
     })
 
+    it('does not link the excluded package name', () => {
+      const processed = useMarkdown({
+        text: '`mdast` was renamed to `remark`',
+        linkifyPackages: true,
+        excludePackage: 'mdast',
+      })
+      expect(processed.value).toBe(
+        '<code>mdast</code> was renamed to <a href="/package/remark"><code>remark</code></a>',
+      )
+    })
+
+    it('does not link the excluded scoped package name', () => {
+      const processed = useMarkdown({
+        text: 'Use `@scope/pkg` instead of `@scope/other`',
+        linkifyPackages: true,
+        excludePackage: '@scope/pkg',
+      })
+      expect(processed.value).toBe(
+        'Use <code>@scope/pkg</code> instead of <a href="/package/@scope/other"><code>@scope/other</code></a>',
+      )
+    })
+
     it('does not link package names in plain mode', () => {
       const processed = useMarkdown({
         text: '`mdast` was renamed to `remark`',
