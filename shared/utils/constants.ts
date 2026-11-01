@@ -7,6 +7,9 @@ export const CACHE_MAX_AGE_ONE_HOUR = 60 * 60
 export const CACHE_MAX_AGE_ONE_DAY = 60 * 60 * 24
 export const CACHE_MAX_AGE_ONE_YEAR = 60 * 60 * 24 * 365
 
+/** Max packages per direct-deps-health API request (client batches to this size) */
+export const DIRECT_DEPS_HEALTH_MAX = 50
+
 // API Strings
 export const NPMX_SITE = 'https://npmx.dev'
 export const NPMX_DOCS_SITE = 'https://docs.npmx.dev'
@@ -22,11 +25,7 @@ export const LIKES_LEADERBOARD_API_URL =
 // Error Messages
 export const ERROR_PACKAGE_ANALYSIS_FAILED = 'Failed to analyze package.'
 export const ERROR_PACKAGE_VERSION_AND_FILE_FAILED = 'Version and file path are required.'
-export const ERROR_PACKAGE_REQUIREMENTS_FAILED =
-  'Package name, version, and file path are required.'
 export const ERROR_PACKAGE_DETECT_CHANGELOG = 'failed to detect package has changelog'
-export const ERROR_BLUESKY_URL_FAILED =
-  'Invalid Bluesky URL format. Expected: https://bsky.app/profile/HANDLE/post/POST_ID'
 export const ERROR_FILE_LIST_FETCH_FAILED = 'Failed to fetch file list.'
 export const ERROR_CALC_INSTALL_SIZE_FAILED = 'Failed to calculate install size.'
 export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
@@ -45,14 +44,15 @@ export const ERROR_GRAVATAR_FETCH_FAILED = 'Failed to fetch Gravatar profile.'
 export const ERROR_GRAVATAR_EMAIL_UNAVAILABLE = "User's email not accessible."
 export const ERROR_NEED_REAUTH = 'User needs to reauthenticate'
 
-export const ERROR_CHANGELOG_NOT_FOUND =
-  'No releases or changelogs have been found for this package'
+export const ERROR_CHANGELOG_NOT_FOUND = 'No release or changelog had been found for this package'
 export const ERROR_CHANGELOG_RELEASES_FAILED = 'Failed to get releases'
 export const ERROR_CHANGELOG_FILE_FAILED = 'Failed to get changelog markdown'
 export const ERROR_THROW_INCOMPLETE_PARAM = "Couldn't do request due to incomplete parameters"
 // for ungh.cc when api keys are exhausted, name is broad in case more proxies are going to be used
 export const ERROR_UNGH_API_KEY_EXHAUSTED =
   "Couldn't fetch resources due to ungh api keys being exhausted"
+export const ERROR_UNKNOWN_GIT_HOST =
+  'No host given or given host is not a known host for the given provider'
 
 // microcosm services
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'
@@ -124,6 +124,3 @@ export const FOREGROUND_THEMES = {
 export const BLUESKY_URL_EXTRACT_REGEX = /profile\/([^/]+)\/post\/([^/]+)/
 export const BSKY_POST_AT_URI_REGEX =
   /^at:\/\/(did:[a-z]+:[\w.:%-]+)\/app\.bsky\.feed\.post\/([a-z0-9]+)$/
-export const BLOG_META_TAG_REGEX =
-  /<meta[^>]*(?:property|name)=["']([^"']+)["'][^>]*content=["']([^"']+)["'][^>]*>/gi
-export const META_TAG_TITLE_REGEX = /<title>([^<]*)<\/title>/i

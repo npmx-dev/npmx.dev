@@ -9,12 +9,12 @@ const meta = {
   globals: {
     locale: 'en-US',
   },
-  beforeEach: () => localStorage.removeItem('npmx-settings'),
+  beforeEach({ msw }) {
+    localStorage.removeItem('npmx-settings')
+    msw.use(i18nStatusHandler)
+  },
   parameters: {
     layout: 'fullscreen',
-    msw: {
-      handlers: [i18nStatusHandler],
-    },
   },
   decorators: [pageDecorator],
 } satisfies Meta<typeof Settings>
@@ -46,10 +46,5 @@ export const NonEnglishTranslationHelper: Story = {
 export const WithoutTranslationHelper: Story = {
   globals: {
     locale: 'fr-FR',
-  },
-  parameters: {
-    msw: {
-      handlers: [],
-    },
   },
 }

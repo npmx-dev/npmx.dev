@@ -61,7 +61,11 @@ const props = defineProps<{
         <span
           class="absolute -start-[1rem] top-0.5 flex items-center justify-center w-3 h-3 rounded-full border"
           :class="
-            event.positive ? 'bg-green-500 border-green-600' : 'bg-amber-500 border-amber-600'
+            event.state === 'success'
+              ? 'bg-green-500 border-green-600'
+              : event.state === 'error'
+                ? 'bg-red-500 border-red-600'
+                : 'bg-amber-500 border-amber-600'
           "
         >
           <span class="w-2 h-2 text-white" :class="event.icon" aria-hidden="true" />
@@ -69,9 +73,11 @@ const props = defineProps<{
         <p
           class="text-xs"
           :class="
-            event.positive
+            event.state === 'success'
               ? 'text-green-700 dark:text-green-400'
-              : 'text-amber-700 dark:text-amber-400'
+              : event.state === 'error'
+                ? 'text-red-700 dark:text-red-400'
+                : 'text-amber-700 dark:text-amber-400'
           "
         >
           {{ event.text }}

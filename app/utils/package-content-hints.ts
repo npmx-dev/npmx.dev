@@ -17,9 +17,12 @@ const POSSIBLY_UNNECESSARY_FILES: ReadonlySet<string> = new Set([
   '.gitattributes',
   '.travis.yml',
   '.verb.md',
+  '.borp.yaml',
   'Makefile',
   'tsconfig.json',
   'jsconfig.json',
+  'commitlint.config.js',
+  'renovate.json',
   '.node-version',
   '.nvmrc',
   'mise.toml',
@@ -63,6 +66,7 @@ const POSSIBLY_UNNECESSARY_DIRECTORIES: ReadonlySet<string> = new Set([
   'example',
   'examples',
   'benchmark',
+  'benchmarks',
 ])
 
 const POSSIBLY_UNNECESSARY_DIRECTORY_PATTERNS: readonly RegExp[] = [/^__.+__$/]
@@ -88,6 +92,8 @@ const POSSIBLY_UNNECESSARY_PATTERNS: readonly RegExp[] = [
   /^(?:changelog|releasenotes|release-notes|history|contributing|contribute|news|collaborators)\.(?:md|markdown|txt)$/i,
   // Match example.mjs, examples.js, stc
   /^examples?\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  /^playwright\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
+  /^vitest\.config\.(?:js|cjs|mjs|ts|mts|cts)$/,
 ]
 
 export function isPossiblyUnnecessaryContent(name: string, type: 'file' | 'directory'): boolean {

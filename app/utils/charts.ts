@@ -5,16 +5,17 @@ import type {
   VueUiScatterConfig,
   VueUiScatterSeries,
   VueUiXyConfig,
-  VueUiXyDatasetBarItem,
   VueUiXyDatasetLineItem,
   VueUiStackbarConfig,
   VueUiStackbarFormattedDatasetItem,
 } from 'vue-data-ui'
+import type { VueUiHeatmapDatasetItem } from 'vue-data-ui/vue-ui-heatmap'
 import type { ChartTimeGranularity } from '~/types/chart'
+import { addDays, parseIsoDate, toIsoDate } from '~/utils/date'
 
 interface SubEvent {
   key: string
-  positive: boolean
+  state: 'success' | 'error' | 'warn'
   icon: string
   text: string
 }
@@ -221,6 +222,7 @@ export function computeLineChartAnalysis(values: Array<number | null>): LineChar
     }
   }
 
+  // oxlint-disable-next-line eslint/no-underscore-dangle
   let _sum = 0
   for (const entry of indexedValues) {
     _sum += entry.value
@@ -425,14 +427,9 @@ export type TrendLineDataset = {
   [key: string]: unknown
 } | null
 
-export type VersionsBarDataset = {
-  bars: VueUiXyDatasetBarItem[]
-  [key: string]: unknown
-} | null
+type TrendTranslateKey = number | 'package.trends.y_axis_label' | (string & {})
 
-export type TrendTranslateKey = number | 'package.trends.y_axis_label' | (string & {})
-
-export type TrendTranslateFunction = {
+type TrendTranslateFunction = {
   (key: TrendTranslateKey): string
   (key: TrendTranslateKey, named: Record<string, unknown>): string
   (key: TrendTranslateKey, named: Record<string, unknown>, options: Record<string, unknown>): string
@@ -448,10 +445,14 @@ export type TrendLineConfig = VueUiXyConfig & {
   numberFormatter: (value: number) => string
 }
 
-export type VersionsBarConfig = Omit<
-  TrendLineConfig,
-  'formattedDates' | 'hasEstimation' | 'formattedDatasetValues' | 'granularity'
-> & { datapointLabels: string[]; dateRangeLabel: string; semverGroupingMode: string }
+export type VersionsBarConfig = VueUiHorizontalBarConfig & {
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+  numberFormatter: (value: number) => string
+  dateRangeLabel: string
+  semverGroupingMode: string
+  packageName: string
+}
 
 export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
   facet: string // translated
@@ -460,7 +461,7 @@ export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
   $t: TrendTranslateFunction
 }
 
-export type TimelineSizeDependencyBreakdown = {
+type TimelineSizeDependencyBreakdown = {
   name: string
   size: number
 }
@@ -472,7 +473,7 @@ export type TimelineSizeCacheValue = {
   dependencies: TimelineSizeDependencyBreakdown[]
 }
 
-export type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {
+type ConvertedTimelineSizeCacheEntry = TimelineSizeCacheValue & {
   name: string
 }
 
@@ -488,6 +489,7 @@ export type EnrichedTimelineSizeCacheEntry = ConvertedTimelineSizeCacheEntry & {
   events: SubEvent[]
   hasPositive: boolean
   hasNegative: boolean
+  hasError: boolean
 }
 
 export type TimelineChartMetric = 'totalSize' | 'dependencyCount' | 'dependencySize'
@@ -626,13 +628,12 @@ export async function copyAltTextForTrendLineChart({
 export function createAltTextForVersionsBarChart({
   dataset,
   config,
-}: AltCopyArgs<VersionsBarDataset, VersionsBarConfig>) {
+}: AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>) {
   if (!dataset) return ''
 
-  const series = dataset.bars[0]?.series ?? []
-  const versions = series.map((value, index) => ({
+  const versions = dataset.map(({ name, value, index }) => ({
     index,
-    name: config.datapointLabels[index] ?? '-',
+    name,
     rawDownloads: value ?? 0,
     downloads: config.numberFormatter(value ?? 0),
   }))
@@ -659,7 +660,7 @@ export function createAltTextForVersionsBarChart({
       : config.$t('package.versions.grouping_minor')
 
   const altText = `${config.$t('package.versions.copy_alt.general_description', {
-    package_name: dataset?.bars[0]?.name ?? '-',
+    package_name: config.packageName,
     versions_count: versions?.length,
     semver_grouping_mode: semver_grouping_mode.toLocaleLowerCase(),
     first_version: versions[0]?.name ?? '-',
@@ -677,13 +678,13 @@ export function createAltTextForVersionsBarChart({
 export async function copyAltTextForVersionsBarChart({
   dataset,
   config,
-}: AltCopyArgs<VersionsBarDataset, VersionsBarConfig>) {
+}: AltCopyArgs<VueUiHorizontalBarDatapoint[], VersionsBarConfig>) {
   const altText = createAltTextForVersionsBarChart({ dataset, config })
   await config.copy(altText)
 }
 
 // Used for FacetBarChart.vue
-export function createAltTextForCompareFacetBarChart({
+function createAltTextForCompareFacetBarChart({
   dataset,
   config,
 }: AltCopyArgs<VueUiHorizontalBarDatapoint[], FacetBarChartConfig>) {
@@ -733,7 +734,7 @@ type CompareScatterChartConfig = VueUiScatterConfig & {
 }
 
 // Used for FacetScatterChart.vue
-export function createAltTextForCompareScatterChart({
+function createAltTextForCompareScatterChart({
   dataset,
   config,
 }: AltCopyArgs<VueUiScatterSeries[], CompareScatterChartConfig>) {
@@ -969,6 +970,161 @@ export async function copyAltTextForTimelineStackbar({
   await config.copy(altText)
 }
 
+// Used for DailyDownloadsHeatmap
+export type DownloadsHeatmapAltConfig = {
+  packageName: string
+  dateRange: { from: string; to: string }
+  weekStarts: string[]
+  reportedDates: ReadonlySet<string>
+  anomalousDates: ReadonlySet<string>
+  locale: string
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+}
+
+export function createAltTextFromDownloadsHeatmap({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiHeatmapDatasetItem[], DownloadsHeatmapAltConfig>): string {
+  const { $t, locale } = config
+
+  const numberFormatter = new Intl.NumberFormat(locale)
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
+    dateStyle: 'long',
+    timeZone: 'UTC',
+  })
+  const weekdayFormatter = new Intl.DateTimeFormat(locale, {
+    weekday: 'long',
+    timeZone: 'UTC',
+  })
+  const percentageFormatter = new Intl.NumberFormat(locale, {
+    style: 'percent',
+    maximumFractionDigits: 1,
+    signDisplay: 'exceptZero',
+  })
+
+  const date_range = $t('package.trends.downloads_heatmap.title', config.dateRange)
+  const introduction = $t('package.trends.downloads_heatmap.copy_alt.introduction', {
+    package_name: config.packageName,
+    date_range,
+  })
+
+  const watermark = $t('package.trends.copy_alt.watermark')
+
+  const days = dataset.flatMap((row, weekdayIndex) =>
+    row.values.flatMap((value, weekIndex) => {
+      const weekStart = config.weekStarts[weekIndex]
+      if (!weekStart) return []
+
+      const date = addDays(parseIsoDate(weekStart), weekdayIndex)
+      const key = toIsoDate(date)
+
+      if (
+        !config.reportedDates.has(key) ||
+        config.anomalousDates.has(key) ||
+        typeof value !== 'number' ||
+        !Number.isFinite(value) ||
+        value <= 0
+      ) {
+        return []
+      }
+
+      return [{ date, value, weekdayIndex, weekIndex }]
+    }),
+  )
+
+  if (!days.length) {
+    return [introduction, $t('package.trends.downloads_heatmap.copy_alt.no_data'), watermark].join(
+      ' ',
+    )
+  }
+  const total = sum(days.map(day => day.value))
+  const average = total / days.length
+  const peak = days.reduce((highest, day) => (day.value > highest.value ? day : highest))
+  const weekdayStats = Array.from({ length: 7 }, (_, index) => {
+    const entries = days.filter(day => day.weekdayIndex === index)
+
+    return {
+      date: entries[0]?.date,
+      average: entries.length ? sum(entries.map(day => day.value)) / entries.length : 0,
+    }
+  }).filter(day => day.date)
+
+  const busiestWeekday = weekdayStats.reduce((busiest, day) =>
+    day.average > busiest.average ? day : busiest,
+  )
+  const weekdays = days.filter(day => !isWeekend(day.date))
+  const weekends = days.filter(day => isWeekend(day.date))
+  const averageWeekday = weekdays.length ? sum(weekdays.map(day => day.value)) / weekdays.length : 0
+  const averageWeekend = weekends.length ? sum(weekends.map(day => day.value)) / weekends.length : 0
+  const completeWeeks = config.weekStarts.flatMap((_, weekIndex) => {
+    const entries = days.filter(day => day.weekIndex === weekIndex)
+
+    return entries.length === 7 ? [sum(entries.map(day => day.value))] : []
+  })
+
+  const firstWeek = completeWeeks[0]
+  const lastWeek = completeWeeks.at(-1)
+
+  const weekly_trend =
+    firstWeek !== undefined && lastWeek !== undefined && completeWeeks.length > 1 && firstWeek > 0
+      ? $t('package.trends.downloads_heatmap.copy_alt.weekly_trend', {
+          change: percentageFormatter.format((lastWeek - firstWeek) / firstWeek),
+          first: numberFormatter.format(firstWeek),
+          last: numberFormatter.format(lastWeek),
+        })
+      : ''
+
+  const excludedDays = config.weekStarts.length * dataset.length - days.length
+
+  return [
+    introduction,
+    $t('package.trends.downloads_heatmap.copy_alt.summary', {
+      total: numberFormatter.format(total),
+      average: numberFormatter.format(Math.round(average)),
+      days: numberFormatter.format(days.length),
+    }),
+    $t('package.trends.downloads_heatmap.copy_alt.peak', {
+      date: dateFormatter.format(peak.date),
+      downloads: numberFormatter.format(peak.value),
+    }),
+    busiestWeekday?.date
+      ? $t('package.trends.downloads_heatmap.copy_alt.busiest_weekday', {
+          weekday: weekdayFormatter.format(busiestWeekday.date),
+          average: numberFormatter.format(Math.round(busiestWeekday.average)),
+        })
+      : '',
+    weekdays.length && weekends.length
+      ? $t('package.trends.downloads_heatmap.copy_alt.weekday_comparison', {
+          weekdays: numberFormatter.format(Math.round(averageWeekday)),
+          weekends: numberFormatter.format(Math.round(averageWeekend)),
+        })
+      : '',
+    weekly_trend,
+    excludedDays > 0
+      ? $t('package.trends.downloads_heatmap.copy_alt.excluded_days', {
+          count: numberFormatter.format(excludedDays),
+        })
+      : '',
+    watermark,
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
+function isWeekend(date: Date): boolean {
+  const day = date.getUTCDay()
+  return day === 0 || day === 6
+}
+
+export async function copyAltTextFromDownloadsHeatmap({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiHeatmapDatasetItem[], DownloadsHeatmapAltConfig>) {
+  const altText = createAltTextFromDownloadsHeatmap({ dataset, config })
+  await config.copy(altText)
+}
+
 export function sanitise(value: string) {
   return value
     .replace(/^@/, '')
@@ -1060,13 +1216,16 @@ export const CHART_PATTERN_CONFIG = {
  * Chart annotator slots
  */
 
-type AnnotatorSlotName =
+export type AnnotatorSlotName =
   | 'annotator-action-close'
   | 'annotator-action-color'
   | 'annotator-action-draw'
   | 'annotator-action-undo'
   | 'annotator-action-redo'
   | 'annotator-action-delete'
+  | 'annotator-action-select-multiple'
+  | 'annotator-action-group'
+  | 'annotator-action-ungroup'
   | 'optionAnnotator'
 
 export const CHART_ANNOTATOR_SLOTS = [
@@ -1076,6 +1235,9 @@ export const CHART_ANNOTATOR_SLOTS = [
   'annotator-action-undo',
   'annotator-action-redo',
   'annotator-action-delete',
+  'annotator-action-select-multiple',
+  'annotator-action-group',
+  'annotator-action-ungroup',
   'optionAnnotator',
 ] as const satisfies readonly AnnotatorSlotName[]
 
@@ -1108,6 +1270,14 @@ export function getAnnotatorIcon(slotName: AnnotatorSlotName, props?: unknown) {
       return 'i-lucide:redo-2'
     case 'annotator-action-delete':
       return 'i-lucide:trash'
+    case 'annotator-action-select-multiple':
+      return getSlotProp<boolean>(props, 'isSelecting')
+        ? 'i-lucide:square-dashed-mouse-pointer'
+        : 'i-lucide:square-mouse-pointer'
+    case 'annotator-action-group':
+      return 'i-lucide:group'
+    case 'annotator-action-ungroup':
+      return 'i-lucide:ungroup'
     case 'optionAnnotator':
       return getSlotProp<boolean>(props, 'isAnnotator') ? 'i-lucide:pen-off' : 'i-lucide:pen'
   }

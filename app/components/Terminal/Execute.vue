@@ -15,6 +15,7 @@ const props = defineProps<{
 }>()
 
 const selectedPM = useSelectedPackageManager()
+const { polite } = useAnnouncer()
 const selectedPackageManagerConfig = computed(() => getPackageManagerConfig(selectedPM.value))
 
 // Generate execute command parts for a specific package manager
@@ -41,7 +42,10 @@ function getFullExecuteCommand() {
 
 // Copy handler
 const { copied: executeCopied, copy: copyExecute } = useClipboard({ copiedDuring: 2000 })
-const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
+const copyExecuteCommand = () => {
+  copyExecute(getFullExecuteCommand())
+  polite($t('package.command.copied_execute'))
+}
 </script>
 
 <template>
@@ -58,7 +62,7 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
           :data-pm-cmd="selectedPackageManagerConfig.id"
           class="flex items-center gap-2 group/executecmd"
         >
-          <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+          <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
           <code class="font-mono text-sm"
             ><span
               v-for="(part, i) in getExecutePartsForPM(selectedPackageManagerConfig.id)"
@@ -67,14 +71,13 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
               >{{ i > 0 ? ' ' : '' }}{{ part }}</span
             ></code
           >
-          <button
+          <ButtonBase
             type="button"
-            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/executecmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70"
+            class="text-fg-muted bg-bg-subtle/80 border-border media-mouse:opacity-0 media-mouse:group-hover/executecmd:opacity-100 media-mouse:focus-within:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
             :aria-label="$t('package.get_started.copy_command')"
+            :classicon="executeCopied ? 'i-lucide:check' : 'i-lucide:copy'"
             @click.stop="copyExecuteCommand"
-          >
-            {{ executeCopied ? $t('common.copied') : $t('common.copy') }}
-          </button>
+          />
         </div>
       </div>
     </div>

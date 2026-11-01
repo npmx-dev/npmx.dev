@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 
 // Utility to use more human-readable strings in tests
 function escapeHtml(text: string): string {
@@ -256,6 +256,35 @@ describe('useMarkdown', () => {
       const processed = useMarkdown({ text: '<b>bold</b> and **also bold**' })
       expect(processed.value).toBe('bold and <strong>also bold</strong>')
     })
+
+    it('strips unclosed HTML tags (truncated)', () => {
+      const processed = useMarkdown({
+        text: '<p>   <a href="https://www.npmjs.com/package/vue-tsc"><img src="https://img.shields.io/npm/v/vue-tsc.svg?labelColor=18181B&color=1584FC" alt="NPM version"></a>   <a href="https://github.com/vuejs/language-tools/blob/master/LICENSE"><img src="https://img.s',
+      })
+      expect(processed.value).toBe('')
+    })
+
+    it('strips a trailing unclosed tag but keeps preceding text', () => {
+      const processed = useMarkdown({ text: 'A library <img src="https://img.s' })
+      expect(processed.value).toBe('A library')
+    })
+
+    it('keeps text with a bare "<" that is not a truncated tag', () => {
+      expect(useMarkdown({ text: 'Fast x<y comparisons and sorting' }).value).toBe(
+        'Fast x&lt;y comparisons and sorting',
+      )
+      expect(useMarkdown({ text: 'compare a <b and c' }).value).toBe('compare a &lt;b and c')
+      expect(useMarkdown({ text: 'Compare x<y' }).value).toBe('Compare x&lt;y')
+    })
+
+    it('strips a bare unclosed tag name at the end', () => {
+      expect(useMarkdown({ text: 'A library <img' }).value).toBe('A library')
+    })
+
+    it('preserves a backtick code span after an unclosed tag', () => {
+      const processed = useMarkdown({ text: 'compare a <b and run `npm i`' })
+      expect(processed.value).toContain('<code>npm i</code>')
+    })
   })
 
   describe('HTML comment stripping', () => {
@@ -286,7 +315,7 @@ describe('useMarkdown', () => {
 
     it('strips unclosed HTML comments (truncated)', () => {
       const processed = useMarkdown({ text: 'A library <!-- automd:badges color=yel' })
-      expect(processed.value).toBe('A library ')
+      expect(processed.value).toBe('A library')
     })
   })
 

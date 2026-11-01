@@ -18,12 +18,13 @@ export type OsvSeverityLevel = (typeof SEVERITY_LEVELS)[number] | 'unknown'
 /**
  * Counts by severity level
  */
-export type SeverityCounts = Record<(typeof SEVERITY_LEVELS)[number], number>
+type SeverityCounts = Record<(typeof SEVERITY_LEVELS)[number], number>
+type VulnerabilityCounts = SeverityCounts & { total: number }
 
 /**
  * CVSS severity information from OSV
  */
-export interface OsvSeverity {
+interface OsvSeverity {
   type: 'CVSS_V3' | 'CVSS_V4'
   score: string
 }
@@ -31,7 +32,7 @@ export interface OsvSeverity {
 /**
  * Reference link for a vulnerability
  */
-export interface OsvReference {
+interface OsvReference {
   type: 'ADVISORY' | 'WEB' | 'PACKAGE' | 'REPORT' | 'FIX' | 'ARTICLE' | 'DETECTION' | 'EVIDENCE'
   url: string
 }
@@ -40,7 +41,7 @@ export interface OsvReference {
  * Version range event from OSV affected data
  * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
  */
-export interface OsvRangeEvent {
+interface OsvRangeEvent {
   introduced?: string
   fixed?: string
   last_affected?: string
@@ -65,6 +66,9 @@ export interface OsvAffected {
   }
   ranges?: OsvRange[]
   versions?: string[]
+  database_specific?: {
+    last_known_affected_version_range?: string
+  }
 }
 
 /**
@@ -99,7 +103,7 @@ export interface OsvQueryResponse {
 /**
  * Single result from OSV batch query (minimal info - just ID and modified)
  */
-export interface OsvBatchVulnRef {
+interface OsvBatchVulnRef {
   id: string
   modified: string
 }
@@ -107,7 +111,7 @@ export interface OsvBatchVulnRef {
 /**
  * Single result in OSV batch response
  */
-export interface OsvBatchResult {
+interface OsvBatchResult {
   vulns?: OsvBatchVulnRef[]
   next_page_token?: string
 }
@@ -133,16 +137,6 @@ export interface VulnerabilitySummary {
   fixedIn?: string
 }
 
-/**
- * Package vulnerability response returned by our API
- */
-export interface PackageVulnerabilities {
-  package: string
-  version: string
-  vulnerabilities: VulnerabilitySummary[]
-  counts: SeverityCounts & { total: number }
-}
-
 /** Depth in dependency tree */
 export type DependencyDepth = 'root' | 'direct' | 'transitive'
 
@@ -157,13 +151,7 @@ export interface PackageVulnerabilityInfo {
   /** Dependency path from root package */
   path: string[]
   vulnerabilities: VulnerabilitySummary[]
-  counts: {
-    total: number
-    critical: number
-    high: number
-    moderate: number
-    low: number
-  }
+  counts: VulnerabilityCounts
 }
 
 /**
@@ -197,11 +185,31 @@ export interface VulnerabilityTreeResult {
   /** Number of packages that could not be checked (OSV query failed) */
   failedQueries: number
   /** Aggregated counts across all packages */
-  totalCounts: {
-    total: number
-    critical: number
-    high: number
-    moderate: number
-    low: number
-  }
+  totalCounts: VulnerabilityCounts
+}
+
+/**
+ * Vulnerability info for a direct dependency (no tree depth/path)
+ */
+export interface DirectVulnerableDependency {
+  name: string
+  version: string
+  counts: VulnerabilityCounts
+}
+
+/**
+ * Deprecated info for a direct dependency
+ */
+export interface DirectDeprecatedDependency {
+  name: string
+  version: string
+  message: string
+}
+
+/**
+ * Health check result for a set of direct dependencies (resolved ranges only)
+ */
+export interface DirectDependencyHealthResult {
+  vulnerable: Record<string, DirectVulnerableDependency>
+  deprecated: Record<string, DirectDeprecatedDependency>
 }

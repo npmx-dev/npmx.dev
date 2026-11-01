@@ -10,13 +10,7 @@ import { mapWithConcurrency } from '#shared/utils/async'
  * 3. Falls back to lightweight server-side package-meta lookups
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
-  const route = useRoute()
-  const { searchProvider } = useSearchProvider()
-  const searchProviderValue = computed(() => {
-    const p = normalizeSearchParam(route.query.p)
-    if (p === 'npm' || searchProvider.value === 'npm') return 'npm'
-    return 'algolia'
-  })
+  const { searchProviderValue } = useSearchProvider()
   const { getPackagesByName } = useAlgoliaSearch()
 
   const asyncData = useLazyAsyncData(

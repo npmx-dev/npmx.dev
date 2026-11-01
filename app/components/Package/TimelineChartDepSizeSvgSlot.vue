@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import type { VueUiStackbarSvgSlotProps } from 'vue-data-ui/vue-ui-stackbar'
 
-const props = defineProps<{
+defineProps<{
   svg: VueUiStackbarSvgSlotProps['svg']
   watermark?: string
   activeVersionPlot: Partial<TimelinePlotItem> | null
   colors: Record<string, string>
   pauseAnimations: boolean
+  isCopyingPng?: boolean
 }>()
 </script>
 
 <template>
   <!-- Print watermark-->
-  <g v-if="svg.isPrintingSvg || svg.isPrintingImg" v-html="watermark" />
+  <g v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng" v-html="watermark" />
 
   <g class="pointer-events-none">
     <!-- Marker for selected version -->

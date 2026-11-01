@@ -54,10 +54,11 @@ const versionLabel = computed(() => (version ? `v${version}` : ''))
 
 const repositoryUrl = computed(() => {
   const repo = displayVersion.value?.repository
-  if (!repo?.url) return null
-  let url = normalizeGitUrl(repo.url)
+  const repoUrl = typeof repo === 'object' ? repo.url : repo
+  if (!repoUrl) return null
+  let url = normalizeGitUrl(repoUrl)
   // append `repository.directory` for monorepo packages
-  if (repo.directory) {
+  if (typeof repo === 'object' && repo.directory) {
     url = joinURL(`${url}/tree/HEAD`, repo.directory)
   }
   return url
@@ -317,12 +318,17 @@ const sparklineSrc = computed(() => {
           />
           <div
             v-else-if="repoRef?.provider === 'tangled'"
-            class="i-custom:tangled shrink-0 text-fg-muted"
+            class="i-simple-icons:tangled shrink-0 text-fg-muted"
             style="width: 24px; height: 24px"
           />
           <div
             v-else-if="repoRef?.provider === 'radicle'"
             class="i-lucide:network shrink-0 text-fg-muted"
+            style="width: 24px; height: 24px"
+          />
+          <div
+            v-else-if="repoRef?.provider === 'pushin'"
+            class="i-custom:pushin shrink-0 text-fg-muted"
             style="width: 24px; height: 24px"
           />
           <div

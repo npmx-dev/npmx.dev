@@ -1,11 +1,17 @@
+import { randomUUID } from 'node:crypto'
+import { getDownloadChartGaps } from '#shared/utils/download-chart-gaps'
 import { createError } from 'h3'
 import { createStaticVueUiXy } from 'vue-data-ui/ssr/vue-ui-xy'
 import { mergeConfigs } from 'vue-data-ui/utils'
-import { generateWatermarkLogo, LOCALES_WITH_EXTRA_SPACE } from '#shared/utils/trends-chart'
 import {
+  generateWatermarkLogo,
+  LOCALES_WITH_EXTRA_SPACE,
+  nullifyZeroValues,
   buildNormalisedTrendsDataset,
   buildTrendsChartConfig,
   buildTrendsChartData,
+  isMissingDownloadValue,
+  isLargeDownloadSeries,
 } from '#shared/utils/trends-chart'
 import { resolveEmbedChartColors } from '#shared/utils/embed-chart-colors'
 import { OKLCH_NEUTRAL_FALLBACK } from '~/utils/colors'
@@ -18,7 +24,7 @@ type ChartGranularity = 'daily' | 'weekly' | 'monthly' | 'yearly'
 type Metric = 'downloads' | 'likes' | 'contributors'
 type QueryParameters = Record<string, unknown>
 
-export function parsePackageNames(value: unknown): string[] {
+function parsePackageNames(value: unknown): string[] {
   return String(value ?? '')
     .split(',')
     .map(name => name.trim().toLowerCase())
@@ -26,7 +32,7 @@ export function parsePackageNames(value: unknown): string[] {
     .slice(0, 8)
 }
 
-export function parseFetchGranularity(value: unknown): FetchGranularity {
+function parseFetchGranularity(value: unknown): FetchGranularity {
   if (value === 'daily' || value === 'day') return 'day'
   if (value === 'weekly' || value === 'week') return 'week'
   if (value === 'monthly' || value === 'month') return 'month'
@@ -34,7 +40,7 @@ export function parseFetchGranularity(value: unknown): FetchGranularity {
   return 'week'
 }
 
-export function toChartGranularity(granularity: FetchGranularity): ChartGranularity {
+function toChartGranularity(granularity: FetchGranularity): ChartGranularity {
   const mapping: Record<FetchGranularity, ChartGranularity> = {
     day: 'daily',
     week: 'weekly',
@@ -45,7 +51,7 @@ export function toChartGranularity(granularity: FetchGranularity): ChartGranular
   return mapping[granularity]
 }
 
-export function parseLocale(value: unknown): string {
+function parseLocale(value: unknown): string {
   if (typeof value !== 'string') return 'en'
 
   try {
@@ -55,7 +61,7 @@ export function parseLocale(value: unknown): string {
   }
 }
 
-export function parseAccent(value: unknown): string {
+function parseAccent(value: unknown): string {
   if (typeof value !== 'string') {
     return OKLCH_NEUTRAL_FALLBACK
   }
@@ -77,7 +83,7 @@ export function parseAccent(value: unknown): string {
   return OKLCH_NEUTRAL_FALLBACK
 }
 
-export function parseSafeText(value: unknown, fallback = '', maximumLength = 100): string {
+function parseSafeText(value: unknown, fallback = '', maximumLength = 100): string {
   if (typeof value !== 'string') return fallback
 
   return (
@@ -90,7 +96,7 @@ export function parseSafeText(value: unknown, fallback = '', maximumLength = 100
   )
 }
 
-export function parseDateQuery(value: unknown): string | undefined {
+function parseDateQuery(value: unknown): string | undefined {
   if (typeof value !== 'string') return undefined
 
   const date = value.trim()
@@ -98,12 +104,7 @@ export function parseDateQuery(value: unknown): string | undefined {
   return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : undefined
 }
 
-export function clampNumber(
-  value: unknown,
-  minimum: number,
-  maximum: number,
-  fallback: number,
-): number {
+function clampNumber(value: unknown, minimum: number, maximum: number, fallback: number): number {
   const parsed = Number(value)
 
   if (!Number.isFinite(parsed)) {
@@ -113,7 +114,7 @@ export function clampNumber(
   return Math.min(maximum, Math.max(minimum, parsed))
 }
 
-export function parseMetric(value: unknown): Metric {
+function parseMetric(value: unknown): Metric {
   if (value === 'likes') return 'likes'
   if (value === 'contributors') return 'contributors'
 
@@ -122,6 +123,116 @@ export function parseMetric(value: unknown): Metric {
 
 function dateIsoToUtcMs(dateIso: string): number {
   return new Date(`${dateIso}T00:00:00.000Z`).getTime()
+}
+
+type RenderedPlot = {
+  x?: number
+  y?: number
+  value?: number | null
+}
+
+type RenderedSeries = {
+  color?: string
+  name?: string
+  plots?: RenderedPlot[]
+  [key: string]: unknown
+}
+
+type NoDataTailGeometry = {
+  seriesIndex: number
+  x1: number
+  x2: number
+  y: number
+  value: number
+  color: string
+}
+
+function getNoDataTailGeometries({
+  series,
+  isLargePackageByIndex,
+  fallbackColor,
+}: {
+  series: RenderedSeries[]
+  isLargePackageByIndex: boolean[]
+  fallbackColor: string
+}): NoDataTailGeometry[] {
+  return series.flatMap((serie, seriesIndex) => {
+    if (!isLargePackageByIndex[seriesIndex]) return []
+
+    const plots = Array.isArray(serie.plots) ? serie.plots : []
+    if (plots.length < 2) return []
+
+    const endpointPlot = plots.at(-1)
+    if (!endpointPlot || !isMissingDownloadValue(endpointPlot.value)) return []
+
+    const x2 = Number(endpointPlot.x)
+    if (!Number.isFinite(x2)) return []
+
+    let lastValidPlot: RenderedPlot | undefined
+    for (let index = plots.length - 2; index >= 0; index -= 1) {
+      const plot = plots[index]
+      if (!plot || isMissingDownloadValue(plot.value)) continue
+
+      const value = Number(plot.value)
+      const x = Number(plot.x)
+      const y = Number(plot.y)
+      if (!Number.isFinite(value) || !Number.isFinite(x) || !Number.isFinite(y)) continue
+
+      lastValidPlot = plot
+      break
+    }
+
+    if (!lastValidPlot) return []
+
+    const x1 = Number(lastValidPlot.x)
+    const y = Number(lastValidPlot.y)
+    const value = Number(lastValidPlot.value)
+    if (!Number.isFinite(x1) || !Number.isFinite(y) || !Number.isFinite(value)) return []
+
+    return [
+      {
+        seriesIndex,
+        x1,
+        x2,
+        y,
+        value,
+        color: String(serie.color ?? fallbackColor),
+      },
+    ]
+  })
+}
+
+function createNoDataTailSvg({
+  geometries,
+  backgroundColor,
+}: {
+  geometries: NoDataTailGeometry[]
+  backgroundColor: string
+}): string {
+  return geometries
+    .map(
+      geometry => `
+        <line
+          x1="${geometry.x1}"
+          y1="${geometry.y}"
+          x2="${geometry.x2}"
+          y2="${geometry.y}"
+          stroke="${geometry.color}"
+          stroke-width="3"
+          stroke-dasharray="4 8"
+          stroke-linecap="round"
+        />
+        <circle
+          cx="${geometry.x2}"
+          cy="${geometry.y}"
+          r="4"
+          fill="${geometry.color}"
+          stroke="${backgroundColor}"
+          stroke-width="2"
+        />
+      `,
+    )
+    .join('\n')
 }
 
 export async function createDownloadsSvgResponse(query: QueryParameters): Promise<string> {
@@ -211,6 +322,29 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     endDateMs: effectiveEndDateMs,
   })
 
+  const isLargePackageByIndex = (chartData.dataset ?? []).map(datapoint =>
+    isLargeDownloadSeries(
+      (datapoint.series ?? []) as Array<number | null | undefined>,
+      chartGranularity,
+    ),
+  )
+
+  dataset.forEach((item, index) => {
+    item.series = nullifyZeroValues({
+      enabled: isLargePackageByIndex[index] === true,
+      values: item.series,
+      keepLastZero: false,
+    }) as number[]
+
+    const rawLastValue = chartData.dataset?.[index]?.series?.at(-1)
+    if (!item.series.length || !isMissingDownloadValue(rawLastValue)) return
+
+    if (!isLargePackageByIndex[index] && rawLastValue === 0) {
+      const series = item.series as Array<number | null>
+      series[series.length - 1] = 0
+    }
+  })
+
   if (!chartData.dataset?.length) {
     throw createError({
       statusCode: 404,
@@ -296,29 +430,126 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
     (chartGranularity === 'monthly' && !isLastDayOfMonth(effectiveEndDateIso)) ||
     (chartGranularity === 'yearly' && !isLastDayOfYear(effectiveEndDateIso))
 
-  return await createStaticVueUiXy({
-    dataset: dataset.map(datapoint => {
-      const dashIndices = shouldDashLastPoint
-        ? [...new Set([...(datapoint.dashIndices ?? []), datapoint.series.length - 1])].filter(
-            index => index >= 0,
-          )
-        : datapoint.dashIndices
+  let gapUnderlayer = ''
+  const svg = await createStaticVueUiXy({
+    dataset: dataset.map((datapoint, index) => {
+      const rawLastValue = chartData.dataset?.[index]?.series?.at(-1)
+      const hasNoDataTail =
+        isLargePackageByIndex[index] === true && isMissingDownloadValue(rawLastValue)
+
+      const dashIndices =
+        shouldDashLastPoint && !hasNoDataTail
+          ? [...new Set([...(datapoint.dashIndices ?? []), datapoint.series.length - 1])].filter(
+              dashIndex => dashIndex >= 0,
+            )
+          : datapoint.dashIndices
 
       return Object.assign({}, datapoint, { dashIndices })
     }),
     config,
     additionalSvgContent: ({ series, drawingArea }) => {
+      const renderedSeries = series as RenderedSeries[]
+      const gapPatternId = `download-gaps-${randomUUID()}`
+      gapUnderlayer = getDownloadChartGaps({
+        drawingArea,
+        data: renderedSeries.map(serie => ({
+          color: serie.color ?? colors.fg,
+          isSegregated: serie.isSegregated === true,
+          plots: serie.plots?.map(plot => ({ x: Number(plot.x), value: plot.value })),
+        })),
+      })
+        .map((gap, index) => {
+          const patternId = `${gapPatternId}-${index}`
+          const stroke = colors.border.replace(
+            /[&<>"']/g,
+            character => `&#${character.charCodeAt(0)};`,
+          )
+          return `
+          <defs>
+            <pattern id="${patternId}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="10" stroke="${stroke}" stroke-width="5" />
+            </pattern>
+          </defs>
+          <rect x="${gap.x}" y="${gap.y}" width="${gap.width}" height="${gap.height}" fill="url(#${patternId})" opacity="0.45" pointer-events="none" aria-hidden="true" />
+          <g stroke="${stroke}" stroke-width="0.5" pointer-events="none" aria-hidden="true">
+            <line x1="${gap.x}" x2="${gap.x}" y1="${gap.y}" y2="${gap.y + gap.height}" />
+            <line x1="${gap.x + gap.width}" x2="${gap.x + gap.width}" y1="${gap.y}" y2="${gap.y + gap.height}" />
+          </g>
+        `
+        })
+        .join('')
+
+      const noDataGeometries = getNoDataTailGeometries({
+        series: renderedSeries,
+        isLargePackageByIndex,
+        fallbackColor: colors.fg,
+      })
+
+      const noDataTail = createNoDataTailSvg({
+        geometries: noDataGeometries,
+        backgroundColor: colors.bg,
+      })
+
+      // Keep all end labels in one helper call so they share the same collision
+      // resolution and connector/elbow layout. Missing endpoints display the
+      // previous valid recorded value with an asterisk.
+      const labelSeries = renderedSeries.slice()
+      const missingEndpointLabels = new Map<number, string>()
+
+      for (const geometry of noDataGeometries) {
+        const serie = renderedSeries[geometry.seriesIndex]
+        if (!serie || !Array.isArray(serie.plots) || !serie.plots.length) continue
+
+        const plots = serie.plots.slice()
+        const endpointIndex = plots.length - 1
+        const endpointPlot = plots[endpointIndex]
+        if (!endpointPlot) continue
+
+        const labelValueSentinel = Number.MIN_SAFE_INTEGER + geometry.seriesIndex
+        missingEndpointLabels.set(
+          labelValueSentinel,
+          `${compactNumberFormatter.format(geometry.value)}*`,
+        )
+
+        const labelEndpointPlot = Object.assign({}, endpointPlot)
+        labelEndpointPlot.x = geometry.x2
+        labelEndpointPlot.y = geometry.y
+        labelEndpointPlot.value = labelValueSentinel
+        plots[endpointIndex] = labelEndpointPlot
+
+        const labelSerie = Object.assign({}, serie)
+        labelSerie.plots = plots
+        labelSeries[geometry.seriesIndex] = labelSerie
+      }
+
       const lastPlotValues = createLastDatapointLabelsSvg({
-        series,
+        series: labelSeries,
+        missingValueLabel: 'No data',
         drawingArea,
         colors: {
           foreground: colors.fg,
           background: colors.bg,
           fallbackSerieColor: colors.fg,
         },
-        formatValue: value => compactNumberFormatter.format(value),
+        formatValue: value =>
+          missingEndpointLabels.get(value) ?? compactNumberFormatter.format(value),
         isDarkMode,
       })
+
+      const lastRecordedValueLegend =
+        chartGranularity === 'daily'
+          ? `
+            <text
+              x="${drawingArea.right + 130}"
+              y="${drawingArea.bottom + 82}"
+              fill="${colors.fgSubtle}"
+              font-size="16"
+              text-anchor="end"
+            >
+              * Last recorded value
+            </text>
+          `
+          : ''
 
       const logo = generateWatermarkLogo({
         x: 12,
@@ -330,9 +561,20 @@ export async function createDownloadsSvgResponse(query: QueryParameters): Promis
 
       return `
           <style>text {font-family:monospace;}</style>
+          ${noDataTail}
+          ${lastRecordedValueLegend}
           ${lastPlotValues}
           ${logo}
         `
     },
   })
+
+  // The static renderer only exposes an overlay callback. Insert the gap markup
+  // before the first data layer.
+  return gapUnderlayer
+    ? svg.replace(
+        /<g data-layer="(?:bars|line-areas|lines|plots)"/,
+        match => `${gapUnderlayer}${match}`,
+      )
+    : svg
 }

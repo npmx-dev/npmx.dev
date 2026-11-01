@@ -158,9 +158,6 @@
       "changelog": "Changelog",
       "stats": "Statistiche"
     },
-    "package_actions": {
-      "copy_run": "Copia comando di esecuzione"
-    },
     "code": {
       "copy_file": "Copia contenuto del file"
     },
@@ -481,7 +478,6 @@
       "compare": "confronta",
       "timeline": "Cronologia",
       "stats": "Statistiche",
-      "compare_this_package": "Confronta questo pacchetto",
       "changelog": "Registro delle modifiche"
     },
     "likes": {
@@ -1585,18 +1581,10 @@
     "p2": "Prima di iniziare, leggi la nostra {guide} per scoprire il nostro processo di traduzione e come puoi contribuire.",
     "guide": "guida alla localizzazione (i18n)",
     "by_locale": "Avanzamento traduzione per lingua",
-    "by_file": "Avanzamento traduzione per file",
     "complete_text": "Questa traduzione è completa, ottimo lavoro!",
     "missing_text": "mancante",
     "missing_keys": "Non mancano traduzioni | Traduzione mancante | Traduzioni mancanti",
-    "progress_label": "Stato avanzamento per {locale}",
-    "table": {
-      "file": "File",
-      "status": "Stato",
-      "error": "Errore durante il caricamento dell'elenco file.",
-      "empty": "Nessun file trovato",
-      "file_link": "Modifica {file} ({lang}) su GitHub"
-    }
+    "progress_label": "Stato avanzamento per {locale}"
   },
   "vacations": {
     "title": "in vacanza",

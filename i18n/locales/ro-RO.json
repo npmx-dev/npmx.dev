@@ -155,9 +155,6 @@
       "compare": "Compară acest pachet",
       "download": "Descarcă arhiva tar"
     },
-    "package_actions": {
-      "copy_run": "Copiază comandă de execuție"
-    },
     "code": {
       "copy_file": "Copiază conținutul fișierului"
     },
@@ -408,7 +405,7 @@
       "install_size": "Dimensiunea pachetului",
       "vulns": "Vulnerabilități",
       "published": "Publicat",
-      "published_tooltip": "Data la care a fost publicat {pachet}{'@'}{versiune}",
+      "published_tooltip": "Data la care a fost publicat {package}{'@'}{version}",
       "view_dependency_graph": "Vizualizează graficul dependențelor",
       "inspect_dependency_tree": "Verifică arborele de dependențe",
       "size_tooltip": {
@@ -444,8 +441,7 @@
       "docs": "documente",
       "fund": "finanțează",
       "compare": "compară",
-      "timeline": "cronologie",
-      "compare_this_package": "compară acest pachet"
+      "timeline": "cronologie"
     },
     "likes": {
       "like": "Dă 'Like' la acest pachet",
@@ -1606,18 +1602,10 @@
     "p2": "Înainte de a începe, te rugăm să citești al nostru {guide} pentru a afla mai multe despre procesul nostru de traducere și despre cum te poți implica.",
     "guide": "ghid de localizare (i18n)",
     "by_locale": "Progresul traducerii pe setări de localizare",
-    "by_file": "Progresul traducerii pe fișier",
     "complete_text": "Traducerea aceasta este completă, o treabă excelentă!",
     "missing_text": "lipsește",
     "missing_keys": "Nu există traduceri care lipsesc | Traducere care lipsește | Traduceri care lipsesc",
-    "progress_label": "Starea progresului pentru {locale}",
-    "table": {
-      "file": "Fișier",
-      "status": "Statut",
-      "error": "A apărut o eroare la încărcarea listei de fișiere.",
-      "empty": "Nu s-au găsit fișiere",
-      "file_link": "Editează {file} ({lang}) pe GitHub"
-    }
+    "progress_label": "Starea progresului pentru {locale}"
   },
   "vacations": {
     "title": "în vacanță",

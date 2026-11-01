@@ -1,4 +1,4 @@
-import { compare, getPrerelease, isValid } from 'verkit'
+import { compare, isPrerelease, isStable } from 'verkit'
 
 export interface InstallSizeDiff {
   direction: 'increase' | 'decrease'
@@ -20,13 +20,11 @@ const SIZE_DECREASE_THRESHOLD = 0.2
 const DEP_DECREASE_THRESHOLD = 3
 
 function getComparisonVersion(pkg: SlimPackument, resolvedVersion: string): string | null {
-  const isCurrentPrerelease = getPrerelease(resolvedVersion)?.length
-
   const stableVersions = Object.keys(pkg.time)
-    .filter(v => v !== 'modified' && v !== 'created' && isValid(v) && !getPrerelease(v)?.length)
-    .sort((a, b) => compare(a, b))
+    .filter(v => isStable(v))
+    .sort(compare)
 
-  if (isCurrentPrerelease) {
+  if (isPrerelease(resolvedVersion)) {
     // Find the highest stable version before this prerelease in semver order
     return stableVersions.findLast(v => compare(v, resolvedVersion) < 0) ?? null
   }

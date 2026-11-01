@@ -3,7 +3,6 @@ import { execSync } from 'node:child_process'
 import { join } from 'node:path'
 import { existsSync, mkdirSync } from 'node:fs'
 import { isCI, isTest } from 'std-env'
-import { getEnv } from '../config/env.ts'
 
 export default defineNuxtModule({
   meta: {
@@ -21,28 +20,18 @@ export default defineNuxtModule({
       maxAge: 60 * 60 * 24, // 1 day
     })
 
+    // oxlint-disable-next-line eslint/no-underscore-dangle
     if (nuxt.options.dev || nuxt.options._prepare || nuxt.options.test || isTest) {
       return
     }
 
     if (!isCI || !existsSync(lunariaDistPath)) {
       mkdirSync(lunariaDistPath, { recursive: true })
-      nuxt.hook('nitro:build:before', async () => {
-        try {
-          execSync('node --experimental-transform-types ./lunaria/lunaria.ts', {
-            cwd: nuxt.options.rootDir,
-            stdio: 'inherit',
-          })
-        } catch (e) {
-          // Always throw in local dev.
-          // In CI, only throw if building for production.
-          const { env } = await getEnv(!isCI)
-          if (env === 'dev' || env === 'release') {
-            throw e
-          } else {
-            console.error(e)
-          }
-        }
+      nuxt.hook('nitro:build:before', () => {
+        execSync('node --experimental-transform-types ./lunaria/lunaria.ts', {
+          cwd: nuxt.options.rootDir,
+          stdio: 'inherit',
+        })
       })
     }
   },

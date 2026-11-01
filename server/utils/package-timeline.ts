@@ -5,21 +5,21 @@ interface TimelineVersionWithTypes {
   hasTypes?: boolean
 }
 
+/**
+ * Marks metadata-untyped versions as typed when their published files ship declarations
+ * (e.g. `.d.mts` next to `.mjs`). Only versions for which `hasOlderTypedVersion` is true
+ * are checked, since only those can produce a false "types removed" event.
+ */
 export async function enrichTimelineVersionTypes(
   packageName: string,
-  allVersions: TimelineVersionWithTypes[],
   visibleVersions: TimelineVersionWithTypes[],
+  hasOlderTypedVersion: (version: string) => boolean,
 ): Promise<void> {
   // File-aware detection is limited to potential removal events: metadata-untyped
   // versions with an older typed release. Checking every untyped version would
   // require additional registry and file-tree requests.
   const possibleTypeRemovals = visibleVersions
-    .filter(version => {
-      if (version.hasTypes) return false
-
-      const versionIndex = allVersions.indexOf(version)
-      return allVersions.slice(versionIndex + 1).some(previousVersion => previousVersion.hasTypes)
-    })
+    .filter(version => !version.hasTypes && hasOlderTypedVersion(version.version))
     .map(async version => {
       try {
         const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(

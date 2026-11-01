@@ -1,12 +1,7 @@
 <script setup lang="ts">
 const route = useRoute()
 const router = useRouter()
-const { searchProvider } = useSearchProvider()
-const searchProviderValue = computed(() => {
-  const p = normalizeSearchParam(route.query.p)
-  if (p === 'npm' || searchProvider.value === 'npm') return 'npm'
-  return 'algolia'
-})
+const { searchProvider, searchProviderValue } = useSearchProvider()
 
 const isOpen = shallowRef(false)
 const toggleRef = useTemplateRef('toggleRef')

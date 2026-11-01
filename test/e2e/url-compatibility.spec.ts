@@ -53,6 +53,23 @@ test.describe('npmjs.com URL Compatibility', () => {
     })
   })
 
+  test.describe('Root Package Short-URLs (Redirects)', () => {
+    test('/vue redirects to /package/vue', async ({ page, goto }) => {
+      await goto('/vue', { waitUntil: 'domcontentloaded' })
+
+      // Verifies the browser ended up on the canonical route
+      await expect(page).toHaveURL(/\/package\/vue$/)
+      await expect(page.locator('h1')).toContainText('vue')
+    })
+
+    test('/@nuxt/kit redirects to /package/@nuxt/kit', async ({ page, goto }) => {
+      await goto('/@nuxt/kit', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package\/@nuxt\/kit$/)
+      await expect(page.locator('h1')).toContainText('@nuxt/kit')
+    })
+  })
+
   test.describe('Search Pages', () => {
     test('/search?q=vue → search results', async ({ page, goto }) => {
       await goto('/search?q=vue', { waitUntil: 'domcontentloaded' })
@@ -136,6 +153,41 @@ test.describe('npmjs.com URL Compatibility', () => {
 
       await expect(page).toHaveURL(/\/package\/@nuxt\/kit\/versions$/)
       await expect(page.locator('h1')).toContainText('Version History')
+    })
+  })
+
+  test.describe('npmjs.com activeTab=code Compatibility', () => {
+    test('/package/vue?activeTab=code → /package-code/vue/v/<latest>', async ({ page, goto }) => {
+      await goto('/package/vue?activeTab=code', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package-code\/vue\/v\/\d+\.\d+\.\d+/)
+    })
+
+    test('/package/@nuxt/kit?activeTab=code → /package-code/@nuxt/kit/v/<latest>', async ({
+      page,
+      goto,
+    }) => {
+      await goto('/package/@nuxt/kit?activeTab=code', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package-code\/@nuxt\/kit\/v\/\d+\.\d+\.\d+/)
+    })
+
+    test('/package/vue/v/3.5.27?activeTab=code → /package-code/vue/v/3.5.27 (pinned version, not latest)', async ({
+      page,
+      goto,
+    }) => {
+      await goto('/package/vue/v/3.5.27?activeTab=code', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package-code\/vue\/v\/3\.5\.27$/)
+    })
+
+    test('/package/@nuxt/kit/v/3.20.0?activeTab=code → /package-code/@nuxt/kit/v/3.20.0 (pinned version, not latest)', async ({
+      page,
+      goto,
+    }) => {
+      await goto('/package/@nuxt/kit/v/3.20.0?activeTab=code', { waitUntil: 'domcontentloaded' })
+
+      await expect(page).toHaveURL(/\/package-code\/@nuxt\/kit\/v\/3\.20\.0$/)
     })
   })
 

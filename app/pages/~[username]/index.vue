@@ -129,10 +129,9 @@ useSeoMeta({
 })
 
 defineOgImage(
-  'Page.takumi',
+  'UserProfile.takumi',
   {
-    title: () => `~${username.value}`,
-    description: () => (results.value ? `${results.value.total} packages` : 'npm user profile'),
+    username: () => username.value,
   },
   { alt: () => `~${username.value} npm user profile on npmx` },
 )

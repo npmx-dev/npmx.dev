@@ -8,7 +8,7 @@ import { getTopLikedRank } from '#server/utils/likes-leaderboard'
  *
  * Gets the likes for a npm package on npmx
  */
-export default eventHandlerWithOAuthSession(async (event, oAuthSession, _) => {
+export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
   const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
   const { rawPackageName } = parsePackageParams(pkgParamSegments)
 

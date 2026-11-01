@@ -11,6 +11,7 @@ export type ProviderId =
   | 'gitee'
   | 'tangled'
   | 'radicle'
+  | 'pushin'
 
 export interface RepoRef {
   provider: ProviderId
@@ -29,7 +30,7 @@ export interface RepositoryInfo extends RepoRef {
 }
 
 /** Known GitLab instances (self-hosted) */
-export const GITLAB_HOSTS = [
+const GITLAB_HOSTS = [
   'gitlab.com',
   'gitlab.gnome.org',
   'gitlab.freedesktop.org',
@@ -43,12 +44,12 @@ export const GITLAB_HOSTS = [
  * is effectively user-controlled input that can point at a malicious user-controlled server, this
  * would put us at risk of Server-Side Request Forgery (SSRF). Thus we only support allowlisted hosts.
  */
-export const FORGEJO_HOSTS = ['next.forgejo.org', 'try.next.forgejo.org']
+const FORGEJO_HOSTS = ['next.forgejo.org', 'try.next.forgejo.org', 'code.haverbeke.berlin']
 
 /**
  * No open-ended Gitea host detection for the same reason as Forgejo above.
  */
-export const GITEA_HOSTS = ['gitea.com']
+const GITEA_HOSTS = ['gitea.com']
 
 interface ProviderConfig {
   id: ProviderId
@@ -226,6 +227,27 @@ const providers: ProviderConfig[] = [
       `https://app.radicle.at/nodes/seed.radicle.at/${ref.repo}/tree/${branch}`,
   },
   {
+    id: 'pushin',
+    // Pushin serves the web UI and API on pushin.eu, but clone URLs use git.pushin.eu
+    matchHost: host => host === 'pushin.eu' || host === 'www.pushin.eu' || host === 'git.pushin.eu',
+    parsePath: parts => {
+      if (parts.length < 2) return null
+      const owner = decodeURIComponent(parts[0] ?? '').trim()
+      const repo = decodeURIComponent(parts[1] ?? '')
+        .trim()
+        .replace(/\.git$/i, '')
+      if (!owner || !repo) return null
+      return { owner, repo }
+    },
+    // Pushin doesn't serve raw files yet, so the blob URL is the closest we have.
+    // Relative README images resolve to HTML pages and won't render until then.
+    // TODO: switch to the raw file URL once Pushin supports serving raw files
+    getRawBaseUrl: (ref, branch = 'HEAD') =>
+      `https://pushin.eu/${ref.owner}/${ref.repo}/blob/${branch}`,
+    getBlobBaseUrl: (ref, branch = 'HEAD') =>
+      `https://pushin.eu/${ref.owner}/${ref.repo}/blob/${branch}`,
+  },
+  {
     id: 'forgejo',
     matchHost: host => FORGEJO_HOSTS.includes(host),
     parsePath: parts => {
@@ -308,9 +330,34 @@ export function normalizeGitUrl(input: string): string | null {
     .replace(/(\.[^./]+?):/, '$1/') // change ".com:" to ".com/" from "ssh://user@host.com:..."
     .replace(/^git:\/\//, 'https://')
     .replace(/^ssh:\/\//, 'https://')
+  // SCP-style shorthand with a dotless host (e.g. "git@localhost:owner/repo"); hosts with a
+  // dot (e.g. "git@github.com:user/repo") are already handled by the replacements above
+  if (!url.includes('://')) {
+    const scpMatch = /^(?:[^@/]+@)?([^/:]+):(.+)$/.exec(url)
+    const host = scpMatch?.[1]
+    const path = scpMatch?.[2]
+    if (host && path) {
+      url = `https://${host}/${path}`
+    }
+  }
+
+  // Bare GitHub shorthand (e.g. "repository": "owner/repo"), following npm's convention;
+  // host-prefixed paths (e.g. "git.sr.ht/~user/repo") are preserved as-is
+  if (!url.includes('://')) {
+    const shorthandMatch = /^([^./?#]+)\/([^?#]*)([?#].*)?$/.exec(url)
+    const owner = shorthandMatch?.[1]
+    const repo = shorthandMatch?.[2]
+    const suffix = shorthandMatch?.[3] ?? ''
+    if (owner && repo) {
+      return `https://github.com/${owner}/${repo}${suffix}`
+    }
+  }
+
   if (!url) return null
   return url.includes('://') ? url : `https://${url}`
 }
+
+export const NEED_HOST: ProviderId[] = ['gitlab', 'gitea', 'forgejo', 'radicle']
 
 export function parseRepoUrl(input: string): RepoRef | null {
   const normalized = normalizeGitUrl(input)
@@ -325,7 +372,7 @@ export function parseRepoUrl(input: string): RepoRef | null {
       if (!provider.matchHost(host)) continue
       const parsed = provider.parsePath(parts)
       if (parsed) {
-        const needsHost = ['gitlab', 'gitea', 'forgejo', 'radicle'].includes(provider.id)
+        const needsHost = NEED_HOST.includes(provider.id)
         return {
           provider: provider.id,
           owner: parsed.owner,
@@ -375,10 +422,6 @@ export function parseRepositoryInfo(
   }
 }
 
-export function getProviderConfig(providerId: ProviderId): ProviderConfig | undefined {
-  return providers.find(p => p.id === providerId)
-}
-
 export function convertBlobOrFileToRawUrl(url: string, providerId: ProviderId): string {
   const provider = providers.find(p => p.id === providerId)
   let rawUrl = url
@@ -391,10 +434,6 @@ export function convertBlobOrFileToRawUrl(url: string, providerId: ProviderId): 
   return rawUrl
 }
 
-export function isKnownGitProvider(url: string): boolean {
-  return parseRepoUrl(url) !== null
-}
-
 /**
  * API origins used by each provider for client-side repo metadata fetches.
  * Self-hosted providers are excluded because their origins can be anything.
@@ -405,6 +444,7 @@ export const GIT_PROVIDER_API_ORIGINS = {
   codeberg: 'https://codeberg.org',
   gitee: 'https://gitee.com',
   radicle: 'https://seed.radicle.at',
+  pushin: 'https://pushin.eu',
 } as const satisfies Partial<Record<ProviderId, string>>
 
 /**
@@ -417,3 +457,11 @@ export const ALL_KNOWN_GIT_API_ORIGINS: readonly string[] = [
   ...FORGEJO_HOSTS.map(host => `https://${host}`),
   ...GITEA_HOSTS.map(host => `https://${host}`),
 ]
+
+/**
+ * validates whether the given host is part of the known hosts of a provider
+ */
+export function validateHost(provider: ProviderId, host: string) {
+  const providerConfig = providers.find(config => config.id == provider)
+  return !!providerConfig?.matchHost(host)
+}

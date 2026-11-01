@@ -72,8 +72,11 @@ export function oklchToHex(color: string | undefined | null): string | undefined
   const a = chroma * Math.cos(hRad)
   const b = chroma * Math.sin(hRad)
 
+  // oxlint-disable-next-line eslint/no-underscore-dangle
   let l_ = lightness + 0.3963377774 * a + 0.2158037573 * b
+  // oxlint-disable-next-line eslint/no-underscore-dangle
   let m_ = lightness - 0.1055613458 * a - 0.0638541728 * b
+  // oxlint-disable-next-line eslint/no-underscore-dangle
   let s_ = lightness - 0.0894841775 * a - 1.291485548 * b
 
   l_ = l_ ** 3
