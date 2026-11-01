@@ -154,16 +154,15 @@ async function loadMore(direction: 'newer' | 'older') {
       // Guard against overlap in case the boundary shifted (never in practice,
       // both offsets are page-aligned)
       const prepended = data.versions.slice(0, timelineOffset.value - offset)
-      // Prepending grows the list above the viewport; compensate the scroll so
-      // the content the user is looking at stays put (native scroll anchoring
-      // is disabled on the list, and not supported everywhere).
-      const doc = document.documentElement
-      const previousHeight = doc.scrollHeight
+      // Keep the viewport where it is so the newly loaded versions show up right
+      // below the button and it can be clicked again without scrolling back up.
+      // Restore the position explicitly, since native scroll anchoring could
+      // otherwise latch onto content further down and follow it.
       const previousScrollY = window.scrollY
       timelineEntries.value = [...prepended, ...timelineEntries.value]
       timelineOffset.value = offset
       await nextTick()
-      window.scrollTo({ top: previousScrollY + (doc.scrollHeight - previousHeight) })
+      window.scrollTo({ top: previousScrollY })
     } else {
       timelineEntries.value = [...timelineEntries.value, ...data.versions]
     }
