@@ -25,8 +25,8 @@ export type RepoMeta = {
 
 /** What `/api/atproto/tangled-stats` returns. */
 export type TangledStats = {
-  stars: number
-  forks: number
+  stars?: number
+  forks?: number
 }
 
 type UnghRepoResponse = {
@@ -102,12 +102,12 @@ function forgeAdapter(): ProviderAdapter {
   return {
     links: linksFor,
     async fetchMeta(cachedFetch, ref, links, options = {}) {
-      const provider = await createForgeProvider(ref, {
-        fetch: cachedFetchAsFetchLike(cachedFetch, REPO_META_TTL),
-      })
-      if (!provider) return null
-
       try {
+        const provider = await createForgeProvider(ref, {
+          fetch: cachedFetchAsFetchLike(cachedFetch, REPO_META_TTL),
+        })
+        if (!provider) return null
+
         const repo = await provider.repos.get(toForgeRepoRef(ref), {
           signal: options?.signal ?? undefined,
         })

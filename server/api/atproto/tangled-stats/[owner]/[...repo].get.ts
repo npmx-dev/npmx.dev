@@ -21,8 +21,8 @@ export default defineCachedEventHandler(
 
     const meta = await provider.repos.get(toForgeRepoRef(ref))
     return {
-      stars: meta.stars ?? 0,
-      forks: meta.forks ?? 0,
+      stars: meta.stars,
+      forks: meta.forks,
     }
   },
   {

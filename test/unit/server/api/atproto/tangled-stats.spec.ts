@@ -51,4 +51,12 @@ describe('tangled stats API', () => {
     await expect(handler(fakeEvent)).rejects.toThrow(/Refusing to fetch/)
     expect(fetchMock).not.toHaveBeenCalled()
   })
+
+  it('returns the counts the forge reported, without inventing zeros', async () => {
+    createForgeProviderMock.mockResolvedValue({
+      repos: { get: async () => ({ stars: 3 }) },
+    })
+
+    await expect(handler(fakeEvent)).resolves.toEqual({ stars: 3, forks: undefined })
+  })
 })
