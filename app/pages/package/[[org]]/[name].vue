@@ -187,6 +187,42 @@ const {
 } = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
 
 const { data: licenseChangeData } = useLicenseChanges(packageName, resolvedVersion)
+
+// `latest` resolves the same either way, so only fetch the "frozen size" for
+// older versions
+const versionIsLatest = computed(() => {
+  const version = resolvedVersion.value
+  return !!version && pkg.value?.['dist-tags']?.latest === version
+})
+
+const { data: frozenInstallSize, execute: fetchFrozenInstallSize } =
+  useLazyFetch<InstallSizeResult | null>(
+    () =>
+      `/api/registry/install-size/${packageName.value}/v/${resolvedVersion.value}?frozen-history=true`,
+    {
+      server: false,
+      immediate: false,
+      watch: false,
+    },
+  )
+
+watch(
+  [resolvedVersion, resolvedStatus, versionIsLatest],
+  ([version, resolveStatus, isLatest]) => {
+    if (version && resolveStatus === 'success' && pkg.value && !isLatest) {
+      fetchFrozenInstallSize()
+    }
+  },
+  { immediate: true },
+)
+
+const frozenSize = computed(() => {
+  const frozen = frozenInstallSize.value
+  if (!frozen?.totalSize) return null
+  if (frozen.package !== packageName.value || frozen.version !== resolvedVersion.value) return null
+  return frozen.totalSize
+})
+
 const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg, installSize)
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
@@ -353,6 +389,14 @@ const sizeTooltip = computed(() => {
       $t('package.stats.size_tooltip.total', {
         size: bytesFormatter.format(installSize.value.totalSize),
         count: installSize.value.dependencyCount,
+      }),
+    frozenSize.value &&
+      installSize.value &&
+      installSize.value.package === packageName.value &&
+      installSize.value.version === resolvedVersion.value &&
+      frozenSize.value !== installSize.value.totalSize &&
+      $t('package.stats.size_tooltip.frozen', {
+        size: bytesFormatter.format(frozenSize.value),
       }),
   ]
   return chunks.filter(Boolean).join('\n')
