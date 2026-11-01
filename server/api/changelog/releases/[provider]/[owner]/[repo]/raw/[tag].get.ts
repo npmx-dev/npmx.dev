@@ -69,17 +69,17 @@ async function getMarkdownFromGithub(owner: string, repo: string, tag: string) {
   // to the ungh releases list when GitHub refuses (most likely rate-limited).
   // https://github.com/unjs/ungh/pull/162
   const ref: RepoRef = { provider: 'github', owner, repo }
-  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_TIME })
 
-  if (forgeProvider?.can('releases.getByTag')) {
-    try {
+  try {
+    const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_TIME })
+    if (forgeProvider?.can('releases.getByTag')) {
       const release = await forgeProvider.releases.getByTag(toForgeRepoRef(ref), tag)
-      if (release.body) {
+      if (typeof release.body === 'string') {
         return release.body
       }
-    } catch {
-      // fall back to ungh below
     }
+  } catch {
+    // fall back to ungh below
   }
 
   const responseUngh = await $fetch(`https://ungh.cc/repos/${owner}/${repo}/releases`, {
