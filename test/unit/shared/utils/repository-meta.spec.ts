@@ -11,19 +11,26 @@ function createCachedFetch(response: () => unknown) {
   })) as unknown as CachedFetchFunction & ReturnType<typeof vi.fn>
 }
 
+/** A GitHub-shaped repository, as Pushin returns it. */
+function pushinRepo(overrides: Record<string, unknown> = {}) {
+  return {
+    id: 1110,
+    name: 'npmx-pushin-test',
+    full_name: 'tobbe/npmx-pushin-test',
+    html_url: 'https://pushin.eu/tobbe/npmx-pushin-test',
+    owner: { login: 'tobbe' },
+    stargazers_count: 1,
+    forks_count: 2,
+    ...overrides,
+  }
+}
+
 describe('getRepoMeta', () => {
   describe('Pushin', () => {
     const ref: RepoRef = { provider: 'pushin', owner: 'tobbe', repo: 'npmx-pushin-test' }
 
-    it('fetches repository details from the Pushin API', async () => {
-      const cachedFetch = createCachedFetch(() => ({
-        id: 1110,
-        description: 'Package to test the npmx pushin integration',
-        default_branch: 'main',
-        stargazers_count: 1,
-        forks_count: 2,
-        watchers_count: 3,
-      }))
+    it('fetches repository details through forges', async () => {
+      const cachedFetch = createCachedFetch(() => pushinRepo())
 
       const result = await getRepoMeta(cachedFetch, ref)
 
@@ -37,24 +44,21 @@ describe('getRepoMeta', () => {
         url: 'https://pushin.eu/tobbe/npmx-pushin-test',
         stars: 1,
         forks: 2,
-        watchers: 3,
-        description: 'Package to test the npmx pushin integration',
-        defaultBranch: 'main',
         links: {
           repo: 'https://pushin.eu/tobbe/npmx-pushin-test',
-          stars: 'https://pushin.eu/tobbe/npmx-pushin-test/stargazers',
           forks: 'https://pushin.eu/tobbe/npmx-pushin-test',
-          watchers: 'https://pushin.eu/tobbe/npmx-pushin-test',
         },
       })
     })
 
-    it('defaults missing counts to zero', async () => {
-      const cachedFetch = createCachedFetch(() => ({ id: 1110 }))
+    it('leaves missing counts undefined', async () => {
+      const cachedFetch = createCachedFetch(() =>
+        pushinRepo({ stargazers_count: undefined, forks_count: undefined }),
+      )
 
       const result = await getRepoMeta(cachedFetch, ref)
 
-      expect(result).toMatchObject({ stars: 0, forks: 0, watchers: 0, description: null })
+      expect(result).toMatchObject({ stars: undefined, forks: undefined })
     })
 
     it('returns null when the request fails', async () => {

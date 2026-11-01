@@ -15,10 +15,12 @@ import {
   sanitizeRawHTML,
   decodeHashFragment,
 } from './mdKit'
+import type { UrlTarget } from 'forges'
 import matter from 'gray-matter'
 import { marked } from 'marked'
 import { hasProtocol } from 'ufo'
-import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
+import { convertBlobOrFileToRawUrl, forgeWeb, toForgeRepoRef } from '#shared/utils/forges'
+import type { RepositoryInfo } from '#shared/utils/git-providers'
 import { decodeHtmlEntities, slugify } from '#shared/utils/html'
 import { convertToEmoji } from '#shared/utils/emoji'
 import { toProxiedImageUrl } from '#server/utils/image-proxy'
@@ -184,12 +186,15 @@ function toUserContentHash(value: string): string {
 }
 
 /**
- * Resolve a relative URL to an absolute URL.
- * If repository info is available, resolve to provider's raw file URLs.
- * For markdown files (.md), use blob URLs so they render properly.
- * Otherwise, fall back to jsdelivr CDN (except for .md files which are left unchanged).
+ * Resolves a relative URL through the forge, so links match the revision the
+ * README was published from. Without repository info, jsdelivr is the fallback.
  */
-function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
+function resolveUrl(
+  url: string,
+  packageName: string,
+  repoInfo?: RepositoryInfo,
+  revision?: string,
+): string {
   if (!url || url.startsWith('$')) return url
   if (url.startsWith('#')) {
     // Prefix anchor links to match heading IDs (avoids collision with page IDs)
@@ -209,13 +214,15 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
   // Check if this is a markdown file link
   const isMarkdownFile = isMarkdownFileUrl(url)
 
+  // An absolute path names a file in the repository, which may not be in the npm
+  // tarball. Local routes arrive `$`-prefixed, so they return above.
   if (url.startsWith('/') && !url.startsWith('//')) {
-    if (!repoInfo?.rawBaseUrl) {
+    if (!repoInfo) {
       return url
     }
-
-    const baseUrl = isMarkdownFile ? repoInfo.blobBaseUrl : repoInfo.rawBaseUrl
-    return `${baseUrl}${url}`
+    // Root-relative, so the package's directory does not apply.
+    const rootInfo = { ...repoInfo, directory: undefined }
+    return forgeFileUrl(rootInfo, url.slice(1), isMarkdownFile, revision) ?? url
   }
   if (hasProtocol(url, { acceptRelative: true })) {
     try {
@@ -239,35 +246,11 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
     // for non-HTTP protocols (javascript:, data:, etc.), don't return, treat as relative
   }
 
-  // Use provider's URL base when repository info is available
-  // This handles assets that exist in the repo but not in the npm tarball
-  if (repoInfo?.rawBaseUrl) {
-    // Normalize the relative path (remove leading ./)
-    let relativePath = url.replace(/^\.\//, '')
-
-    // If package is in a subdirectory, resolve relative paths from there
-    // e.g., for packages/ai with ./assets/hero.gif → packages/ai/assets/hero.gif
-    // but for ../../.github/assets/banner.jpg → resolve relative to subdirectory
-    if (repoInfo.directory) {
-      // Split directory into parts for relative path resolution
-      const dirParts = repoInfo.directory.split('/').filter(Boolean)
-
-      // Handle ../ navigation
-      while (relativePath.startsWith('../')) {
-        relativePath = relativePath.slice(3)
-        dirParts.pop()
-      }
-
-      // Reconstruct the path
-      if (dirParts.length > 0) {
-        relativePath = `${dirParts.join('/')}/${relativePath}`
-      }
+  if (repoInfo) {
+    const resolved = forgeFileUrl(repoInfo, url, isMarkdownFile, revision)
+    if (resolved) {
+      return resolved
     }
-
-    // For markdown files, use blob URL so they render on the provider's site
-    // For other files, use raw URL for direct access
-    const baseUrl = isMarkdownFile ? repoInfo.blobBaseUrl : repoInfo.rawBaseUrl
-    return `${baseUrl}/${relativePath}`
   }
 
   // For markdown files without repo info, leave unchanged (like npm does)
@@ -280,6 +263,44 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
   return `https://cdn.jsdelivr.net/npm/${packageName}/${url.replace(/^\.\//, '')}`
 }
 
+/**
+ * The forge's URL for a file, or `undefined` where the forge has none. A markdown
+ * file links to its page, anything else to bytes; query and fragment are kept.
+ */
+function forgeFileUrl(
+  repoInfo: RepositoryInfo,
+  url: string,
+  asPage: boolean,
+  revision?: string,
+): string | undefined {
+  // `match[0]` is the whole match, so the groups start at 1.
+  const match = /^([^?#]*)([?#].*)?$/.exec(url)
+  const rawPath = match?.[1] ?? url
+  const suffix = match?.[2] ?? ''
+  let path = rawPath.replace(/^\.\//, '')
+
+  // Resolve from the package's subdirectory: for packages/ai, ./assets/a.gif is
+  // packages/ai/assets/a.gif, and ../../.github/x.jpg climbs back out of it.
+  if (repoInfo.directory) {
+    const parts = repoInfo.directory.split('/').filter(Boolean)
+    while (path.startsWith('../')) {
+      path = path.slice(3)
+      parts.pop()
+    }
+    if (parts.length > 0) {
+      path = `${parts.join('/')}/${path}`
+    }
+  }
+
+  const repo = toForgeRepoRef(repoInfo)
+  // Without a known revision, the forge's default branch is what the package shipped from.
+  const target: UrlTarget = asPage
+    ? { file: { repo, path, at: revision } }
+    : { raw: { repo, path, at: revision } }
+  const resolved = forgeWeb(repoInfo)?.urlFor(target)
+  return resolved ? `${resolved}${suffix}` : undefined
+}
+
 // Convert blob/src URLs to raw URLs for images across all providers
 // e.g. https://github.com/nuxt/nuxt/blob/main/.github/assets/banner.svg
 //   → https://github.com/nuxt/nuxt/raw/main/.github/assets/banner.svg
@@ -288,16 +309,19 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
 // third-party servers from collecting visitor IP addresses and User-Agent data.
 // Proxy URLs are HMAC-signed to prevent open proxy abuse.
 // See: https://github.com/npmx-dev/npmx.dev/issues/1138
-function resolveImageUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
+function resolveImageUrl(
+  url: string,
+  packageName: string,
+  repoInfo?: RepositoryInfo,
+  revision?: string,
+): string {
   // Skip already-proxied URLs (from a previous resolveImageUrl call in the
   // marked renderer — sanitizeHtml transformTags may call this again)
   if (url.startsWith('/api/registry/image-proxy')) {
     return url
   }
-  const resolved = resolveUrl(url, packageName, repoInfo)
-  const rawUrl = repoInfo?.provider
-    ? convertBlobOrFileToRawUrl(resolved, repoInfo.provider)
-    : resolved
+  const resolved = resolveUrl(url, packageName, repoInfo, revision)
+  const rawUrl = repoInfo?.provider ? convertBlobOrFileToRawUrl(resolved, repoInfo) : resolved
   const { imageProxySecret } = useRuntimeConfig()
   return toProxiedImageUrl(rawUrl, imageProxySecret)
 }
@@ -323,6 +347,7 @@ export async function renderReadmeHtml(
   content: string,
   packageName: string,
   repoInfo?: RepositoryInfo,
+  revision?: string,
 ): Promise<ReadmeResponse> {
   if (!content) return { html: '', playgroundLinks: [], toc: [] }
 
@@ -353,7 +378,7 @@ export async function renderReadmeHtml(
   renderer.code = await createCodeHighlighter()
 
   function processImageUrl(href: string) {
-    return resolveImageUrl(href, packageName, repoInfo)
+    return resolveImageUrl(href, packageName, repoInfo, revision)
   }
 
   renderer.image = createImage(processImageUrl)
@@ -362,7 +387,7 @@ export async function renderReadmeHtml(
   // Used by both the markdown renderer.link and the HTML <a> interceptor so that
   // all link processing happens in a single pass during marked rendering.
   const processLink: ProcessLinkFn = (href: string, label: string) => {
-    const resolvedHref = resolveUrl(href, packageName, repoInfo)
+    const resolvedHref = resolveUrl(href, packageName, repoInfo, revision)
 
     // Collect playground links
     const provider = matchPlaygroundProvider(resolvedHref)

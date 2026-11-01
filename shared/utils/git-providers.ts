@@ -1,3 +1,15 @@
+import type { ForgeWeb, WebOptions } from 'forges/web'
+import {
+  bitbucket,
+  forgejo,
+  gitea,
+  gitee,
+  github,
+  gitlab,
+  pushin,
+  sourcehut,
+  tangled,
+} from 'forges/web'
 import { withoutTrailingSlash } from 'ufo'
 
 export type ProviderId =
@@ -21,10 +33,6 @@ export interface RepoRef {
 }
 
 export interface RepositoryInfo extends RepoRef {
-  /** Raw file URL base (e.g., https://raw.githubusercontent.com/owner/repo/HEAD) */
-  rawBaseUrl: string
-  /** Blob/rendered file URL base (e.g., https://github.com/owner/repo/blob/HEAD) */
-  blobBaseUrl: string
   /** Subdirectory within repo where package lives (e.g., packages/ai) */
   directory?: string
 }
@@ -53,257 +61,68 @@ const GITEA_HOSTS = ['gitea.com']
 
 interface ProviderConfig {
   id: ProviderId
-  /** Check if hostname matches this provider */
-  matchHost(host: string): boolean
-  /** Parse URL path into owner/repo, returns null if invalid */
-  parsePath(parts: string[]): { owner: string; repo: string } | null
-  /** Get raw file URL base for resolving relative paths */
-  getRawBaseUrl(ref: RepoRef, branch?: string): string
-  /** Get blob/rendered URL base for markdown files */
-  getBlobBaseUrl(ref: RepoRef, branch?: string): string
-  /** Convert file URLs to blob URLs (for images) */
-  fileToRaw?(url: string): string
-  /** Convert blob URLs to raw URLs (for images) */
-  blobToRaw?(url: string): string
+  /** Hosts the provider is recognised on; the first is its public instance. */
+  hosts: readonly string[]
+  /** The forge's web entry, which reads a repository path with the forge's own rules. */
+  web?: (options: WebOptions) => ForgeWeb
+  /** The provider has self-hosted instances, so the ref's host names the instance. */
+  selfHostable?: boolean
+  /** The instance base URL, where the forge's default is not the one npmx serves. */
+  baseUrl?: (ref: RepoRef) => string | undefined
+  /** The host an npm shorthand expands to, where it is not the first host. */
+  shorthandHost?: string
 }
 
-const providers: ProviderConfig[] = [
-  {
-    id: 'github',
-    matchHost: host => host === 'github.com' || host === 'www.github.com',
-    parsePath: parts => {
-      if (parts.length < 2) return null
-      const owner = decodeURIComponent(parts[0] ?? '').trim()
-      const repo = decodeURIComponent(parts[1] ?? '')
-        .trim()
-        .replace(/\.git$/i, '')
-      if (!owner || !repo) return null
-      return { owner, repo }
-    },
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://raw.githubusercontent.com/${ref.owner}/${ref.repo}/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://github.com/${ref.owner}/${ref.repo}/blob/${branch}`,
-    fileToRaw: url => url.replace('/tree/', '/raw/'),
-    blobToRaw: url => url.replace('/blob/', '/raw/'),
-  },
-  {
-    id: 'gitlab',
-    matchHost: host => GITLAB_HOSTS.some(h => host === h || host === `www.${h}`),
-    parsePath: parts => {
-      if (parts.length < 2) return null
-      // GitLab supports nested groups
-      const repo = decodeURIComponent(parts[parts.length - 1] ?? '')
-        .trim()
-        .replace(/\.git$/i, '')
-      const owner = parts
-        .slice(0, -1)
-        .map(p => decodeURIComponent(p).trim())
-        .join('/')
-      if (!owner || !repo) return null
-      return { owner, repo }
-    },
-    getRawBaseUrl: (ref, branch = 'HEAD') => {
-      const host = ref.host ?? 'gitlab.com'
-      return `https://${host}/${ref.owner}/${ref.repo}/-/raw/${branch}`
-    },
-    getBlobBaseUrl: (ref, branch = 'HEAD') => {
-      const host = ref.host ?? 'gitlab.com'
-      return `https://${host}/${ref.owner}/${ref.repo}/-/blob/${branch}`
-    },
-    blobToRaw: url => url.replace('/-/blob/', '/-/raw/'),
-  },
-  {
-    id: 'bitbucket',
-    matchHost: host => host === 'bitbucket.org' || host === 'www.bitbucket.org',
-    parsePath: parts => {
-      if (parts.length < 2) return null
-      const owner = decodeURIComponent(parts[0] ?? '').trim()
-      const repo = decodeURIComponent(parts[1] ?? '')
-        .trim()
-        .replace(/\.git$/i, '')
-      if (!owner || !repo) return null
-      return { owner, repo }
-    },
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://bitbucket.org/${ref.owner}/${ref.repo}/raw/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://bitbucket.org/${ref.owner}/${ref.repo}/src/${branch}`,
-    blobToRaw: url => url.replace('/src/', '/raw/'),
-  },
-  {
-    id: 'codeberg',
-    matchHost: host => host === 'codeberg.org' || host === 'www.codeberg.org',
-    parsePath: parts => {
-      if (parts.length < 2) return null
-      const owner = decodeURIComponent(parts[0] ?? '').trim()
-      const repo = decodeURIComponent(parts[1] ?? '')
-        .trim()
-        .replace(/\.git$/i, '')
-      if (!owner || !repo) return null
-      return { owner, repo }
-    },
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://codeberg.org/${ref.owner}/${ref.repo}/raw/branch/${branch === 'HEAD' ? 'main' : branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://codeberg.org/${ref.owner}/${ref.repo}/src/branch/${branch === 'HEAD' ? 'main' : branch}`,
-    blobToRaw: url => url.replace('/src/', '/raw/'),
-  },
-  {
-    id: 'gitee',
-    matchHost: host => host === 'gitee.com' || host === 'www.gitee.com',
-    parsePath: parts => {
-      if (parts.length < 2) return null
-      const owner = decodeURIComponent(parts[0] ?? '').trim()
-      const repo = decodeURIComponent(parts[1] ?? '')
-        .trim()
-        .replace(/\.git$/i, '')
-      if (!owner || !repo) return null
-      return { owner, repo }
-    },
-    getRawBaseUrl: (ref, branch = 'master') =>
-      `https://gitee.com/${ref.owner}/${ref.repo}/raw/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'master') =>
-      `https://gitee.com/${ref.owner}/${ref.repo}/blob/${branch}`,
-    blobToRaw: url => url.replace('/blob/', '/raw/'),
-  },
-  {
-    id: 'sourcehut',
-    matchHost: host => host === 'sr.ht' || host === 'git.sr.ht',
-    parsePath: parts => {
-      if (parts.length < 2) return null
-      // Sourcehut uses ~username/repo format
-      const owner = decodeURIComponent(parts[0] ?? '').trim()
-      const repo = decodeURIComponent(parts[1] ?? '')
-        .trim()
-        .replace(/\.git$/i, '')
-      if (!owner || !repo) return null
-      return { owner, repo }
-    },
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://git.sr.ht/${ref.owner}/${ref.repo}/blob/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://git.sr.ht/${ref.owner}/${ref.repo}/tree/${branch}/item`,
-  },
-  {
-    id: 'tangled',
-    matchHost: host =>
-      host === 'tangled.sh' ||
-      host === 'www.tangled.sh' ||
-      host === 'tangled.org' ||
-      host === 'www.tangled.org',
-    parsePath: parts => {
-      if (parts.length < 2) return null
-      // Tangled uses owner/repo format (owner is a domain-like identifier, e.g., nonbinary.computer)
-      const owner = decodeURIComponent(parts[0] ?? '').trim()
-      const repo = decodeURIComponent(parts[1] ?? '')
-        .trim()
-        .replace(/\.git$/i, '')
-      if (!owner || !repo) return null
-      return { owner, repo }
-    },
-    getRawBaseUrl: (ref, branch = 'main') =>
-      `https://tangled.sh/${ref.owner}/${ref.repo}/raw/branch/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'main') =>
-      `https://tangled.sh/${ref.owner}/${ref.repo}/src/branch/${branch}`,
-    blobToRaw: url => url.replace('/blob/', '/raw/branch/'),
-  },
-  {
-    id: 'radicle',
-    matchHost: host =>
-      host === 'radicle.at' || host === 'app.radicle.at' || host === 'seed.radicle.at',
-    parsePath: parts => {
-      // Radicle URLs: app.radicle.at/nodes/seed.radicle.at/rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT
-      // We extract the rad:... identifier as the "repo" with no owner
-      const path = parts.join('/')
-      const radMatch = path.match(/rad:[a-zA-Z0-9]+/)
-      if (!radMatch?.[0]) return null
-      // Use empty owner, store full rad: ID as repo
-      return { owner: '', repo: radMatch[0] }
-    },
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://seed.radicle.at/api/v1/projects/${ref.repo}/blob/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://app.radicle.at/nodes/seed.radicle.at/${ref.repo}/tree/${branch}`,
-  },
-  {
-    id: 'pushin',
-    // Pushin serves the web UI and API on pushin.eu, but clone URLs use git.pushin.eu
-    matchHost: host => host === 'pushin.eu' || host === 'www.pushin.eu' || host === 'git.pushin.eu',
-    parsePath: parts => {
-      if (parts.length < 2) return null
-      const owner = decodeURIComponent(parts[0] ?? '').trim()
-      const repo = decodeURIComponent(parts[1] ?? '')
-        .trim()
-        .replace(/\.git$/i, '')
-      if (!owner || !repo) return null
-      return { owner, repo }
-    },
-    // Pushin doesn't serve raw files yet, so the blob URL is the closest we have.
-    // Relative README images resolve to HTML pages and won't render until then.
-    // TODO: switch to the raw file URL once Pushin supports serving raw files
-    getRawBaseUrl: (ref, branch = 'HEAD') =>
-      `https://pushin.eu/${ref.owner}/${ref.repo}/blob/${branch}`,
-    getBlobBaseUrl: (ref, branch = 'HEAD') =>
-      `https://pushin.eu/${ref.owner}/${ref.repo}/blob/${branch}`,
-  },
+/** The ref's own instance base URL, for a provider that can be self-hosted. */
+const instanceUrl = (ref: RepoRef) => (ref.host ? `https://${ref.host}` : undefined)
+
+const PROVIDERS: readonly ProviderConfig[] = [
+  { id: 'github', hosts: ['github.com'], web: github },
+  { id: 'gitlab', hosts: GITLAB_HOSTS, web: gitlab, selfHostable: true, baseUrl: instanceUrl },
+  { id: 'bitbucket', hosts: ['bitbucket.org'], web: bitbucket },
+  // Codeberg is a Forgejo instance.
+  { id: 'codeberg', hosts: ['codeberg.org'], web: forgejo, baseUrl: () => 'https://codeberg.org' },
+  { id: 'gitee', hosts: ['gitee.com'], web: gitee },
+  { id: 'sourcehut', hosts: ['git.sr.ht'], web: sourcehut },
+  { id: 'tangled', hosts: ['tangled.org', 'tangled.sh'], web: tangled },
+  // Radicle has no `forges/web` entry: refs keep the `rad:` id as the repo.
+  { id: 'radicle', hosts: ['radicle.at', 'app.radicle.at', 'seed.radicle.at'], selfHostable: true },
+  // Pushin serves the web UI and API on pushin.eu, but clone URLs use git.pushin.eu.
+  { id: 'pushin', hosts: ['pushin.eu', 'git.pushin.eu'], web: pushin },
   {
     id: 'forgejo',
-    matchHost: host => FORGEJO_HOSTS.includes(host),
-    parsePath: parts => {
-      if (parts.length < 2) return null
-      const owner = decodeURIComponent(parts[0] ?? '').trim()
-      const repo = decodeURIComponent(parts[1] ?? '')
-        .trim()
-        .replace(/\.git$/i, '')
-      if (!owner || !repo) return null
-      return { owner, repo }
-    },
-    getRawBaseUrl: (ref, branch = 'HEAD') => {
-      const host = ref.host ?? 'codeberg.org'
-      return `https://${host}/${ref.owner}/${ref.repo}/raw/branch/${branch === 'HEAD' ? 'main' : branch}`
-    },
-    getBlobBaseUrl: (ref, branch = 'HEAD') => {
-      const host = ref.host ?? 'codeberg.org'
-      return `https://${host}/${ref.owner}/${ref.repo}/src/branch/${branch === 'HEAD' ? 'main' : branch}`
-    },
-    blobToRaw: url => url.replace('/src/', '/raw/'),
+    hosts: FORGEJO_HOSTS,
+    web: forgejo,
+    selfHostable: true,
+    baseUrl: instanceUrl,
+    shorthandHost: 'code.forgejo.org',
   },
-  {
-    id: 'gitea',
-    matchHost: host => GITEA_HOSTS.includes(host),
-    parsePath: parts => {
-      if (parts.length < 2) return null
-      const owner = decodeURIComponent(parts[0] ?? '').trim()
-      const repo = decodeURIComponent(parts[1] ?? '')
-        .trim()
-        .replace(/\.git$/i, '')
-      if (!owner || !repo) return null
-      return { owner, repo }
-    },
-    getRawBaseUrl: (ref, branch = 'HEAD') => {
-      const host = ref.host ?? 'gitea.io'
-      return `https://${host}/${ref.owner}/${ref.repo}/raw/branch/${branch === 'HEAD' ? 'main' : branch}`
-    },
-    getBlobBaseUrl: (ref, branch = 'HEAD') => {
-      const host = ref.host ?? 'gitea.io'
-      return `https://${host}/${ref.owner}/${ref.repo}/src/branch/${branch === 'HEAD' ? 'main' : branch}`
-    },
-    blobToRaw: url => url.replace('/src/', '/raw/'),
-  },
+  { id: 'gitea', hosts: GITEA_HOSTS, web: gitea, selfHostable: true, baseUrl: instanceUrl },
 ]
 
-const SHORTHAND_PROVIDERS = {
-  github: 'github.com',
-  gitlab: 'gitlab.com',
-  bitbucket: 'bitbucket.org',
-  codeberg: 'codeberg.org',
-  gitee: 'gitee.com',
-  sourcehut: 'git.sr.ht',
-  gitea: 'gitea.com',
-  tangled: 'tangled.org',
-  forgejo: 'code.forgejo.org',
-} satisfies Partial<Record<ProviderId, string>>
+function configFor(provider: ProviderId) {
+  return PROVIDERS.find(providerConfig => providerConfig.id === provider)
+}
+
+/** Whether a host is one the provider is recognised on, ignoring the `www.` prefix. */
+function matchesHost(config: ProviderConfig, host: string) {
+  return config.hosts.some(known => host === known || host === `www.${known}`)
+}
+
+/** The instance base URL for a ref, or `undefined` for the forge's own default. */
+export function instanceBaseUrl(ref: RepoRef): string | undefined {
+  return configFor(ref.provider)?.baseUrl?.(ref)
+}
+
+/** The `forges/web` entry for a provider, or `undefined` where it has none (radicle). */
+export function providerWeb(provider: ProviderId): ((options: WebOptions) => ForgeWeb) | undefined {
+  return configFor(provider)?.web
+}
+
+/** Whether a ref must name its instance, because the provider is self-hostable. */
+export function providerNeedsHost(provider: ProviderId): boolean {
+  return configFor(provider)?.selfHostable === true
+}
 
 /**
  * Normalize various git URL formats to a standard HTTPS URL.
@@ -314,13 +133,11 @@ export function normalizeGitUrl(input: string): string | null {
   if (!url) return null
 
   // Expand shorthand provider prefixes (e.g. "github:owner/repo" -> "https://github.com/owner/repo")
-  for (const [provider, host] of Object.entries(SHORTHAND_PROVIDERS)) {
-    const prefix = `${provider}:`
-    if (url.startsWith(prefix)) {
-      const replacement = `https://${host}/`
-      url = url.replace(prefix, replacement)
-      break
-    }
+  for (const provider of PROVIDERS) {
+    const prefix = `${provider.id}:`
+    if (!url.startsWith(prefix)) continue
+    url = `https://${provider.shorthandHost ?? provider.hosts[0]}/${url.slice(prefix.length)}`
+    break
   }
 
   url = url
@@ -357,33 +174,41 @@ export function normalizeGitUrl(input: string): string | null {
   return url.includes('://') ? url : `https://${url}`
 }
 
-export const NEED_HOST: ProviderId[] = ['gitlab', 'gitea', 'forgejo', 'radicle']
+/** Reads `owner/repo` with the forge's own URL rules, so nested groups and `~user` parse. */
+function parseRepoPath(config: ProviderConfig, host: string, url: URL) {
+  const repo = config.web?.({ baseUrl: `https://${host}` }).parseUrl(url)?.repo
+  return repo ? { owner: repo.owner, repo: repo.name } : null
+}
+
+/** Radicle has no web entry; the `rad:` id is the repo, with no owner. */
+function parseRadiclePath(url: URL) {
+  const rad = /rad:[a-zA-Z0-9]+/.exec(url.pathname)
+  return rad ? { owner: '', repo: rad[0] } : null
+}
 
 export function parseRepoUrl(input: string): RepoRef | null {
   const normalized = normalizeGitUrl(input)
   if (!normalized) return null
 
+  let url: URL
   try {
-    const url = new URL(normalized)
-    const host = url.hostname.toLowerCase()
-    const parts = url.pathname.split('/').filter(Boolean)
-
-    for (const provider of providers) {
-      if (!provider.matchHost(host)) continue
-      const parsed = provider.parsePath(parts)
-      if (parsed) {
-        const needsHost = NEED_HOST.includes(provider.id)
-        return {
-          provider: provider.id,
-          owner: parsed.owner,
-          repo: parsed.repo,
-          host: needsHost ? host : undefined,
-        }
-      }
-    }
-    return null
+    url = new URL(normalized)
   } catch {
     return null
+  }
+
+  const host = url.hostname.toLowerCase()
+  const config = PROVIDERS.find(providerConfig => matchesHost(providerConfig, host))
+  if (!config) return null
+
+  const repo = config.web ? parseRepoPath(config, host, url) : parseRadiclePath(url)
+  if (!repo) return null
+
+  return {
+    provider: config.id,
+    owner: repo.owner,
+    repo: repo.repo,
+    host: config.selfHostable ? host : undefined,
   }
 }
 
@@ -411,27 +236,10 @@ export function parseRepositoryInfo(
   const ref = parseRepoUrl(url)
   if (!ref) return undefined
 
-  const provider = providers.find(p => p.id === ref.provider)
-  if (!provider) return undefined
-
   return {
     ...ref,
-    rawBaseUrl: provider.getRawBaseUrl(ref),
-    blobBaseUrl: provider.getBlobBaseUrl(ref),
     directory: directory ? withoutTrailingSlash(directory) : undefined,
   }
-}
-
-export function convertBlobOrFileToRawUrl(url: string, providerId: ProviderId): string {
-  const provider = providers.find(p => p.id === providerId)
-  let rawUrl = url
-  if (provider?.fileToRaw) {
-    rawUrl = provider.fileToRaw(url)
-  }
-  if (provider?.blobToRaw) {
-    rawUrl = provider.blobToRaw(rawUrl)
-  }
-  return rawUrl
 }
 
 /**
@@ -462,6 +270,6 @@ export const ALL_KNOWN_GIT_API_ORIGINS: readonly string[] = [
  * validates whether the given host is part of the known hosts of a provider
  */
 export function validateHost(provider: ProviderId, host: string) {
-  const providerConfig = providers.find(config => config.id == provider)
-  return !!providerConfig?.matchHost(host)
+  const config = configFor(provider)
+  return !!config && matchesHost(config, host)
 }
