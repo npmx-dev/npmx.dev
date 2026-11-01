@@ -1,3 +1,4 @@
+import { getVersions } from 'fast-npm-meta'
 import { findMaxSatisfying } from 'verkit'
 
 export const fetchNpmPackage = defineCachedFunction(
@@ -33,6 +34,24 @@ export const fetchNpmPackageAbbreviated = defineCachedFunction(
     maxAge: CACHE_MAX_AGE_FIVE_MINUTES,
     swr: true,
     name: 'npm-package-abbreviated',
+    getKey: (name: string) => name,
+  },
+)
+
+/**
+ * Fetch a package's versions, dist-tags and per-version publish times from fast-npm-meta.
+ * The abbreviated packument has no `time`, and the full packument can be megabytes, so
+ * this is the lightweight source for anything that needs publish dates.
+ */
+export const fetchNpmPackageVersionsMeta = defineCachedFunction(
+  async (name: string) => {
+    const { versions, time, distTags } = await getVersions(name)
+    return { versions, time, distTags }
+  },
+  {
+    maxAge: CACHE_MAX_AGE_FIVE_MINUTES,
+    swr: true,
+    name: 'npm-package-versions-meta',
     getKey: (name: string) => name,
   },
 )

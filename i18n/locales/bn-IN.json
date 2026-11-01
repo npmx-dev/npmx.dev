@@ -380,9 +380,7 @@
       "tangled": "Tangled এ দেখুন"
     },
     "collapse": "সংকুচিত করুন",
-    "collapse_with_name": "{name} সঙ্কুচিত করুন",
-    "expand": "বিস্তৃত করুন",
-    "expand_with_name": "{name} বিস্তৃত করুন"
+    "expand": "বিস্তৃত করুন"
   },
   "profile": {
     "display_name": "প্রদর্শনের নাম",

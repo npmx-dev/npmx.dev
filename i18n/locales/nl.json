@@ -432,9 +432,7 @@
       "tangled": "Bekijk op Tangled"
     },
     "collapse": "inklappen",
-    "collapse_with_name": "inklappen {name}",
     "expand": "uitklappen",
-    "expand_with_name": "uitklappen {name}",
     "copyMdError": "Markdown kon niet worden opgehaald. Probeer het later opnieuw"
   },
   "profile": {

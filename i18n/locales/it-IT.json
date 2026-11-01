@@ -372,9 +372,7 @@
       "tangled": "Vedi su Tangled"
     },
     "collapse": "Comprimi",
-    "collapse_with_name": "Comprimi {name}",
-    "expand": "Espandi",
-    "expand_with_name": "Espandi {name}"
+    "expand": "Espandi"
   },
   "profile": {
     "display_name": "Nome visualizzato",

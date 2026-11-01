@@ -377,9 +377,7 @@
       "tangled": "Zobrazit na Tangled"
     },
     "collapse": "Sbalit",
-    "collapse_with_name": "Sbalit sekci {name}",
-    "expand": "Rozbalit",
-    "expand_with_name": "Rozbalit sekci {name}"
+    "expand": "Rozbalit"
   },
   "profile": {
     "display_name": "Zobrazované jméno",

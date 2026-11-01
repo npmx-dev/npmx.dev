@@ -432,9 +432,7 @@
       "tangled": "Открыть на Tangled"
     },
     "collapse": "Свернуть",
-    "collapse_with_name": "Свернуть {name}",
     "expand": "Развернуть",
-    "expand_with_name": "Развернуть {name}",
     "copyMdError": "Не удалось загрузить markdown, попробуйте позже"
   },
   "profile": {
