@@ -11,7 +11,7 @@ describe('SelectField', () => {
   describe('rendering', () => {
     it('renders options from items prop', async () => {
       const component = await mountSuspended(SelectField, {
-        props: { id: 'select', items: defaultItems },
+        props: { id: 'select', items: defaultItems, modelValue: 'option1' },
       })
       const options = component.findAll('option')
       expect(options).toHaveLength(2)
@@ -23,7 +23,7 @@ describe('SelectField', () => {
 
     it('renders label when provided', async () => {
       const component = await mountSuspended(SelectField, {
-        props: { id: 'select', items: defaultItems, label: 'Choose one' },
+        props: { id: 'select', items: defaultItems, modelValue: 'option1', label: 'Choose one' },
       })
       const label = component.find('label')
       expect(label.exists()).toBe(true)
@@ -35,6 +35,7 @@ describe('SelectField', () => {
       const component = await mountSuspended(SelectField, {
         props: {
           id: 'select',
+          modelValue: 'on',
           items: [
             { label: 'Enabled', value: 'on' },
             { label: 'Disabled', value: 'off', disabled: true },
@@ -47,7 +48,7 @@ describe('SelectField', () => {
 
     it('applies block class when block is true', async () => {
       const component = await mountSuspended(SelectField, {
-        props: { id: 'select', items: defaultItems, block: true },
+        props: { id: 'select', items: defaultItems, modelValue: 'option1', block: true },
       })
       const wrapper = component.find('.relative')
       expect(wrapper.classes()).toContain('w-full')
@@ -80,7 +81,7 @@ describe('SelectField', () => {
   describe('disabled', () => {
     it('passes disabled to SelectBase', async () => {
       const component = await mountSuspended(SelectField, {
-        props: { id: 'select', items: defaultItems, disabled: true },
+        props: { id: 'select', items: defaultItems, modelValue: 'option1', disabled: true },
       })
       const select = component.find('select').element
       expect(select.disabled).toBe(true)
@@ -90,7 +91,7 @@ describe('SelectField', () => {
   describe('accessibility', () => {
     it('chevron has aria-hidden', async () => {
       const component = await mountSuspended(SelectField, {
-        props: { id: 'select', items: defaultItems },
+        props: { id: 'select', items: defaultItems, modelValue: 'option1' },
       })
       const chevron = component.find('span[aria-hidden="true"]')
       expect(chevron.exists()).toBe(true)
@@ -101,6 +102,7 @@ describe('SelectField', () => {
         props: {
           id: 'select',
           items: defaultItems,
+          modelValue: 'option1',
           label: 'Hidden',
           hiddenLabel: true,
         },
@@ -113,7 +115,7 @@ describe('SelectField', () => {
 
     it('associates select with id', async () => {
       const component = await mountSuspended(SelectField, {
-        props: { id: 'my-select', items: defaultItems, label: 'My Select' },
+        props: { id: 'my-select', items: defaultItems, modelValue: 'option1', label: 'My Select' },
       })
       const select = component.find('select')
       expect(select.attributes('id')).toBe('my-select')

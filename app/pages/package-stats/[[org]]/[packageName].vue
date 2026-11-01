@@ -130,7 +130,6 @@ useSeoMeta({
             class="font-mono"
             :package-names="[packageName]"
             :package-name="packageName"
-            :version="version"
             show-facet-selector
             default-range="52-weeks"
             permalink

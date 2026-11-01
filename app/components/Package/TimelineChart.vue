@@ -898,7 +898,7 @@ const timelineMetricTabs = computed(() => [
         </select>
 
         <div class="hidden sm:block">
-          <TabRoot v-model="activeTab" default-value="totalSize">
+          <TabRoot v-model="activeTab">
             <TabList :ariaLabel="$t('package.timeline.chart.tab_aria_label')">
               <TabItem
                 v-for="tab in timelineMetricTabs"

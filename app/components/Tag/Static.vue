@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from 'vue'
 import type { IconClass } from '~/types'
 
 const props = withDefaults(
@@ -7,6 +8,8 @@ const props = withDefaults(
     variant?: 'ghost' | 'default'
 
     classicon?: IconClass
+    title?: HTMLAttributes['title']
+    tabindex?: HTMLAttributes['tabindex']
   }>(),
   { as: 'span', variant: 'default' },
 )
@@ -15,6 +18,8 @@ const props = withDefaults(
 <template>
   <component
     :is="as"
+    :title="title"
+    :tabindex="tabindex"
     class="bg-bg-muted text-fg-muted inline-flex gap-x-1 items-center justify-center font-mono border border-gray-400 dark:border-gray-500 rounded-md text-xs px-2 py-0.5"
     :class="{ 'opacity-80 border-dashed': variant === 'ghost' }"
   >

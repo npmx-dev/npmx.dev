@@ -14,7 +14,8 @@ defineProps<{
     viewBox="0 0 962 292"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    :alt="$t('alt_logo')"
+    role="img"
+    :aria-label="$t('alt_logo')"
     class="mx-auto w-72 h-auto sm:w-92 max-w-full"
   >
     <path
@@ -100,7 +101,8 @@ defineProps<{
       viewBox="0 0 962 292"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      :alt="$t('alt_logo')"
+      role="img"
+      :aria-label="$t('alt_logo')"
       class="mx-auto w-72 h-auto sm:w-92 mb-8 max-w-full"
     >
       <path

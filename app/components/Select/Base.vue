@@ -1,17 +1,17 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends string">
 import type { SelectBaseProps } from './types'
 import { SELECT_SIZES } from './types'
-
-const model = defineModel<string | undefined>({ default: undefined })
 
 const props = withDefaults(defineProps<SelectBaseProps>(), {
   size: 'md',
 })
+const model = defineModel<T>({ required: true })
 </script>
 
 <template>
   <select
     v-model="model"
+    :name="name"
     class="bg-bg border border-border-elevated font-mono text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent outline-offset-2 focus:border-accent focus-visible:outline-accent/70 disabled:(opacity-50 cursor-not-allowed)"
     :class="[SELECT_SIZES[size]]"
     :disabled="

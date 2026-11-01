@@ -7,5 +7,6 @@ export const SELECT_SIZES = {
 
 export type SelectBaseProps = {
   disabled?: boolean
+  name?: string
   size?: keyof typeof SELECT_SIZES
 }

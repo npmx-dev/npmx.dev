@@ -213,6 +213,7 @@ useSeoMeta({
                 <template #fallback>
                   <SelectField
                     id="search-provider-select"
+                    model-value="loading"
                     disabled
                     :items="[{ label: $t('common.loading'), value: 'loading' }]"
                     block
@@ -279,6 +280,7 @@ useSeoMeta({
                 <template #fallback>
                   <SelectField
                     id="language-select"
+                    model-value="loading"
                     disabled
                     :items="[{ label: $t('common.loading'), value: 'loading' }]"
                     block

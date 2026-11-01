@@ -476,8 +476,7 @@ watch(lastExecutionTime, () => {
                 { label: getRoleLabel('admin'), value: 'admin' },
                 { label: getRoleLabel('owner'), value: 'owner' },
               ]"
-              :value="member.role"
-              @update:modelValue="value => handleChangeRole(member.name, value as MemberRole)"
+              @update:modelValue="value => handleChangeRole(member.name, value)"
             />
             <!-- Remove button -->
             <button

@@ -429,6 +429,9 @@ export default defineNuxtConfig({
 
   typescript: {
     tsConfig: {
+      vueCompilerOptions: {
+        dataAttributes: ['data-*'],
+      },
       compilerOptions: {
         noUnusedLocals: true,
         allowImportingTsExtensions: true,

@@ -11,7 +11,7 @@ defineProps<{
   <!-- Expanded variant: vertical list with larger avatars -->
   <div v-if="variant === 'expanded'" class="flex flex-wrap items-center gap-4">
     <div v-for="author in authors" :key="author.name" class="flex items-center gap-2">
-      <AuthorAvatar :author="author" size="md" disable-link />
+      <AuthorAvatar :author="author" size="md" />
       <div class="flex flex-col">
         <span class="text-sm font-medium text-fg">{{ author.name }}</span>
         <a

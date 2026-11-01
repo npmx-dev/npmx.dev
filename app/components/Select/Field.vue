@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends string">
 import type { SelectBaseProps } from './types'
 
 const SELECT_FIELD_SIZES = {
@@ -17,10 +17,8 @@ const SELECT_FIELD_LABEL_SIZES = {
   lg: 'text-sm',
 }
 
-const model = defineModel<string | undefined>({ default: undefined })
-
 interface SelectFieldProps extends SelectBaseProps {
-  items: { label: string; value: string; disabled?: boolean }[]
+  items: { label: string; value: T; disabled?: boolean }[]
   size?: keyof typeof SELECT_FIELD_SIZES
   selectAttrs?: Omit<SelectBaseProps, 'size' | 'id'> &
     Record<string, string | number | boolean | undefined>
@@ -36,6 +34,7 @@ interface SelectFieldProps extends SelectBaseProps {
 const props = withDefaults(defineProps<SelectFieldProps>(), {
   size: 'md',
 })
+const model = defineModel<T>({ required: true })
 </script>
 
 <template>
@@ -51,6 +50,7 @@ const props = withDefaults(defineProps<SelectFieldProps>(), {
     <div class="relative" :class="[block ? 'w-full' : 'w-fit']">
       <SelectBase
         :disabled="disabled"
+        :name="name"
         size="none"
         class="appearance-none group-hover/select:border-fg-muted"
         :class="[SELECT_FIELD_SIZES[size], block ? 'w-full' : 'w-fit']"

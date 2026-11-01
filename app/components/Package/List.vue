@@ -39,13 +39,11 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   /** Emitted when scrolled near the bottom and more items should be loaded */
-  'loadMore': []
+  loadMore: []
   /** Emitted when the visible page changes */
-  'pageChange': [page: number]
-  /** Emitted when sort option changes (table view) */
-  'update:sortOption': [option: SortOption]
+  pageChange: [page: number]
   /** Emitted when a keyword is clicked */
-  'clickKeyword': [keyword: string]
+  clickKeyword: [keyword: string]
 }>()
 
 providePackageSelectionContext(props.selectable ?? false)
