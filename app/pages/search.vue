@@ -52,11 +52,12 @@ const {
 } = useGlobalSearch()
 const query = computed(() => searchQuery.value.trim().replace(/!$/, ''))
 
+// A trailing "!" only asks for the "I'm feeling lucky" redirect, it is not part of the search
 const {
   scope: packageScope,
   name: queryPackageName,
   trailing: queryTrailing,
-} = useParsedSearchQuery(committedQuery)
+} = useParsedSearchQuery(() => committedQuery.value.trim().replace(/!$/, ''))
 
 const versionStrippedQuery = computed(() =>
   `${queryPackageName.value}${queryTrailing.value ?? ''}`.trim(),
@@ -447,8 +448,8 @@ function focusElement(el: HTMLElement) {
 }
 
 // Navigate to package page
-async function navigateToPackage(packageName: string) {
-  await navigateTo(packageRoute(packageName))
+async function navigateToPackage(packageName: string, options: { replace?: boolean } = {}) {
+  await navigateTo(packageRoute(packageName), options)
 }
 
 // Track the input value when user pressed Enter (for navigating when results arrive)
@@ -463,6 +464,12 @@ watch(
     const isFeelingLucky = rawQuery.endsWith('!')
     if (!pendingEnterQuery.value && !isFeelingLucky) return
 
+    // Drop a pending Enter once the user has moved on (clicked or tabbed away from the input)
+    if (pendingEnterQuery.value && document.activeElement?.tagName !== 'INPUT') {
+      pendingEnterQuery.value = null
+      if (!isFeelingLucky) return
+    }
+
     const target = pendingEnterQuery.value || rawQuery.replace(/!$/, '')
     if (!target) return
 
@@ -475,7 +482,8 @@ watch(
     })
     if (firstResult?.package.name === target) {
       pendingEnterQuery.value = null
-      navigateToPackage(firstResult.package.name)
+      // Replace the `q=name!` entry so going back doesn't land on it and redirect again
+      navigateToPackage(firstResult.package.name, { replace: isFeelingLucky })
     }
   },
   { immediate: true },
