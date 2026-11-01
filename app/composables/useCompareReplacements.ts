@@ -1,4 +1,6 @@
 import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
+import { NO_DEPENDENCY_ID } from '#shared/utils/compare'
+import { parsePackageSpec } from '#shared/utils/parse-package-param'
 
 export interface ReplacementSuggestion {
   forPackage: string
@@ -30,6 +32,12 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
   // Cache replacement data by package name
   const replacements = shallowRef(new Map<string, ModuleReplacement | null>())
   const loading = shallowRef(false)
+
+  const basePackages = computed(() =>
+    [...new Set(packages.value.map(p => parsePackageSpec(p).name))].filter(
+      name => name !== NO_DEPENDENCY_ID,
+    ),
+  )
 
   // Fetch replacements for all packages
   async function fetchReplacements(names: string[]) {
@@ -70,7 +78,7 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
   // Watch for package changes and fetch replacements
   if (import.meta.client) {
     watch(
-      packages,
+      basePackages,
       newPackages => {
         fetchReplacements(newPackages)
       },
@@ -82,7 +90,7 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
   const allSuggestions = computed(() => {
     const result: ReplacementSuggestion[] = []
 
-    for (const pkg of packages.value) {
+    for (const pkg of basePackages.value) {
       const replacement = replacements.value.get(pkg)
       if (!replacement) continue
 

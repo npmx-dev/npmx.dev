@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { ref } from 'vue'
 import type { ComparisonFacet } from '#shared/types/comparison'

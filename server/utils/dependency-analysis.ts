@@ -10,10 +10,10 @@ import type {
   DeprecatedPackageInfo,
   DirectDependencyHealthResult,
   OsvAffected,
-  OsvRange,
 } from '#shared/types/dependency-analysis'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { resolveDependencyTree, resolveVersion } from './dependency-resolver'
+import { isExcludedByLastKnownAffectedRange, parseRangeIntervals } from './osv'
 import { compare, isGreaterOrEqual, isLess } from 'verkit'
 
 /** Maximum concurrent requests for fetching vulnerability details */
@@ -88,8 +88,10 @@ async function queryOsvDetails(pkg: PackageQueryInfo): Promise<PackageVulnerabil
       },
     })
 
-    const vulns = response.vulns || []
-    if (vulns.length === 0) return null
+    if (!response.vulns?.length) return null
+    const vulns = response.vulns.filter(
+      vuln => !isExcludedByLastKnownAffectedRange(vuln, pkg.name, pkg.version),
+    )
 
     const counts = { total: vulns.length, critical: 0, high: 0, moderate: 0, low: 0 }
     const vulnerabilities: VulnerabilitySummary[] = []
@@ -147,38 +149,6 @@ function getVulnerabilityUrl(vuln: OsvVulnerability): string {
     return `https://nvd.nist.gov/vuln/detail/${cveAlias}`
   }
   return `https://osv.dev/vulnerability/${vuln.id}`
-}
-
-/**
- * Parse OSV range events into introduced/fixed pairs.
- * OSV events form a timeline: [introduced, fixed, introduced, fixed, ...]
- * A single range can have multiple introduced/fixed pairs representing
- * periods where the vulnerability was active, was fixed, and was reintroduced.
- * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
- */
-function parseRangeIntervals(range: OsvRange): Array<{ introduced: string; fixed?: string }> {
-  const intervals: Array<{ introduced: string; fixed?: string }> = []
-  let currentIntroduced: string | undefined
-
-  for (const event of range.events) {
-    if (event.introduced !== undefined) {
-      // Start a new interval (close previous open one if any)
-      if (currentIntroduced !== undefined) {
-        intervals.push({ introduced: currentIntroduced })
-      }
-      currentIntroduced = event.introduced
-    } else if (event.fixed !== undefined && currentIntroduced !== undefined) {
-      intervals.push({ introduced: currentIntroduced, fixed: event.fixed })
-      currentIntroduced = undefined
-    }
-  }
-
-  // Handle trailing introduced with no fixed (still vulnerable)
-  if (currentIntroduced !== undefined) {
-    intervals.push({ introduced: currentIntroduced })
-  }
-
-  return intervals
 }
 
 /**
@@ -307,10 +277,10 @@ export const analyzeDependencyTree = defineCachedFunction(
       )
 
       for (const result of detailResults) {
-        if (result) {
-          vulnerablePackages.push(result)
-        } else {
+        if (!result) {
           failedQueries++
+        } else if (result.counts.total > 0) {
+          vulnerablePackages.push(result)
         }
       }
     }
@@ -429,7 +399,7 @@ export async function analyzeDirectDependencyHealth(
   )
 
   for (const result of detailResults) {
-    if (!result) continue
+    if (!result?.counts.total) continue
     vulnerable[result.name] = {
       name: result.name,
       version: result.version,

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { isPossiblyUnnecessaryContent } from '~/utils/package-content-hints'
 
 describe('isPossiblyUnnecessaryContent', () => {

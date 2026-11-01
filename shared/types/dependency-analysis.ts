@@ -66,6 +66,9 @@ export interface OsvAffected {
   }
   ranges?: OsvRange[]
   versions?: string[]
+  database_specific?: {
+    last_known_affected_version_range?: string
+  }
 }
 
 /**

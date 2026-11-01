@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { applyDataPipeline } from '~/utils/chart-data-prediction'
 import { applyDataCorrection } from '~/utils/chart-data-correction'
 
