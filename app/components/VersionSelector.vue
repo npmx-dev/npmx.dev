@@ -10,21 +10,16 @@ import {
 } from '~/utils/versions'
 import { fetchAllPackageVersions } from '~/utils/npm/api'
 
-const props = withDefaults(
-  defineProps<{
-    packageName: string
-    currentVersion: string
-    versions: Record<string, unknown>
-    distTags: Record<string, string>
-    /** URL pattern for navigation. Use {version} as placeholder. */
-    urlPattern: string
-    /** class for the position of the dropdown, default is inset-is-0 */
-    positionClass?: string | null
-  }>(),
-  {
-    positionClass: 'inset-is-0',
-  },
-)
+const props = defineProps<{
+  packageName: string
+  currentVersion: string
+  versions: Record<string, unknown>
+  distTags: Record<string, string>
+  /** URL pattern for navigation. Use {version} as placeholder. */
+  urlPattern: string
+}>()
+
+const { t } = useI18n()
 
 const popoverRef = useTemplateRef<HTMLElement>('popoverRef')
 const triggerRef = useTemplateRef<HTMLElement>('triggerRef')
@@ -35,8 +30,16 @@ const isOpen = shallowRef(false)
 const uid = useId()
 const popoverId = `${uid}-versions`
 
-// Close popover on scroll so it doesn't float away from its anchor
-useEventListener('scroll', () => popoverRef.value?.hidePopover(), true)
+// Close popover on page scroll so it doesn't float away from its anchor,
+// but not when the version list itself scrolls (capture also sees descendant scrolls)
+useEventListener(
+  'scroll',
+  (event: Event) => {
+    if (event.target instanceof Node && popoverRef.value?.contains(event.target)) return
+    popoverRef.value?.hidePopover()
+  },
+  true,
+)
 
 // ============================================================================
 // Version Display Types
@@ -385,6 +388,17 @@ function isGroupOpen(group: VersionGroup): boolean {
   return group.isExpanded || (controlsAdditionalGroups(group) && showAllGroups.value)
 }
 
+function getToggleLabel(group: VersionGroup): string {
+  if (controlsAdditionalGroups(group)) {
+    return showAllGroups.value
+      ? t('package.versions.collapse_other')
+      : t('package.versions.expand_other')
+  }
+  return isGroupOpen(group)
+    ? t('package.versions.collapse', { tag: group.label })
+    : t('package.versions.expand', { tag: group.label })
+}
+
 function canToggleGroup(group: VersionGroup): boolean {
   return (
     group.isLoading ||
@@ -415,6 +429,8 @@ function positionPopover(width = MIN_POPOVER_WIDTH) {
   const el = popoverRef.value
 
   el.style.top = `${rect.bottom + 8}px`
+  // Keep the list within the viewport; page scrolling would close the popover
+  el.style.maxHeight = `${Math.max(160, Math.min(400, window.innerHeight - rect.bottom - 16))}px`
 
   if (rect.left + width > window.innerWidth) {
     el.style.left = 'auto'
@@ -513,7 +529,7 @@ watch(
       ref="triggerRef"
       type="button"
       :popovertarget="popoverId"
-      class="break-all text-start font-mono text-sm hover:text-accent transition-[color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg rounded"
+      class="break-all text-start font-mono text-sm hover:text-accent transition-[color] rounded"
       data-testid="version-selector-button"
       @keydown="handleTriggerKeydown"
     >
@@ -553,12 +569,12 @@ watch(
             type="button"
             class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0"
             :aria-expanded="isGroupOpen(group)"
-            :aria-controls="`${popoverId}-sub-${group.id}`"
-            :aria-label="
-              isGroupOpen(group)
-                ? $t('package.versions.collapse', { tag: group.label })
-                : $t('package.versions.expand', { tag: group.label })
+            :aria-controls="
+              group.isExpanded && hasNestedVersions(group)
+                ? `${popoverId}-sub-${group.id}`
+                : undefined
             "
+            :aria-label="getToggleLabel(group)"
             @click="toggleGroup(group.id)"
           >
             <span
@@ -611,7 +627,7 @@ watch(
               :id="`${popoverId}-${v.version}`"
               :to="getVersionUrl(v.version)"
               :aria-current="v.isCurrent ? 'page' : undefined"
-              class="flex items-center justify-between gap-2 ps-4 pe-3 py-1.5 text-xs font-mono hover:bg-bg-muted transition-[color,background-color] focus-visible:outline-none"
+              class="flex items-center justify-between gap-2 ps-4 pe-3 py-1.5 text-xs font-mono hover:bg-bg-muted transition-[color,background-color]"
               :class="v.isCurrent ? 'text-fg bg-bg-muted' : 'text-fg-subtle'"
               @click="popoverRef?.hidePopover()"
             >
@@ -635,7 +651,7 @@ watch(
       <li class="border-t border-border mt-1 pt-1 px-3 py-2">
         <NuxtLink
           :to="packageVersionsRoute(packageName)"
-          class="text-xs text-fg-subtle hover:text-fg transition-[color] focus-visible:outline-none focus-visible:text-fg"
+          class="text-xs text-fg-subtle hover:text-fg focus-visible:text-fg transition-[color]"
           @click="popoverRef?.hidePopover()"
         >
           {{

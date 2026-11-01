@@ -439,18 +439,6 @@ function getFocusableElements(): HTMLElement[] {
 }
 
 /**
- * Returns true when focus is inside a text-entry context where j/k should
- * not be intercepted (input, textarea, or contenteditable).
- */
-function isTypingContext(): boolean {
-  const el = document.activeElement
-  if (!el) return false
-  const tag = el.tagName
-  if (tag === 'INPUT' || tag === 'TEXTAREA') return true
-  return (el as HTMLElement).isContentEditable
-}
-
-/**
  * Focus an element and scroll it into view
  */
 function focusElement(el: HTMLElement) {
@@ -496,8 +484,15 @@ function handleResultsKeydown(e: KeyboardEvent) {
     return
   }
 
-  // Don't intercept j/k when the user is typing in an input, textarea, or contenteditable
-  if ((e.key === 'j' || e.key === 'k') && isTypingContext()) {
+  const isJ = isKeyWithoutModifiers(e, 'j')
+  const isK = isKeyWithoutModifiers(e, 'k')
+
+  // Don't intercept j/k when the user is typing in an input, textarea, or contenteditable,
+  // or when a modifier is held (Ctrl/⌘+K opens the command palette)
+  if (
+    (e.key === 'j' || e.key === 'k') &&
+    (!(isJ || isK) || isEditableElement(document.activeElement))
+  ) {
     return
   }
 
@@ -529,7 +524,7 @@ function handleResultsKeydown(e: KeyboardEvent) {
 
   const currentIndex = elements.findIndex(el => el === document.activeElement)
 
-  if (e.key === 'j') {
+  if (isJ) {
     e.preventDefault()
     const nextIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, elements.length - 1)
     const el = elements[nextIndex]
@@ -537,7 +532,7 @@ function handleResultsKeydown(e: KeyboardEvent) {
     return
   }
 
-  if (e.key === 'k') {
+  if (isK) {
     if (currentIndex <= 0) return
     e.preventDefault()
     const nextIndex = currentIndex - 1

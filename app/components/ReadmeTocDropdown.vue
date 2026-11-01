@@ -47,6 +47,8 @@ const idToIndex = computed(() => {
 const menuRef = useTemplateRef('menuRef')
 const triggerRef = useTemplateRef('triggerRef')
 const isOpen = shallowRef(false)
+// ArrowUp on the closed trigger opens the menu on its last item (menu button pattern)
+const shouldFocusLastOnOpen = shallowRef(false)
 
 const dropdownPosition = shallowRef<{ top: number; right: number } | null>(null)
 
@@ -92,6 +94,12 @@ function close() {
   isOpen.value = false
 }
 
+function selectItem() {
+  close()
+  // The focused item unmounts with the menu; keep the page on the heading we jumped to
+  triggerRef.value?.focus({ preventScroll: true })
+}
+
 function toggle() {
   if (isOpen.value) {
     close()
@@ -110,7 +118,9 @@ function handleTriggerKeydown(event: KeyboardEvent) {
     case 'ArrowDown':
     case 'ArrowUp':
       event.preventDefault()
-      if (!isOpen.value) open()
+      if (isOpen.value) break
+      shouldFocusLastOnOpen.value = event.key === 'ArrowUp'
+      open()
       break
     case 'Escape':
       if (isOpen.value) close()
@@ -144,8 +154,9 @@ function handleMenuKeydown(event: KeyboardEvent) {
       triggerRef.value?.focus()
       break
     case 'Tab':
-      // Close menu and return focus to trigger; Tab then advances naturally from trigger
-      event.preventDefault()
+      // The menu is teleported to the end of <body>, so move focus back to the trigger without
+      // preventing the default: the browser then moves on to the element after (or, with Shift,
+      // before) the trigger in page order
       close()
       triggerRef.value?.focus()
       break
@@ -163,7 +174,8 @@ watch(isOpen, isNowOpen => {
     nextTick(() => {
       const items = getMenuItems()
       const activeIndex = props.activeId ? (idToIndex.value.get(props.activeId) ?? 0) : 0
-      const target = items[activeIndex] ?? items[0]
+      const target = shouldFocusLastOnOpen.value ? items.at(-1) : (items[activeIndex] ?? items[0])
+      shouldFocusLastOnOpen.value = false
       target?.focus()
       target?.scrollIntoView({ block: 'nearest' })
     })
@@ -221,12 +233,13 @@ watch(isOpen, isNowOpen => {
           <NuxtLink
             :id="`${menuId}-${node.id}`"
             :to="`#${node.id}`"
+            :aria-current="activeId === node.id ? 'location' : undefined"
             role="menuitem"
             tabindex="-1"
             class="flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer transition-colors duration-150 hover:bg-bg-elevated focus:bg-bg-elevated"
             :class="activeId === node.id ? 'text-fg font-medium' : 'text-fg-muted'"
             dir="auto"
-            @click="close()"
+            @click="selectItem"
           >
             <span class="truncate">{{ node.text }}</span>
           </NuxtLink>
@@ -235,12 +248,13 @@ watch(isOpen, isNowOpen => {
             <NuxtLink
               :id="`${menuId}-${child.id}`"
               :to="`#${child.id}`"
+              :aria-current="activeId === child.id ? 'location' : undefined"
               role="menuitem"
               tabindex="-1"
               class="flex items-center gap-2 px-3 py-1.5 ps-6 text-sm cursor-pointer transition-colors duration-150 hover:bg-bg-elevated focus:bg-bg-elevated"
               :class="activeId === child.id ? 'text-fg font-medium' : 'text-fg-subtle'"
               dir="auto"
-              @click="close()"
+              @click="selectItem"
             >
               <span class="truncate">{{ child.text }}</span>
             </NuxtLink>
@@ -249,13 +263,14 @@ watch(isOpen, isNowOpen => {
               v-for="grandchild in child.children"
               :id="`${menuId}-${grandchild.id}`"
               :to="`#${grandchild.id}`"
+              :aria-current="activeId === grandchild.id ? 'location' : undefined"
               :key="grandchild.id"
               role="menuitem"
               tabindex="-1"
               class="flex items-center gap-2 px-3 py-1.5 ps-9 text-sm cursor-pointer transition-colors duration-150 hover:bg-bg-elevated focus:bg-bg-elevated"
               :class="grandchild.id === activeId ? 'text-fg font-medium' : 'text-fg-subtle'"
               dir="auto"
-              @click="close()"
+              @click="selectItem"
             >
               <span class="truncate">{{ grandchild.text }}</span>
             </NuxtLink>

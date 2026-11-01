@@ -190,6 +190,11 @@ const showDropdown = computed(
   () => isInputFocused.value && (navigableItems.value.length > 0 || isSearching.value),
 )
 
+// Clear a highlight that points past the end of a shrunken result list
+watch(navigableItems, items => {
+  if (highlightedIndex.value >= items.length) highlightedIndex.value = -1
+})
+
 // Reset highlight when user types
 watch(inputValue, () => {
   highlightedIndex.value = -1
@@ -272,7 +277,7 @@ const versionHintId = useId()
           role="combobox"
           aria-autocomplete="list"
           aria-haspopup="listbox"
-          :aria-controls="listboxId"
+          :aria-controls="showDropdown ? listboxId : undefined"
           :aria-expanded="showDropdown"
           :aria-activedescendant="activeDescendantId"
           ref="inputRef"
@@ -301,6 +306,7 @@ const versionHintId = useId()
             v-if="showNoDependencyOption"
             data-navigable
             role="option"
+            tabindex="-1"
             :id="`${listboxId}-option-0`"
             :aria-selected="highlightedIndex === 0"
             class="block w-full text-start !border-transparent"
@@ -329,6 +335,7 @@ const versionHintId = useId()
             :key="result.name"
             data-navigable
             role="option"
+            tabindex="-1"
             :id="`${listboxId}-option-${index + resultIndexOffset}`"
             :aria-selected="highlightedIndex === index + resultIndexOffset"
             class="block w-full text-start my-0.5 !border-transparent"

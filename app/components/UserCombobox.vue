@@ -98,10 +98,13 @@ function handleKeydown(event: KeyboardEvent) {
 
   switch (event.key) {
     case 'ArrowDown':
+      // Wrapping with `%` would set NaN while there are no suggestions
+      if (filteredSuggestions.value.length === 0) break
       event.preventDefault()
       highlightedIndex.value = (highlightedIndex.value + 1) % filteredSuggestions.value.length
       break
     case 'ArrowUp':
+      if (filteredSuggestions.value.length === 0) break
       event.preventDefault()
       highlightedIndex.value =
         highlightedIndex.value <= 0
@@ -151,7 +154,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
       aria-autocomplete="list"
       :aria-expanded="showDropdown"
       aria-haspopup="listbox"
-      :aria-controls="listboxId"
+      :aria-controls="showDropdown ? listboxId : undefined"
       :aria-activedescendant="
         highlightedIndex >= 0 ? `${listboxId}-option-${highlightedIndex}` : undefined
       "

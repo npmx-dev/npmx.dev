@@ -190,12 +190,17 @@ test.describe('Search Pages', () => {
     const firstResult = page.locator('[data-result-index="0"]').first()
     await expect(firstResult).toBeVisible()
 
-    // Global keyboard navigation works regardless of focus
+    // Arrow keys keep their native behaviour and do not move focus into the results
+    await page.keyboard.press('ArrowDown')
+    await expect(firstResult).not.toBeFocused()
+
     // j moves focus to the next result
     await page.keyboard.press('j')
+    await expect(firstResult).toBeFocused()
 
     // k moves focus to the previous result (does nothing at the first item)
     await page.keyboard.press('k')
+    await expect(firstResult).toBeFocused()
 
     // Enter navigates to the selected result
     // URL is /package/vue or /org/vue or /user/vue. Not /vue
@@ -218,7 +223,8 @@ test.describe('Search Pages', () => {
     await expect(firstResult).toBeVisible()
     await expect(secondResult).toBeVisible()
 
-    // j from input focuses the first result
+    // j from outside an editable element focuses the first result
+    // (inside the search input it is typed as text instead)
     await page.keyboard.press('j')
     await expect(firstResult).toBeFocused()
 

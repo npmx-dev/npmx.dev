@@ -8,7 +8,7 @@ function getVersionButton(page: Page) {
 
 /** The native popover that holds the version links. */
 function getVersionDropdown(page: Page) {
-  return page.locator('[popover="auto"]')
+  return page.locator('[data-testid="package-subheader"] [popover="auto"]')
 }
 
 /** Version links inside the open dropdown for the given package. */
