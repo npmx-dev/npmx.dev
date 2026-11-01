@@ -79,6 +79,7 @@ export interface InstallScriptsInfo {
 /** PackumentVersion with additional install scripts info */
 export type SlimPackumentVersion = PackumentVersion & {
   installScripts?: InstallScriptsInfo
+  module?: string
 }
 
 export type SlimVersion = Pick<SlimPackumentVersion, 'version' | 'deprecated' | 'tags'> & {

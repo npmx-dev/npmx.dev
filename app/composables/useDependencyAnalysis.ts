@@ -1,3 +1,5 @@
+import { encodePackageName } from 'npmeta'
+
 /**
  * Shared composable for dependency analysis data (vulnerabilities, deprecated packages).
  * Fetches once and caches the result so multiple components can use it.

@@ -1,5 +1,5 @@
+import { encodePackageName, isBinaryOnlyPackage, parsePackageSpec } from 'npmeta'
 import { NO_DEPENDENCY_ID } from '#shared/utils/compare'
-import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
 /**
