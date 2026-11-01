@@ -45,11 +45,6 @@ strictPeerDependencies: true
 
 minimumReleaseAgeExclude:
   - '@iconify-json/simple-icons@1.2.93'
-  - 'nuxt@4.5.2'
-  - '@nuxt/kit@4.5.2'
-  - '@nuxt/nitro-server@4.5.2'
-  - '@nuxt/schema@4.5.2'
-  - '@nuxt/vite-builder@4.5.2'
   - vue-data-ui@3.28.7
 
 minimumReleaseAgeExcludePrune: true
@@ -58,12 +53,12 @@ overrides:
   '@types/node': 24.13.3
   nuxt-og-image: ^6.7.5
   sharp: 0.35.3
-  vue: 3.5.42
+  vue: 3.5.44
   typescript: npm:typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2
   vue-router: 5.2.0
   markdown-exit: 1.1.0-beta.2
   oxc-parser: 0.144.0
-  '@nuxtjs/i18n>@nuxt/kit': '4.5.2'
+  '@nuxtjs/i18n>@nuxt/kit': '4.6.3'
   vite@*: catalog:vite-plus
   vitest@*: catalog:vite-plus
 
@@ -74,7 +69,7 @@ packageExtensions:
 
 patchedDependencies:
   '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
-  '@nuxt/test-utils@4.1.0': patches/@nuxt__test-utils@4.1.0.patch
+  '@nuxt/test-utils@4.3.4': patches/@nuxt__test-utils@4.3.4.patch
 
 savePrefix: ''
 
