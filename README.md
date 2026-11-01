@@ -53,7 +53,7 @@ What npmx offers:
 - **Changelog view** &ndash; read release notes when packages publish them
 - **Timeline view** &ndash; scan publish history and notable version events such as deprecations and install size changes
 - **Provenance indicators** &ndash; verified build badges and provenance section below the README
-- **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, Sourcehut, Forgejo, Gitea, Radicle, and Tangled
+- **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, Sourcehut, Forgejo, Gitea, Radicle, Tangled, and Pushin
 - **JSR availability** &ndash; see if scoped packages are also available on JSR
 - **Package badges** &ndash; module format (ESM/CJS/dual), TypeScript types (with `@types/*` links), and engine constraints
 - **Outdated dependency indicators** &ndash; visual cues showing which dependencies are behind
@@ -195,16 +195,6 @@ If you're building something cool, let us know! 🙏
 Made with ❤️
 
 Published under [MIT License](./LICENSE).
-
-## Star History
-
-<a href="https://www.star-history.com/?repos=npmx-dev%2Fnpmx.dev&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=npmx-dev/npmx.dev&type=date&theme=dark&legend=top-left&sealed_token=1RI8ZdgQL3NncQeMm3sTwgYPL_7_ELdIGe5yiswir2iZipZwBtsYd4Y6zkO2fZLUP3wRcDN38GLKA4B1b3JE3pxEg7x_w8uOivwT3rL8Jcr-866HKSRMpjqmEwPavKp57ZdTyo04KHRbKthXVe360AJhcjmbXWxKVO9EDFh995ssNIH32hNArVB4MwAm" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=npmx-dev/npmx.dev&type=date&legend=top-left&sealed_token=1RI8ZdgQL3NncQeMm3sTwgYPL_7_ELdIGe5yiswir2iZipZwBtsYd4Y6zkO2fZLUP3wRcDN38GLKA4B1b3JE3pxEg7x_w8uOivwT3rL8Jcr-866HKSRMpjqmEwPavKp57ZdTyo04KHRbKthXVe360AJhcjmbXWxKVO9EDFh995ssNIH32hNArVB4MwAm" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=npmx-dev/npmx.dev&type=date&legend=top-left&sealed_token=1RI8ZdgQL3NncQeMm3sTwgYPL_7_ELdIGe5yiswir2iZipZwBtsYd4Y6zkO2fZLUP3wRcDN38GLKA4B1b3JE3pxEg7x_w8uOivwT3rL8Jcr-866HKSRMpjqmEwPavKp57ZdTyo04KHRbKthXVe360AJhcjmbXWxKVO9EDFh995ssNIH32hNArVB4MwAm" />
- </picture>
-</a>
 
 ## Sponsors
 

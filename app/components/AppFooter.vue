@@ -80,6 +80,10 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
         href: '/compare',
       },
       {
+        name: t('footer.tools'),
+        href: '/tools',
+      },
+      {
         name: t('shortcuts.settings'),
         href: '/settings',
       },

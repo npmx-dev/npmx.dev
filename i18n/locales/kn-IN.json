@@ -18,9 +18,6 @@
     "social": "ಸಾಮಾಜಿಕ",
     "chat": "ಚಾಟ್"
   },
-  "shortcuts": {
-    "section": {}
-  },
   "search": {
     "label": "npm ಪ್ಯಾಕೇಜ್ ಹುಡುಕಿ",
     "placeholder": "ಪ್ಯಾಕೇಜ್ ಹುಡುಕಿ...",
@@ -54,10 +51,6 @@
     "links": "ಲಿಂಕ್‌ಗಳು",
     "tap_to_search": "ಹುಡುಕಲು ಟ್ಯಾಪ್ ಮಾಡಿ"
   },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
   "settings": {
     "title": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
     "tagline": "ನಿಮ್ಮ npmx ಅನುಭವವನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ",
@@ -67,7 +60,6 @@
       "display": "ಪ್ರದರ್ಶನ",
       "language": "ಭಾಷೆ"
     },
-    "data_source": {},
     "relative_dates": "ಸಾಪೇಕ್ಷ ದಿನಾಂಕಗಳು",
     "include_types": "ಇನ್‌ಸ್ಟಾಲ್‌ನಲ್ಲಿ {'@'}types ಸೇರಿಸಿ",
     "include_types_description": "ಟೈಪ್ ಇಲ್ಲದ ಪ್ಯಾಕೇಜ್‌ಗೆ ಇನ್‌ಸ್ಟಾಲ್ ಕಮಾಂಡ್‌ನಲ್ಲಿ {'@'}types ಪ್ಯಾಕೇಜ್ ಸೇರಿಸಿ",
@@ -83,8 +75,7 @@
       "label": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣಗಳು"
     },
     "clear_accent": "ಅಕ್ಸೆಂಟ್ ಬಣ್ಣ ತೆರವುಗೊಳಿಸಿ",
-    "translation_progress": "ಅನುವಾದ ಪ್ರಗತಿ",
-    "background_themes": {}
+    "translation_progress": "ಅನುವಾದ ಪ್ರಗತಿ"
   },
   "i18n": {
     "missing_keys": "{count} ಅನುವಾದ ಇಲ್ಲ | {count} ಅನುವಾದಗಳು ಇಲ್ಲ",
@@ -94,7 +85,6 @@
     "edit_on_github": "GitHub ನಲ್ಲಿ ಸಂಪಾದಿಸಿ",
     "view_guide": "ಅನುವಾದ ಮಾರ್ಗದರ್ಶಿ"
   },
-  "error": {},
   "common": {
     "loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
     "loading_more": "ಇನ್ನಷ್ಟು ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
@@ -121,9 +111,6 @@
       "github": "GitHub ನಲ್ಲಿ ನೋಡಿ"
     }
   },
-  "profile": {
-    "invite": {}
-  },
   "package": {
     "not_found": "ಪ್ಯಾಕೇಜ್ ಕಂಡುಬಂದಿಲ್ಲ",
     "not_found_message": "ಪ್ಯಾಕೇಜ್ ಕಂಡುಬಂದಿಲ್ಲ.",
@@ -136,7 +123,6 @@
       "version": "ಈ ಆವೃತ್ತಿ ಅಮಾನ್ಯಗೊಳಿಸಲಾಗಿದೆ.",
       "no_reason": "ಕಾರಣ ನೀಡಲಾಗಿಲ್ಲ"
     },
-    "size_increase": {},
     "replacement": {
       "title": "ನಿಮಗೆ ಈ ಅವಲಂಬನೆ ಅಗತ್ಯವಿಲ್ಲದಿರಬಹುದು.",
       "native": "ಇದನ್ನು {replacement} ಮೂಲಕ ಬದಲಾಯಿಸಬಹುದು, ಇದು Node {nodeVersion} ರಿಂದ ಲಭ್ಯವಿದೆ.",
@@ -182,7 +168,6 @@
       "fund": "ಹಣ ಸಹಾಯ",
       "compare": "ಹೋಲಿಸಿ"
     },
-    "likes": {},
     "docs": {
       "not_available": "ದಸ್ತಾವೇಜುಗಳು ಲಭ್ಯವಿಲ್ಲ",
       "not_available_detail": "ಈ ಆವೃತ್ತಿಗಾಗಿ ದಸ್ತಾವೇಜುಗಳನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
@@ -203,11 +188,8 @@
     },
     "readme": {
       "title": "ರೀಡ್‌ಮಿ",
-      "no_readme": "README ಲಭ್ಯವಿಲ್ಲ.",
-      "callout": {}
+      "no_readme": "README ಲಭ್ಯವಿಲ್ಲ."
     },
-    "provenance_section": {},
-    "security_downgrade": {},
     "keywords_title": "ಕೀವರ್ಡ್‌ಗಳು",
     "compatibility": "ಹೊಂದಿಕೊಳ್ಳುವಿಕೆ",
     "card": {
@@ -228,8 +210,7 @@
       "more_tagged": "{count} ಇನ್ನಷ್ಟು ಟ್ಯಾಗ್ ಮಾಡಲಾಗಿದೆ",
       "all_covered": "ಎಲ್ಲಾ ಆವೃತ್ತಿಗಳು ಮೇಲಿನ ಟ್ಯಾಗ್‌ಗಳಿಂದ ಒಳಗೊಂಡಿವೆ",
       "deprecated_title": "{version} (ಅಮಾನ್ಯಗೊಳಿಸಲಾಗಿದೆ)",
-      "view_all": "{count} ಆವೃತ್ತಿ ನೋಡಿ | ಎಲ್ಲಾ {count} ಆವೃತ್ತಿಗಳನ್ನು ನೋಡಿ",
-      "copy_alt": {}
+      "view_all": "{count} ಆವೃತ್ತಿ ನೋಡಿ | ಎಲ್ಲಾ {count} ಆವೃತ್ತಿಗಳನ್ನು ನೋಡಿ"
     },
     "dependencies": {
       "title": "ಅವಲಂಬನೆಗಳು ({count})",
@@ -277,9 +258,7 @@
       "date_range": "{start} ರಿಂದ {end}",
       "date_range_multiline": "{start}\nರಿಂದ {end}",
       "download_file": "{fileType} ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ",
-      "toggle_annotator": "ಅನೋಟೇಟರ್ ಟಾಗಲ್ ಮಾಡಿ",
-      "items": {},
-      "copy_alt": {}
+      "toggle_annotator": "ಅನೋಟೇಟರ್ ಟಾಗಲ್ ಮಾಡಿ"
     },
     "downloads": {
       "title": "ವಾರದ ಡೌನ್‌ಲೋಡ್‌ಗಳು"
@@ -364,9 +343,7 @@
       "downloads": "ಅತ್ಯಧಿಕ ಡೌನ್‌ಲೋಡ್‌ಗಳು",
       "name_asc": "ಹೆಸರು (A-Z)",
       "name_desc": "ಹೆಸರು (Z-A)"
-    },
-    "size": {},
-    "download": {}
+    }
   },
   "connector": {
     "modal": {
@@ -599,7 +576,6 @@
     "more_keywords": "+{count} ಇನ್ನಷ್ಟು",
     "clear_all": "ಎಲ್ಲವನ್ನು ತೆರವುಗೊಳಿಸಿ",
     "remove_filter": "{label} ಫಿಲ್ಟರ್ ತೆಗೆದುಹಾಕಿ",
-    "chips": {},
     "download_range": {
       "any": "ಯಾವುದೇ",
       "lt100": "< 100",
@@ -699,9 +675,6 @@
         "managers": "ನಿರ್ವಾಹಕರು"
       }
     },
-    "sponsors": {},
-    "oss_partners": {},
-    "team": {},
     "contributors": {
       "title": "ಸಹಯೋಗಿಗಳು",
       "description": "npmx ಸಂಪೂರ್ಣ ಓಪನ್ ಸೋರ್ಸ್ ಆಗಿದ್ದು, ಅದ್ಭುತ ಸಹಯೋಗಿಗಳ ಸಮುದಾಯದಿಂದ ನಿರ್ಮಿಸಲಾಗಿದೆ. ನಮ್ಮೊಂದಿಗೆ ಸೇರಿ ಮತ್ತು ನಾವು ಯಾವಾಗಲೂ ಬಯಸಿದ npm ಬ್ರೌಸಿಂಗ್ ಅನುಭವವನ್ನು ಒಟ್ಟಿಗೆ ನಿರ್ಮಿಸೋಣ.",
@@ -721,7 +694,6 @@
         "description": "ಚಾಟ್ ಮಾಡಿ, ಪ್ರಶ್ನೆಗಳು ಕೇಳಿ ಮತ್ತು ಆಲೋಚನೆಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ.",
         "cta": "Discord ನಲ್ಲಿ ಸೇರಿ"
       },
-      "builders": {},
       "follow": {
         "title": "ನವೀಕರಣಗಳನ್ನು ಪಡೆಯಿರಿ",
         "description": "npmx ಬಗ್ಗೆ ಇತ್ತೀಚಿನ ಮಾಹಿತಿ ಪಡೆಯಿರಿ.",
@@ -800,7 +772,6 @@
       "packages_selected": "{count}/{max} ಪ್ಯಾಕೇಜ್‌ಗಳು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ.",
       "add_hint": "ಹೋಲಿಸಲು ಕನಿಷ್ಠ 2 ಪ್ಯಾಕೇಜ್‌ಗಳನ್ನು ಸೇರಿಸಿ."
     },
-    "no_dependency": {},
     "facets": {
       "all": "ಎಲ್ಲ",
       "none": "ಯಾವುದೂ ಇಲ್ಲ",
@@ -812,57 +783,7 @@
         "health": "ಆರೋಗ್ಯ",
         "compatibility": "ಹೊಂದಿಕೊಳ್ಳುವಿಕೆ",
         "security": "ಭದ್ರತೆ ಮತ್ತು ಅನುಸರಣೆ"
-      },
-      "items": {
-        "packageSize": {},
-        "installSize": {},
-        "dependencies": {},
-        "totalDependencies": {},
-        "downloads": {},
-        "totalLikes": {},
-        "lastUpdated": {},
-        "deprecated": {},
-        "engines": {},
-        "types": {},
-        "moduleFormat": {},
-        "license": {},
-        "vulnerabilities": {}
-      },
-      "values": {},
-      "trends": {}
-    },
-    "version_invalid_url_format": {},
-    "file_filter_option": {},
-    "filter": {}
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
-  },
-  "privacy_policy": {
-    "cookies": {
-      "what_are": {},
-      "types": {},
-      "local_storage": {},
-      "management": {}
-    },
-    "analytics": {},
-    "authenticated": {},
-    "data_retention": {},
-    "your_rights": {},
-    "contact": {},
-    "changes": {}
-  },
-  "a11y": {
-    "approach": {},
-    "measures": {},
-    "limitations": {},
-    "contact": {}
-  },
-  "changelog": {},
-  "translation_status": {
-    "table": {}
-  },
-  "action_bar": {}
+      }
+    }
+  }
 }

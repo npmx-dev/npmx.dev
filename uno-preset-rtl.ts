@@ -129,7 +129,7 @@ export function presetRtl(checker?: CollectorChecker): Preset {
       ],
       [
         /^force-(?:position-|pos-)?(left|right)-(.+)$/,
-        ([_, direction, size], context) => {
+        ([, direction, size], context) => {
           // Map 'left'/'right' to 'l'/'r' for directionMap lookup if needed,
           // but directionMap has 'left'/'right' keys? No, it has 'l'/'r'.
           // Wait, directionMap keys are 'l', 'r'.

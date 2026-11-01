@@ -9,7 +9,7 @@ import {
 import { highlightCodeSync } from './shiki'
 import { decodeHtmlEntities, stripHtmlTags, slugify } from '#shared/utils/html'
 import { escapeHtml } from './docs/text'
-import sanitizeHtml from 'sanitize-html'
+import sanitizeHtml, { type IOptions } from 'sanitize-html'
 import { hasProtocol } from 'ufo'
 
 /// for marked
@@ -76,7 +76,7 @@ export type ProcessLinkFn = (
   href: string,
   label: string,
   // readme.ts also needs the extraAttrs for more things, so can't be a boolean
-) => { resolvedHref: string; extraAttrs: string }
+) => { resolvedHref: string; extraAttrs: string; resolvedText?: string }
 
 export function decodeHashFragment(value: string): string {
   try {
@@ -105,16 +105,20 @@ export function createLink(processLink: ProcessLinkFn): RendererApi['link'] {
       plainText = tokens[0].text
     }
 
-    const { resolvedHref, extraAttrs } = processLink(href, plainText || eTitle || '')
+    const {
+      resolvedHref,
+      extraAttrs,
+      resolvedText = text,
+    } = processLink(href, plainText || eTitle || '')
 
-    if (!resolvedHref) return text
+    if (!resolvedHref) return resolvedText
 
     // prevents package@1.0.0 being made into an email
     if (href.startsWith('mailto:') && !EMAIL_REGEX.test(plainText)) {
-      return text
+      return resolvedText
     }
 
-    return `<a href="${resolvedHref}"${titleAttr}${extraAttrs}>${text}</a>`
+    return `<a href="${resolvedHref}"${titleAttr}${extraAttrs}>${resolvedText}</a>`
   }
 }
 
@@ -166,9 +170,7 @@ export function createMarkedHeadingExtension(exemptIssuePr?: boolean): Tokenizer
     // Normal headings (with space) return false to fall through to marked's default tokenizer.
     const match = /^ {0,3}(#{1,6})([^\s#][^\n]*)(?:\n+|$)/.exec(src)
     if (!match) return false
-    if (exemptIssuePr && /^#\d+\b/.test(match[0])) return false
-
-    console.log({ match, test: /^#\d+\b/.test(match[0]), exemptIssuePr })
+    if (exemptIssuePr && /^#\d+\b/.test(match[0].trim())) return false
 
     let text = match[2]!.trim()
 
@@ -196,7 +198,7 @@ export const USER_CONTENT_PREFIX = 'user-content-'
 // README h1 always becomes h3
 // For deeper levels, ensure sequential order
 // Don't allow jumping more than 1 level deeper than previous
-export function calculateSemanticDepth(
+function calculateSemanticDepth(
   depth: number,
   lastSemanticLevel: number,
   minSemanticLevel: number,
@@ -206,15 +208,21 @@ export function calculateSemanticDepth(
   return Math.min(depth + minSemanticLevel, maxAllowed)
 }
 
-export function getHeadingPlainText(text: string): string {
+function getHeadingPlainText(text: string): string {
   return decodeHtmlEntities(stripHtmlTags(text).trim())
 }
 
-export function getHeadingSlugSource(text: string): string {
+function getHeadingSlugSource(text: string): string {
   return stripHtmlTags(text).trim()
 }
 
+export function isMarkdownFileUrl(url: string): boolean {
+  return /\.(?:md|markdown)$/i.test(url.split('?')[0]?.split('#')[0] ?? '')
+}
+
 const htmlAnchorRe = /<a(\s[^>]*?)href=(["'])([^"']*)\2([^>]*)>([\s\S]*?)<\/a>/gi
+const anchorTokenOpenRe = /^<a(?:\s.+)?\/?>$/is
+const anchorTokenCloseRe = /^<\/a>$/i
 
 export type ToUserContentIdFn = (id: string) => string
 
@@ -239,7 +247,11 @@ export function createHeading(options: {
     this: Renderer<string, string>,
     { tokens, depth },
   ) {
-    const displayHtml = this.parser.parseInline(tokens)
+    const isWrappedInSingleAnchor =
+      anchorTokenOpenRe.test(tokens[0]?.raw ?? '') &&
+      anchorTokenCloseRe.test(tokens[tokens.length - 1]?.raw ?? '')
+    const headingTokens = isWrappedInSingleAnchor ? tokens.slice(1, -1) : tokens
+    const displayHtml = this.parser.parseInline(headingTokens)
     const plainText = getHeadingPlainText(displayHtml)
     const slugSource = getHeadingSlugSource(displayHtml)
     return processHeading(depth, displayHtml, plainText, slugSource)
@@ -282,7 +294,7 @@ export function createHeading(options: {
 // html
 
 // Extract and preserve allowed attributes from HTML heading tags
-export function extractHeadingAttrs(attrsString: string): string {
+function extractHeadingAttrs(attrsString: string): string {
   if (!attrsString) return ''
   const preserved: string[] = []
   const alignMatch = /\balign=(["']?)([^"'\s>]+)\1/i.exec(attrsString)
@@ -387,7 +399,7 @@ export const ALLOWED_ATTR: Record<string, string[]> = {
 
 // allow h1-h6, but replace h1-h2 later since we shift README headings down by 2 levels
 // (page h1 = package name, h2 = "Readme" section, so README h1 → h3)
-export const ALLOWED_TAGS = [
+const ALLOWED_TAGS = [
   'h1',
   'h2',
   'h3',
@@ -438,11 +450,13 @@ export function sanitizeRawHTML(
     processLink,
     toUserContentId,
     lastSemanticLevel = 2,
+    textFilter,
   }: {
     processImageUrl: ProcessImageUrlFn
     processLink: ProcessLinkFn
     toUserContentId: ToUserContentIdFn
     lastSemanticLevel?: number
+    textFilter?: IOptions['textFilter']
   },
 ) {
   // Helper to prefix id attributes with 'user-content-'
@@ -471,6 +485,8 @@ export function sanitizeRawHTML(
         '--shiki-light': [/^#[0-9a-f]{3,8}$/i],
       },
     },
+
+    textFilter,
     transformTags: {
       // Headings are already processed to correct semantic levels by processHeading()
       // during the marked rendering pass. The sanitizer just needs to preserve them.
@@ -506,6 +522,7 @@ export function sanitizeRawHTML(
         }
         return { tagName, attribs }
       },
+
       source: (tagName, attribs) => {
         if (attribs.src) {
           attribs.src = processImageUrl(attribs.src)

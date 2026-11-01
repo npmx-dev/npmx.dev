@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 const { useNuxt } = vi.hoisted(() => ({
   useNuxt: vi.fn(),
@@ -87,6 +87,7 @@ describe('security headers module', () => {
         'Referrer-Policy': 'strict-origin-when-cross-origin',
         'X-Content-Type-Options': 'nosniff',
         'X-Frame-Options': 'DENY',
+        'Content-Security-Policy': "frame-ancestors 'none'",
       }),
     )
     expect(nuxt.options.routeRules['/__nuxt_devtools__/**']).toEqual({
@@ -96,6 +97,7 @@ describe('security headers module', () => {
         'Referrer-Policy': 'strict-origin-when-cross-origin',
         'X-Content-Type-Options': 'nosniff',
         'X-Frame-Options': 'SAMEORIGIN',
+        'Content-Security-Policy': "frame-ancestors 'self'",
       },
       redirect: '/devtools',
     })

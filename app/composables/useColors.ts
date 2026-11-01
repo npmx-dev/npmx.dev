@@ -28,6 +28,7 @@ const colorVariables = [
   '--fg',
   '--fg-muted',
   '--fg-subtle',
+  '--fg-error',
 ] as const
 
 function readCssVariable(element: HTMLElement, variableName: string): string {

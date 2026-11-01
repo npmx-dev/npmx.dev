@@ -71,6 +71,11 @@ function goToBrand() {
   navigateTo({ name: 'brand' })
 }
 
+function openNewTab() {
+  close()
+  window.open('/', '_blank')
+}
+
 onClickOutside(menuRef, close)
 
 onKeyStroke('Escape', () => {
@@ -103,7 +108,7 @@ onKeyStroke('Escape', () => {
           <ButtonBase
             role="menuitem"
             size="sm"
-            class="text-start gap-x-2 border-none !px-3 !py-1.5"
+            class="text-start gap-x-2 border-none !px-3 !py-1.5 hover:text-accent focus:text-accent"
             :classicon="copied ? 'i-lucide:check text-badge-green' : 'i-lucide:copy'"
             @click="copySvg"
           >
@@ -112,11 +117,20 @@ onKeyStroke('Escape', () => {
           <ButtonBase
             role="menuitem"
             size="sm"
-            class="text-start gap-x-2 border-none !px-3 !py-1.5"
+            class="text-start gap-x-2 border-none !px-3 !py-1.5 hover:text-accent focus:text-accent"
             classicon="i-lucide:palette"
             @click="goToBrand"
           >
             {{ $t('logo_menu.browse_brand') }}
+          </ButtonBase>
+          <ButtonBase
+            role="menuitem"
+            size="sm"
+            class="text-start gap-x-2 border-none !px-3 !py-1.5 hover:text-accent focus:text-accent"
+            classicon="i-lucide:external-link"
+            @click="openNewTab"
+          >
+            {{ $t('logo_menu.open_new_tab') }}
           </ButtonBase>
         </div>
       </Transition>

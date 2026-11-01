@@ -76,7 +76,14 @@ test.describe('API Documentation Pages', () => {
     await symbolLink.click()
 
     // URL should have the hash
-    await expect(page).toHaveURL(new RegExp(href!.replace('#', '#')))
+    await expect(page).toHaveURL(new RegExp(href!.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
+  })
+
+  test('direct load with a symbol hash scrolls to the symbol', async ({ page, goto }) => {
+    await goto('/package-docs/ufo/v/1.6.3#variable-stubConstant', { waitUntil: 'hydration' })
+
+    // The docs HTML is fetched client-side, so the target only exists after the router's first scroll
+    await expect(page.locator('#variable-stubConstant')).toBeInViewport()
   })
 
   test('docs page without version redirects to latest', async ({ page, goto }) => {

@@ -21,9 +21,6 @@
     "builders_chat": "बिल्डर्स",
     "keyboard_shortcuts": "कीबोर्ड शॉर्टकट"
   },
-  "shortcuts": {
-    "section": {}
-  },
   "search": {
     "label": "npm पॅकेजेस शोधा",
     "placeholder": "पॅकेजेस शोधा...",
@@ -58,23 +55,6 @@
     "instant_search_turn_on": "चालू करा",
     "instant_search_turn_off": "बंद करा",
     "instant_search_advisory": "{label} {state} — {action}"
-  },
-  "command_palette": {
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "package_actions": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
   },
   "nav": {
     "main_navigation": "मुख्य",
@@ -229,9 +209,6 @@
     "collapse": "आकुंचित करा",
     "expand": "विस्तृत करा"
   },
-  "profile": {
-    "invite": {}
-  },
   "package": {
     "not_found": "पॅकेज सापडले नाही",
     "not_found_message": "पॅकेज सापडले नाही.",
@@ -251,7 +228,6 @@
       "size": "इंस्टॉल आकार {percent} ने वाढला ({size} ने मोठा)",
       "deps": "{count} अधिक निर्भरता"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "कदाचित तुम्हाला या निर्भरतेची गरज नसेल.",
       "native": "हे {replacement} सह बदलले जाऊ शकते, Node {nodeVersion} पासून उपलब्ध आहे.",
@@ -301,8 +277,7 @@
       "code": "कोड",
       "docs": "दस्तऐवज",
       "fund": "निधी",
-      "compare": "तुलना करा",
-      "compare_this_package": "या पॅकेजची तुलना करा"
+      "compare": "तुलना करा"
     },
     "likes": {
       "like": "हे पॅकेज पसंत करा",
@@ -425,11 +400,6 @@
       "current_tags": "सध्याचे टॅग्स",
       "no_match_filter": "{filter} शी जुळणारी कोणतीही आवृत्ती नाही"
     },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
-    },
     "dependencies": {
       "title": "{count} निर्भरता | {count} निर्भरता",
       "list_label": "पॅकेज निर्भरता",
@@ -468,7 +438,6 @@
       "maintainer_template": "{avatar} {char126}{name}"
     },
     "trends": {
-      "chart_assistive_text": {},
       "granularity": "ग्रॅन्युलॅरिटी",
       "granularity_daily": "दैनिक",
       "granularity_weekly": "साप्ताहिक",
@@ -622,9 +591,6 @@
       "button": "डाउनलोड",
       "tarball": ".tar.gz स्वरूपात टारबॉल डाउनलोड करा"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1095,9 +1061,6 @@
       "packages_selected": "{count}/{max} पॅकेजेस निवडली.",
       "add_hint": "तुलनेसाठी किमान 2 पॅकेजेस जोडा."
     },
-    "scatter_chart": {
-      "copy_alt": {}
-    },
     "no_dependency": {
       "label": "(निर्भरता नाही)",
       "typeahead_title": "James काय करेल?",
@@ -1172,10 +1135,7 @@
         "vulnerabilities": {
           "label": "असुरक्षितता",
           "description": "ज्ञात सुरक्षा असुरक्षितता"
-        },
-        "githubStars": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "कोणतेही",
@@ -1392,41 +1352,15 @@
     "p2": "सुरू करण्यापूर्वी, आमची भाषांतर प्रक्रिया आणि तुम्ही कसे सहभागी होऊ शकता हे जाणून घेण्यासाठी कृपया आमचे {guide} वाचा.",
     "guide": "स्थानिकीकरण (i18n) मार्गदर्शक",
     "by_locale": "लोकॅलनुसार भाषांतर प्रगती",
-    "by_file": "फाइलनुसार भाषांतर प्रगती",
     "complete_text": "हे भाषांतर पूर्ण झाले आहे, अप्रतिम काम!",
     "missing_text": "गहाळ",
     "missing_keys": "एकही भाषांतर गहाळ नाही | गहाळ भाषांतर | गहाळ भाषांतरे",
-    "progress_label": "{locale} साठी प्रगती स्थिती",
-    "table": {
-      "file": "फाइल",
-      "status": "स्थिती",
-      "error": "फाइल यादी लोड करताना त्रुटी.",
-      "empty": "कोणत्याही फाइल्स सापडल्या नाहीत",
-      "file_link": "GitHub वर {file} ({lang}) संपादित करा"
-    }
-  },
-  "vacations": {
-    "what": {},
-    "meantime": {},
-    "return": {},
-    "stats": {
-      "subtitle": {}
-    }
+    "progress_label": "{locale} साठी प्रगती स्थिती"
   },
   "action_bar": {
     "title": "क्रिया पट्टी",
     "selection": "0 निवडले | 1 निवडले | {count} निवडले",
     "shortcut": "\"{key}\" दाबून क्रियांवर फोकस करा",
     "button_close_aria_label": "क्रिया पट्टी बंद करा"
-  },
-  "logo_menu": {},
-  "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
-  },
-  "changelog": {
-    "error": {}
   }
 }

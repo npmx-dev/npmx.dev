@@ -184,6 +184,7 @@ watch(isOpen, isNowOpen => {
     classicon="i-lucide:list"
     class="px-2.5"
     block
+    v-bind="$attrs"
   >
     <span
       class="i-lucide:chevron-down w-3 h-3"

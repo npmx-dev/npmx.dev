@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
 import { userEvent } from 'vitest/browser'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { PackageVersionInfo } from '#shared/types/npm-registry'
