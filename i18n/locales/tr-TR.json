@@ -345,9 +345,7 @@
       "tangled": "Tangled'da görüntüle"
     },
     "collapse": "Daralt",
-    "collapse_with_name": "{name} daralt",
-    "expand": "Genişlet",
-    "expand_with_name": "{name} genişlet"
+    "expand": "Genişlet"
   },
   "profile": {
     "display_name": "Görünen ad",

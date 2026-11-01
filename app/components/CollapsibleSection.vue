@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { shallowRef, computed } from 'vue'
-import { LinkBase } from '#components'
+import { shallowRef } from 'vue'
 import type { IconClass } from '~/types/icon'
 
 interface Props {
@@ -62,15 +61,14 @@ function toggle() {
     appSettings.settings.value.sidebar.collapsed.join(' ')
 }
 
-const ariaLabel = computed(() => {
-  if (!props.title) {
-    return isOpen.value ? $t('common.collapse') : $t('common.expand')
-  }
+const { copied: linkCopied, copy: copyLink } = useClipboard({ copiedDuring: 2000 })
 
-  return isOpen.value
-    ? $t('common.collapse_with_name', { name: props.title })
-    : $t('common.expand_with_name', { name: props.title })
-})
+function copySectionLink() {
+  const url = new URL(window.location.href)
+  url.hash = props.id
+  copyLink(url.toString())
+}
+
 useHead({
   style: [
     {
@@ -87,38 +85,55 @@ useHead({
 <template>
   <section :id="id" :data-anchor-id="id" class="scroll-mt-20 xl:scroll-mt-0">
     <div class="flex items-center justify-between mb-3 ps-1">
-      <component
-        :is="headingLevel"
-        class="group text-xs text-fg-subtle uppercase tracking-wider flex gap-2"
-        :class="subtitle ? 'items-start' : 'items-center'"
-      >
-        <button
-          :id="buttonId"
-          type="button"
-          class="cursor-pointer size-5 -me-1 flex items-center justify-center text-fg-subtle hover:text-fg-muted transition-colors duration-200 shrink-0 focus-visible:outline-accent/70 rounded"
-          :aria-expanded="isOpen"
-          :aria-controls="contentId"
-          :aria-label="ariaLabel"
-          @click="toggle"
+      <div class="flex gap-1 min-w-0" :class="subtitle ? 'items-start' : 'items-center'">
+        <component
+          :is="headingLevel"
+          class="text-xs text-fg-subtle uppercase tracking-wider min-w-0"
         >
-          <span v-if="isLoading" class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
+          <button
+            :id="buttonId"
+            type="button"
+            class="cursor-pointer flex items-center gap-2 text-start uppercase text-fg-subtle hover:text-fg-muted transition-colors duration-200 focus-visible:outline-accent/70 rounded"
+            :aria-expanded="isOpen"
+            :aria-controls="contentId"
+            @click="toggle"
+          >
+            <span
+              v-if="isLoading"
+              class="i-svg-spinners:ring-resize w-3 h-3 shrink-0"
+              aria-hidden="true"
+            />
+            <span
+              v-else
+              class="w-3 h-3 shrink-0 transition-transform duration-200"
+              :class="isOpen ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
+              aria-hidden="true"
+            />
+            {{ title }}
+          </button>
+          <!-- Aligned with the title, past the chevron (w-3) and its gap (gap-2) -->
+          <span v-if="subtitle" class="block ps-5 text-2xs normal-case tracking-normal">{{
+            subtitle
+          }}</span>
+        </component>
+
+        <button
+          type="button"
+          class="cursor-pointer size-5 shrink-0 flex items-center justify-center text-fg-subtle hover:text-fg-muted transition-colors duration-200 focus-visible:outline-accent/70 rounded"
+          :aria-label="
+            linkCopied
+              ? $t('common.section_link_copied')
+              : $t('common.copy_section_link', { name: title })
+          "
+          @click="copySectionLink"
+        >
           <span
-            v-else
-            class="w-3 h-3 transition-transform duration-200"
-            :class="isOpen ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
+            class="w-3 h-3"
+            :class="linkCopied ? 'i-lucide:check' : 'i-lucide:link'"
             aria-hidden="true"
           />
         </button>
-
-        <span>
-          <LinkBase :to="`#${id}`">
-            {{ title }}
-          </LinkBase>
-          <span v-if="subtitle" class="block text-2xs normal-case tracking-normal">{{
-            subtitle
-          }}</span>
-        </span>
-      </component>
+      </div>
 
       <!-- Actions slot for buttons or other elements -->
       <div class="pe-1">

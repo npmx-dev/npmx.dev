@@ -380,9 +380,7 @@
       "tangled": "Tangledで表示"
     },
     "collapse": "折りたたむ",
-    "collapse_with_name": "{name} を折りたたむ",
-    "expand": "展開",
-    "expand_with_name": "{name} を展開"
+    "expand": "展開"
   },
   "profile": {
     "display_name": "表示名",

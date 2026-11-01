@@ -11,8 +11,51 @@ vi.stubGlobal('fetchNpmPackageAbbreviated', mockAbbreviatedPackument)
 const mockVersionLibc = vi.fn<(name: string, version: string) => Promise<string[] | undefined>>()
 vi.stubGlobal('fetchNpmPackageVersionLibc', mockVersionLibc)
 
-const { TARGET_PLATFORM, matchesPlatform, resolveVersion, resolveDependencyTree } =
-  await import('#server/utils/dependency-resolver')
+interface VersionsMeta {
+  versions: string[]
+  time: Record<string, string>
+  distTags: Record<string, string>
+}
+const mockVersionsMeta = vi.fn<(name: string) => Promise<VersionsMeta | null>>()
+vi.stubGlobal('fetchNpmPackageVersionsMeta', mockVersionsMeta)
+
+type MockPackument = AbbreviatedPackument & { time: Record<string, string> }
+
+/**
+ * Serves both the abbreviated packument and the publish-time lookup from one fixture,
+ * like the registry and fast-npm-meta would for the same package.
+ */
+function mockRegistry(resolve: (name: string) => Promise<MockPackument | null>) {
+  // The real abbreviated packument has no `time`, so neither does the mock.
+  mockAbbreviatedPackument.mockImplementation(async name => {
+    const packument = await resolve(name)
+    if (!packument) return null
+    const { time: _time, ...abbreviated } = packument
+    return abbreviated
+  })
+  mockVersionsMeta.mockImplementation(async name => {
+    const packument = await resolve(name)
+    if (!packument) return null
+    return {
+      versions: Object.keys(packument.versions),
+      time: packument.time,
+      distTags: packument['dist-tags'] ?? {},
+    }
+  })
+}
+
+const {
+  TARGET_PLATFORM,
+  matchesPlatform,
+  resolveVersion,
+  resolveDependencyTree,
+  getDependenciesResolutionLimitPure,
+  getDependenciesResolutionLimit,
+  RESOLUTION_GRACE_MS,
+} = await import('#server/utils/dependency-resolver')
+
+const day = (n: number) => new Date(Date.UTC(2026, 0, n)).toISOString()
+const minutes = (n: number) => n * 60 * 1000
 
 /**
  * Helper to build a minimal abbreviated packument for mocking.
@@ -28,10 +71,13 @@ function makePackument(
     libc?: string[]
     unpackedSize?: number
     deprecated?: string
+    time?: string
   }>,
-): AbbreviatedPackument {
+): MockPackument {
   const versionsMap: Record<string, AbbreviatedPackumentVersion> = {}
+  const time: Record<string, string> = {}
   for (const v of versions) {
+    if (v.time) time[v.version] = v.time
     versionsMap[v.version] = {
       version: v.version,
       dependencies: v.deps,
@@ -43,7 +89,7 @@ function makePackument(
       ...(v.deprecated ? { deprecated: v.deprecated } : {}),
     }
   }
-  return { name, versions: versionsMap }
+  return { name, versions: versionsMap, time }
 }
 
 describe('dependency-resolver', () => {
@@ -185,6 +231,214 @@ describe('dependency-resolver', () => {
       expect(resolveVersion('2.0.0-beta.1', versions)).toBe('2.0.0-beta.1')
       // Range with prerelease - semver correctly prefers stable 2.0.0 over 2.0.0-beta.1
       expect(resolveVersion('^2.0.0-beta.0', versions)).toBe('2.0.0')
+    })
+
+    describe('with a `before` timestamp', () => {
+      const time = {
+        '1.0.0': day(1),
+        '1.0.1': day(2),
+        '1.1.0': day(10),
+        '2.0.0': day(11),
+        '2.0.0-beta.1': day(9),
+        '3.0.0': day(20),
+      }
+
+      it('ignores versions published after it', () => {
+        expect(
+          resolveVersion('^1.0.0', versions, { before: Date.parse(day(5)), versionsTimes: time }),
+        ).toBe('1.0.1')
+        expect(
+          resolveVersion('^1.0.0', versions, { before: Date.parse(day(15)), versionsTimes: time }),
+        ).toBe('1.1.0')
+      })
+
+      it('includes versions published exactly at it', () => {
+        expect(
+          resolveVersion('^1.0.0', versions, { before: Date.parse(day(10)), versionsTimes: time }),
+        ).toBe('1.1.0')
+      })
+
+      it('resolves against every version when none is given', () => {
+        expect(resolveVersion('^1.0.0', versions, { versionsTimes: time })).toBe('1.1.0')
+        expect(resolveVersion('*', versions, { versionsTimes: time })).toBe('3.0.0')
+      })
+
+      it('honours an exact version regardless of it', () => {
+        expect(
+          resolveVersion('3.0.0', versions, { before: Date.parse(day(1)), versionsTimes: time }),
+        ).toBe('3.0.0')
+      })
+
+      it('applies it through npm: aliases', () => {
+        expect(
+          resolveVersion('npm:other-pkg@^1.0.0', versions, {
+            before: Date.parse(day(5)),
+            versionsTimes: time,
+          }),
+        ).toBe('1.0.1')
+      })
+
+      it('keeps versions with no recorded publish time', () => {
+        expect(
+          resolveVersion('^1.0.0', versions, { before: Date.parse(day(5)), versionsTimes: {} }),
+        ).toBe('1.1.0')
+      })
+
+      it('falls back to the first later release when nothing satisfies the range yet', () => {
+        // A dependency published moments after its dependent (monorepos publish a
+        // release in topological order) must stay in the tree, not disappear.
+        expect(
+          resolveVersion('^3.0.0', versions, { before: Date.parse(day(5)), versionsTimes: time }),
+        ).toBe('3.0.0')
+        // ...but as close to the limit as possible, not today's newest match.
+        expect(
+          resolveVersion('>=2.0.0', versions, { before: Date.parse(day(5)), versionsTimes: time }),
+        ).toBe('2.0.0')
+      })
+    })
+  })
+
+  describe('getDependenciesResolutionLimitPure', () => {
+    const versions = ['1.0.0', '1.1.0', '2.0.0']
+    const time = { '1.0.0': day(1), '1.1.0': day(10), '2.0.0': day(20) }
+
+    it('returns undefined for the newest version', () => {
+      expect(getDependenciesResolutionLimitPure('2.0.0', versions, time)).toBeUndefined()
+    })
+
+    it('stops short of the next release', () => {
+      expect(getDependenciesResolutionLimitPure('1.1.0', versions, time)).toBe(
+        Date.parse(day(20)) - RESOLUTION_GRACE_MS,
+      )
+    })
+
+    it('ignores later releases from an older line', () => {
+      // A 1.x backport published after 2.0.0 doesn't supersede it: 2.0.0 is
+      // still the newest of its own line, so it keeps resolving freely.
+      const backport = [...versions, '1.1.1']
+      const withBackport = { ...time, '1.1.1': day(25) }
+      expect(getDependenciesResolutionLimitPure('1.1.1', backport, withBackport)).toBeUndefined()
+      expect(getDependenciesResolutionLimitPure('2.0.0', backport, withBackport)).toBeUndefined()
+      // 1.1.0 is still limited by 2.0.0, which does supersede it.
+      expect(getDependenciesResolutionLimitPure('1.1.0', backport, withBackport)).toBe(
+        Date.parse(day(20)) - RESOLUTION_GRACE_MS,
+      )
+    })
+
+    it('is not limited by a prerelease of a later version', () => {
+      // An install still resolves to 1.0.0 once 1.1.0-beta.1 is out, so 1.0.0
+      // stays current until 1.1.0 itself ships six months later.
+      const withBeta = ['1.0.0', '1.1.0-beta.1', '1.1.0']
+      const betaTimes = { '1.0.0': day(1), '1.1.0-beta.1': day(8), '1.1.0': day(20) }
+
+      expect(getDependenciesResolutionLimitPure('1.0.0', withBeta, betaTimes)).toBe(
+        Date.parse(day(20)) - RESOLUTION_GRACE_MS,
+      )
+    })
+
+    it('limits a prerelease by the releases above it', () => {
+      const betas = ['1.0.0', '1.1.0-beta.1', '1.1.0-beta.2', '1.1.0']
+      const betaTimes = {
+        '1.0.0': day(1),
+        '1.1.0-beta.1': day(8),
+        '1.1.0-beta.2': day(12),
+        '1.1.0': day(20),
+      }
+
+      // A newer prerelease supersedes an older one...
+      expect(getDependenciesResolutionLimitPure('1.1.0-beta.1', betas, betaTimes)).toBe(
+        Date.parse(day(12)) - RESOLUTION_GRACE_MS,
+      )
+      // ...and so does the stable release they lead to.
+      expect(getDependenciesResolutionLimitPure('1.1.0-beta.2', betas, betaTimes)).toBe(
+        Date.parse(day(20)) - RESOLUTION_GRACE_MS,
+      )
+    })
+
+    it('leaves every line-leading version unlimited', () => {
+      // Released in this order, only 1.0.0 and 2.0.0 were ever superseded.
+      const released = ['1.0.0', '2.0.0', '3.0.0', '2.1.0', '1.1.0']
+      const releasedTimes = {
+        '1.0.0': day(1),
+        '2.0.0': day(2),
+        '3.0.0': day(3),
+        '2.1.0': day(4),
+        '1.1.0': day(5),
+      }
+
+      for (const leading of ['3.0.0', '2.1.0', '1.1.0']) {
+        expect(getDependenciesResolutionLimitPure(leading, released, releasedTimes)).toBeUndefined()
+      }
+
+      expect(getDependenciesResolutionLimitPure('1.0.0', released, releasedTimes)).toBe(
+        Date.parse(day(2)) - RESOLUTION_GRACE_MS,
+      )
+      expect(getDependenciesResolutionLimitPure('2.0.0', released, releasedTimes)).toBe(
+        Date.parse(day(3)) - RESOLUTION_GRACE_MS,
+      )
+    })
+
+    it("leaves the latest version on today's registry", () => {
+      // 2.0.0 is still what an install resolves to, even though the 1.x line kept releasing after it.
+      const backport = [...versions, '1.1.1']
+      const withBackport = { ...time, '1.1.1': day(25) }
+      expect(
+        getDependenciesResolutionLimitPure('2.0.0', backport, withBackport, '2.0.0'),
+      ).toBeUndefined()
+      expect(getDependenciesResolutionLimitPure('1.1.0', backport, withBackport, '2.0.0')).toBe(
+        Date.parse(day(20)) - RESOLUTION_GRACE_MS,
+      )
+    })
+
+    it('keeps the version its own grace period when releases are close together', () => {
+      // Back-to-back releases would otherwise push the timestamp before the
+      // version's own batch finished publishing.
+      const rapid = {
+        '1.0.0': day(1),
+        '1.0.1': new Date(Date.parse(day(1)) + minutes(2)).toISOString(),
+      }
+      expect(getDependenciesResolutionLimitPure('1.0.0', ['1.0.0', '1.0.1'], rapid)).toBe(
+        Date.parse(day(1)) + RESOLUTION_GRACE_MS,
+      )
+    })
+
+    it('returns undefined when the version has no publish time', () => {
+      expect(getDependenciesResolutionLimitPure('1.1.0', versions, {})).toBeUndefined()
+    })
+  })
+
+  describe('getDependenciesResolutionLimit', () => {
+    beforeEach(() => {
+      mockVersionsMeta.mockReset()
+    })
+
+    it('reads publish times from the versions metadata', async () => {
+      mockRegistry(async () =>
+        makePackument('pkg', [
+          { version: '1.0.0', time: day(1) },
+          { version: '1.1.0', time: day(10) },
+        ]),
+      )
+
+      await expect(getDependenciesResolutionLimit('pkg', '1.0.0')).resolves.toBe(
+        Date.parse(day(10)) - RESOLUTION_GRACE_MS,
+      )
+      await expect(getDependenciesResolutionLimit('pkg', '1.1.0')).resolves.toBeUndefined()
+    })
+
+    it('returns undefined when the versions metadata is unavailable', async () => {
+      mockVersionsMeta.mockResolvedValue(null)
+
+      await expect(getDependenciesResolutionLimit('pkg', '1.0.0')).resolves.toBeUndefined()
+    })
+
+    it('rejects when the versions metadata cannot be fetched', async () => {
+      // Resolving against today's registry instead would be cached as frozen history.
+      mockVersionsMeta.mockRejectedValue(new Error('fast-npm-meta is down'))
+
+      await expect(getDependenciesResolutionLimit('pkg', '1.0.0')).rejects.toThrow(
+        'fast-npm-meta is down',
+      )
     })
   })
 
@@ -537,6 +791,102 @@ describe('dependency-resolver', () => {
       // root + a + b + shared (only once)
       expect(result.size).toBe(4)
       expect(result.has('shared@1.0.0')).toBe(true)
+    })
+
+    describe('with a `before` timestamp', () => {
+      // A monorepo that releases its packages together: core@1.0.0 shipped
+      // alongside lib@1.0.0, then both shrank by half in the 1.1.0 release.
+      const monorepo = async (name: string) => {
+        if (name === 'core')
+          return makePackument('core', [
+            { version: '1.0.0', deps: { lib: '^1.0.0' }, unpackedSize: 1000, time: day(1) },
+            { version: '1.1.0', deps: { lib: '^1.0.0' }, unpackedSize: 500, time: day(10) },
+          ])
+        if (name === 'lib')
+          return makePackument('lib', [
+            { version: '1.0.0', unpackedSize: 1000, time: day(1) },
+            { version: '1.1.0', unpackedSize: 500, time: day(10) },
+          ])
+        return null
+      }
+
+      beforeEach(() => {
+        mockRegistry(monorepo)
+      })
+
+      it('resolves a superseded version against the registry of its own time', async () => {
+        const before = getDependenciesResolutionLimitPure('1.0.0', ['1.0.0', '1.1.0'], {
+          '1.0.0': day(1),
+          '1.1.0': day(10),
+        })
+
+        const result = await resolveDependencyTree('core', '1.0.0', { before })
+
+        expect(result.has('lib@1.0.0')).toBe(true)
+        expect(result.get('lib@1.0.0')!.size).toBe(1000)
+      })
+
+      it('resolves the newest version against today (unrestricted)', async () => {
+        const result = await resolveDependencyTree('core', '1.1.0')
+
+        expect(result.has('lib@1.1.0')).toBe(true)
+      })
+
+      it('would otherwise credit the old version with the later shrink', async () => {
+        // Regression guard: unrestricted, core@1.0.0 pulls in today's lib.
+        const result = await resolveDependencyTree('core', '1.0.0')
+
+        expect(result.has('lib@1.1.0')).toBe(true)
+      })
+
+      it('keeps a sibling published later in the same release batch', async () => {
+        // lib@1.1.0 landing after core@1.1.0 must not drop lib from the tree.
+        mockRegistry(async (name: string) => {
+          if (name === 'core')
+            return makePackument('core', [
+              { version: '1.1.0', deps: { lib: '^1.1.0' }, unpackedSize: 500, time: day(10) },
+            ])
+          if (name === 'lib')
+            return makePackument('lib', [
+              {
+                version: '1.1.0',
+                unpackedSize: 500,
+                time: new Date(Date.parse(day(10)) + minutes(30)).toISOString(),
+              },
+            ])
+          return null
+        })
+
+        const result = await resolveDependencyTree('core', '1.1.0', {
+          before: Date.parse(day(10)) + RESOLUTION_GRACE_MS,
+        })
+
+        expect(result.has('lib@1.1.0')).toBe(true)
+      })
+
+      it('rejects when the publish times of a dependency cannot be fetched', async () => {
+        mockVersionsMeta.mockImplementation(async name => {
+          if (name === 'lib') throw new Error('fast-npm-meta is down')
+          return { versions: ['1.0.0', '1.1.0'], time: { '1.0.0': day(1) }, distTags: {} }
+        })
+
+        await expect(
+          resolveDependencyTree('core', '1.0.0', { before: Date.parse(day(5)) }),
+        ).rejects.toThrow('fast-npm-meta is down')
+      })
+
+      it('ignores releases newer than the publish times snapshot', async () => {
+        // The packument already lists lib@1.1.0, but the cached publish times predate it.
+        mockVersionsMeta.mockResolvedValue({
+          versions: ['1.0.0'],
+          time: { '1.0.0': day(1) },
+          distTags: { latest: '1.0.0' },
+        })
+
+        const result = await resolveDependencyTree('core', '1.0.0', { before: Date.parse(day(5)) })
+
+        expect([...result.keys()].sort()).toEqual(['core@1.0.0', 'lib@1.0.0'])
+      })
     })
 
     it('keeps distinct versions requested through aliases of the same package', async () => {
