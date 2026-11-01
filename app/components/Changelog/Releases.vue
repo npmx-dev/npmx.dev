@@ -65,7 +65,10 @@ if (import.meta.client) {
 
       if (goToVersion) {
         for (const match of uMatchingDateReleases) {
-          if (match.title.toLowerCase().includes(goToVersion)) {
+          if (
+            match.tag.toLowerCase().includes(goToVersion) ||
+            match.title.toLowerCase().includes(goToVersion)
+          ) {
             navigateTo(`#release-${slugify(match.title)}`, { replace: true })
             return
           }
@@ -93,5 +96,5 @@ prefetchComponents('ChangelogCard')
       :host="info.host"
     />
   </div>
-  <slot v-else-if="error" name="error"></slot>
+  <slot v-else-if="error" name="error" :error></slot>
 </template>

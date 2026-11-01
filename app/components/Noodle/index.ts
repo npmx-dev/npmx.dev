@@ -10,6 +10,8 @@ import NoodlePride3Logo from './Pride3/Logo.vue'
 import NoodleTetrisLogo from './Tetris/Logo.vue'
 import NoodleEmojiDayLogo from './EmojiDay/Logo.vue'
 import NoodleGifDayLogo from './GifDay/Logo.vue'
+import NoodleIojsNodejsLogo from './IojsNodejs/Logo.vue'
+import NoodleBlenderLogo from './Blender/Logo.vue'
 
 export type Noodle = {
   // Unique identifier for the noodle
@@ -38,47 +40,11 @@ export const PERMANENT_NOODLES: Noodle[] = [
 // Active noodles - shown based on date and timezone
 export const ACTIVE_NOODLES: Noodle[] = [
   {
-    key: 'pride-1',
-    logo: NoodlePride1Logo,
-    date: '2026-06-01',
-    dateTo: '2026-06-06',
-    timezone: 'auto',
-  },
-  {
-    key: 'tetris',
-    logo: NoodleTetrisLogo,
-    date: '2026-06-06',
-    dateTo: '2026-06-08',
+    key: 'blender',
+    logo: NoodleBlenderLogo,
+    date: '2026-10-13',
     timezone: 'auto',
     tagline: false,
-  },
-  {
-    key: 'pride-2',
-    logo: NoodlePride2Logo,
-    date: '2026-06-08',
-    dateTo: '2026-06-20',
-    timezone: 'auto',
-  },
-  {
-    key: 'pride-3',
-    logo: NoodlePride3Logo,
-    date: '2026-06-20',
-    dateTo: '2026-07-01',
-    timezone: 'auto',
-  },
-  {
-    key: 'emoji-day',
-    logo: NoodleEmojiDayLogo,
-    date: '2026-07-17',
-    dateTo: '2026-07-19',
-    timezone: 'auto',
-  },
-  {
-    key: 'gif-day',
-    logo: NoodleGifDayLogo,
-    date: '2026-09-05',
-    dateTo: '2026-09-08',
-    timezone: 'auto',
   },
 ]
 
@@ -92,9 +58,13 @@ const NOODLE_LOGOS: Record<string, Component> = {
   'artemis': NoodleArtemisLogo,
   'nodejs': NoodleNodejsLogo,
   'pride-1': NoodlePride1Logo,
+  'pride-2': NoodlePride2Logo,
+  'pride-3': NoodlePride3Logo,
   'tetris': NoodleTetrisLogo,
   'emoji-day': NoodleEmojiDayLogo,
   'gif-day': NoodleGifDayLogo,
+  'iojs-nodejs-merge': NoodleIojsNodejsLogo,
+  'blender': NoodleBlenderLogo,
 }
 
 export function resolveNoodleLogo(key: string): Component | undefined {

@@ -76,23 +76,6 @@
     "instant_search_turn_off": "बंद करें",
     "instant_search_advisory": "{label} {state} — {action}"
   },
-  "command_palette": {
-    "state": {},
-    "groups": {},
-    "actions": {},
-    "connections": {},
-    "navigation": {},
-    "links": {},
-    "package_links": {},
-    "theme": {},
-    "package": {},
-    "package_actions": {},
-    "code": {},
-    "diff": {},
-    "version": {},
-    "status": {},
-    "announcements": {}
-  },
   "nav": {
     "main_navigation": "मुख्य",
     "popular_packages": "लोकप्रिय पैकेज",
@@ -246,9 +229,6 @@
     "collapse": "संक्षिप्त करें",
     "expand": "विस्तृत करें"
   },
-  "profile": {
-    "invite": {}
-  },
   "package": {
     "not_found": "पैकेज नहीं मिला",
     "not_found_message": "पैकेज नहीं मिल सका।",
@@ -268,7 +248,6 @@
       "size": "इंस्टॉल आकार {percent} बढ़ा ({size} अधिक)",
       "deps": "{count} और निर्भरताएँ"
     },
-    "size_decrease": {},
     "replacement": {
       "title": "आपको इस निर्भरता की आवश्यकता नहीं हो सकती।",
       "native": "इसे {replacement} से बदला जा सकता है, जो Node {nodeVersion} से उपलब्ध है।",
@@ -440,11 +419,6 @@
       "page_title": "संस्करण इतिहास",
       "current_tags": "वर्तमान टैग्स",
       "no_match_filter": "कोई संस्करण {filter} से मेल नहीं खाता"
-    },
-    "timeline": {
-      "chart": {
-        "copy_alt": {}
-      }
     },
     "dependencies": {
       "title": "निर्भरताएँ ({count})",
@@ -644,9 +618,6 @@
       "button": "डाउनलोड करें",
       "tarball": ".tar.gz के रूप में Tarball डाउनलोड करें"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1119,9 +1090,6 @@
       "packages_selected": "{count}/{max} पैकेज चुने गए।",
       "add_hint": "तुलना करने के लिए कम से कम 2 पैकेज जोड़ें।"
     },
-    "scatter_chart": {
-      "copy_alt": {}
-    },
     "no_dependency": {
       "label": "(कोई निर्भरता नहीं)",
       "typeahead_title": "James क्या करते?",
@@ -1196,10 +1164,7 @@
         "vulnerabilities": {
           "label": "कमजोरियाँ",
           "description": "ज्ञात सुरक्षा कमजोरियाँ"
-        },
-        "githubStars": {},
-        "githubIssues": {},
-        "createdAt": {}
+        }
       },
       "values": {
         "any": "कोई भी",
@@ -1416,18 +1381,10 @@
     "p2": "शुरू करने से पहले, हमारी {guide} पढ़ें ताकि आप हमारी अनुवाद प्रक्रिया और इसमें शामिल होने के तरीकों के बारे में जान सकें।",
     "guide": "लोकलाइज़ेशन (i18n) गाइड",
     "by_locale": "locale के अनुसार अनुवाद प्रगति",
-    "by_file": "फ़ाइल के अनुसार अनुवाद प्रगति",
     "complete_text": "यह अनुवाद पूरा हो चुका है, शानदार काम!",
     "missing_text": "गायब",
     "missing_keys": "कोई अनुवाद गायब नहीं है | अनुवाद गायब है | अनुवाद गायब हैं",
-    "progress_label": "{locale} के लिए प्रगति स्थिति",
-    "table": {
-      "file": "फ़ाइल",
-      "status": "स्थिति",
-      "error": "फ़ाइल सूची लोड करते समय त्रुटि।",
-      "empty": "कोई फ़ाइल नहीं मिली",
-      "file_link": "GitHub पर {file} ({lang}) संपादित करें"
-    }
+    "progress_label": "{locale} के लिए प्रगति स्थिति"
   },
   "vacations": {
     "title": "छुट्टी पर",
@@ -1468,15 +1425,5 @@
     "selection": "0 चयनित | 1 चयनित | {count} चयनित",
     "shortcut": "क्रियाओं पर फ़ोकस करने के लिए \"{key}\" दबाएँ",
     "button_close_aria_label": "एक्शन बार बंद करें"
-  },
-  "logo_menu": {},
-  "brand": {
-    "logos": {},
-    "customize": {},
-    "typography": {},
-    "guidelines": {}
-  },
-  "changelog": {
-    "error": {}
   }
 }

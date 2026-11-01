@@ -148,6 +148,14 @@ export default defineNuxtConfig({
     '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/package-meta/**': { isr: 300 },
+    '/api/registry/packument/**': {
+      isr: {
+        expiration: 300,
+        // The transform is version-aware, so the version must be part of the cache key
+        passQuery: true,
+        allowQuery: ['version'],
+      },
+    },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
@@ -233,8 +241,18 @@ export default defineNuxtConfig({
     '/recharging': { prerender: true },
     '/pds': { isr: 86400 }, // revalidate daily
     '/blog/**': { prerender: true },
+    '/blog/rss.xml': {
+      prerender: true,
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/rss+xml' },
+    },
+    '/blog/atom.xml': {
+      prerender: true,
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/atom+xml' },
+    },
     '/noodles/**': { prerender: true },
     '/sponsors': { prerender: true },
+    '/tools': { prerender: true },
+    '/tools/deps-stats': { prerender: true },
     // proxy for insights
     '/_v/script.js': {
       proxy: 'https://npmx.dev/_vercel/insights/script.js',
@@ -274,6 +292,10 @@ export default defineNuxtConfig({
     esbuild: {
       options: {
         target: 'es2024',
+        // HACK: Excluding node_modules is the default. Here, we exempt
+        // .cache/nuxt/.nuxt/blog/posts.ts from that so that #blog/posts can be
+        // imported, parsed and executed as TS in server/utils/feeds.ts by esbuild
+        exclude: /node_modules\/(?!\.cache\/nuxt\/\.nuxt\/blog\/posts\.ts)/,
       },
     },
     rollupConfig: {
@@ -446,6 +468,7 @@ export default defineNuxtConfig({
         'vue-data-ui/vue-ui-scatter',
         'vue-data-ui/vue-ui-horizontal-bar',
         'vue-data-ui/vue-ui-stackbar',
+        'vue-data-ui/vue-ui-heatmap',
         'virtua/vue',
         'verkit',
         'validate-npm-package-name',
