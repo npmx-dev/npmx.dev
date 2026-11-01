@@ -846,8 +846,7 @@
   "badges": {
     "provenance": {
       "verified": "terverifikasi",
-      "verified_title": "Provenans terverifikasi",
-      "verified_via": "Terverifikasi: diterbitkan via {provider}"
+      "verified_title": "Provenans terverifikasi"
     },
     "jsr": {
       "title": "juga tersedia di JSR"

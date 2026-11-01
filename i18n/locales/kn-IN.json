@@ -546,8 +546,7 @@
   "badges": {
     "provenance": {
       "verified": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
-      "verified_title": "ಪರಿಶೀಲಿತ ಮೂಲ",
-      "verified_via": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ: {provider} ಮೂಲಕ ಪ್ರಕಟಿಸಲಾಗಿದೆ"
+      "verified_title": "ಪರಿಶೀಲಿತ ಮೂಲ"
     },
     "jsr": {
       "title": "JSR ನಲ್ಲಿ ಕೂಡ ಲಭ್ಯವಿದೆ"

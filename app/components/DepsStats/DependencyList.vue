@@ -241,7 +241,7 @@ useIntersectionObserver(
                       count: getVulnerableInfo(dep)!.counts.total,
                     })
                   "
-                  classicon="i-lucide:shield-check"
+                  classicon="i-lucide:shield-alert"
                 />
                 <LinkBase
                   v-if="getDeprecatedInfo(dep)"

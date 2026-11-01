@@ -3576,9 +3576,6 @@
             },
             "verified_title": {
               "type": "string"
-            },
-            "verified_via": {
-              "type": "string"
             }
           },
           "additionalProperties": false
@@ -3590,6 +3587,21 @@
               "type": "string"
             },
             "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "trusted_publishing": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "title_via": {
               "type": "string"
             }
           },

@@ -316,7 +316,7 @@ useShortcuts({
                 variant="button-secondary"
                 :to="packageRoute(packageName, resolvedVersion, '#provenance')"
                 :aria-label="$t('package.provenance_section.view_more_details')"
-                classicon="i-lucide:shield-check"
+                classicon="i-lucide:fingerprint"
                 class="py-1.25 px-2 me-2"
               />
             </TooltipApp>

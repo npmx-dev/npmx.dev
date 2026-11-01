@@ -1190,12 +1190,16 @@
   "badges": {
     "provenance": {
       "verified": "verified",
-      "verified_title": "Verified provenance",
-      "verified_via": "Verified: published via {provider}"
+      "verified_title": "Verified provenance"
     },
     "staged_publish": {
       "label": "staged publish",
       "title": "Published through staged publishing with 2FA approval"
+    },
+    "trusted_publishing": {
+      "label": "trusted publishing",
+      "title": "Published with trusted publishing",
+      "title_via": "Published with trusted publishing via {provider}"
     },
     "jsr": {
       "title": "also available on JSR"

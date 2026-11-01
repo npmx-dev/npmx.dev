@@ -1022,8 +1022,7 @@
   "badges": {
     "provenance": {
       "verified": "已验证",
-      "verified_title": "已验证来源",
-      "verified_via": "已验证：通过 {provider} 发布"
+      "verified_title": "已验证来源"
     },
     "jsr": {
       "title": "也适用于 JSR"
