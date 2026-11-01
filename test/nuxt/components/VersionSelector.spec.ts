@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
-import { userEvent } from 'vitest/browser'
+import { userEvent } from 'vite-plus/test/browser'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { PackageVersionInfo } from '#shared/types/npm-registry'
 import VersionSelector from '~/components/VersionSelector.vue'
