@@ -124,7 +124,7 @@
     "@storybook/addon-a11y": "catalog:storybook",
     "@storybook/addon-docs": "catalog:storybook",
     "@storybook/addon-themes": "catalog:storybook",
-    "@types/node": "24.13.3",
+    "@types/node": "26.6.6",
     "@types/sanitize-html": "2.16.1",
     "@types/validate-npm-package-name": "4.0.2",
     "@vitest/browser-playwright": "catalog:vite-plus",
@@ -154,7 +154,7 @@
     "vue-tsc": "3.3.10"
   },
   "engines": {
-    "node": "24"
+    "node": "26"
   },
   "packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621",
   "storybook": {
