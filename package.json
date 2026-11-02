@@ -133,7 +133,6 @@
     "axe-core": "4.13.0",
     "changelogen": "0.6.2",
     "chromatic": "18.2.0",
-    "devalue": "6.0.0",
     "eslint-plugin-regexp": "3.3.2",
     "fast-check": "4.9.0",
     "feed": "6.0.0",
