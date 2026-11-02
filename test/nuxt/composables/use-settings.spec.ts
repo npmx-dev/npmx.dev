@@ -120,4 +120,20 @@ describe('useSettings - resetSettings', () => {
     expect(document.documentElement.dataset.fgTheme).toBeUndefined()
     expect(document.documentElement.dataset.collapsed).toBeUndefined()
   })
+
+  it('reports whether settings are default, ignoring the locale', async () => {
+    const { useSettings } = await import('~/composables/useSettings')
+    const { settings, resetSettings, areSettingsDefault } = useSettings()
+
+    expect(areSettingsDefault()).toBe(true)
+
+    settings.value.selectedLocale = 'fr-FR'
+    expect(areSettingsDefault()).toBe(true)
+
+    settings.value.chartFilter.predictionPoints = 8
+    expect(areSettingsDefault()).toBe(false)
+
+    resetSettings()
+    expect(areSettingsDefault()).toBe(true)
+  })
 })

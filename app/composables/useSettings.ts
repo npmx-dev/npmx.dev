@@ -1,6 +1,7 @@
 import type { RemovableRef } from '@vueuse/core'
 import type { LocaleObject } from '@nuxtjs/i18n'
 import { useLocalStorage, useMounted } from '@vueuse/core'
+import { isEqual } from 'ohash'
 import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 import { BACKGROUND_THEMES, FOREGROUND_THEMES } from '#shared/utils/constants'
 
@@ -123,7 +124,17 @@ export function useSettings() {
   return {
     settings: settingsRef,
     resetSettings,
+    areSettingsDefault,
   }
+}
+
+/**
+ * Whether all settings match their defaults, ignoring the selected language.
+ */
+function areSettingsDefault() {
+  if (!settingsRef) return true
+
+  return isEqual({ ...settingsRef.value, selectedLocale: null }, DEFAULT_SETTINGS)
 }
 
 /**

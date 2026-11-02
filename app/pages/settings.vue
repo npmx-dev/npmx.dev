@@ -2,7 +2,7 @@
 import type { LocaleObject } from '@nuxtjs/i18n'
 
 const router = useRouter()
-const { settings, resetSettings } = useSettings()
+const { settings, resetSettings, areSettingsDefault } = useSettings()
 const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
@@ -31,6 +31,13 @@ const currentLocale = computed<string>({
 const isConfirmingReset = shallowRef(false)
 const resetTriggerRef = useTemplateRef('resetTriggerRef')
 const resetCancelRef = useTemplateRef('resetCancelRef')
+const resetHeadingRef = useTemplateRef('resetHeadingRef')
+const isMounted = useMounted()
+
+// Settings come from localStorage, so only compare after mount to avoid a hydration mismatch
+const isResetDisabled = computed(
+  () => isMounted.value && colorMode.preference === 'system' && areSettingsDefault(),
+)
 
 async function startResetConfirmation() {
   isConfirmingReset.value = true
@@ -45,10 +52,13 @@ async function endResetConfirmation() {
   resetTriggerRef.value?.focus()
 }
 
-function confirmResetSettings() {
+async function confirmResetSettings() {
   resetSettings()
   colorMode.preference = 'system'
-  endResetConfirmation()
+  isConfirmingReset.value = false
+  // The trigger is now disabled and can't take focus, so keep focus in the section
+  await nextTick()
+  resetHeadingRef.value?.focus()
 }
 
 // Escape to go back (but not when focused on form elements or modal is open)
@@ -364,7 +374,11 @@ useSeoMeta({
 
         <!-- RESET Section -->
         <section>
-          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
+          <h2
+            ref="resetHeadingRef"
+            tabindex="-1"
+            class="text-xs text-fg-muted uppercase tracking-wider mb-4"
+          >
             {{ $t('settings.sections.reset') }}
           </h2>
           <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-3">
@@ -391,6 +405,7 @@ useSeoMeta({
               v-else
               ref="resetTriggerRef"
               classicon="i-lucide:rotate-ccw"
+              :disabled="isResetDisabled"
               @click="startResetConfirmation"
             >
               {{ $t('settings.reset_settings') }}
