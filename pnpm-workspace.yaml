@@ -55,7 +55,7 @@ minimumReleaseAgeExclude:
 minimumReleaseAgeExcludePrune: true
 
 overrides:
-  '@types/node': 24.13.3
+  '@types/node': 26.6.6
   nuxt-og-image: ^6.7.5
   sharp: 0.35.3
   vue: 3.5.42
