@@ -380,9 +380,7 @@
       "tangled": "Ver en Tangled"
     },
     "collapse": "Contraer",
-    "collapse_with_name": "Contraer {name}",
-    "expand": "Expandir",
-    "expand_with_name": "Expandir {name}"
+    "expand": "Expandir"
   },
   "profile": {
     "display_name": "Nombre visible",
