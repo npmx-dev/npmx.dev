@@ -1,9 +1,66 @@
 <script setup lang="ts">
+import type { DirectiveBinding, ObjectDirective } from 'vue'
+
 defineProps<{
   html: string
 }>()
 
 const { copy } = useClipboard()
+const colorMode = useColorMode()
+const originalSourceMedia = new WeakMap<HTMLSourceElement, string>()
+
+onPrehydrate(element => {
+  const theme = document.documentElement.dataset.theme
+  if (theme !== 'dark' && theme !== 'light') return
+
+  for (const source of element.querySelectorAll<HTMLSourceElement>('picture > source[media]')) {
+    const media = window.matchMedia(source.media).media
+    if (media !== '(prefers-color-scheme: dark)' && media !== '(prefers-color-scheme: light)') {
+      continue
+    }
+
+    source.dataset.colorModeMedia = source.media
+    source.media = media === `(prefers-color-scheme: ${theme})` ? 'all' : 'not all'
+  }
+})
+
+function getSourceColorMode(media: string): 'dark' | 'light' | undefined {
+  switch (window.matchMedia(media).media) {
+    case '(prefers-color-scheme: dark)':
+      return 'dark'
+    case '(prefers-color-scheme: light)':
+      return 'light'
+  }
+}
+
+function updateImageColorMode(
+  element: HTMLElement,
+  { value }: DirectiveBinding<string | undefined>,
+) {
+  if (!value) return
+
+  for (const source of element.querySelectorAll<HTMLSourceElement>('picture > source[media]')) {
+    const originalMedia =
+      originalSourceMedia.get(source) ?? source.dataset.colorModeMedia ?? source.media
+    const sourceColorMode = getSourceColorMode(originalMedia)
+    if (!sourceColorMode) continue
+
+    originalSourceMedia.set(source, originalMedia)
+    delete source.dataset.colorModeMedia
+
+    let media = originalMedia
+    if (value === 'dark' || value === 'light') {
+      media = sourceColorMode === value ? 'all' : 'not all'
+    }
+
+    if (source.media !== media) source.media = media
+  }
+}
+
+const vImageColorMode: ObjectDirective<HTMLElement, string | undefined> = {
+  beforeMount: updateImageColorMode,
+  updated: updateImageColorMode,
+}
 
 // Combined click handler for:
 // 1. Intercepting npmjs.com links to route internally
@@ -61,6 +118,7 @@ function handleClick(event: MouseEvent) {
 
 <template>
   <article
+    v-image-color-mode="colorMode.unknown ? undefined : colorMode.preference"
     class="readme max-w-[70ch] lg:max-w-none px-1"
     dir="auto"
     v-html="html"

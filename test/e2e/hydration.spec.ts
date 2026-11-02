@@ -23,6 +23,53 @@ const PAGES = [
 // ---------------------------------------------------------------------------
 
 test.describe('Hydration', () => {
+  for (const theme of ['dark', 'light'] as const) {
+    test(`README uses the ${theme} image before hydration and after reload`, async ({
+      page,
+      hydrationErrors,
+    }) => {
+      await page.emulateMedia({ colorScheme: theme === 'dark' ? 'light' : 'dark' })
+      await injectLocalStorage(page, { 'npmx-color-mode': theme })
+      await page.route(
+        'https://cdn.jsdelivr.net/npm/readme-theme-fixture@1.0.0/banner-*.svg',
+        route =>
+          route.fulfill({
+            contentType: 'image/svg+xml',
+            body: '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="60"/>',
+          }),
+      )
+
+      const image = page.getByRole('img', { name: 'Theme-aware banner' })
+      const imageUrl = `https://cdn.jsdelivr.net/npm/readme-theme-fixture@1.0.0/banner-${theme}.svg`
+
+      for (const reload of [false, true]) {
+        const hydration = Promise.withResolvers<void>()
+        await page.route('**/_nuxt/**', async route => {
+          if (route.request().resourceType() === 'script') await hydration.promise
+          await route.continue()
+        })
+
+        try {
+          if (reload) {
+            await page.reload({ waitUntil: 'commit' })
+          } else {
+            await page.goto('/package/readme-theme-fixture', { waitUntil: 'commit' })
+          }
+          await expect(image).toBeVisible()
+          await expect(image).toHaveJSProperty('currentSrc', imageUrl)
+        } finally {
+          hydration.resolve()
+        }
+
+        await page.waitForFunction(() => window.useNuxtApp?.().isHydrating === false)
+        await expect(image).toHaveJSProperty('currentSrc', imageUrl)
+        await page.unroute('**/_nuxt/**')
+      }
+
+      expect(hydrationErrors).toEqual([])
+    })
+  }
+
   test.describe('no user settings (empty localStorage)', () => {
     for (const page of PAGES) {
       test(`${page}`, async ({ goto, hydrationErrors }) => {
