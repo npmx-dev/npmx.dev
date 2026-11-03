@@ -115,14 +115,11 @@ watch(user, async newUser => {
           >
             {{ $t('auth.modal.handle_label') }}
           </label>
-          <InputBase
+          <HeaderAuthHandleCombobox
             id="handle-input"
             v-model="handleInput"
-            type="text"
-            name="handle"
+            :label="$t('auth.modal.handle_label')"
             :placeholder="$t('auth.modal.handle_placeholder')"
-            no-correct
-            class="w-full"
           />
           <p v-if="errorMessage" class="text-red-500 text-xs mt-1" role="alert">
             {{ errorMessage }}
