@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
+import { autoUpdate, flip, offset, size, useFloating } from '@floating-ui/vue'
 import type { ActorSearchResult } from '#shared/schemas/atproto'
 
 const model = defineModel<string>({ default: '' })
 
 const props = defineProps<{
-  /** Fallthrough `id` (from `$attrs`) is applied to the underlying input. */
+  /** Applied to the underlying input so an external <label for> can target it. */
   id?: string
   /** Accessible name; the consuming form may render a visible <label> as well. */
   label: string
@@ -17,9 +18,9 @@ const { actors, isSearching, error, query } = useActorTypeahead(model)
 const isOpen = shallowRef(false)
 const highlightedIndex = shallowRef(-1)
 const containerRef = useTemplateRef('containerRef')
+const dropdownRef = useTemplateRef('dropdownRef')
 const listRef = useTemplateRef('listRef')
 
-const keyboardShortcuts = useKeyboardShortcuts()
 const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
 const generatedId = useId()
@@ -37,9 +38,36 @@ const statusMessage = computed(() => {
   return ''
 })
 
-const showDropdown = computed(
-  () => isOpen.value && (options.value.length > 0 || !!statusMessage.value),
-)
+const showListbox = computed(() => isOpen.value && options.value.length > 0)
+const showDropdown = computed(() => showListbox.value || (isOpen.value && !!statusMessage.value))
+
+// Position the dropdown with `fixed` so the modal's scroll container cannot clip it.
+const { floatingStyles } = useFloating(containerRef, dropdownRef, {
+  strategy: 'fixed',
+  placement: 'bottom-start',
+  middleware: [
+    offset(4),
+    flip(),
+    size({
+      apply({ rects, elements }) {
+        elements.floating.style.width = `${rects.reference.width}px`
+      },
+    }),
+  ],
+  whileElementsMounted: autoUpdate,
+})
+
+/** Avatars that failed to load (e.g. blocked by CSP) fall back to initials. */
+const failedAvatars = reactive(new Set<string>())
+
+function initials(actor: ActorSearchResult) {
+  return (actor.displayName || actor.handle)
+    .split(' ')
+    .map(part => part[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+}
 
 function close() {
   isOpen.value = false
@@ -59,12 +87,16 @@ function selectActor(actor: ActorSearchResult) {
 function moveHighlight(delta: number) {
   const count = options.value.length
   if (count === 0) return
+  if (highlightedIndex.value < 0) {
+    highlightedIndex.value = delta > 0 ? 0 : count - 1
+    return
+  }
   highlightedIndex.value = (highlightedIndex.value + delta + count) % count
 }
 
+// These are standard combobox keys, not app shortcuts, so they ignore the
+// "keyboard shortcuts" setting.
 function handleKeydown(event: KeyboardEvent) {
-  if (!keyboardShortcuts.value) return
-
   if (event.key === 'Escape') {
     // Only dismiss the list; the surrounding <dialog> must stay open.
     if (isOpen.value) {
@@ -114,6 +146,11 @@ function handleFocus() {
 
 onClickOutside(containerRef, close)
 
+// A new result set invalidates any highlight that pointed into the old one.
+watch(options, () => {
+  highlightedIndex.value = -1
+})
+
 // Keep the highlighted row visible inside the scrollable list.
 watch(highlightedIndex, index => {
   if (index < 0 || !listRef.value) return
@@ -141,8 +178,8 @@ watch(model, value => {
       role="combobox"
       aria-autocomplete="list"
       aria-haspopup="listbox"
-      :aria-expanded="showDropdown"
-      :aria-controls="showDropdown ? listboxId : undefined"
+      :aria-expanded="showListbox"
+      :aria-controls="showListbox ? listboxId : undefined"
       :aria-activedescendant="
         highlightedIndex >= 0 ? `${listboxId}-option-${highlightedIndex}` : undefined
       "
@@ -161,10 +198,12 @@ watch(model, value => {
     >
       <div
         v-if="showDropdown"
-        class="absolute top-full inset-x-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+        ref="dropdownRef"
+        :style="floatingStyles"
+        class="bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
       >
         <ul
-          v-if="options.length > 0"
+          v-if="showListbox"
           :id="listboxId"
           ref="listRef"
           role="listbox"
@@ -188,10 +227,22 @@ watch(model, value => {
             @click="selectActor(actor)"
           >
             <div class="flex items-center gap-2 min-w-0">
-              <AuthorAvatar
-                :author="{ name: actor.displayName || actor.handle, avatar: actor.avatar ?? null }"
-                size="sm"
-              />
+              <!-- Decorative: the name and handle beside it are the accessible text. -->
+              <div
+                class="shrink-0 w-8 h-8 flex items-center justify-center border border-border rounded-full bg-bg-muted overflow-hidden"
+                aria-hidden="true"
+              >
+                <img
+                  v-if="actor.avatar && !failedAvatars.has(actor.did)"
+                  :src="actor.avatar"
+                  alt=""
+                  class="w-full h-full object-cover"
+                  @error="failedAvatars.add(actor.did)"
+                />
+                <span v-else class="text-sm text-fg-subtle font-mono" aria-hidden="true">
+                  {{ initials(actor) }}
+                </span>
+              </div>
               <div class="min-w-0">
                 <p v-if="actor.displayName" class="text-sm text-fg truncate">
                   {{ actor.displayName }}

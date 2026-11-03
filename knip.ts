@@ -28,7 +28,6 @@ const config: KnipConfig = {
       },
       ignoreDependencies: ['@iconify-json/*', 'puppeteer', 'vite-plugin-pwa', '@vueuse/shared'],
       ignoreUnresolved: ['#oauth/config'],
-      ignoreFiles: ['app/components/UserCombobox.vue'],
     },
     'cli': {
       project: ['src/**/*.ts!', '!src/mock-*.ts'],

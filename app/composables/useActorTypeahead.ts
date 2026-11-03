@@ -1,6 +1,9 @@
-import { debounce } from 'perfect-debounce'
+// Explicit imports (rather than Nuxt auto-imports) so the pure helpers in this
+// module can be unit-tested in a plain node environment.
+import { computed, onScopeDispose, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
 import * as v from 'valibot'
 import { ActorSearchResponseSchema, type ActorSearchResult } from '#shared/schemas/atproto'
+import { TYPEAHEAD_API } from '#shared/utils/constants'
 
 const TYPEAHEAD_ENDPOINT = `${TYPEAHEAD_API}/xrpc/app.bsky.actor.searchActorsTypeahead`
 // Attributes requests (and rate-limit pressure) to this app on the service's stats page.
@@ -37,61 +40,9 @@ function rememberQuery(
   }
 }
 
-interface SearchContext {
-  cache: Map<string, ActorSearchResult[]>
-  query: string
-  limit: number
-  signal: AbortSignal
-  actors: Ref<ActorSearchResult[]>
-  error: Ref<boolean>
-  isSearching: Ref<boolean>
-}
-
-async function runSearch({
-  cache,
-  query,
-  limit,
-  signal,
-  actors,
-  error,
-  isSearching,
-}: SearchContext) {
-  const cached = cache.get(query)
-  if (cached) {
-    actors.value = cached
-    error.value = false
-    isSearching.value = false
-    return
-  }
-
-  isSearching.value = true
-  error.value = false
-
-  try {
-    const response = await $fetch(TYPEAHEAD_ENDPOINT, {
-      query: { q: query, limit },
-      headers: { 'X-Client': TYPEAHEAD_CLIENT_HEADER },
-      signal,
-    })
-    if (signal.aborted) return
-
-    const { actors: results } = v.parse(ActorSearchResponseSchema, response)
-    rememberQuery(cache, query, results)
-    actors.value = results
-  } catch (err) {
-    if (signal.aborted) return
-    // oxlint-disable-next-line no-console -- surfaced as an inline error state
-    console.warn('Atmosphere account search failed:', err)
-    actors.value = []
-    error.value = true
-  } finally {
-    if (!signal.aborted) isSearching.value = false
-  }
-}
-
 /**
  * Search Atmosphere accounts for a handle/display-name prefix.
- * Requests are debounced, deduplicated and aborted when superseded.
+ * Requests are debounced, cached and aborted when superseded.
  */
 export function useActorTypeahead(
   rawQuery: MaybeRefOrGetter<string>,
@@ -104,13 +55,40 @@ export function useActorTypeahead(
   const limit = options.limit ?? DEFAULT_LIMIT
   // Instance-scoped so results never leak between consumers (or test mounts).
   const cache = new Map<string, ActorSearchResult[]>()
-  const debouncedSearch = debounce(runSearch, DEBOUNCE_MS)
+  // A hand-rolled timer rather than perfect-debounce: that library skips the
+  // wait whenever a call is already in flight, which would turn every keystroke
+  // after the first request into its own request (see useGlobalSearch).
+  let debounceTimer: ReturnType<typeof setTimeout> | undefined
   let pendingController: AbortController | undefined
 
   function cancel() {
+    clearTimeout(debounceTimer)
+    debounceTimer = undefined
     pendingController?.abort()
     pendingController = undefined
-    debouncedSearch.cancel()
+  }
+
+  async function search(value: string, signal: AbortSignal) {
+    try {
+      const response = await $fetch(TYPEAHEAD_ENDPOINT, {
+        query: { q: value, limit },
+        headers: { 'X-Client': TYPEAHEAD_CLIENT_HEADER },
+        signal,
+      })
+      if (signal.aborted) return
+
+      const { actors: results } = v.parse(ActorSearchResponseSchema, response)
+      rememberQuery(cache, value, results)
+      actors.value = results
+    } catch (err) {
+      if (signal.aborted) return
+      // oxlint-disable-next-line no-console -- surfaced as an inline error state
+      console.warn('Atmosphere account search failed:', err)
+      actors.value = []
+      error.value = true
+    } finally {
+      if (!signal.aborted) isSearching.value = false
+    }
   }
 
   watch(
@@ -119,25 +97,23 @@ export function useActorTypeahead(
       cancel()
       error.value = false
 
-      if (!value) {
-        actors.value = []
+      const cached = value ? cache.get(value) : undefined
+      if (!value || cached) {
+        actors.value = cached ?? []
         isSearching.value = false
         return
       }
 
+      // Drop the previous query's results so the list never shows a mismatched answer.
+      actors.value = []
+      isSearching.value = true
+
       const controller = new AbortController()
       pendingController = controller
-      isSearching.value = !cache.has(value)
-
-      debouncedSearch({
-        cache,
-        query: value,
-        limit,
-        signal: controller.signal,
-        actors,
-        error,
-        isSearching,
-      })
+      debounceTimer = setTimeout(() => {
+        debounceTimer = undefined
+        search(value, controller.signal)
+      }, DEBOUNCE_MS)
     },
     { immediate: true },
   )
