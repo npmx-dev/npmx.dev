@@ -13,66 +13,118 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  args: {
-    default: 'Click me',
-  },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">Click me</LinkBase>`,
+  }),
 }
 
 export const ExternalLink: Story = {
   args: {
     to: 'https://example.com',
-    default: 'External Link',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">External Link</LinkBase>`,
+  }),
 }
 
 export const AnchorLink: Story = {
   args: {
     to: '#section',
-    default: 'Anchor Link',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">Anchor Link</LinkBase>`,
+  }),
 }
 
 export const WithIcon: Story = {
   args: {
     classicon: 'i-lucide:check',
-    default: 'Verified',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">Verified</LinkBase>`,
+  }),
 }
 
 export const NoUnderline: Story = {
   args: {
     noUnderline: true,
-    default: 'Link without underline',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">Link without underline</LinkBase>`,
+  }),
 }
 
 export const Disabled: Story = {
   args: {
     disabled: true,
-    default: 'Disabled Link',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">Disabled Link</LinkBase>`,
+  }),
 }
 
 export const ButtonPrimary: Story = {
   args: {
     variant: 'button-primary',
-    default: 'Primary Button',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">Primary Button</LinkBase>`,
+  }),
 }
 
 export const ButtonSecondary: Story = {
   args: {
     variant: 'button-secondary',
-    default: 'Secondary Button',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">Secondary Button</LinkBase>`,
+  }),
 }
 
 export const SmallButton: Story = {
   args: {
     variant: 'button-primary',
     size: 'sm',
-    default: 'Small Button',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">Small Button</LinkBase>`,
+  }),
 }
 
 export const WithIconButton: Story = {
@@ -107,16 +159,28 @@ export const BlockLink: Story = {
   args: {
     variant: 'button-primary',
     block: true,
-    default: 'Full Width Button',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">Full Width Button</LinkBase>`,
+  }),
 }
 
 export const DisabledButton: Story = {
   args: {
     variant: 'button-primary',
     disabled: true,
-    default: 'Disabled Button',
   },
+  render: args => ({
+    components: { LinkBase },
+    setup() {
+      return { args }
+    },
+    template: `<LinkBase v-bind="args">Disabled Button</LinkBase>`,
+  }),
 }
 
 export const Snapshot: Story = {
