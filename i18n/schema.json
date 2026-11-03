@@ -951,6 +951,9 @@
             },
             "keyboard_shortcuts": {
               "type": "string"
+            },
+            "reset": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1118,6 +1121,15 @@
           "type": "string"
         },
         "enable_changelog_autoscroll_description": {
+          "type": "string"
+        },
+        "reset_settings": {
+          "type": "string"
+        },
+        "reset_settings_description": {
+          "type": "string"
+        },
+        "reset_settings_confirm": {
           "type": "string"
         }
       },
