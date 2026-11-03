@@ -17,6 +17,7 @@ const config = {
   staticDirs: ['./.public', { from: '../public', to: '/' }],
   features: {
     backgrounds: false,
+    experimentalDocgenServer: true,
   },
   async viteFinal(newConfig) {
     newConfig.plugins ??= []
