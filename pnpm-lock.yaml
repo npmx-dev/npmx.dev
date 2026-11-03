@@ -62,7 +62,7 @@ overrides:
 packageExtensionsChecksum: sha256-MLpDvxkp40Q0pRGkcNzUeHJyjDQFfGfxm/iGkXRnXJg=
 
 patchedDependencies:
-  '@jsr/deno__doc@0.189.1': 24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832
+  '@jsr/deno__doc@0.210.0': 4528c8950784e1f1b5912442dd573a2c704cbfc10d70f8660a851b3ad55ed1af
   '@nuxt/test-utils@4.1.0': 4d2cabf584203c6c78562f11807d6eba8d406729574fec2e8cd0a091a9b6165f
 
 importers:
@@ -88,8 +88,8 @@ importers:
         specifier: 0.3.15
         version: 0.3.15
       '@deno/doc':
-        specifier: jsr:^0.189.1
-        version: '@jsr/deno__doc@0.189.1(patch_hash=24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832)'
+        specifier: jsr:^0.210.0
+        version: '@jsr/deno__doc@0.210.0(patch_hash=4528c8950784e1f1b5912442dd573a2c704cbfc10d70f8660a851b3ad55ed1af)'
       '@floating-ui/vue':
         specifier: 2.0.1
         version: 2.0.1(vue@3.5.42)
@@ -2276,8 +2276,8 @@ packages:
   '@jsr/deno__cache-dir@0.25.0':
     resolution: {integrity: sha512-J5/kPR8sc+dsRyE8rnLPhqay7B4XgBmkv7QaeIV41sGibszQjIb8b599LssN1YWBbqPLakPRMVobg5u6LheWfg==, tarball: https://npm.jsr.io/~/11/@jsr/deno__cache-dir/0.25.0.tgz}
 
-  '@jsr/deno__doc@0.189.1':
-    resolution: {integrity: sha512-GtlJz3nGX1zF+XBG5pEPYdRbo5feyP3eM1+zsEqFqjfvT/nfRdjyGNogEs4yd+DW8cD7tQceRd2vypDhG1X7kA==, tarball: https://npm.jsr.io/~/11/@jsr/deno__doc/0.189.1.tgz}
+  '@jsr/deno__doc@0.210.0':
+    resolution: {integrity: sha512-dCBiIoVOAcFu4av24m3E+/GMwZWoeY7k8XbwTrysQydT5nSyFRZzTVI01/xYN8kUfjdNzm5uU5P+nunEJLwBXQ==, tarball: https://npm.jsr.io/~/11/@jsr/deno__doc/0.210.0.tgz}
 
   '@jsr/deno__graph@0.100.1':
     resolution: {integrity: sha512-mPemftpdwtz8fo+RNKujjXKpDQRcj5E0nOcxeNiDGLRzqQk/Q69IcGM4ruZGX+0xhTNNSLc8Uu3W4ynIDfTR6g==, tarball: https://npm.jsr.io/~/11/@jsr/deno__graph/0.100.1.tgz}
@@ -13071,7 +13071,7 @@ snapshots:
       '@jsr/std__io': 0.225.3
       '@jsr/std__path': 1.1.6
 
-  '@jsr/deno__doc@0.189.1(patch_hash=24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832)':
+  '@jsr/deno__doc@0.210.0(patch_hash=4528c8950784e1f1b5912442dd573a2c704cbfc10d70f8660a851b3ad55ed1af)':
     dependencies:
       '@jsr/deno__cache-dir': 0.25.0
       '@jsr/deno__graph': 0.100.1

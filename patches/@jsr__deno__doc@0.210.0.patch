@@ -1,0 +1,15 @@
+diff --git a/mod.js b/mod.js
+index 5db0f3cb4fe2939e2fedfe3eb27199ae95ab6420..0000000000000000000000000000000000000000 100644
+--- a/mod.js
++++ b/mod.js
+@@ -1,8 +1,8 @@
+ // Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+ import { doc as _doc, docnodes_v1_to_v2 as _docnodesV1ToV2, generate_html as _generateHtml } from "./deno_doc_wasm.js";
+ import { createCache } from "@jsr/deno__cache-dir";
+-export * from "./types.d.ts";
+-export * from "./html_types.d.ts";
++// Removed: export * from "./types.d.ts"; (incompatible with Node.js/Rollup)
++// Removed: export * from "./html_types.d.ts"; (incompatible with Node.js/Rollup)
+ const encoder = new TextEncoder();
+ /**
+  * Generate asynchronously a record of documentation nodes for the supplied
