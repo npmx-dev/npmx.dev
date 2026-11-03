@@ -345,9 +345,7 @@
       "tangled": "Auf Tangled ansehen"
     },
     "collapse": "Einklappen",
-    "collapse_with_name": "{name} einklappen",
-    "expand": "Ausklappen",
-    "expand_with_name": "{name} ausklappen"
+    "expand": "Ausklappen"
   },
   "profile": {
     "display_name": "Anzeigename",

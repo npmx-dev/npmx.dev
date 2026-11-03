@@ -62,7 +62,6 @@ const { data: readmeData, status: readmeStatus } = useLazyFetch<ReadmeResponse>(
       mdExists: false,
       playgroundLinks: [],
       toc: [],
-      defaultValue: true,
     }),
   },
 )
@@ -187,6 +186,42 @@ const {
 } = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
 
 const { data: licenseChangeData } = useLicenseChanges(packageName, resolvedVersion)
+
+// `latest` resolves the same either way, so only fetch the "frozen size" for
+// older versions
+const versionIsLatest = computed(() => {
+  const version = resolvedVersion.value
+  return !!version && pkg.value?.['dist-tags']?.latest === version
+})
+
+const { data: frozenInstallSize, execute: fetchFrozenInstallSize } =
+  useLazyFetch<InstallSizeResult | null>(
+    () =>
+      `/api/registry/install-size/${packageName.value}/v/${resolvedVersion.value}?frozen-history=true`,
+    {
+      server: false,
+      immediate: false,
+      watch: false,
+    },
+  )
+
+watch(
+  [resolvedVersion, resolvedStatus, versionIsLatest],
+  ([version, resolveStatus, isLatest]) => {
+    if (version && resolveStatus === 'success' && pkg.value && !isLatest) {
+      fetchFrozenInstallSize()
+    }
+  },
+  { immediate: true },
+)
+
+const frozenSize = computed(() => {
+  const frozen = frozenInstallSize.value
+  if (!frozen?.totalSize) return null
+  if (frozen.package !== packageName.value || frozen.version !== resolvedVersion.value) return null
+  return frozen.totalSize
+})
+
 const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg, installSize)
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
@@ -209,44 +244,10 @@ useCommandPalettePackageContext(commandPalettePackageContext, {
 })
 useCommandPalettePackageCommands(commandPalettePackageContext)
 
-// Detect two hydration scenarios where the external _payload.json is missing:
-//
-// 1. SPA fallback (200.html): No real content was server-rendered.
-//    → Show skeleton while data fetches on the client.
-//
-// 2. SSR-rendered HTML missing payload: Content was rendered but the external _payload.json
-//    returned an ISR fallback.
-//    → Preserve the server-rendered DOM, don't flash to skeleton.
-const nuxtApp = useNuxtApp()
 const route = useRoute()
 // Gates template rendering only — data fetches intentionally still run.
 // immediate is set once at mount — skipped requests won't re-fire on navigation, leaving data permanently missing.
 const isVersionsRoute = computed(() => route.name === 'package-versions')
-const hasEmptyPayload =
-  import.meta.client &&
-  nuxtApp.payload.serverRendered &&
-  !Object.keys(nuxtApp.payload.data ?? {}).length
-const isSpaFallback = shallowRef(nuxtApp.isHydrating && hasEmptyPayload && !nuxtApp.payload.path)
-const isHydratingWithServerContent = shallowRef(
-  nuxtApp.isHydrating && hasEmptyPayload && nuxtApp.payload.path === route.path,
-)
-const hasServerContentOnly = shallowRef(hasEmptyPayload && nuxtApp.payload.path === route.path)
-
-// When we have server-rendered content but no payload data, capture the server
-// DOM before Vue's hydration replaces it. This lets us show the server-rendered
-// HTML as a static snapshot while data refetches, avoiding any visual flash.
-const serverRenderedHtml = shallowRef<string | null>(
-  hasServerContentOnly.value
-    ? (document.getElementById('package-article')?.innerHTML ?? null)
-    : null,
-)
-
-if (isSpaFallback.value || isHydratingWithServerContent.value) {
-  nuxtApp.hooks.hookOnce('app:suspense:resolve', () => {
-    isSpaFallback.value = false
-    isHydratingWithServerContent.value = false
-  })
-}
 
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
@@ -319,6 +320,8 @@ const deprecationNotice = computed(() => {
 
 const deprecationNoticeMessage = useMarkdown(() => ({
   text: deprecationNotice.value?.message ?? '',
+  linkifyPackages: true,
+  excludePackage: packageName.value,
 }))
 
 const publishSecurityDowngrade = computed(() => pkg.value?.publishSecurityDowngrade ?? null)
@@ -353,6 +356,14 @@ const sizeTooltip = computed(() => {
       $t('package.stats.size_tooltip.total', {
         size: bytesFormatter.format(installSize.value.totalSize),
         count: installSize.value.dependencyCount,
+      }),
+    frozenSize.value &&
+      installSize.value &&
+      installSize.value.package === packageName.value &&
+      installSize.value.version === resolvedVersion.value &&
+      frozenSize.value !== installSize.value.totalSize &&
+      $t('package.stats.size_tooltip.frozen', {
+        size: bytesFormatter.format(frozenSize.value),
       }),
   ]
   return chunks.filter(Boolean).join('\n')
@@ -491,28 +502,7 @@ const showSkeleton = shallowRef(false)
     </ButtonBase>
   </DevOnly>
   <main v-if="!isVersionsRoute" class="flex-1 pb-8">
-    <!-- Scenario 1: SPA fallback — show skeleton (no real content to preserve) -->
-    <!-- Scenario 2: SSR missing payload — preserve server DOM, skip skeleton -->
-    <PackageSkeleton
-      v-if="isSpaFallback || (!hasServerContentOnly && (showSkeleton || status === 'pending'))"
-    />
-
-    <!-- During hydration without payload, show captured server HTML as a static snapshot.
-         This avoids a visual flash: the user sees the server content while data refetches.
-         v-html is safe here: the content originates from the server's own SSR output,
-         captured from the DOM before hydration — it is not user-controlled input.
-         We also show SSR output until critical data is loaded, so that after rendering dynamic
-         content, the user receives the same result as he received from the server-->
-    <article
-      v-else-if="
-        isHydratingWithServerContent ||
-        (hasServerContentOnly && serverRenderedHtml && (!pkg || readmeData?.defaultValue))
-      "
-      id="package-article"
-      class="container w-full"
-      :class="$style.packagePage"
-      v-html="serverRenderedHtml"
-    />
+    <PackageSkeleton v-if="showSkeleton || status === 'pending'" />
 
     <template v-else-if="pkg">
       <PackageHeader
@@ -561,7 +551,10 @@ const showSkeleton = shallowRef(false)
               }}
             </h2>
             <p v-if="deprecationNoticeMessage" class="text-base m-0">
-              <span v-html="deprecationNoticeMessage" />
+              <span
+                class="[&_a]:underline [&_a]:underline-offset-4 [&_a]:decoration-red-700/60 dark:[&_a]:decoration-red-400/50 [&_a:hover]:decoration-fg"
+                v-html="deprecationNoticeMessage"
+              />
             </p>
             <p v-else class="text-base m-0 italic">
               {{ $t('package.deprecation.no_reason') }}

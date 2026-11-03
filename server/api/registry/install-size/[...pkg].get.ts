@@ -23,8 +23,7 @@ export default defineCachedEventHandler(
       })
 
       // If no version specified, resolve to latest using fast-npm-meta (lightweight)
-      let version: string | undefined = requestedVersion
-      if (!version) {
+      if (!requestedVersion) {
         const latestVersion = await fetchLatestVersionWithFallback(packageName)
         if (!latestVersion) {
           throw createError({
@@ -32,10 +31,16 @@ export default defineCachedEventHandler(
             message: 'No latest version found',
           })
         }
-        version = latestVersion
+        return await calculateInstallSize(packageName, latestVersion)
       }
 
-      return await calculateInstallSize(packageName, version)
+      // If `frozen-history` is enabled, limit dependency resolution to before
+      // the next package version.
+      const before = parseFrozenHistory(getQuery(event)['frozen-history'])
+        ? await getDependenciesResolutionLimit(packageName, requestedVersion)
+        : undefined
+
+      return await calculateInstallSize(packageName, requestedVersion, before)
     } catch (error: unknown) {
       handleApiError(error, {
         statusCode: 502,
@@ -48,7 +53,8 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `install-size:v1:${pkg.replace(/\/+$/, '').trim()}`
+      const frozenHistory = parseFrozenHistory(getQuery(event)['frozen-history'])
+      return `install-size:v2:${pkg.replace(/\/+$/, '').trim()}:${frozenHistory}`
     },
   },
 )

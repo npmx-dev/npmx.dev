@@ -1312,13 +1312,13 @@
         "collapse": {
           "type": "string"
         },
-        "collapse_with_name": {
-          "type": "string"
-        },
         "expand": {
           "type": "string"
         },
-        "expand_with_name": {
+        "copy_section_link": {
+          "type": "string"
+        },
+        "section_link_copied": {
           "type": "string"
         },
         "copyMdError": {
@@ -1529,6 +1529,9 @@
                   "type": "string"
                 },
                 "total": {
+                  "type": "string"
+                },
+                "frozen": {
                   "type": "string"
                 }
               },
@@ -2080,6 +2083,9 @@
         "timeline": {
           "type": "object",
           "properties": {
+            "load_newer": {
+              "type": "string"
+            },
             "load_more": {
               "type": "string"
             },
@@ -2153,6 +2159,9 @@
                   "type": "string"
                 },
                 "ordered_versions": {
+                  "type": "string"
+                },
+                "frozen_history": {
                   "type": "string"
                 },
                 "sort_label": {

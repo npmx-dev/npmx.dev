@@ -342,9 +342,7 @@
       "tangled": "在 Tangled 上查看"
     },
     "collapse": "收起",
-    "collapse_with_name": "收起 {name}",
-    "expand": "展开",
-    "expand_with_name": "展开 {name}"
+    "expand": "展开"
   },
   "profile": {
     "display_name": "显示名称",
