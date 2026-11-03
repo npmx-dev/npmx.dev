@@ -335,9 +335,7 @@
       "tangled": "在 Tangled 上檢視"
     },
     "collapse": "收合",
-    "collapse_with_name": "收合 {name}",
-    "expand": "展開",
-    "expand_with_name": "展開 {name}"
+    "expand": "展開"
   },
   "profile": {
     "display_name": "顯示名稱",

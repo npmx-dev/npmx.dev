@@ -126,7 +126,7 @@ export default defineNuxtConfig({
       isr: {
         expiration: 300,
         passQuery: true,
-        allowQuery: ['offset', 'limit', 'sort', 'stable-only'],
+        allowQuery: ['offset', 'limit', 'sort', 'stable-only', 'around', 'frozen-history'],
       },
     },
     '/api/changelog/md/**': {
@@ -270,6 +270,7 @@ export default defineNuxtConfig({
 
   experimental: {
     entryImportMap: false,
+    payloadExtraction: 'client',
     typescriptPlugin: true,
     viteEnvironmentApi: !isStorybook,
     typedPages: true,
@@ -311,10 +312,6 @@ export default defineNuxtConfig({
       'fetch-cache': {
         driver: 'fsLite',
         base: './.cache/fetch',
-      },
-      'payload-cache': {
-        driver: 'fsLite',
-        base: './.cache/payload',
       },
       'atproto': {
         driver: 'fsLite',

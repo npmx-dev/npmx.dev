@@ -342,9 +342,7 @@
       "tangled": "Vizualizează pe Tangled"
     },
     "collapse": "Reduce",
-    "collapse_with_name": "Reduce {name}",
-    "expand": "Extinde",
-    "expand_with_name": "Extinde {name}"
+    "expand": "Extinde"
   },
   "profile": {
     "display_name": "Nume afișat",
