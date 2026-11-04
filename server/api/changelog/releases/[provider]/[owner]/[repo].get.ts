@@ -1,6 +1,7 @@
 import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
 import type { ReleaseData } from '~~/shared/types/changelog'
 import * as v from 'valibot'
+import { ForgeApiError } from 'forges'
 import { FetchError } from 'ofetch'
 import {
   ERROR_CHANGELOG_RELEASES_FAILED,
@@ -134,7 +135,6 @@ async function getReleasesViaForges(
     })
   }
 
-  const { items: releases } = await forgeProvider.releases.list(toForgeRepoRef(ref)).page()
   const repoInfo = createRepoInfo(ref)
   if (!repoInfo) {
     throw createError({
@@ -142,9 +142,24 @@ async function getReleasesViaForges(
       statusMessage: ERROR_CHANGELOG_NOT_FOUND,
     })
   }
+
+  const releasePage = await forgeProvider.releases
+    .list(toForgeRepoRef(ref))
+    .page()
+    .catch((error: unknown) => {
+      // A repository the forge does not know has no changelog; anything else is ours.
+      if (error instanceof ForgeApiError && error.status === 404) {
+        throw createError({
+          status: 404,
+          statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+        })
+      }
+      throw error
+    })
+
   const render = await changelogRenderer(repoInfo)
 
-  return releases.map(release => {
+  return releasePage.items.map(release => {
     const { html, toc } = render(release.body ?? null, release.ref.id)
     return {
       id: release.ref.id,
