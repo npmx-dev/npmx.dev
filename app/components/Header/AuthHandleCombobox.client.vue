@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
 import { autoUpdate, flip, offset, size, useFloating } from '@floating-ui/vue'
-import type { ActorSearchResult } from '#shared/schemas/atproto'
+import type { ProfileViewBasic } from '#shared/types/lexicons/app/bsky/actor/defs'
 
 const model = defineModel<string>({ default: '' })
 
@@ -28,7 +28,7 @@ const inputId = computed(() => props.id ?? `auth-handle-${generatedId}`)
 const listboxId = computed(() => `${inputId.value}-listbox`)
 
 /** Options are only navigable once a real search has produced matches. */
-const options = computed<ActorSearchResult[]>(() => (query.value ? actors.value : []))
+const options = computed<ProfileViewBasic[]>(() => (query.value ? actors.value : []))
 
 const statusMessage = computed(() => {
   if (!query.value) return ''
@@ -60,7 +60,7 @@ const { floatingStyles } = useFloating(containerRef, dropdownRef, {
 /** Avatars that failed to load (e.g. blocked by CSP) fall back to initials. */
 const failedAvatars = reactive(new Set<string>())
 
-function initials(actor: ActorSearchResult) {
+function initials(actor: ProfileViewBasic) {
   return (actor.displayName || actor.handle)
     .split(' ')
     .map(part => part[0])
@@ -79,7 +79,7 @@ function open() {
   isOpen.value = true
 }
 
-function selectActor(actor: ActorSearchResult) {
+function selectActor(actor: ProfileViewBasic) {
   model.value = actor.handle
   close()
 }

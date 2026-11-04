@@ -3,9 +3,12 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { flushPromises } from '@vue/test-utils'
 import AuthHandleCombobox from '~/components/Header/AuthHandleCombobox.client.vue'
 import { useSettings } from '~/composables/useSettings'
+import { TYPEAHEAD_API } from '#shared/utils/constants'
 
+// The composable talks to the typeahead service through the lexicon XRPC client,
+// which goes through the platform `fetch`, so that is what gets stubbed.
 const mockFetch = vi.fn()
-vi.stubGlobal('$fetch', mockFetch)
+vi.stubGlobal('fetch', mockFetch)
 
 // Must stay above the composable's 300ms debounce.
 const SEARCH_SETTLE_MS = 450
@@ -23,6 +26,24 @@ const ACTORS = [
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
+/** A fresh JSON response per call: a Response body can only be read once. */
+function jsonResponse(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'content-type': 'application/json' },
+  })
+}
+
+/** Normalize a recorded fetch call into the parts the tests care about. */
+function requestOf(call: unknown[]) {
+  const [input, init] = call as [URL | string, RequestInit]
+  return {
+    url: new URL(String(input)),
+    headers: new Headers(init?.headers),
+    signal: init?.signal,
+  }
+}
+
 /** Let the debounce timer fire and the resolved request render. */
 async function flushSearch() {
   await wait(SEARCH_SETTLE_MS)
@@ -36,7 +57,7 @@ async function mountCombobox(modelValue = '') {
 describe('AuthHandleCombobox', () => {
   beforeEach(() => {
     mockFetch.mockReset()
-    mockFetch.mockResolvedValue({ actors: ACTORS })
+    mockFetch.mockImplementation(() => jsonResponse({ actors: ACTORS }))
   })
 
   it('does not search until the query is long enough', async () => {
@@ -46,14 +67,27 @@ describe('AuthHandleCombobox', () => {
     expect(mockFetch).not.toHaveBeenCalled()
   })
 
+  it('calls the searchActorsTypeahead lexicon on the typeahead service', async () => {
+    const component = await mountCombobox()
+    await component.find('input').setValue('ali')
+    await flushSearch()
+
+    expect(mockFetch).toHaveBeenCalled()
+    const { url } = requestOf(mockFetch.mock.calls[0]!)
+    expect(url.origin).toBe(TYPEAHEAD_API)
+    expect(url.pathname).toBe('/xrpc/app.bsky.actor.searchActorsTypeahead')
+    expect(url.searchParams.get('q')).toBe('ali')
+    expect(url.searchParams.get('limit')).toBe('5')
+  })
+
   it('sends the X-Client header so usage is attributed to npmx.dev', async () => {
     const component = await mountCombobox()
     await component.find('input').setValue('ali')
     await flushSearch()
 
     expect(mockFetch).toHaveBeenCalled()
-    const [, options] = mockFetch.mock.calls[0]!
-    expect(options.headers).toEqual({ 'X-Client': 'npmx.dev' })
+    const { headers } = requestOf(mockFetch.mock.calls[0]!)
+    expect(headers.get('X-Client')).toBe('npmx.dev')
   })
 
   it('debounces rapid typing into a single request', async () => {
@@ -67,7 +101,7 @@ describe('AuthHandleCombobox', () => {
     await flushSearch()
 
     expect(mockFetch).toHaveBeenCalledTimes(1)
-    expect(mockFetch.mock.calls[0]![1].query).toMatchObject({ q: 'alic' })
+    expect(requestOf(mockFetch.mock.calls[0]!).url.searchParams.get('q')).toBe('alic')
   })
 
   it('does not search for PDS URLs', async () => {
@@ -153,7 +187,7 @@ describe('AuthHandleCombobox', () => {
   })
 
   it('shows an empty state when nothing matches', async () => {
-    mockFetch.mockResolvedValue({ actors: [] })
+    mockFetch.mockImplementation(() => jsonResponse({ actors: [] }))
     const component = await mountCombobox()
     await component.find('input').setValue('zzz')
     await flushSearch()
@@ -163,7 +197,7 @@ describe('AuthHandleCombobox', () => {
   })
 
   it('shows unavailable state instead of throwing when the API fails', async () => {
-    mockFetch.mockRejectedValue(new Error('503'))
+    mockFetch.mockImplementation(() => jsonResponse({ error: 'ServiceUnavailable' }, 503))
     const component = await mountCombobox()
     await component.find('input').setValue('al')
     await flushSearch()
@@ -183,7 +217,7 @@ describe('AuthHandleCombobox', () => {
     // Behave like a real fetch: stay pending until resolved, reject when aborted.
     const resolvers: Array<(value: unknown) => void> = []
     mockFetch.mockImplementation(
-      (_url: string, options: { signal: AbortSignal }) =>
+      (_url: URL, options: { signal: AbortSignal }) =>
         new Promise((resolve, reject) => {
           resolvers.push(resolve)
           options.signal.addEventListener('abort', () =>
@@ -206,14 +240,14 @@ describe('AuthHandleCombobox', () => {
     await flushSearch()
 
     expect(mockFetch).toHaveBeenCalledTimes(2)
-    expect(mockFetch.mock.calls[1]![1].query).toMatchObject({ q: 'alice' })
-    for (const resolve of resolvers) resolve({ actors: [] })
+    expect(requestOf(mockFetch.mock.calls[1]!).url.searchParams.get('q')).toBe('alice')
+    for (const resolve of resolvers) resolve(jsonResponse({ actors: [] }))
   })
 
   it('serves cached results immediately when a query is repeated', async () => {
     mockFetch
-      .mockResolvedValueOnce({ actors: ACTORS })
-      .mockResolvedValueOnce({ actors: [ACTORS[1]] })
+      .mockImplementationOnce(() => jsonResponse({ actors: ACTORS }))
+      .mockImplementationOnce(() => jsonResponse({ actors: [ACTORS[1]] }))
     const component = await mountCombobox()
     const input = component.find('input')
     await input.setValue('al')
@@ -277,7 +311,7 @@ describe('AuthHandleCombobox', () => {
   })
 
   it('does not advertise a listbox while only a status message is shown', async () => {
-    mockFetch.mockResolvedValue({ actors: [] })
+    mockFetch.mockImplementation(() => jsonResponse({ actors: [] }))
     const component = await mountCombobox()
     await component.find('input').setValue('zzz')
     await flushSearch()

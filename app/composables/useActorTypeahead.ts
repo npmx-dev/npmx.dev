@@ -1,11 +1,11 @@
 // Explicit imports (rather than Nuxt auto-imports) so the pure helpers in this
 // module can be unit-tested in a plain node environment.
 import { computed, onScopeDispose, shallowRef, toValue, watch, type MaybeRefOrGetter } from 'vue'
-import * as v from 'valibot'
-import { ActorSearchResponseSchema, type ActorSearchResult } from '#shared/schemas/atproto'
+import { Client } from '@atproto/lex'
+import * as searchActorsTypeahead from '#shared/types/lexicons/app/bsky/actor/searchActorsTypeahead'
+import type { ProfileViewBasic } from '#shared/types/lexicons/app/bsky/actor/defs'
 import { TYPEAHEAD_API } from '#shared/utils/constants'
 
-const TYPEAHEAD_ENDPOINT = `${TYPEAHEAD_API}/xrpc/app.bsky.actor.searchActorsTypeahead`
 // Attributes requests (and rate-limit pressure) to this app on the service's stats page.
 const TYPEAHEAD_CLIENT_HEADER = 'npmx.dev'
 const MIN_QUERY_LENGTH = 2
@@ -28,9 +28,9 @@ export function normalizeTypeaheadQuery(raw: string): string {
 }
 
 function rememberQuery(
-  cache: Map<string, ActorSearchResult[]>,
+  cache: Map<string, ProfileViewBasic[]>,
   query: string,
-  actors: ActorSearchResult[],
+  actors: ProfileViewBasic[],
 ) {
   cache.delete(query)
   cache.set(query, actors)
@@ -48,13 +48,17 @@ export function useActorTypeahead(
   rawQuery: MaybeRefOrGetter<string>,
   options: { limit?: number } = {},
 ) {
-  const actors = shallowRef<ActorSearchResult[]>([])
+  const actors = shallowRef<ProfileViewBasic[]>([])
   const isSearching = shallowRef(false)
   const error = shallowRef(false)
   const query = computed(() => normalizeTypeaheadQuery(toValue(rawQuery)))
   const limit = options.limit ?? DEFAULT_LIMIT
+
+  const client = new Client(TYPEAHEAD_API, {
+    headers: { 'X-Client': TYPEAHEAD_CLIENT_HEADER },
+  })
   // Instance-scoped so results never leak between consumers (or test mounts).
-  const cache = new Map<string, ActorSearchResult[]>()
+  const cache = new Map<string, ProfileViewBasic[]>()
   // A hand-rolled timer rather than perfect-debounce: that library skips the
   // wait whenever a call is already in flight, which would turn every keystroke
   // after the first request into its own request (see useGlobalSearch).
@@ -70,14 +74,14 @@ export function useActorTypeahead(
 
   async function search(value: string, signal: AbortSignal) {
     try {
-      const response = await $fetch(TYPEAHEAD_ENDPOINT, {
-        query: { q: value, limit },
-        headers: { 'X-Client': TYPEAHEAD_CLIENT_HEADER },
-        signal,
-      })
+      // The response is validated against the lexicon's output schema by the client.
+      const { actors: results } = await client.call(
+        searchActorsTypeahead.main,
+        { q: value, limit },
+        { signal },
+      )
       if (signal.aborted) return
 
-      const { actors: results } = v.parse(ActorSearchResponseSchema, response)
       rememberQuery(cache, value, results)
       actors.value = results
     } catch (err) {

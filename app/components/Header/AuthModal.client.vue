@@ -115,7 +115,7 @@ watch(user, async newUser => {
           >
             {{ $t('auth.modal.handle_label') }}
           </label>
-          <HeaderAuthHandleCombobox
+          <LazyHeaderAuthHandleCombobox
             id="handle-input"
             v-model="handleInput"
             :label="$t('auth.modal.handle_label')"
