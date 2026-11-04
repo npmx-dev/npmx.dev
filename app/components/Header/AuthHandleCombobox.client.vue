@@ -27,7 +27,6 @@ const generatedId = useId()
 const inputId = computed(() => props.id ?? `auth-handle-${generatedId}`)
 const listboxId = computed(() => `${inputId.value}-listbox`)
 
-/** Options are only navigable once a real search has produced matches. */
 const options = computed<ProfileViewBasic[]>(() => (query.value ? actors.value : []))
 
 const statusMessage = computed(() => {
