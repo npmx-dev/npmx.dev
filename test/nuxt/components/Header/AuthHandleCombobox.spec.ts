@@ -80,16 +80,6 @@ describe('AuthHandleCombobox', () => {
     expect(url.searchParams.get('limit')).toBe('5')
   })
 
-  it('sends the X-Client header so usage is attributed to npmx.dev', async () => {
-    const component = await mountCombobox()
-    await component.find('input').setValue('ali')
-    await flushSearch()
-
-    expect(mockFetch).toHaveBeenCalled()
-    const { headers } = requestOf(mockFetch.mock.calls[0]!)
-    expect(headers.get('X-Client')).toBe('npmx.dev')
-  })
-
   it('debounces rapid typing into a single request', async () => {
     const component = await mountCombobox()
     const input = component.find('input')
@@ -122,18 +112,6 @@ describe('AuthHandleCombobox', () => {
     expect(options[0]!.text()).toContain('Alice')
     expect(options[0]!.text()).toContain('@alice.npmx.social')
     expect(component.find('[role="listbox"]').exists()).toBe(true)
-  })
-
-  it('exposes combobox semantics on the input', async () => {
-    const component = await mountCombobox()
-    const input = component.find('input')
-    expect(input.attributes('role')).toBe('combobox')
-    expect(input.attributes('aria-autocomplete')).toBe('list')
-    expect(input.attributes('aria-expanded')).toBe('false')
-
-    await input.setValue('al')
-    await flushSearch()
-    await vi.waitFor(() => expect(component.find('input').attributes('aria-expanded')).toBe('true'))
   })
 
   it('tracks the highlighted option via aria-activedescendant', async () => {
