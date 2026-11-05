@@ -45,6 +45,7 @@ strictPeerDependencies: true
 
 minimumReleaseAgeExclude:
   - '@iconify-json/simple-icons@1.2.93'
+  - forges@0.3.2
   - 'nuxt@4.5.2'
   - '@nuxt/kit@4.5.2'
   - '@nuxt/nitro-server@4.5.2'
