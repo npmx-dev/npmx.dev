@@ -26,14 +26,13 @@ export default defineCachedEventHandler(
     }
 
     const ref = { provider: 'github' as const, owner, repo }
+    const provider = await createForgeProvider(ref)
+
+    if (!provider?.can('repos.contributorStats')) {
+      return []
+    }
 
     try {
-      const provider = await createForgeProvider(ref)
-
-      if (!provider?.can('repos.contributorStats')) {
-        return []
-      }
-
       const stats = await provider.repos.contributorStats(toForgeRepoRef(ref))
       return stats.map(stat => ({
         total: stat.commits,
@@ -45,7 +44,12 @@ export default defineCachedEventHandler(
         })),
       })) satisfies GitHubContributorStats[]
     } catch {
-      return []
+      // Throw instead of returning `[]`: a cached handler never stores an error, so
+      // an outage, or stats GitHub is still computing, does not stick for a day.
+      throw createError({
+        statusCode: 502,
+        statusMessage: 'Failed to fetch contributor statistics from GitHub',
+      })
     }
   },
   {
