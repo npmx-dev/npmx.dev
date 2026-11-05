@@ -70,16 +70,16 @@ async function fetchTeamMembers(provider: ForgeProvider): Promise<TeamMembers | 
 }
 
 async function fetchSponsorable(provider: ForgeProvider, logins: string[]): Promise<Set<string>> {
-  // One failed login (e.g. a renamed account) must not hide the others' links.
-  const results = await Promise.all(
-    logins.map(login =>
-      provider.users.sponsorable(login).catch(error => {
-        console.warn(`Failed to fetch sponsors info for ${login}:`, error)
-        return false
-      }),
-    ),
-  )
-  return new Set(logins.filter((_, i) => results[i]))
+  // The batch reports a failed login per entry, so one renamed account cannot hide the others' links.
+  try {
+    const results = await provider.users.sponsorableMany(logins)
+    return new Set(
+      results.filter(result => result.ok && result.sponsorable).map(result => result.login),
+    )
+  } catch (error) {
+    console.warn('Failed to fetch sponsorable info:', error)
+    return new Set()
+  }
 }
 
 function getRoleInfo(login: string, teams: TeamMembers): { role: Role; order: number } {
