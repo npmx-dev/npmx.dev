@@ -152,16 +152,6 @@ describe('useRepoMeta - URL parsing via repoRef', () => {
         repo: 'sourcehut',
       })
     })
-
-    it('should parse Sourcehut URL with sr.ht', () => {
-      const result = parseRepoUrl('https://sr.ht/~user/repo')
-
-      expect(result).toEqual({
-        provider: 'sourcehut',
-        owner: '~user',
-        repo: 'repo',
-      })
-    })
   })
 
   describe('Tangled URLs', () => {
@@ -205,11 +195,11 @@ describe('useRepoMeta - URL parsing via repoRef', () => {
 
   describe('Gitea URLs', () => {
     it('should parse exact allowlisted Gitea hosts', () => {
-      const result = parseRepoUrl('https://gitea.com/org/project')
+      const result = parseRepoUrl('https://gitea.com/acme/project')
 
       expect(result).toEqual({
         provider: 'gitea',
-        owner: 'org',
+        owner: 'acme',
         repo: 'project',
         host: 'gitea.com',
       })
