@@ -1,19 +1,33 @@
 {
   "name": "SendToShardFn",
+  "location": {
+    "filename": "https://esm.sh/linkdave@0.0.2/dist/client.d.ts",
+    "line": 5,
+    "col": 0,
+    "byteIndex": 331
+  },
+  "declarationKind": "export",
   "kind": "typeAlias",
-  "typeAliasDef": {
+  "def": {
     "tsType": {
-      "repr": "",
       "kind": "fnOrConstructor",
-      "fnOrConstructor": {
+      "value": {
         "constructor": false,
-        "tsType": { "repr": "void", "kind": "keyword", "keyword": "void" },
+        "tsType": {
+          "repr": "void",
+          "kind": "keyword",
+          "value": "void"
+        },
         "params": [
           {
             "kind": "identifier",
             "name": "guildId",
             "optional": false,
-            "tsType": { "repr": "string", "kind": "keyword", "keyword": "string" }
+            "tsType": {
+              "repr": "string",
+              "kind": "keyword",
+              "value": "string"
+            }
           },
           {
             "kind": "identifier",
@@ -22,13 +36,18 @@
             "tsType": {
               "repr": "GatewayVoiceStateUpdate",
               "kind": "typeRef",
-              "typeRef": { "typeName": "GatewayVoiceStateUpdate" }
+              "value": {
+                "typeName": "GatewayVoiceStateUpdate",
+                "resolution": {
+                  "kind": "import",
+                  "specifier": "https://esm.sh/discord-api-types@0.38.38/v10.d.ts",
+                  "name": "GatewayVoiceStateUpdate"
+                }
+              }
             }
           }
-        ],
-        "typeParams": []
+        ]
       }
-    },
-    "typeParams": []
+    }
   }
 }

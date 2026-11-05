@@ -6,12 +6,12 @@
  * @module server/utils/docs/render
  */
 
-import type { DenoDocNode, JsDocTag } from '#shared/types/deno-doc'
+import type { ClassDef, InterfaceDef, JsDocTag } from '@deno/doc'
 import { highlightCodeBlock } from '../shiki'
 import { formatParams, formatType, getNodeSignature } from './format'
-import { groupMergedByKind } from './processing'
+import { getEnumMembers, getMethodDef, groupMergedByKind } from './processing'
 import { createMemberId, createSymbolId, escapeHtml, parseJsDocLinks, renderMarkdown } from './text'
-import type { MergedSymbol, ProcessedEntry, SymbolLookup } from './types'
+import type { DocNode, MergedSymbol, ProcessedEntry, SymbolLookup } from './types'
 
 // =============================================================================
 // Configuration
@@ -138,7 +138,7 @@ async function renderMergedSymbol(
   )
   lines.push(`<h3 class="docs-symbol-name">${escapeHtml(symbol.name)}</h3>`)
   lines.push(`<span class="docs-badge docs-badge--${symbol.kind}">${symbol.kind}</span>`)
-  if (primaryNode.functionDef?.isAsync) {
+  if (primaryNode.kind === 'function' && primaryNode.def.isAsync) {
     lines.push(`<span class="docs-badge docs-badge--async">async</span>`)
   }
   if (hasOverloads) {
@@ -186,12 +186,12 @@ async function renderMergedSymbol(
   }
 
   // Type-specific members
-  if (symbol.kind === 'class' && primaryNode.classDef) {
-    lines.push(renderClassMembers(primaryNode.classDef, id, symbolLookup))
-  } else if (symbol.kind === 'interface' && primaryNode.interfaceDef) {
-    lines.push(renderInterfaceMembers(primaryNode.interfaceDef, id, symbolLookup))
-  } else if (symbol.kind === 'enum' && primaryNode.enumDef) {
-    lines.push(renderEnumMembers(primaryNode.enumDef, id))
+  if (primaryNode.kind === 'class') {
+    lines.push(renderClassMembers(primaryNode.def, id, symbolLookup))
+  } else if (primaryNode.kind === 'interface') {
+    lines.push(renderInterfaceMembers(primaryNode.def, id, symbolLookup))
+  } else if (primaryNode.kind === 'enum') {
+    lines.push(renderEnumMembers(primaryNode, id))
   }
 
   lines.push(`</article>`)
@@ -202,6 +202,10 @@ async function renderMergedSymbol(
 /**
  * Render JSDoc tags (params, returns, examples, etc.)
  */
+function getTagDoc(tag: JsDocTag): string | undefined {
+  return 'doc' in tag ? tag.doc : undefined
+}
+
 async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Promise<string> {
   const lines: string[] = []
 
@@ -211,14 +215,16 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
   const deprecated = tags.find(t => t.kind === 'deprecated')
   const see = tags.filter(t => t.kind === 'see')
 
-  const deprecatedMessagePromise = deprecated?.doc
-    ? renderMarkdown(deprecated.doc.replace(/\n/g, ' '), symbolLookup)
+  const deprecatedDoc = deprecated ? getTagDoc(deprecated) : undefined
+  const deprecatedMessagePromise = deprecatedDoc
+    ? renderMarkdown(deprecatedDoc.replace(/\n/g, ' '), symbolLookup)
     : null
   const examplePromises = examples.map(async example => {
-    if (!example.doc) return ''
-    const langMatch = example.doc.match(/```[ \t]*([-\w]+)?/)
+    const exampleDoc = getTagDoc(example)
+    if (!exampleDoc) return ''
+    const langMatch = exampleDoc.match(/```[ \t]*([-\w]+)?/)
     const lang = langMatch?.[1] || 'typescript'
-    const code = example.doc.replace(/```[ \t]*[-\w]*[ \t]*(?:\r\n|\r|\n)?/g, '').trim()
+    const code = exampleDoc.replace(/```[ \t]*[-\w]*[ \t]*(?:\r\n|\r|\n)?/g, '').trim()
     return highlightCodeBlock(code, lang)
   })
 
@@ -278,8 +284,9 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
     lines.push(`<h4>See Also</h4>`)
     lines.push(`<ul>`)
     for (const s of see) {
-      if (s.doc) {
-        lines.push(`<li>${parseJsDocLinks(s.doc, symbolLookup)}</li>`)
+      const seeDoc = getTagDoc(s)
+      if (seeDoc) {
+        lines.push(`<li>${parseJsDocLinks(seeDoc, symbolLookup)}</li>`)
       }
     }
     lines.push(`</ul>`)
@@ -354,11 +361,7 @@ function createMemberIdClaimer(symbolId: string): (memberName: string) => string
 /**
  * Render class members (constructor, properties, methods).
  */
-function renderClassMembers(
-  def: NonNullable<DenoDocNode['classDef']>,
-  symbolId: string,
-  symbolLookup: SymbolLookup,
-): string {
+function renderClassMembers(def: ClassDef, symbolId: string, symbolLookup: SymbolLookup): string {
   const lines: string[] = []
   const { constructors, properties, methods } = def
   const claimMemberId = createMemberIdClaimer(symbolId)
@@ -400,7 +403,7 @@ function renderClassMembers(
 
   if (getters.length > 0) {
     const getterItems: DefinitionListItem[] = getters.map(getter => {
-      const ret = formatType(getter.functionDef?.returnType) || 'unknown'
+      const ret = formatType(getMethodDef(getter)?.returnType) || 'unknown'
       const staticStr = getter.isStatic ? 'static ' : ''
 
       return {
@@ -415,8 +418,9 @@ function renderClassMembers(
 
   if (regularMethods.length > 0) {
     const methodItems: DefinitionListItem[] = regularMethods.map(method => {
-      const params = formatParams(method.functionDef?.params)
-      const ret = formatType(method.functionDef?.returnType) || 'void'
+      const methodDef = getMethodDef(method)
+      const params = formatParams(methodDef?.params)
+      const ret = formatType(methodDef?.returnType) || 'void'
       const staticStr = method.isStatic ? 'static ' : ''
 
       return {
@@ -436,7 +440,7 @@ function renderClassMembers(
  * Render interface members (properties, methods).
  */
 function renderInterfaceMembers(
-  def: NonNullable<DenoDocNode['interfaceDef']>,
+  def: InterfaceDef,
   symbolId: string,
   symbolLookup: SymbolLookup,
 ): string {
@@ -487,11 +491,11 @@ function renderInterfaceMembers(
 /**
  * Render enum members.
  */
-function renderEnumMembers(def: NonNullable<DenoDocNode['enumDef']>, symbolId: string): string {
+function renderEnumMembers(node: Extract<DocNode, { kind: 'enum' }>, symbolId: string): string {
   const lines: string[] = []
-  const { members } = def
+  const members = getEnumMembers(node)
 
-  if (members && members.length > 0) {
+  if (members.length > 0) {
     lines.push(`<div class="docs-members">`)
     lines.push(`<h4>Members</h4>`)
     lines.push(`<ul class="docs-enum-members">`)
