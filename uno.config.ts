@@ -13,8 +13,6 @@ import { theme } from './uno.theme'
 import customIcons from './assets/media/custom-icons.json'
 import storybookIconSafelist from './.storybook/uno-icon-safelist'
 
-const isStorybook = process.env.STORYBOOK === 'true'
-
 export default defineConfig({
   // og-image uses hardcoded classes we don't want bundled into main app
   content: {
@@ -97,7 +95,7 @@ export default defineConfig({
     // Ensures elements start in initial state during delay
     ['animate-fill-both', { 'animation-fill-mode': 'both' }],
   ],
-  ...(isStorybook && {
+  ...(process.env.STORYBOOK && {
     safelist: storybookIconSafelist,
   }),
 })
