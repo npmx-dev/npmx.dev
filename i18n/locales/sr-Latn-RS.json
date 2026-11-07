@@ -843,8 +843,7 @@
   "badges": {
     "provenance": {
       "verified": "verifikovano",
-      "verified_title": "Verifikovano poreklo",
-      "verified_via": "Verifikovano: objavljeno preko {provider}"
+      "verified_title": "Verifikovano poreklo"
     },
     "jsr": {
       "title": "takođe dostupno na JSR-u"

@@ -302,6 +302,7 @@ import {
   ProgressBar,
   ProvenanceBadge,
   StagedPublishBadge,
+  TrustedPublishingBadge,
   Readme,
   ReadmeTocDropdown,
   SearchProviderToggle,
@@ -1066,7 +1067,6 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with link', async () => {
       const component = await mountSuspended(ProvenanceBadge, {
         props: {
-          provider: 'github',
           packageName: 'vue',
           version: '3.0.0',
         },
@@ -1078,7 +1078,6 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations in compact mode', async () => {
       const component = await mountSuspended(ProvenanceBadge, {
         props: {
-          provider: 'github',
           packageName: 'vue',
           version: '3.0.0',
           compact: true,
@@ -1099,6 +1098,35 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations without link', async () => {
       const component = await mountSuspended(StagedPublishBadge, {
         props: { linked: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TrustedPublishingBadge', () => {
+    it('should have no accessibility violations with link', async () => {
+      const component = await mountSuspended(TrustedPublishingBadge, {
+        props: { provider: 'github' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+      expect(component.find('a').attributes('title')).toBe(
+        'Published with trusted publishing via GitHub Actions',
+      )
+    })
+
+    it('should have no accessibility violations without link', async () => {
+      const component = await mountSuspended(TrustedPublishingBadge, {
+        props: { provider: 'github', linked: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in compact mode', async () => {
+      const component = await mountSuspended(TrustedPublishingBadge, {
+        props: { compact: true },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -1216,6 +1244,23 @@ describe('component accessibility audits', () => {
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with a trusted publisher', async () => {
+      const component = await mountSuspended(PackageCard, {
+        props: {
+          result: {
+            ...mockResult,
+            package: {
+              ...mockResult.package,
+              publisher: { ...mockResult.package.publisher, trustedPublisher: { id: 'github' } },
+            },
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+      expect(component.findComponent(TrustedPublishingBadge).exists()).toBe(true)
     })
   })
 
@@ -5256,8 +5301,12 @@ describe('background theme accessibility', () => {
       name: 'ProvenanceBadge',
       mount: () =>
         mountSuspended(ProvenanceBadge, {
-          props: { provider: 'github', packageName: 'vue', version: '3.0.0' },
+          props: { packageName: 'vue', version: '3.0.0' },
         }),
+    },
+    {
+      name: 'TrustedPublishingBadge',
+      mount: () => mountSuspended(TrustedPublishingBadge, { props: { provider: 'github' } }),
     },
     {
       name: 'LicenseDisplay',

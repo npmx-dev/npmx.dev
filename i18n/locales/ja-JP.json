@@ -1074,8 +1074,7 @@
   "badges": {
     "provenance": {
       "verified": "検証済み",
-      "verified_title": "検証済みprovenance",
-      "verified_via": "検証済み: {provider} 経由で公開"
+      "verified_title": "検証済みprovenance"
     },
     "jsr": {
       "title": "JSRでも利用可能"
