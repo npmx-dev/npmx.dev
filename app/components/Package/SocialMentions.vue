@@ -47,7 +47,7 @@ const label = computed(() =>
     classicon="i-lucide:message-circle"
     :to="searchUrl"
     data-testid="social-mentions"
-    class="min-w-44"
+    class="min-w-36"
   >
     {{ label }}
   </LinkBase>
