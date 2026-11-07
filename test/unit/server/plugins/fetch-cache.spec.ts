@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 const { fetchMock } = vi.hoisted(() => ({ fetchMock: vi.fn() }))
 vi.mock('ofetch', () => ({ $fetch: fetchMock }))

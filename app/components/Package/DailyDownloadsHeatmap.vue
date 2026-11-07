@@ -15,13 +15,7 @@ import { applyBlocklistCorrection } from '~/utils/download-anomalies'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
 import { useElementSize } from '@vueuse/core'
-import {
-  sanitise,
-  copyAltTextFromDownloadsHeatmap,
-  CHART_ANNOTATOR_SLOTS,
-  getAnnotatorIcon,
-  getAnnotatorStyle,
-} from '~/utils/charts'
+import { sanitise, copyAltTextFromDownloadsHeatmap, CHART_ANNOTATOR_SLOTS } from '~/utils/charts'
 
 type DailyDataPoint = {
   day: string
@@ -298,13 +292,14 @@ const config = computed<VueUiHeatmapConfig>(() => ({
     useCursorPointer: true,
     buttons: {
       pdf: false,
-      fullscreen: false,
+      fullscreen: true,
       table: false,
       tooltip: false,
       altCopy: true,
       annotator: !isMobile.value,
     },
     buttonTitles: {
+      fullscreen: $t('package.trends.toggle_fullscreen'),
       csv: $t('package.trends.download_file', { fileType: 'CSV' }),
       img: $t('package.trends.download_file', { fileType: 'PNG' }),
       svg: $t('package.trends.download_file', { fileType: 'SVG' }),
@@ -750,6 +745,9 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
                 @click="copyChartPng"
               />
             </template>
+            <template #optionFullscreen="{ isFullscreen }">
+              <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+            </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
             </template>
@@ -769,16 +767,7 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
             </template>
 
             <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
-              <span
-                v-if="getAnnotatorIcon(slotName, slotProps)"
-                class="w-6 h-6"
-                :class="[
-                  getAnnotatorIcon(slotName, slotProps),
-                  slotName === 'annotator-action-color' ? null : 'text-fg-subtle',
-                ]"
-                :style="getAnnotatorStyle(slotName, slotProps)"
-                aria-hidden="true"
-              />
+              <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
             </template>
           </VueUiHeatmap>
         </div>

@@ -8,7 +8,7 @@ import {
   type VueUiScatterSeries,
 } from 'vue-data-ui/vue-ui-scatter'
 import { buildCompareScatterChartDataset } from '~/utils/compare-scatter-chart'
-import { copyAltTextForCompareScatterChart } from '~/utils/charts'
+import { CHART_ANNOTATOR_SLOTS, copyAltTextForCompareScatterChart } from '~/utils/charts'
 import { useColors } from '~/composables/useColors'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
@@ -56,11 +56,19 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const { facetLabels } = useFacetSelection()
 
+const isVersionComparisonComputed = computed(() => isVersionComparison(props.packages))
+
 const chartableFacets = computed(() =>
   (
     Object.entries(facetLabels.value) as [
       ComparisonFacet,
-      { label: string; description: string; chartable_scatter: boolean },
+      {
+        label: string
+        description: string
+        chartable: boolean
+        chartable_scatter: boolean
+        formatter?: ((value: number) => string) | undefined
+      },
     ][]
   )
     .map(([name, facet]) => ({
@@ -69,10 +77,18 @@ const chartableFacets = computed(() =>
       description: facet.description,
       chartable: facet.chartable_scatter,
     }))
-    .filter(facet => facet.chartable),
+    .filter(facet => {
+      if (!facet.chartable) return false
+      if (isVersionComparisonComputed.value && shouldHideFacetInVersionComparison(facet.name)) {
+        return false
+      }
+      return true
+    }),
 )
 
-const selectedFacetX = ref<ComparisonFacet>('downloads')
+const selectedFacetX = ref<ComparisonFacet>(
+  isVersionComparisonComputed.value ? 'dependencies' : 'downloads',
+)
 const selectedFacetY = ref<ComparisonFacet>('installSize')
 
 const dataset = computed<VueUiScatterDatasetItem[]>(() =>
@@ -125,12 +141,13 @@ const config = computed<VueUiScatterConfig>(() => {
       buttons: {
         tooltip: false,
         pdf: false,
-        fullscreen: false,
+        fullscreen: true,
         table: false,
         csv: false,
         altCopy: true,
       },
       buttonTitles: {
+        fullscreen: $t('package.trends.toggle_fullscreen'),
         csv: $t('package.trends.download_file', { fileType: 'CSV' }),
         img: $t('package.trends.download_file', { fileType: 'PNG' }),
         svg: $t('package.trends.download_file', { fileType: 'SVG' }),
@@ -465,78 +482,17 @@ onMounted(async () => {
                 @click="copyChartPng"
               />
             </template>
+            <template #optionFullscreen="{ isFullscreen }">
+              <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+            </template>
             <template #optionImg>
               <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
             </template>
             <template #optionSvg>
               <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
             </template>
-            <template #annotator-action-close>
-              <span
-                class="i-lucide:x w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-color="{ color }">
-              <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
-            </template>
-            <template #annotator-action-draw="{ mode }">
-              <span
-                v-if="mode === 'arrow'"
-                class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'text'"
-                class="i-lucide:type text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'line'"
-                class="i-lucide:pen-line text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'draw'"
-                class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-undo>
-              <span
-                class="i-lucide:undo-2 w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-redo>
-              <span
-                class="i-lucide:redo-2 w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-delete>
-              <span
-                class="i-lucide:trash w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #optionAnnotator="{ isAnnotator }">
-              <span
-                v-if="isAnnotator"
-                class="i-lucide:pen-off w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-              <span
-                v-else
-                class="i-lucide:pen w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
+            <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
+              <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
             </template>
             <template #optionAltCopy>
               <span

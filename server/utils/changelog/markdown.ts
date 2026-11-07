@@ -1,3 +1,5 @@
+import type { RepoRef as ForgeRepoRef } from 'forges'
+import type { ForgeWeb } from 'forges/web'
 import type { IOptions } from 'sanitize-html'
 import {
   type ProcessImageUrlFn,
@@ -18,7 +20,7 @@ import {
 } from '../mdKit'
 import { slugify } from '#shared/utils/html'
 import { Marked } from 'marked'
-import { hasProtocol, joinRelativeURL, joinURL, parseFilename, parseURL } from 'ufo'
+import { hasProtocol, joinRelativeURL, joinURL, parseFilename } from 'ufo'
 import { convertToEmoji } from '#shared/utils/emoji'
 import sanitize from 'sanitize-html'
 import { ALLOWED_ATTR } from '../mdKit'
@@ -107,32 +109,14 @@ export async function changelogRenderer(mdRepoInfo: MarkdownRepoInfo) {
 }
 
 export interface MarkdownRepoInfo {
-  /** base url for the host */
-  hostBaseUrl: string
+  /** The forge's web links and the ref its references are read against. */
+  forge: { web: ForgeWeb; repo: ForgeRepoRef }
   /** Raw file URL base (e.g., https://raw.githubusercontent.com/owner/repo/HEAD) */
   rawBaseUrl: string
   /** Blob/rendered file URL base (e.g., https://github.com/owner/repo/blob/HEAD) */
   blobBaseUrl: string
   /** path to the markdown file, can't start with / */
   path?: string
-  /** the base url of repository commit */
-  commitBaseUrl: string
-  /** base url for a repository issue */
-  issueBaseUrl?: string
-  /** the text char that indicates an issue */
-  issueChar?: keyof typeof issuePrRegexes
-  /** custom regex in case the git provider's issues uses a different format */
-  issueRegex?: RegExp
-  /** base url for a repository pull/merge request */
-  prBaseUrl?: string
-  /**
-   * the text char that indicates a pull/merge request
-   *
-   * if it's the same as issueChar, than links will be parsed as issues and repo host is reponsible to redirect to pull/merge request
-   x*/
-  prChar?: keyof typeof issuePrRegexes
-  /** base url for a repository compare */
-  compareBaseUrl?: string
   /**
    * the character that should be used to indicate an account.
    *
@@ -224,112 +208,83 @@ function resolveGitLinkText(href: string, label: string, repoInfo: MarkdownRepoI
     return
   }
 
-  const pathSegments = parseURL(href).pathname.split('/').filter(Boolean)
-  const lastSegment = pathSegments.at(-1)
-  if (!lastSegment) {
+  // `forges` reads the thread, commit or comparison a URL names, including forms
+  // a forge has moved away from. Accounts stay unresolved: forges has no syntax.
+  const { web, repo } = repoInfo.forge
+  const parsed = web.parseUrl(href)
+  if (!parsed) {
     return
   }
 
-  switch (true) {
-    case href.startsWith(repoInfo.commitBaseUrl): {
-      return lastSegment.slice(0, 7) // only show the first 7 letters/numbers of a commit
-    }
-    case !!repoInfo.issueChar &&
-      !!repoInfo.issueBaseUrl &&
-      href.startsWith(repoInfo.issueBaseUrl): {
-      return `${repoInfo.issueChar}${lastSegment}`
-    }
-    case !!repoInfo.prChar && !!repoInfo.prBaseUrl && href.startsWith(repoInfo.prBaseUrl): {
-      return `${repoInfo.prChar}${lastSegment}`
-    }
-    case !!repoInfo.compareBaseUrl && href.startsWith(repoInfo.compareBaseUrl): {
-      return lastSegment
-    }
-    // for account we don't resolve, this is something the git providers also don't do
+  if (parsed.compare) {
+    return `${parsed.compare.base}...${parsed.compare.head}`
+  }
+  const ref = parsed.thread ?? parsed.commit
+  if (ref) {
+    return web.referenceFor(ref, { from: repo })
   }
 }
-
-const issuePrRegexes = {
-  '#': /\B#\d+\b/g,
-  '!': /\B!\d+\b/g,
-} as const
 
 const accountRegexes = {
   '@': /\B@(?![\d.]+\b)(?![\w.-]*\/)[\w\-.]+\b/g,
   '~': /\B~(?![\d.]+\b)(?![\w.-]*\/)[\w\-.]+\b/g,
 } as const
 
-const commitRegex = /(?<![@#!])\b[a-f0-9]{6,40}\b/gi
-
 const tagsToIgnore = new Set(['a', 'code'])
+
+interface GitTextLink {
+  start: number
+  end: number
+  html: string
+}
+
+function toAnchor(href: string, label: string) {
+  return `<a href="${href}" rel="nofollow noreferrer noopener" target="_blank">${label}</a>`
+}
+
 function createResolveGitTextToLinks(mdInfo: MarkdownRepoInfo): IOptions['textFilter'] {
   return (text, tag) => {
     if (tagsToIgnore.has(tag)) return text
 
-    // issues
-    text = text
-      // commits come first to prevent matching issue/pr that has been formatted
-      .replace(commitRegex, match => {
-        if (excludeWordsFromCommitMatch.has(match.toLowerCase())) {
-          return match
-        }
+    const links: GitTextLink[] = []
+    const { web, repo } = mdInfo.forge
+    for (const { start, end, ref } of web.parseReferences(text, { from: repo })) {
+      const href = 'sha' in ref ? web.urlFor({ commit: ref }) : web.urlFor({ thread: ref })
+      const label = web.referenceFor(ref, { from: repo })
+      if (href && label) {
+        links.push({ start, end, html: toAnchor(href, label) })
+      }
+    }
 
-        return `<a href="${joinURL(mdInfo.commitBaseUrl, match)}" rel="nofollow noreferrer noopener" target="_blank">${match.slice(0, 7)}</a>`
-      })
     if (mdInfo.accountChar !== false) {
-      // account
-      text = text.replace(accountRegexes[mdInfo.accountChar ?? '@'], match => {
-        const acc = mdInfo.keepAccountChar
-          ? match
-          : match.replace((mdInfo.accountChar as string) ?? '@', '')
-        return `<a href="${joinURL(mdInfo.hostBaseUrl, acc)}" rel="nofollow noreferrer noopener" target="_blank">${match}</a>`
-      })
+      const char = mdInfo.accountChar ?? '@'
+      for (const match of text.matchAll(accountRegexes[char])) {
+        const account = mdInfo.keepAccountChar ? match[0] : match[0].replace(char, '')
+        links.push({
+          start: match.index,
+          end: match.index + match[0].length,
+          html: toAnchor(joinURL(mdInfo.forge.web.webOrigin, account), match[0]),
+        })
+      }
     }
 
-    if (mdInfo.issueChar && mdInfo.issueBaseUrl) {
-      text = text.replace(mdInfo.issueRegex ?? issuePrRegexes[mdInfo.issueChar], match => {
-        const id = match.replace(mdInfo.issueChar!, '').toUpperCase()
-        return `<a href="${joinURL(mdInfo.issueBaseUrl!, id)}" rel="nofollow noreferrer noopener" target="_blank">${match}</a>`
-      })
-    }
+    if (!links.length) return text
+    links.sort((a, b) => a.start - b.start)
 
-    // pr/mr
-    if (mdInfo.issueChar != mdInfo.prChar && mdInfo.prChar && mdInfo.prBaseUrl) {
-      text = text.replace(issuePrRegexes[mdInfo.prChar], match => {
-        const id = match.replace(mdInfo.prChar!, '')
-        return `<a href="${joinURL(mdInfo.prBaseUrl!, id)}" rel="nofollow noreferrer noopener" target="_blank">${match}</a>`
-      })
+    // A reference and an account mention can share text, so a link that starts
+    // inside the previous one is dropped.
+    let html = ''
+    let cursor = 0
+    for (const link of links) {
+      if (link.start < cursor) continue
+      html += text.slice(cursor, link.start) + link.html
+      cursor = link.end
     }
+    html += text.slice(cursor)
 
-    return sanitize(text, {
+    return sanitize(html, {
       allowedAttributes: ALLOWED_ATTR,
       allowedSchemes: ['http', 'https', 'mailto'],
     })
   }
 }
-
-// source https://raw.githubusercontent.com/potch/sowpods/refs/heads/master/SOWPODS.txt and filtered with /^[a-f]{6,40}$/i
-const excludeWordsFromCommitMatch = new Set([
-  'accede',
-  'acceded',
-  'baccae',
-  'baffed',
-  'beaded',
-  'bedded',
-  'beebee',
-  'beefed',
-  'cabbed',
-  'dabbed',
-  'dadded',
-  'daffed',
-  'deaded',
-  'decade',
-  'decaff',
-  'deeded',
-  'deface',
-  'defaced',
-  'efface',
-  'effaced',
-  'facade',
-  'faffed',
-])

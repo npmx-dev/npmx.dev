@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { fetchNpmPackage } from '#server/utils/npm'
 import { MICROLINK_API } from '#shared/utils/constants'
 import { getHomepageMetadata, getPackageHomepageMetadata } from '#server/utils/npm-homepage'

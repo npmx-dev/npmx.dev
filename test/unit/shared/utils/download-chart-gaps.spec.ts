@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { getDownloadChartGaps } from '#shared/utils/download-chart-gaps'
 
 const drawingArea = { left: 10, right: 90, top: 20, bottom: 120 }

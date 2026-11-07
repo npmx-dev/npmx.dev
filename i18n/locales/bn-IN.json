@@ -380,9 +380,7 @@
       "tangled": "Tangled এ দেখুন"
     },
     "collapse": "সংকুচিত করুন",
-    "collapse_with_name": "{name} সঙ্কুচিত করুন",
-    "expand": "বিস্তৃত করুন",
-    "expand_with_name": "{name} বিস্তৃত করুন"
+    "expand": "বিস্তৃত করুন"
   },
   "profile": {
     "display_name": "প্রদর্শনের নাম",
@@ -1083,8 +1081,7 @@
   "badges": {
     "provenance": {
       "verified": "যাচাইকৃত",
-      "verified_title": "যাচাইকৃত প্রোভেন্স",
-      "verified_via": "যাচাইকৃত: {provider} এর মাধ্যমে প্রকাশিত"
+      "verified_title": "যাচাইকৃত প্রোভেন্স"
     },
     "jsr": {
       "title": "JSR-এও উপলব্ধ"
@@ -1840,7 +1837,9 @@
       "p1": "দুঃখিত, {package}-এর চেঞ্জলগ লোড করা যায়নি",
       "p2": "অনুগ্রহ করে পরে আবার চেষ্টা করুন বা {viewon} দেখুন"
     },
-    "rate_limit_ungh": "দুঃখিত, GitHub-এর রেট লিমিট শেষ হয়ে গেছে, একটু পরে আবার চেষ্টা করুন",
-    "version_unavailable": "অনুরোধকৃত ভার্সনটি উপলব্ধ নয়।"
+    "version_unavailable": "অনুরোধকৃত ভার্সনটি উপলব্ধ নয়।",
+    "ungh": {
+      "rate_limit": "দুঃখিত, GitHub-এর রেট লিমিট শেষ হয়ে গেছে, একটু পরে আবার চেষ্টা করুন"
+    }
   }
 }

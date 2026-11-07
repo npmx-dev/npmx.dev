@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
-
 const packages = defineModel<string[]>({ required: true })
 
 const props = defineProps<{
@@ -49,6 +47,8 @@ const showNoDependencyOption = computed(() => {
 })
 
 // Filter out already selected packages
+const selectedBaseNames = computed(() => new Set(packages.value.map(p => parsePackageSpec(p).name)))
+
 const filteredResults = computed(() => {
   if (!searchData.value?.objects) return []
   return searchData.value.objects
@@ -56,7 +56,7 @@ const filteredResults = computed(() => {
       name: o.package.name,
       description: o.package.description,
     }))
-    .filter(r => !packages.value.includes(r.name))
+    .filter(r => !selectedBaseNames.value.has(r.name))
 })
 
 // Unified list of navigable items for keyboard navigation
@@ -77,19 +77,21 @@ const numberFormatter = useNumberFormatter()
 
 const keyboardShortcuts = useKeyboardShortcuts()
 
-function addPackage(name: string) {
+function addPackage(spec: string) {
   if (packages.value.length >= maxPackages.value) return
-  if (packages.value.includes(name)) return
+  const trimmedSpec = spec.trim()
+  if (!trimmedSpec) return
+  if (packages.value.includes(trimmedSpec)) return
 
   // Keep NO_DEPENDENCY_ID always last
-  if (name === NO_DEPENDENCY_ID) {
-    packages.value = [...packages.value, name]
+  if (trimmedSpec === NO_DEPENDENCY_ID) {
+    packages.value = [...packages.value, trimmedSpec]
   } else if (packages.value.includes(NO_DEPENDENCY_ID)) {
     // Insert before the no-dep entry
     const withoutNoDep = packages.value.filter(p => p !== NO_DEPENDENCY_ID)
-    packages.value = [...withoutNoDep, name, NO_DEPENDENCY_ID]
+    packages.value = [...withoutNoDep, trimmedSpec, NO_DEPENDENCY_ID]
   } else {
-    packages.value = [...packages.value, name]
+    packages.value = [...packages.value, trimmedSpec]
   }
   inputValue.value = ''
   highlightedIndex.value = -1
@@ -156,12 +158,13 @@ function handleKeydown(e: KeyboardEvent) {
         return
       }
 
-      // Fallback: exact match or easter egg (preserves existing behavior)
+      // Fallback: exact match, easter egg, or manual version spec entry (e.g. lodash@3.10.1)
       if (showNoDependencyOption.value) {
         addPackage(NO_DEPENDENCY_ID)
       } else {
-        const hasMatch = filteredResults.value.find(r => r.name === inputValueTrim)
-        if (hasMatch) {
+        const parsed = parsePackageSpec(inputValueTrim)
+        const hasMatch = filteredResults.value.find(r => r.name === parsed.name)
+        if (hasMatch || parsed.version) {
           addPackage(inputValueTrim)
         }
       }
@@ -195,6 +198,8 @@ onClickOutside(containerRef, () => {
   isInputFocused.value = false
   highlightedIndex.value = -1
 })
+
+const versionHintId = useId()
 </script>
 
 <template>
@@ -209,7 +214,11 @@ onClickOutside(containerRef, () => {
             {{ $t('compare.no_dependency.label') }}
           </span>
         </template>
-        <LinkBase v-else :to="packageRoute(pkg)" class="text-sm">
+        <LinkBase
+          v-else
+          :to="packageRoute(parsePackageSpec(pkg).name, parsePackageSpec(pkg).version)"
+          class="text-sm font-mono"
+        >
           {{ pkg }}
         </LinkBase>
         <ButtonBase
@@ -240,6 +249,7 @@ onClickOutside(containerRef, () => {
           id="package-search"
           v-model="inputValue"
           type="text"
+          :aria-describedby="versionHintId"
           :placeholder="
             packages.length === 0
               ? $t('compare.selector.search_first')
@@ -314,6 +324,23 @@ onClickOutside(containerRef, () => {
     </div>
 
     <!-- Hint -->
+    <i18n-t
+      :id="versionHintId"
+      keypath="compare.selector.version_hint"
+      tag="p"
+      class="text-xs text-fg-subtle"
+    >
+      <template #syntax>
+        <code class="font-mono">package@version</code>
+      </template>
+      <template #first>
+        <code class="font-mono">vue@3.0.0</code>
+      </template>
+      <template #second>
+        <code class="font-mono">vue@3.5.44</code>
+      </template>
+    </i18n-t>
+
     <p class="text-xs text-fg-subtle">
       {{
         $t('compare.selector.packages_selected', {

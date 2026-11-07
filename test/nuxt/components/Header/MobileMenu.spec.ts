@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi } from 'vite-plus/test'
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { computed, nextTick } from 'vue'
 import { HeaderMobileMenu } from '#components'

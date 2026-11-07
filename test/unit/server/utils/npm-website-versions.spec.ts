@@ -1,4 +1,4 @@
-import { afterAll, afterEach, describe, expect, it, vi } from 'vitest'
+import { afterAll, afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createError } from 'h3'
 
 vi.stubGlobal('encodePackageName', (name: string) => {

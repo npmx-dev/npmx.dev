@@ -96,5 +96,5 @@ prefetchComponents('ChangelogCard')
       :host="info.host"
     />
   </div>
-  <slot v-else-if="error" name="error"></slot>
+  <slot v-else-if="error" name="error" :error></slot>
 </template>
