@@ -93,6 +93,15 @@ describe('flattenNamespaces', () => {
     expect(flattenNamespaces(nodes).map(node => node.name)).toEqual(['run'])
   })
 
+  it('keeps namespaces without elements', () => {
+    const nodes: DenoDocNode[] = [
+      { name: 'Empty', kind: 'namespace' },
+      { name: 'NoElements', kind: 'namespace', namespaceDef: {} },
+    ]
+
+    expect(flattenNamespaces(nodes).map(node => node.name)).toEqual(['Empty', 'NoElements'])
+  })
+
   it('inlines namespace members under qualified names', () => {
     const nodes: DenoDocNode[] = [
       {
