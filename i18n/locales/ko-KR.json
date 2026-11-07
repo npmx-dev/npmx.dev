@@ -1524,21 +1524,21 @@
           "label": "취약점",
           "description": "알려진 보안 취약점"
         },
-        "githubStars": {
-          "label": "GitHub 스타",
-          "description": "GitHub 저장소의 스타 수"
-        },
-        "githubForks": {
-          "label": "GitHub 포크",
-          "description": "GitHub 저장소의 포크 수"
-        },
-        "githubIssues": {
-          "label": "GitHub 이슈",
-          "description": "GitHub 저장소의 이슈 수"
-        },
         "createdAt": {
           "label": "생성일",
           "description": "패키지가 생성된 시점"
+        },
+        "stars": {
+          "label": "GitHub 스타",
+          "description": "GitHub 저장소의 스타 수"
+        },
+        "forks": {
+          "label": "GitHub 포크",
+          "description": "GitHub 저장소의 포크 수"
+        },
+        "issues": {
+          "label": "GitHub 이슈",
+          "description": "GitHub 저장소의 이슈 수"
         }
       },
       "values": {

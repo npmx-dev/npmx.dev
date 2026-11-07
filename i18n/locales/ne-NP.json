@@ -1575,21 +1575,21 @@
           "label": "कमजोरीहरू",
           "description": "ज्ञात सुरक्षा कमजोरीहरू"
         },
-        "githubStars": {
-          "label": "GitHub स्टार",
-          "description": "GitHub रिपोजिटरीमा स्टारहरूको संख्या"
-        },
-        "githubForks": {
-          "label": "GitHub फोर्क",
-          "description": "GitHub रिपोजिटरीमा फोर्कहरूको संख्या"
-        },
-        "githubIssues": {
-          "label": "GitHub इश्यू",
-          "description": "GitHub रिपोजिटरीमा इश्यूहरूको संख्या"
-        },
         "createdAt": {
           "label": "बनाइएको मिति",
           "description": "प्याकेज कहिले बनाइयो"
+        },
+        "stars": {
+          "label": "GitHub स्टार",
+          "description": "GitHub रिपोजिटरीमा स्टारहरूको संख्या"
+        },
+        "forks": {
+          "label": "GitHub फोर्क",
+          "description": "GitHub रिपोजिटरीमा फोर्कहरूको संख्या"
+        },
+        "issues": {
+          "label": "GitHub इश्यू",
+          "description": "GitHub रिपोजिटरीमा इश्यूहरूको संख्या"
         }
       },
       "values": {

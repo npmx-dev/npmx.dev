@@ -1379,17 +1379,17 @@
           "label": "Güvenlik açıkları",
           "description": "Bilinen güvenlik açıkları"
         },
-        "githubStars": {
-          "label": "GitHub Yıldızları",
-          "description": "GitHub deposundaki yıldız sayısı"
-        },
-        "githubIssues": {
-          "label": "GitHub Sorunları",
-          "description": "GitHub deposundaki sorun sayısı"
-        },
         "createdAt": {
           "label": "Oluşturulma Tarihi",
           "description": "Paketin oluşturulma tarihi"
+        },
+        "stars": {
+          "label": "GitHub Yıldızları",
+          "description": "GitHub deposundaki yıldız sayısı"
+        },
+        "issues": {
+          "label": "GitHub Sorunları",
+          "description": "GitHub deposundaki sorun sayısı"
         }
       },
       "values": {

@@ -1360,17 +1360,17 @@
           "label": "Vulnerabilidades",
           "description": "Vulnerabilidades de segurança conhecidas"
         },
-        "githubStars": {
-          "label": "Estrelas no GitHub",
-          "description": "Número de estrelas no repositório GitHub"
-        },
-        "githubIssues": {
-          "label": "Issues no GitHub",
-          "description": "Número de issues no repositório GitHub"
-        },
         "createdAt": {
           "label": "Criado Em",
           "description": "Quando o pacote foi criado"
+        },
+        "stars": {
+          "label": "Estrelas no GitHub",
+          "description": "Número de estrelas no repositório GitHub"
+        },
+        "issues": {
+          "label": "Issues no GitHub",
+          "description": "Número de issues no repositório GitHub"
         }
       },
       "values": {

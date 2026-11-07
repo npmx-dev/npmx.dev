@@ -1498,21 +1498,21 @@
           "label": "নিরাপত্তা ঝুঁকি",
           "description": "পরিচিত নিরাপত্তা দুর্বলতা"
         },
-        "githubStars": {
-          "label": "GitHub স্টার",
-          "description": "GitHub রিপোজিটরিতে স্টারের সংখ্যা"
-        },
-        "githubForks": {
-          "label": "GitHub ফর্ক",
-          "description": "GitHub রিপোজিটরিতে ফর্কের সংখ্যা"
-        },
-        "githubIssues": {
-          "label": "GitHub ইস্যু",
-          "description": "GitHub রিপোজিটরিতে ইস্যুর সংখ্যা"
-        },
         "createdAt": {
           "label": "তৈরি হয়েছে",
           "description": "প্যাকেজটি কখন তৈরি হয়েছে"
+        },
+        "stars": {
+          "label": "GitHub স্টার",
+          "description": "GitHub রিপোজিটরিতে স্টারের সংখ্যা"
+        },
+        "forks": {
+          "label": "GitHub ফর্ক",
+          "description": "GitHub রিপোজিটরিতে ফর্কের সংখ্যা"
+        },
+        "issues": {
+          "label": "GitHub ইস্যু",
+          "description": "GitHub রিপোজিটরিতে ইস্যুর সংখ্যা"
         }
       },
       "values": {

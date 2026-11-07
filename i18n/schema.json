@@ -4867,43 +4867,43 @@
                   },
                   "additionalProperties": false
                 },
-                "githubStars": {
-                  "type": "object",
-                  "properties": {
-                    "label": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "additionalProperties": false
-                },
-                "githubForks": {
-                  "type": "object",
-                  "properties": {
-                    "label": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "additionalProperties": false
-                },
-                "githubIssues": {
-                  "type": "object",
-                  "properties": {
-                    "label": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    }
-                  },
-                  "additionalProperties": false
-                },
                 "createdAt": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "stars": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "forks": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "issues": {
                   "type": "object",
                   "properties": {
                     "label": {

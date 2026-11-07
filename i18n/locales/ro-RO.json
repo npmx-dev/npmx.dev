@@ -1371,17 +1371,17 @@
           "label": "Vulnerabilități",
           "description": "Vulnerabilități de securitate cunoscute"
         },
-        "githubStars": {
-          "label": "Stele GitHub",
-          "description": "Numărul de stele din repository-ul GitHub"
-        },
-        "githubIssues": {
-          "label": "Probleme GitHub",
-          "description": "Numărul de probleme din repository-ul GitHub"
-        },
         "createdAt": {
           "label": "Creat la",
           "description": "Când pachetul a fost creat"
+        },
+        "stars": {
+          "label": "Stele GitHub",
+          "description": "Numărul de stele din repository-ul GitHub"
+        },
+        "issues": {
+          "label": "Probleme GitHub",
+          "description": "Numărul de probleme din repository-ul GitHub"
         }
       },
       "values": {
