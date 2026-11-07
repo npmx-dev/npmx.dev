@@ -280,6 +280,10 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
           <kbd class="kbd">-</kbd>
           <span>{{ $t('shortcuts.changelog') }}</span>
         </li>
+        <li class="flex gap-2 items-center">
+          <kbd class="kbd">v</kbd>
+          <span>{{ $t('shortcuts.share') }}</span>
+        </li>
       </ul>
       <p class="text-fg-muted leading-relaxed">
         <i18n-t keypath="shortcuts.disable_shortcuts" tag="span" scope="global">
