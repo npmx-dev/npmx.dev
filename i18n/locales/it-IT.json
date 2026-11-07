@@ -1423,21 +1423,21 @@
           "label": "Vulnerabilità",
           "description": "Vulnerabilità di sicurezza note"
         },
-        "githubStars": {
-          "label": "Stelle GitHub",
-          "description": "Numero di stelle sul repository GitHub"
-        },
-        "githubForks": {
-          "label": "Fork GitHub",
-          "description": "Numero di fork sul repository GitHub"
-        },
-        "githubIssues": {
-          "label": "Issue GitHub",
-          "description": "Numero di issue sul repository GitHub"
-        },
         "createdAt": {
           "label": "Creato il",
           "description": "Quando è stato creato il pacchetto"
+        },
+        "stars": {
+          "label": "Stelle GitHub",
+          "description": "Numero di stelle sul repository GitHub"
+        },
+        "forks": {
+          "label": "Fork GitHub",
+          "description": "Numero di fork sul repository GitHub"
+        },
+        "issues": {
+          "label": "Issue GitHub",
+          "description": "Numero di issue sul repository GitHub"
         }
       },
       "values": {

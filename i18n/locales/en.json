@@ -1621,21 +1621,21 @@
           "label": "Vulnerabilities",
           "description": "Known security vulnerabilities"
         },
-        "githubStars": {
-          "label": "GitHub Stars",
-          "description": "Number of stars on the GitHub repository"
-        },
-        "githubForks": {
-          "label": "GitHub Forks",
-          "description": "Number of forks on the GitHub repository"
-        },
-        "githubIssues": {
-          "label": "GitHub Issues",
-          "description": "Number of issues on the GitHub repository"
-        },
         "createdAt": {
           "label": "Created At",
           "description": "When the package was created"
+        },
+        "stars": {
+          "label": "Stars",
+          "description": "Number of stars on the repository"
+        },
+        "forks": {
+          "label": "Forks",
+          "description": "Number of forks on the repository"
+        },
+        "issues": {
+          "label": "Issues",
+          "description": "Number of issues on the repository"
         }
       },
       "values": {

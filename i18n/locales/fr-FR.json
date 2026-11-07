@@ -1418,17 +1418,17 @@
           "label": "Vulnérabilités",
           "description": "Vulnérabilités de sécurité connues"
         },
-        "githubStars": {
-          "label": "Étoiles GitHub",
-          "description": "Nombre d’étoiles du dépôt GitHub"
-        },
-        "githubIssues": {
-          "label": "Issues GitHub",
-          "description": "Nombre d’issues ouvertes sur GitHub"
-        },
         "createdAt": {
           "label": "Date de création",
           "description": "Date de création du paquet"
+        },
+        "stars": {
+          "label": "Étoiles GitHub",
+          "description": "Nombre d’étoiles du dépôt GitHub"
+        },
+        "issues": {
+          "label": "Issues GitHub",
+          "description": "Nombre d’issues ouvertes sur GitHub"
         }
       },
       "values": {

@@ -1,4 +1,5 @@
 import { NO_DEPENDENCY_ID } from '#shared/utils/compare'
+import { repoApiPath } from '#shared/utils/git-providers'
 import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 import { getRepoMeta } from '#shared/utils/repository-meta'
@@ -145,8 +146,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
             // Fetch fast additional data in parallel (optional - failures are ok)
             const repoInfo = parseRepositoryInfo(pkg.repository)
-            const isGitHub = repoInfo?.provider === 'github'
-            const [downloads, analysis, vulns, likes, repoMeta, ghIssues] = await Promise.all([
+            const [downloads, analysis, vulns, likes, repoMeta, repoIssues] = await Promise.all([
               // Download counts are per-package, not per-version.
               $fetch<{ downloads: number }>(
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
@@ -160,13 +160,11 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               $fetch<PackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
                 () => null,
               ),
-              isGitHub
+              repoInfo
                 ? getRepoMeta(cachedFetch, repoInfo).catch(() => null)
                 : Promise.resolve(null),
-              isGitHub
-                ? $fetch<{ issues: number | null }>(
-                    `/api/github/issues/${repoInfo.owner}/${repoInfo.repo}`,
-                  )
+              repoInfo
+                ? $fetch<{ issues: number | null }>(repoApiPath(repoInfo, 'issues'))
                     .then(res => (typeof res?.issues === 'number' ? res.issues : null))
                     .catch(() => null)
                 : Promise.resolve(null),
@@ -218,7 +216,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 github: {
                   stars: repoMeta?.stars,
                   forks: repoMeta?.forks,
-                  issues: ghIssues ?? undefined,
+                  issues: repoIssues ?? undefined,
                 },
               },
               isBinaryOnly: isBinary,
@@ -584,7 +582,7 @@ function computeFacetValue(
         status: totalDepCount > 50 ? 'warning' : 'neutral',
       }
     }
-    case 'githubStars': {
+    case 'stars': {
       const stars = data.metadata?.github?.stars
       if (stars == null) return null
       return {
@@ -593,7 +591,7 @@ function computeFacetValue(
         status: 'neutral',
       }
     }
-    case 'githubForks': {
+    case 'forks': {
       const forks = data.metadata?.github?.forks
       if (forks == null) return null
       return {
@@ -602,7 +600,7 @@ function computeFacetValue(
         status: 'neutral',
       }
     }
-    case 'githubIssues': {
+    case 'issues': {
       const issues = data.metadata?.github?.issues
       if (issues == null) return null
       return {

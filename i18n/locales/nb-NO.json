@@ -1428,21 +1428,21 @@
           "label": "Sårbarheter",
           "description": "Kjente sikkerhetssårbarheter"
         },
-        "githubStars": {
-          "label": "GitHub-stjerner",
-          "description": "Antall stjerner på GitHub-repositoriet"
-        },
-        "githubForks": {
-          "label": "GitHub-forks",
-          "description": "Antall forks på GitHub-repositoriet"
-        },
-        "githubIssues": {
-          "label": "GitHub-saker",
-          "description": "Antall saker på GitHub-repositoriet"
-        },
         "createdAt": {
           "label": "Opprettet",
           "description": "Når pakken ble opprettet"
+        },
+        "stars": {
+          "label": "GitHub-stjerner",
+          "description": "Antall stjerner på GitHub-repositoriet"
+        },
+        "forks": {
+          "label": "GitHub-forks",
+          "description": "Antall forks på GitHub-repositoriet"
+        },
+        "issues": {
+          "label": "GitHub-saker",
+          "description": "Antall saker på GitHub-repositoriet"
         }
       },
       "values": {
