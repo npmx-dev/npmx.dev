@@ -1,36 +1,36 @@
 import { describe, expect, it } from 'vite-plus/test'
 import { buildSymbolLookup } from '#server/utils/docs/processing'
-import type { DenoDocNode } from '#shared/types/deno-doc'
+import {
+  classConstructor,
+  classMethod,
+  classNode,
+  classProperty,
+  enumNode,
+  functionNode,
+  interfaceMethod,
+  interfaceNode,
+  interfaceProperty,
+} from './helpers'
 
 describe('buildSymbolLookup', () => {
   it('maps top-level symbols to their anchor IDs', () => {
-    const lookup = buildSymbolLookup([{ name: 'run', kind: 'function' }])
+    const lookup = buildSymbolLookup([functionNode('run')])
 
     expect(lookup.get('run')).toBe('function-run')
   })
 
   it('maps class, interface and enum members with `.` and `#` syntax', () => {
-    const nodes: DenoDocNode[] = [
-      {
-        name: 'CreateTableBuilder',
-        kind: 'class',
-        classDef: {
-          properties: [{ name: 'table' }],
-          methods: [{ name: 'addColumn' }],
-        },
-      },
-      {
-        name: 'Options',
-        kind: 'interface',
-        interfaceDef: {
-          properties: [{ name: 'level' }],
-          methods: [{ name: 'reset' }],
-        },
-      },
-      { name: 'Level', kind: 'enum', enumDef: { members: [{ name: 'High' }] } },
-    ]
-
-    const lookup = buildSymbolLookup(nodes)
+    const lookup = buildSymbolLookup([
+      classNode('CreateTableBuilder', {
+        properties: [classProperty('table')],
+        methods: [classMethod({ name: 'addColumn' })],
+      }),
+      interfaceNode('Options', {
+        properties: [interfaceProperty('level')],
+        methods: [interfaceMethod('reset')],
+      }),
+      enumNode('Level', ['High']),
+    ])
 
     expect(lookup.get('CreateTableBuilder.addColumn')).toBe('class-CreateTableBuilder--addColumn')
     expect(lookup.get('CreateTableBuilder#addColumn')).toBe('class-CreateTableBuilder--addColumn')
@@ -42,7 +42,7 @@ describe('buildSymbolLookup', () => {
 
   it('prefixes member IDs for subpath entries', () => {
     const lookup = buildSymbolLookup(
-      [{ name: 'Client', kind: 'class', classDef: { methods: [{ name: 'send' }] } }],
+      [classNode('Client', { methods: [classMethod({ name: 'send' })] })],
       'feature',
     )
 
@@ -51,8 +51,8 @@ describe('buildSymbolLookup', () => {
 
   it('prefers flattened namespace elements over members with the same qualified name', () => {
     const lookup = buildSymbolLookup([
-      { name: 'Foo', kind: 'class', classDef: { properties: [{ name: 'bar' }] } },
-      { name: 'Foo.bar', kind: 'function' },
+      classNode('Foo', { properties: [classProperty('bar')] }),
+      functionNode('Foo.bar'),
     ])
 
     expect(lookup.get('Foo.bar')).toBe('function-Foo_bar')
@@ -60,8 +60,8 @@ describe('buildSymbolLookup', () => {
 
   it('maps class constructors', () => {
     const lookup = buildSymbolLookup([
-      { name: 'Client', kind: 'class', classDef: { constructors: [{ params: [] }] } },
-      { name: 'Empty', kind: 'class', classDef: {} },
+      classNode('Client', { constructors: [classConstructor()] }),
+      classNode('Empty'),
     ])
 
     expect(lookup.get('Client#constructor')).toBe('class-Client--constructor')
@@ -71,9 +71,9 @@ describe('buildSymbolLookup', () => {
 
   it('only maps members of the first declaration of a merged symbol', () => {
     const lookup = buildSymbolLookup([
-      { name: 'Options', kind: 'interface', interfaceDef: { properties: [{ name: 'level' }] } },
-      { name: 'Options', kind: 'interface', interfaceDef: { properties: [{ name: 'extra' }] } },
-      { name: 'Options', kind: 'class', classDef: { properties: [{ name: 'own' }] } },
+      interfaceNode('Options', { properties: [interfaceProperty('level')] }),
+      interfaceNode('Options', { properties: [interfaceProperty('extra')] }),
+      classNode('Options', { properties: [classProperty('own')] }),
     ])
 
     expect(lookup.get('Options.level')).toBe('interface-Options--level')

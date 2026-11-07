@@ -1,63 +1,509 @@
 {
   "name": "ClientMessage",
+  "location": {
+    "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+    "line": 73,
+    "col": 0,
+    "byteIndex": 1532
+  },
+  "declarationKind": "export",
   "kind": "typeAlias",
-  "typeAliasDef": {
+  "def": {
     "tsType": {
-      "repr": "",
       "kind": "union",
-      "union": [
+      "value": [
         {
-          "repr": "",
           "kind": "typeLiteral",
-          "typeLiteral": {
+          "value": {
             "properties": [
               {
                 "name": "op",
-                "optional": false,
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 74,
+                  "col": 4,
+                  "byteIndex": 1566
+                },
                 "tsType": {
-                  "repr": "voiceUpdate",
-                  "kind": "literal",
-                  "literal": { "kind": "string", "string": "voiceUpdate" }
+                  "repr": "ClientOpCodes.Identify",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.Identify",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
                 }
               },
               {
-                "name": "guildId",
-                "optional": false,
-                "tsType": { "repr": "string", "kind": "keyword", "keyword": "string" }
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 75,
+                  "col": 4,
+                  "byteIndex": 1598
+                },
+                "tsType": {
+                  "repr": "IdentifyPayload",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "IdentifyPayload",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
               }
-            ],
-            "methods": [],
-            "callSignatures": [],
-            "indexSignatures": []
+            ]
           }
         },
         {
-          "repr": "",
           "kind": "typeLiteral",
-          "typeLiteral": {
+          "value": {
             "properties": [
               {
                 "name": "op",
-                "optional": false,
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 77,
+                  "col": 4,
+                  "byteIndex": 1628
+                },
                 "tsType": {
-                  "repr": "play",
-                  "kind": "literal",
-                  "literal": { "kind": "string", "string": "play" }
+                  "repr": "ClientOpCodes.VoiceUpdate",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.VoiceUpdate",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
                 }
               },
               {
-                "name": "guildId",
-                "optional": false,
-                "tsType": { "repr": "string", "kind": "keyword", "keyword": "string" }
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 78,
+                  "col": 4,
+                  "byteIndex": 1663
+                },
+                "tsType": {
+                  "repr": "VoiceUpdatePayload",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "VoiceUpdatePayload",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
               }
-            ],
-            "methods": [],
-            "callSignatures": [],
-            "indexSignatures": []
+            ]
+          }
+        },
+        {
+          "kind": "typeLiteral",
+          "value": {
+            "properties": [
+              {
+                "name": "op",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 80,
+                  "col": 4,
+                  "byteIndex": 1696
+                },
+                "tsType": {
+                  "repr": "ClientOpCodes.Play",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.Play",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 81,
+                  "col": 4,
+                  "byteIndex": 1724
+                },
+                "tsType": {
+                  "repr": "PlayPayload",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "PlayPayload",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "typeLiteral",
+          "value": {
+            "properties": [
+              {
+                "name": "op",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 83,
+                  "col": 4,
+                  "byteIndex": 1750
+                },
+                "tsType": {
+                  "repr": "ClientOpCodes.Pause",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.Pause",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 84,
+                  "col": 4,
+                  "byteIndex": 1779
+                },
+                "tsType": {
+                  "repr": "GuildPayload",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "GuildPayload",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "typeLiteral",
+          "value": {
+            "properties": [
+              {
+                "name": "op",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 86,
+                  "col": 4,
+                  "byteIndex": 1806
+                },
+                "tsType": {
+                  "repr": "ClientOpCodes.Resume",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.Resume",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 87,
+                  "col": 4,
+                  "byteIndex": 1836
+                },
+                "tsType": {
+                  "repr": "GuildPayload",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "GuildPayload",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "typeLiteral",
+          "value": {
+            "properties": [
+              {
+                "name": "op",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 89,
+                  "col": 4,
+                  "byteIndex": 1863
+                },
+                "tsType": {
+                  "repr": "ClientOpCodes.Stop",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.Stop",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 90,
+                  "col": 4,
+                  "byteIndex": 1891
+                },
+                "tsType": {
+                  "repr": "GuildPayload",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "GuildPayload",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "typeLiteral",
+          "value": {
+            "properties": [
+              {
+                "name": "op",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 92,
+                  "col": 4,
+                  "byteIndex": 1918
+                },
+                "tsType": {
+                  "repr": "ClientOpCodes.Seek",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.Seek",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 93,
+                  "col": 4,
+                  "byteIndex": 1946
+                },
+                "tsType": {
+                  "repr": "SeekPayload",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "SeekPayload",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "typeLiteral",
+          "value": {
+            "properties": [
+              {
+                "name": "op",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 95,
+                  "col": 4,
+                  "byteIndex": 1972
+                },
+                "tsType": {
+                  "repr": "ClientOpCodes.Disconnect",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.Disconnect",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 96,
+                  "col": 4,
+                  "byteIndex": 2006
+                },
+                "tsType": {
+                  "repr": "GuildPayload",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "GuildPayload",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "typeLiteral",
+          "value": {
+            "properties": [
+              {
+                "name": "op",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 98,
+                  "col": 4,
+                  "byteIndex": 2033
+                },
+                "tsType": {
+                  "repr": "ClientOpCodes.Ping",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.Ping",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 99,
+                  "col": 4,
+                  "byteIndex": 2061
+                },
+                "optional": true,
+                "tsType": {
+                  "repr": "undefined",
+                  "kind": "keyword",
+                  "value": "undefined"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "typeLiteral",
+          "value": {
+            "properties": [
+              {
+                "name": "op",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 101,
+                  "col": 4,
+                  "byteIndex": 2086
+                },
+                "tsType": {
+                  "repr": "ClientOpCodes.Volume",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.Volume",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 102,
+                  "col": 4,
+                  "byteIndex": 2116
+                },
+                "tsType": {
+                  "repr": "VolumePayload",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "VolumePayload",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "typeLiteral",
+          "value": {
+            "properties": [
+              {
+                "name": "op",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 104,
+                  "col": 4,
+                  "byteIndex": 2144
+                },
+                "tsType": {
+                  "repr": "ClientOpCodes.PlayerMigrate",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "ClientOpCodes.PlayerMigrate",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "d",
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 105,
+                  "col": 4,
+                  "byteIndex": 2181
+                },
+                "tsType": {
+                  "repr": "PlayerMigratePayload",
+                  "kind": "typeRef",
+                  "value": {
+                    "typeName": "PlayerMigratePayload",
+                    "resolution": {
+                      "kind": "local"
+                    }
+                  }
+                }
+              }
+            ]
           }
         }
       ]
-    },
-    "typeParams": []
+    }
   }
 }

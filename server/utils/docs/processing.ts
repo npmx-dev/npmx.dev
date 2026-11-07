@@ -1,38 +1,33 @@
 /**
  * Node Processing
  *
- * Functions for processing deno doc output: flattening namespaces,
+ * Functions for processing `@deno/doc` output: flattening symbols and namespaces,
  * merging overloads, and building symbol lookups.
  *
  * @module server/utils/docs/processing
  */
 
-import type { DenoDocNode } from '#shared/types/deno-doc'
-import type { MergedSymbol, SymbolLookup } from './types'
+import type {
+  ClassMethodDef,
+  DeclarationEnum,
+  EnumDef,
+  EnumMemberDef,
+  FunctionDef,
+  Symbol as DocSymbol,
+} from '@deno/doc'
+import type { DocNode, MergedSymbol, SymbolLookup } from './types'
 import { cleanSymbolName, createMemberId, createSymbolId } from './text'
 
-/**
- * Flatten namespace elements into top-level nodes for easier display.
- * Also filters out import/reference nodes that aren't useful for docs.
- */
-export function flattenNamespaces(nodes: DenoDocNode[]): DenoDocNode[] {
-  const result: DenoDocNode[] = []
+function flattenSymbol(symbol: DocSymbol, qualifier = '', result: DocNode[] = []): DocNode[] {
+  for (const declaration of symbol.declarations) {
+    if (declaration.kind === 'reference') continue
 
-  for (const node of nodes) {
-    // Skip internal nodes
-    if (node.kind === 'import' || node.kind === 'reference') {
-      continue
-    }
-
+    const node: DocNode = { ...declaration, name: `${qualifier}${symbol.name}` }
     result.push(node)
 
-    // Inline namespace members with qualified names
-    if (node.kind === 'namespace' && node.namespaceDef?.elements) {
-      for (const element of node.namespaceDef.elements) {
-        result.push({
-          ...element,
-          name: `${node.name}.${element.name}`,
-        })
+    if (node.kind === 'namespace') {
+      for (const element of node.def.elements) {
+        flattenSymbol(element, `${node.name}.`, result)
       }
     }
   }
@@ -41,12 +36,86 @@ export function flattenNamespaces(nodes: DenoDocNode[]): DenoDocNode[] {
 }
 
 /**
+ * Turn symbols into one node per declaration, inlining namespace members (at any depth) under
+ * qualified names for easier display. Re-exports aren't useful for docs, so they are skipped.
+ */
+export function flattenSymbols(symbols: DocSymbol[]): DocNode[] {
+  const result: DocNode[] = []
+  for (const symbol of symbols) flattenSymbol(symbol, '', result)
+  return result
+}
+
+function isFunctionDef(value: unknown): value is FunctionDef {
+  return (
+    typeof value === 'object' && value !== null && 'params' in value && Array.isArray(value.params)
+  )
+}
+
+function isEnumDef(value: unknown): value is EnumDef {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'members' in value &&
+    Array.isArray(value.members)
+  )
+}
+
+/**
+ * Get the function definition of a class method.
+ *
+ * The published `@deno/doc` types name this field `def`, but the WASM build emits `functionDef`.
+ *
+ * Remove once fixed upstream.
+ * The canary test in `pipeline.spec.ts` fails when the WASM output matches the types again.
+ */
+export function getMethodDef(method: ClassMethodDef): FunctionDef | undefined {
+  const candidate: unknown = 'functionDef' in method ? method.functionDef : method.def
+  return isFunctionDef(candidate) ? candidate : undefined
+}
+
+function getEnumDef(node: DeclarationEnum & { name: string }): EnumDef | undefined {
+  const candidate: unknown = 'def' in node ? node.def : node.enumDef
+  return isEnumDef(candidate) ? candidate : undefined
+}
+
+/**
+ * Get the members of an enum node.
+ *
+ * The published `@deno/doc` types name this field `enumDef`, but the WASM build emits `def`.
+ *
+ * Remove once fixed upstream.
+ * The canary test in `pipeline.spec.ts` fails when the WASM output matches the types again.
+ */
+export function getEnumMembers(node: DeclarationEnum & { name: string }): EnumMemberDef[] {
+  return getEnumDef(node)?.members ?? []
+}
+
+/**
+ * Describe the class methods and enums whose `@deno/doc` shape isn't recognised by
+ * {@link getMethodDef} and {@link getEnumMembers}, so the caller can bail out instead of
+ * rendering them without their signature or members.
+ */
+export function findUnrecognizedShapes(nodes: DocNode[]): string[] {
+  const problems: string[] = []
+  for (const node of nodes) {
+    if (node.kind === 'enum' && !getEnumDef(node)) {
+      problems.push(`enum "${node.name}"`)
+    } else if (node.kind === 'class') {
+      for (const method of node.def.methods ?? []) {
+        if (!getMethodDef(method)) problems.push(`class method "${node.name}.${method.name}"`)
+      }
+    }
+  }
+  return problems
+}
+
+/**
  * Build a lookup table mapping symbol names to their HTML anchor IDs.
  * Used for {@link} cross-references.
  *
  * Class, interface and enum members are reachable as `Symbol.member` and `Symbol#member`.
  */
-export function buildSymbolLookup(nodes: DenoDocNode[], prefix = ''): SymbolLookup {
+export function buildSymbolLookup(nodes: DocNode[], prefix = ''): SymbolLookup {
   const lookup = new Map<string, string>()
   const memberEntries: Array<[string, string]> = []
   const symbolsWithMembers = new Set<string>()
@@ -77,20 +146,25 @@ export function buildSymbolLookup(nodes: DenoDocNode[], prefix = ''): SymbolLook
   return lookup
 }
 
-function getMemberNames(node: DenoDocNode): string[] {
-  const { classDef, enumDef, interfaceDef } = node
-  const constructorNames = classDef?.constructors?.length ? ['constructor'] : []
-
-  return [
-    ...constructorNames,
-    ...[
-      ...(classDef?.properties ?? []),
-      ...(classDef?.methods ?? []),
-      ...(interfaceDef?.properties ?? []),
-      ...(interfaceDef?.methods ?? []),
-      ...(enumDef?.members ?? []),
-    ].map(member => member.name),
-  ]
+function getMemberNames(node: DocNode): string[] {
+  switch (node.kind) {
+    case 'class': {
+      const { constructors = [], properties = [], methods = [] } = node.def
+      return [
+        ...(constructors.length > 0 ? ['constructor'] : []),
+        ...properties.map(member => member.name),
+        ...methods.map(member => member.name),
+      ]
+    }
+    case 'interface': {
+      const { properties = [], methods = [] } = node.def
+      return [...properties.map(member => member.name), ...methods.map(member => member.name)]
+    }
+    case 'enum':
+      return getEnumMembers(node).map(member => member.name)
+    default:
+      return []
+  }
 }
 
 /**
@@ -99,8 +173,8 @@ function getMemberNames(node: DenoDocNode): string[] {
  * TypeScript packages often export many overloads for the same function
  * (e.g., React's `h` has 23 overloads). This groups them together.
  */
-export function mergeOverloads(nodes: DenoDocNode[]): MergedSymbol[] {
-  const byKey = new Map<string, DenoDocNode[]>()
+export function mergeOverloads(nodes: DocNode[]): MergedSymbol[] {
+  const byKey = new Map<string, DocNode[]>()
 
   for (const node of nodes) {
     const cleanName = cleanSymbolName(node.name)

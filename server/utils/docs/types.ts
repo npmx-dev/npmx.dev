@@ -1,11 +1,25 @@
 /**
  * Internal Types for Docs Module
- * These are highly coupled to `deno doc`, hence they live here instead of shared types.
+ * These are highly coupled to `@deno/doc`, hence they live here instead of shared types.
  *
  * @module server/utils/docs/types
  */
 
-import type { DenoDocNode } from '#shared/types/deno-doc'
+import type { Declaration, JsDoc, Symbol as DocSymbol } from '@deno/doc'
+
+/**
+ * A single declaration taken out of its `@deno/doc` symbol, carrying the symbol's name.
+ * Namespace members are named `Namespace.member`.
+ */
+export type DocNode = Declaration & { name: string }
+
+/**
+ * Documented symbols for one entry point of a package.
+ */
+export interface DocEntry {
+  entryPoint: string
+  symbols: DocSymbol[]
+}
 
 /**
  * Map of symbol names to anchor IDs for cross-referencing.
@@ -19,8 +33,8 @@ export type SymbolLookup = Map<string, string>
 export interface MergedSymbol {
   name: string
   kind: string
-  nodes: DenoDocNode[]
-  jsDoc?: DenoDocNode['jsDoc']
+  nodes: DocNode[]
+  jsDoc?: JsDoc
 }
 
 /**

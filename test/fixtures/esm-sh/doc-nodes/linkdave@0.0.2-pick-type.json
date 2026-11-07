@@ -1,42 +1,63 @@
 {
   "name": "RawVoiceServerUpdate",
+  "location": {
+    "filename": "https://esm.sh/linkdave@0.0.2/dist/player.d.ts",
+    "line": 15,
+    "col": 0,
+    "byteIndex": 676
+  },
+  "declarationKind": "export",
   "kind": "typeAlias",
-  "typeAliasDef": {
+  "def": {
     "tsType": {
       "repr": "Pick",
       "kind": "typeRef",
-      "typeRef": {
-        "typeName": "Pick",
+      "value": {
         "typeParams": [
           {
             "repr": "GatewayVoiceServerUpdateDispatchData",
             "kind": "typeRef",
-            "typeRef": { "typeName": "GatewayVoiceServerUpdateDispatchData" }
+            "value": {
+              "typeName": "GatewayVoiceServerUpdateDispatchData",
+              "resolution": {
+                "kind": "import",
+                "specifier": "https://esm.sh/discord-api-types@0.38.38/v10.d.ts",
+                "name": "GatewayVoiceServerUpdateDispatchData"
+              }
+            }
           },
           {
-            "repr": "",
             "kind": "union",
-            "union": [
+            "value": [
               {
                 "repr": "token",
                 "kind": "literal",
-                "literal": { "kind": "string", "string": "token" }
+                "value": {
+                  "kind": "string",
+                  "string": "token"
+                }
               },
               {
                 "repr": "guild_id",
                 "kind": "literal",
-                "literal": { "kind": "string", "string": "guild_id" }
+                "value": {
+                  "kind": "string",
+                  "string": "guild_id"
+                }
               },
               {
                 "repr": "endpoint",
                 "kind": "literal",
-                "literal": { "kind": "string", "string": "endpoint" }
+                "value": {
+                  "kind": "string",
+                  "string": "endpoint"
+                }
               }
             ]
           }
-        ]
+        ],
+        "typeName": "Pick"
       }
-    },
-    "typeParams": []
+    }
   }
 }

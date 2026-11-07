@@ -74,7 +74,7 @@ packageExtensions:
       estree-walker: ^3.0.3
 
 patchedDependencies:
-  '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
+  '@jsr/deno__doc@0.210.0': patches/@jsr__deno__doc@0.210.0.patch
   '@nuxt/test-utils@4.1.0': patches/@nuxt__test-utils@4.1.0.patch
 
 savePrefix: ''
