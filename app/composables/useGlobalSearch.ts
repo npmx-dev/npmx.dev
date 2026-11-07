@@ -1,3 +1,4 @@
+import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { normalizeSearchParam } from '#shared/utils/url'
 import { debounce } from 'perfect-debounce'
 
@@ -77,6 +78,16 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
   function flushUpdateUrlQuery() {
     // Commit the current query when explicitly submitted (Enter pressed)
     commitSearchQuery.cancel()
+
+    // "pkg@version" goes straight to the package page. Drop the pending debounced
+    // `router.replace(?q=…)` first: landing after the push, it would cancel it.
+    const { name, version } = parsePackageSpec(searchQuery.value.trim())
+    if (name && version) {
+      updateUrlQuery.cancel()
+      router.push(packageRoute(name, version))
+      return
+    }
+
     committedSearchQuery.value = searchQuery.value
     // When instant search is off the debounce queue is empty, so call directly
     if (!settings.value.instantSearch) {
