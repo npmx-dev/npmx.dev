@@ -138,7 +138,7 @@ const PLAYGROUND_PROVIDERS: PlaygroundProvider[] = [
   {
     id: 'element-plus-playground',
     name: 'Element Plus Playground',
-    domains: ['run.element-plus.org'],
+    domains: ['element-plus.run', 'run.element-plus.org'],
     icon: 'element-plus',
   },
 ]
