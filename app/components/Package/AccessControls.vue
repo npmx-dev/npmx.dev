@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { splitPackageName } from 'npmeta'
 import type { NewOperation } from '~/composables/useConnector'
 import { buildScopeTeam } from '~/utils/npm/common'
 
@@ -15,12 +16,8 @@ const {
   error: connectorError,
 } = useConnector()
 
-// Extract org name from scoped package (e.g., "@nuxt/kit" -> "nuxt")
-const orgName = computed(() => {
-  if (!props.packageName.startsWith('@')) return null
-  const match = props.packageName.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
+// Extract org name from scoped package
+const orgName = computed(() => splitPackageName(props.packageName).scope)
 
 // Data
 const collaborators = shallowRef<Record<string, 'read-only' | 'read-write'>>({})

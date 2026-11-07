@@ -1,5 +1,5 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
-import { getCreateShortName } from '#shared/utils/package-analysis'
+import { getCreateShortName } from 'npmeta'
 
 // @unocss-include
 export const packageManagers = [
@@ -182,7 +182,7 @@ function getCreatePackageSpecifier(options: ExecuteCommandOptions): string | nul
   }
 
   const shortName = getCreateShortName(options.packageName)
-  if (shortName === options.packageName) {
+  if (shortName === null) {
     return null
   }
 

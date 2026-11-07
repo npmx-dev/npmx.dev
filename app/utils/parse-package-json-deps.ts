@@ -1,4 +1,4 @@
-import { parsePackageSpec } from '#shared/utils/parse-package-param'
+import { parsePackageSpec } from 'npmeta'
 
 export type DependencyCategory =
   | 'dependencies'

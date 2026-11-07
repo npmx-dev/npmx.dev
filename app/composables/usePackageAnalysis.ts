@@ -1,4 +1,5 @@
-import type { ModuleFormat, TypesStatus, CreatePackageInfo } from '#shared/utils/package-analysis'
+import type { ModuleFormat } from 'npmeta'
+import type { TypesStatus, CreatePackageInfo } from '#shared/utils/package-analysis'
 import type { DevDependencySuggestion } from '#shared/utils/dev-dependency'
 
 export interface PackageAnalysisResponse {

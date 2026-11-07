@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { encodePackageName } from '#shared/utils/npm'
+import { encodePackageName } from 'npmeta'
 
 const { packages = [], emptyDescription = 'Compare npm packages side-by-side' } = defineProps<{
   packages?: string | string[]

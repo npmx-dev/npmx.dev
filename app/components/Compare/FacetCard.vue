@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { parsePackageSpec } from 'npmeta'
+
 const props = defineProps<{
   /** Facet label */
   label: string
@@ -57,15 +59,6 @@ function getStatusClass(status?: FacetValue['status']): string {
 function isCellLoading(index: number): boolean {
   return props.facetLoading || (props.columnLoading?.[index] ?? false)
 }
-
-// Get short package name (without version) for mobile display
-function getShortName(header: string): string {
-  const atIndex = header.lastIndexOf('@')
-  if (atIndex > 0) {
-    return header.substring(0, atIndex)
-  }
-  return header
-}
 </script>
 
 <template>
@@ -102,7 +95,7 @@ function getShortName(header: string): string {
           class="relative font-mono text-xs text-fg-muted truncate flex-shrink-0"
           :title="headers[index]"
         >
-          {{ getShortName(headers[index] ?? '') }}
+          {{ parsePackageSpec(headers[index] ?? '').name }}
         </span>
 
         <!-- Value -->

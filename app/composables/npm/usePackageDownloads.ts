@@ -1,3 +1,5 @@
+import { encodePackageName } from 'npmeta'
+
 export function usePackageDownloads(
   name: MaybeRefOrGetter<string>,
   period: MaybeRefOrGetter<'last-day' | 'last-week' | 'last-month' | 'last-year'> = 'last-week',

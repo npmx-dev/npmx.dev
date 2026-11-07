@@ -9,6 +9,7 @@ import type {
 import { mapWithConcurrency } from '#shared/utils/async'
 import { splitIsoRangeIntoChunksInclusive, mergeDailyPoints } from '#shared/utils/download-ranges'
 import { fetchNpmDownloadsRange } from '~/utils/npm/api'
+import { encodePackageName } from 'npmeta'
 import { toValue } from 'vue'
 import { addDays, toIsoDate, parseIsoDate } from '~/utils/date'
 

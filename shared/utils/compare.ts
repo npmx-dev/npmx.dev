@@ -1,5 +1,5 @@
+import { parsePackageSpec } from 'npmeta'
 import type { ComparisonPackage } from '../types/comparison'
-import { parsePackageSpec } from './parse-package-param'
 
 /** Special identifier for the "What Would James Do?" comparison column */
 export const NO_DEPENDENCY_ID = '__no_dependency__'

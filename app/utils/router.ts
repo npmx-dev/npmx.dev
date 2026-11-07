@@ -1,5 +1,5 @@
 import type { RouteLocationRaw } from 'vue-router'
-import { splitPackageName } from '~/utils/package-name'
+import { splitPackageName } from 'npmeta'
 
 export function packageRoute(
   packageName: string,

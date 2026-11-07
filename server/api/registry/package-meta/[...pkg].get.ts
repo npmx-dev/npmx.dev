@@ -1,4 +1,4 @@
-import { normalizeLicense } from '#shared/utils/npm'
+import { encodePackageName, normalizeLicense } from 'npmeta'
 
 /**
  * Returns lightweight package metadata for search results.

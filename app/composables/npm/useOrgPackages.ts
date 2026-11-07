@@ -1,4 +1,5 @@
 import type { NpmSearchResponse, NpmSearchResult, PackageMetaResponse } from '#shared/types'
+import { encodePackageName } from 'npmeta'
 import { emptySearchResponse, metaToSearchResult } from './search-utils'
 import { mapWithConcurrency } from '#shared/utils/async'
 

@@ -5,7 +5,7 @@ import type {
   ExtendedPackageJson,
   CreatePackageInfo,
 } from '#shared/utils/package-analysis'
-import { analyzePackage, getCreatePackageName } from '#shared/utils/package-analysis'
+import { analyzePackage } from '#shared/utils/package-analysis'
 import {
   getDevDependencySuggestion,
   type DevDependencySuggestion,
@@ -16,8 +16,8 @@ import {
   ERROR_PACKAGE_ANALYSIS_FAILED,
 } from '#shared/utils/constants'
 import { parseRepositoryInfo } from '#shared/utils/git-providers'
-import { encodePackageName } from '#shared/utils/npm'
 import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
+import { encodePackageName, getCreatePackageName } from 'npmeta'
 import { getLatestVersionBatch } from 'fast-npm-meta'
 
 export default defineCachedEventHandler(

@@ -1,6 +1,7 @@
 import type { ExtendedPackageJson } from '#shared/utils/package-analysis'
 import { VersionSchema, PackageNameSchema } from '#shared/schemas/package'
 import { ERROR_PACKAGE_DETECT_CHANGELOG, NPM_REGISTRY } from '#shared/utils/constants'
+import { encodePackageName } from 'npmeta'
 import * as v from 'valibot'
 import { detectChangelog } from '~~/server/utils/changelog/detectChangelog'
 
