@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 
 // `useRoute()` cannot be mocked via `mockNuxtImport` in this runtime, so instead
 // we drive the app's real router. That has the upside of exercising the actual

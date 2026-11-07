@@ -4,14 +4,7 @@ import ProvenanceBadge from './ProvenanceBadge.vue'
 const meta = {
   component: ProvenanceBadge,
   tags: ['autodocs'],
-  argTypes: {
-    provider: {
-      control: 'select',
-      options: ['github', 'gitlab', undefined],
-    },
-  },
   args: {
-    provider: 'github',
     packageName: 'example-package',
     version: '1.0.0',
   },
@@ -30,23 +23,9 @@ export const Compact: Story = {
   },
 }
 
-/** Built on GitLab CI rather than GitHub Actions. */
-export const GitLab: Story = {
-  args: {
-    provider: 'gitlab',
-  },
-}
-
 /** Rendered as static text (no link) when `linked` is false. */
 export const NotLinked: Story = {
   args: {
     linked: false,
-  },
-}
-
-/** Without a provider, it shows a generic "verified" title. */
-export const NoProvider: Story = {
-  args: {
-    provider: undefined,
   },
 }

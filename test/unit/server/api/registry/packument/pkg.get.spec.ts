@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createError, type H3Event } from 'h3'
 import type { Packument, PackumentVersion } from '#shared/types/npm-registry'
 

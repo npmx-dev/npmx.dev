@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 const { useNuxt } = vi.hoisted(() => ({
   useNuxt: vi.fn(),

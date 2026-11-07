@@ -33,6 +33,12 @@ jobs:
           # Version of the underlying sfw to use (no `v` prefix): https://github.com/SocketDev/sfw-free/releases
           firewall-version: 1.12.0
 
+      # Lunaria needs the full git history, but `vercel deploy` uploads the source without `.git`,
+      # so generate `dist/lunaria/status.json` here and upload it with the source instead.
+      # https://github.com/npmx-dev/npmx.dev/issues/2785
+      - run: sfw vp install --filter . --ignore-scripts
+      - run: vp run build:lunaria
+
       - run: sfw vp i -g vercel@54.12.2
       - run: vercel deploy --target=canary
         env:

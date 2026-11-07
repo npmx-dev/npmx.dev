@@ -126,7 +126,7 @@ export default defineNuxtConfig({
       isr: {
         expiration: 300,
         passQuery: true,
-        allowQuery: ['offset', 'limit', 'sort', 'stable-only'],
+        allowQuery: ['offset', 'limit', 'sort', 'stable-only', 'around', 'frozen-history'],
       },
     },
     '/api/changelog/md/**': {
@@ -241,6 +241,14 @@ export default defineNuxtConfig({
     '/recharging': { prerender: true },
     '/pds': { isr: 86400 }, // revalidate daily
     '/blog/**': { prerender: true },
+    '/blog/rss.xml': {
+      prerender: true,
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/rss+xml' },
+    },
+    '/blog/atom.xml': {
+      prerender: true,
+      headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/atom+xml' },
+    },
     '/noodles/**': { prerender: true },
     '/sponsors': { prerender: true },
     '/tools': { prerender: true },
@@ -262,6 +270,7 @@ export default defineNuxtConfig({
 
   experimental: {
     entryImportMap: false,
+    payloadExtraction: 'client',
     typescriptPlugin: true,
     viteEnvironmentApi: !isStorybook,
     typedPages: true,
@@ -284,6 +293,10 @@ export default defineNuxtConfig({
     esbuild: {
       options: {
         target: 'es2024',
+        // HACK: Excluding node_modules is the default. Here, we exempt
+        // .cache/nuxt/.nuxt/blog/posts.ts from that so that #blog/posts can be
+        // imported, parsed and executed as TS in server/utils/feeds.ts by esbuild
+        exclude: /node_modules\/(?!\.cache\/nuxt\/\.nuxt\/blog\/posts\.ts)/,
       },
     },
     rollupConfig: {
@@ -299,10 +312,6 @@ export default defineNuxtConfig({
       'fetch-cache': {
         driver: 'fsLite',
         base: './.cache/fetch',
-      },
-      'payload-cache': {
-        driver: 'fsLite',
-        base: './.cache/payload',
       },
       'atproto': {
         driver: 'fsLite',

@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { effectScope, nextTick, ref, type EffectScope } from 'vue'
 import type { DirectDependencyHealthResult } from '#shared/types/dependency-analysis'
 import { DIRECT_DEPS_HEALTH_MAX } from '#shared/utils/constants'

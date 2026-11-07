@@ -1,8 +1,7 @@
+import { NO_DEPENDENCY_ID } from '#shared/utils/compare'
 import { parsePackageSpec } from '#shared/utils/parse-package-param'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
-
-/** Special identifier for the "What Would James Do?" comparison column */
-export const NO_DEPENDENCY_ID = '__no_dependency__'
+import { getRepoMeta } from '#shared/utils/repository-meta'
 
 /**
  * Special display values for the "no dependency" column.
@@ -73,6 +72,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const compactNumberFormatter = useCompactNumberFormatter()
   const bytesFormatter = useBytesFormatter()
   const packages = computed(() => toValue(packageNames))
+  const cachedFetch = useCachedFetch()
 
   // Cache of fetched data by package name (source of truth)
   const cache = shallowRef(new Map<string, PackageComparisonData>())
@@ -146,7 +146,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
             // Fetch fast additional data in parallel (optional - failures are ok)
             const repoInfo = parseRepositoryInfo(pkg.repository)
             const isGitHub = repoInfo?.provider === 'github'
-            const [downloads, analysis, vulns, likes, ghRepo, ghIssues] = await Promise.all([
+            const [downloads, analysis, vulns, likes, repoMeta, ghIssues] = await Promise.all([
               // Download counts are per-package, not per-version.
               $fetch<{ downloads: number }>(
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
@@ -161,9 +161,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 () => null,
               ),
               isGitHub
-                ? $fetch<{ repo: { stars?: number; forks?: number } }>(
-                    `https://ungh.cc/repos/${repoInfo.owner}/${repoInfo.repo}`,
-                  ).catch(() => null)
+                ? getRepoMeta(cachedFetch, repoInfo).catch(() => null)
                 : Promise.resolve(null),
               isGitHub
                 ? $fetch<{ issues: number | null }>(
@@ -218,8 +216,8 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 engines: analysis?.engines,
                 deprecated: versionData.deprecated,
                 github: {
-                  stars: typeof ghRepo?.repo?.stars === 'number' ? ghRepo.repo.stars : undefined,
-                  forks: typeof ghRepo?.repo?.forks === 'number' ? ghRepo.repo.forks : undefined,
+                  stars: repoMeta?.stars,
+                  forks: repoMeta?.forks,
                   issues: ghIssues ?? undefined,
                 },
               },

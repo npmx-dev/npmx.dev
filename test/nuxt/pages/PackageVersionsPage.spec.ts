@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type * as NpmApi from '~/utils/npm/api'
 import VersionsPage from '~/pages/package/[[org]]/[name]/versions.vue'

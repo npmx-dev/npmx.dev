@@ -183,9 +183,8 @@ const syncLocaleData = (
     if (isNested(refValue)) {
       const nextTarget = isNested(target[key]) ? target[key] : {}
       const data = syncLocaleData(refValue, nextTarget, stats, fix, propertyPath)
-      // When fixing, empty objects won't occur since missing keys get placeholders.
-      // Without --fix, keep empty objects to preserve structural parity with the reference.
-      if (fix && Object.keys(data).length === 0) {
+      // If the resulting nested object has no keys left, omit it entirely.
+      if (Object.keys(data).length === 0) {
         delete result[key]
       } else {
         result[key] = data
