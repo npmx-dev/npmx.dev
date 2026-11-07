@@ -4414,6 +4414,18 @@
             "handle_placeholder": {
               "type": "string"
             },
+            "handle_suggestions_label": {
+              "type": "string"
+            },
+            "handle_searching": {
+              "type": "string"
+            },
+            "handle_no_results": {
+              "type": "string"
+            },
+            "handle_search_unavailable": {
+              "type": "string"
+            },
             "connect": {
               "type": "string"
             },
