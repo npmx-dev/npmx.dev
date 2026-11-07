@@ -37,17 +37,11 @@ function buildTocTree(items: TocItem[]): TocNode[] {
 
 const tocTree = computed(() => buildTocTree(props.toc))
 
-// Create a map from id to index for efficient lookup
-const idToIndex = computed(() => {
-  const map = new Map<string, number>()
-  props.toc.forEach((item, index) => map.set(item.id, index))
-  return map
-})
-
-const listRef = useTemplateRef('listRef')
+const menuRef = useTemplateRef('menuRef')
 const triggerRef = useTemplateRef('triggerRef')
 const isOpen = shallowRef(false)
-const highlightedIndex = shallowRef(-1)
+// ArrowUp on the closed trigger opens the menu on its last item (menu button pattern)
+const shouldFocusLastOnOpen = shallowRef(false)
 
 const dropdownPosition = shallowRef<{ top: number; right: number } | null>(null)
 
@@ -59,107 +53,133 @@ function getDropdownStyle(): Record<string, string> {
   }
 }
 
-// Close on scroll (but not when scrolling inside the dropdown)
+// Close on scroll (but not when scrolling inside the menu)
 function handleScroll(event: Event) {
   if (!isOpen.value) return
-  if (listRef.value && event.target instanceof Node && listRef.value.contains(event.target)) {
+  if (menuRef.value && event.target instanceof Node && menuRef.value.contains(event.target)) {
     return
   }
+  // The focused item unmounts with the menu, so don't let focus fall back to <body>
+  const hasFocusInMenu = menuRef.value?.contains(document.activeElement) ?? false
   close()
+  if (hasFocusInMenu) triggerRef.value?.focus({ preventScroll: true })
 }
 useEventListener('scroll', handleScroll, { passive: true })
 
 // Generate unique ID for accessibility
 const inputId = useId()
-const listboxId = `${inputId}-toc-listbox`
+const menuId = `${inputId}-toc-menu`
+
+function getMenuItems(): HTMLElement[] {
+  if (!menuRef.value) return []
+  return Array.from(menuRef.value.querySelectorAll<HTMLElement>('[role="menuitem"]'))
+}
+
+function open() {
+  const rect = triggerRef.value?.getBoundingClientRect()
+  if (rect) {
+    dropdownPosition.value = {
+      top: rect.bottom + 4,
+      right: rect.right,
+    }
+  }
+  isOpen.value = true
+}
+
+function close() {
+  isOpen.value = false
+}
+
+function selectItem() {
+  close()
+  // The focused item unmounts with the menu; keep the page on the heading we jumped to
+  triggerRef.value?.focus({ preventScroll: true })
+}
 
 function toggle() {
   if (isOpen.value) {
     close()
   } else {
-    const rect = triggerRef.value?.getBoundingClientRect()
-    if (rect) {
-      dropdownPosition.value = {
-        top: rect.bottom + 4,
-        right: rect.right,
-      }
-    }
-    isOpen.value = true
-    // Highlight active item if any
-    const activeIndex = idToIndex.value.get(props.activeId ?? '')
-    highlightedIndex.value = activeIndex ?? 0
+    open()
   }
-}
-
-function close() {
-  isOpen.value = false
-  highlightedIndex.value = -1
-}
-
-function select() {
-  close()
-  triggerRef.value?.focus()
-}
-
-function getIndex(id: string): number {
-  return idToIndex.value.get(id) ?? -1
 }
 
 // Check for reduced motion preference
 const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 
-onClickOutside(listRef, close, { ignore: [triggerRef] })
+onClickOutside(menuRef, close, { ignore: [triggerRef] })
 
-function handleKeydown(event: KeyboardEvent) {
-  if (!isOpen.value) return
+function handleTriggerKeydown(event: KeyboardEvent) {
+  switch (event.key) {
+    case 'ArrowDown':
+    case 'ArrowUp':
+      event.preventDefault()
+      if (isOpen.value) break
+      shouldFocusLastOnOpen.value = event.key === 'ArrowUp'
+      open()
+      break
+    case 'Escape':
+      if (isOpen.value) close()
+      break
+  }
+}
 
-  const itemCount = props.toc.length
+function handleMenuKeydown(event: KeyboardEvent) {
+  const items = getMenuItems()
+  const currentIndex = items.findIndex(el => el === document.activeElement)
 
   switch (event.key) {
     case 'ArrowDown':
       event.preventDefault()
-      highlightedIndex.value = (highlightedIndex.value + 1) % itemCount
+      items[(currentIndex + 1) % items.length]?.focus()
       break
     case 'ArrowUp':
       event.preventDefault()
-      highlightedIndex.value =
-        highlightedIndex.value <= 0 ? itemCount - 1 : highlightedIndex.value - 1
+      items[currentIndex <= 0 ? items.length - 1 : currentIndex - 1]?.focus()
       break
-    case 'Enter': {
+    case 'Home':
       event.preventDefault()
-      const item = props.toc[highlightedIndex.value]
-      if (item) {
-        select()
-      }
+      items[0]?.focus()
       break
-    }
+    case 'End':
+      event.preventDefault()
+      items[items.length - 1]?.focus()
+      break
     case 'Escape':
+      close()
+      triggerRef.value?.focus()
+      break
+    case 'Tab':
+      // The menu is teleported to the end of <body>, so move focus back to the trigger without
+      // preventing the default: the browser then moves on to the element after (or, with Shift,
+      // before) the trigger in page order
       close()
       triggerRef.value?.focus()
       break
   }
 }
 
-const itemScrollIntoView = (index: number) => {
-  const item = props.toc[index]
-  if (!item) return
-  const el = document.getElementById(`${listboxId}-${item.id}`)
-  if (el) {
-    el.scrollIntoView({ block: 'center' })
+function handleMenuFocusout(event: FocusEvent) {
+  // Let the trigger's click toggle the menu closed instead of closing and reopening it here
+  if (event.relatedTarget === triggerRef.value?.$el) return
+  if (!menuRef.value?.contains(event.relatedTarget as Node | null)) {
+    close()
   }
 }
 
-watch(
-  isOpen,
-  open => {
-    if (open && highlightedIndex.value >= 0) {
-      itemScrollIntoView(highlightedIndex.value)
-    }
-  },
-  {
-    flush: 'post',
-  },
-)
+watch(isOpen, isNowOpen => {
+  if (isNowOpen) {
+    nextTick(() => {
+      const items = getMenuItems()
+      // Headings deeper than three levels are not rendered, so look the active item up by id
+      const activeItem = items.find(item => item.id === `${menuId}-${props.activeId}`)
+      const target = shouldFocusLastOnOpen.value ? items.at(-1) : (activeItem ?? items[0])
+      shouldFocusLastOnOpen.value = false
+      target?.focus()
+      target?.scrollIntoView({ block: 'nearest' })
+    })
+  }
+})
 </script>
 
 <template>
@@ -167,11 +187,11 @@ watch(
     ref="triggerRef"
     type="button"
     :aria-expanded="isOpen"
-    aria-haspopup="listbox"
+    aria-haspopup="menu"
     :aria-label="$t('package.readme.toc_title')"
-    :aria-controls="isOpen ? listboxId : undefined"
+    :aria-controls="isOpen ? menuId : undefined"
     @click="toggle"
-    @keydown="handleKeydown"
+    @keydown="handleTriggerKeydown"
     classicon="i-lucide:list"
     class="px-2.5"
     block
@@ -198,71 +218,58 @@ watch(
     >
       <div
         v-if="isOpen"
-        :id="listboxId"
-        ref="listRef"
-        role="listbox"
-        :aria-activedescendant="
-          highlightedIndex >= 0 && toc[highlightedIndex]?.id
-            ? `${listboxId}-${toc[highlightedIndex]?.id}`
-            : undefined
-        "
+        :id="menuId"
+        ref="menuRef"
+        role="menu"
         :aria-label="$t('package.readme.toc_title')"
         :style="getDropdownStyle()"
+        tabindex="-1"
+        @keydown="handleMenuKeydown"
+        @focusout="handleMenuFocusout"
         class="fixed bg-bg-subtle border border-border rounded-md shadow-lg z-50 max-h-80 overflow-y-auto w-56 overscroll-contain"
       >
         <template v-for="node in tocTree" :key="node.id">
           <NuxtLink
-            :id="`${listboxId}-${node.id}`"
+            :id="`${menuId}-${node.id}`"
             :to="`#${node.id}`"
-            role="option"
-            :aria-selected="activeId === node.id"
-            class="flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer transition-colors duration-150"
-            :class="[
-              activeId === node.id ? 'text-fg font-medium' : 'text-fg-muted',
-              highlightedIndex === getIndex(node.id) ? 'bg-bg-elevated' : 'hover:bg-bg-elevated',
-            ]"
+            :aria-current="activeId === node.id ? 'location' : undefined"
+            role="menuitem"
+            tabindex="-1"
+            class="flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer transition-colors duration-150 hover:bg-bg-elevated focus:bg-bg-elevated"
+            :class="activeId === node.id ? 'text-fg font-medium' : 'text-fg-muted'"
             dir="auto"
-            @click="select()"
-            @mouseenter="highlightedIndex = getIndex(node.id)"
+            @click="selectItem"
           >
             <span class="truncate">{{ node.text }}</span>
           </NuxtLink>
 
           <template v-for="child in node.children" :key="child.id">
             <NuxtLink
-              :id="`${listboxId}-${child.id}`"
+              :id="`${menuId}-${child.id}`"
               :to="`#${child.id}`"
-              role="option"
-              :aria-selected="activeId === child.id"
-              class="flex items-center gap-2 px-3 py-1.5 ps-6 text-sm cursor-pointer transition-colors duration-150"
-              :class="[
-                activeId === child.id ? 'text-fg font-medium' : 'text-fg-subtle',
-                highlightedIndex === getIndex(child.id) ? 'bg-bg-elevated' : 'hover:bg-bg-elevated',
-              ]"
+              :aria-current="activeId === child.id ? 'location' : undefined"
+              role="menuitem"
+              tabindex="-1"
+              class="flex items-center gap-2 px-3 py-1.5 ps-6 text-sm cursor-pointer transition-colors duration-150 hover:bg-bg-elevated focus:bg-bg-elevated"
+              :class="activeId === child.id ? 'text-fg font-medium' : 'text-fg-subtle'"
               dir="auto"
-              @click="select()"
-              @mouseenter="highlightedIndex = getIndex(child.id)"
+              @click="selectItem"
             >
               <span class="truncate">{{ child.text }}</span>
             </NuxtLink>
 
             <NuxtLink
               v-for="grandchild in child.children"
-              :id="`${listboxId}-${grandchild.id}`"
+              :id="`${menuId}-${grandchild.id}`"
               :to="`#${grandchild.id}`"
+              :aria-current="activeId === grandchild.id ? 'location' : undefined"
               :key="grandchild.id"
-              role="option"
-              :aria-selected="activeId === grandchild.id"
-              class="flex items-center gap-2 px-3 py-1.5 ps-9 text-sm cursor-pointer transition-colors duration-150"
-              :class="[
-                grandchild.id === activeId ? 'text-fg font-medium' : 'text-fg-subtle',
-                highlightedIndex === getIndex(grandchild.id)
-                  ? 'bg-bg-elevated'
-                  : 'hover:bg-bg-elevated',
-              ]"
+              role="menuitem"
+              tabindex="-1"
+              class="flex items-center gap-2 px-3 py-1.5 ps-9 text-sm cursor-pointer transition-colors duration-150 hover:bg-bg-elevated focus:bg-bg-elevated"
+              :class="grandchild.id === activeId ? 'text-fg font-medium' : 'text-fg-subtle'"
               dir="auto"
-              @click="select()"
-              @mouseenter="highlightedIndex = getIndex(grandchild.id)"
+              @click="selectItem"
             >
               <span class="truncate">{{ grandchild.text }}</span>
             </NuxtLink>
