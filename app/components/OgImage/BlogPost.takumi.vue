@@ -69,7 +69,7 @@ const formattedAuthorNames = computed(() => {
         </span>
 
         <div
-          class="lg:text-6xl text-5xl tracking-tighter font-mono leading-tight"
+          class="lg:text-6xl text-5xl tracking-tighter font-ogmono leading-tight"
           :style="{ lineClamp: 2, textOverflow: 'ellipsis' }"
         >
           {{ title }}

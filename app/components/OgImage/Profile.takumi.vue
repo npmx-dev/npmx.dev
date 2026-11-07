@@ -37,11 +37,11 @@ const getInitials = (name: string) =>
 
         <div class="flex flex-col gap-1">
           <!-- Display name -->
-          <div v-if="displayName" class="text-5xl font-mono tracking-tight leading-none">
+          <div v-if="displayName" class="text-5xl font-ogmono tracking-tight leading-none">
             {{ displayName }}
           </div>
           <!-- Handle -->
-          <div class="text-4xl text-fg-muted font-mono tracking-tight leading-none">
+          <div class="text-4xl text-fg-muted font-ogmono tracking-tight leading-none">
             ~{{ handle }}
           </div>
         </div>
