@@ -453,6 +453,9 @@
       "top_rank_label": "n°{rank}",
       "top_rank_link_label": "Voir le classement des likes. Ce paquet est classé n°{rank}."
     },
+    "social_mentions": {
+      "label": "{count} mention | {count} mentions"
+    },
     "docs": {
       "contents": "Sommaire",
       "default_not_available": "La documentation n'est pas disponible pour cette version.",

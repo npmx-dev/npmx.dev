@@ -10,6 +10,13 @@ export type PackageLikes = {
   topLikedRank: number | null
 }
 
+/**
+ * Approximate number of social posts mentioning a npm package
+ */
+export type PackageSocialMentions = {
+  totalMentions: number
+}
+
 export type LikesLeaderboardEntry = {
   rank: number
   packageName: string
