@@ -51,13 +51,9 @@ describe('PackageSocialMentionsUtils.getMentions', () => {
     mockConstellation.getBackLinks.mockResolvedValue(makeBacklinksPage([]))
   })
 
-  it('counts unique posts across npmx, npmjs, embeds and facet links', async () => {
-    const npmxEmbed = 'https://npmx.dev/package/zod|embed.external.uri'
-    const npmxFacet =
-      'https://npmx.dev/package/zod|facets[].features[app.bsky.richtext.facet#link].uri'
-    const npmjsEmbed = 'https://www.npmjs.com/package/zod|embed.external.uri'
-    const npmjsFacet =
-      'https://www.npmjs.com/package/zod|facets[].features[app.bsky.richtext.facet#link].uri'
+  it('counts unique posts across embed and facet links', async () => {
+    const embed = 'https://npmx.dev/package/zod|embed.external.uri'
+    const facet = 'https://npmx.dev/package/zod|facets[].features[app.bsky.richtext.facet#link].uri'
 
     mockConstellation.getBackLinks.mockImplementation(
       async (
@@ -69,19 +65,13 @@ describe('PackageSocialMentionsUtils.getMentions', () => {
       ) => {
         const source = `${target}|${recordPath}`
 
-        if (source === npmxEmbed) {
+        if (source === embed) {
           return cursor
             ? makeBacklinksPage([post('did:plc:a', 'post-c')])
             : makeBacklinksPage([post('did:plc:a', 'post-a'), post('did:plc:b', 'post-b')], 'next')
         }
-        if (source === npmxFacet) {
+        if (source === facet) {
           return makeBacklinksPage([post('did:plc:b', 'post-b'), post('did:plc:c', 'post-d')])
-        }
-        if (source === npmjsEmbed) {
-          return makeBacklinksPage([post('did:plc:c', 'post-d'), post('did:plc:d', 'post-e')])
-        }
-        if (source === npmjsFacet) {
-          return makeBacklinksPage([post('did:plc:d', 'post-e'), post('did:plc:e', 'post-f')])
         }
         return makeBacklinksPage([])
       },
@@ -94,8 +84,8 @@ describe('PackageSocialMentionsUtils.getMentions', () => {
 
     const result = await utils.getMentions('zod')
 
-    expect(result).toEqual({ totalMentions: 6 })
-    expect(mockConstellation.getBackLinks).toHaveBeenCalledTimes(5)
+    expect(result).toEqual({ totalMentions: 4 })
+    expect(mockConstellation.getBackLinks).toHaveBeenCalledTimes(3)
     expect(mockConstellation.getBackLinks).toHaveBeenCalledWith(
       'https://npmx.dev/package/zod',
       'app.bsky.feed.post',
@@ -107,7 +97,7 @@ describe('PackageSocialMentionsUtils.getMentions', () => {
       0,
     )
     expect(mockConstellation.getBackLinks).toHaveBeenCalledWith(
-      'https://www.npmjs.com/package/zod',
+      'https://npmx.dev/package/zod',
       'app.bsky.feed.post',
       'facets[].features[app.bsky.richtext.facet#link].uri',
       100,
@@ -128,7 +118,7 @@ describe('PackageSocialMentionsUtils.getMentions', () => {
     )
     expect(mockCache.set).toHaveBeenCalledWith(
       expect.stringContaining('atproto-social-mentions:zod:total'),
-      { totalMentions: 6 },
+      { totalMentions: 4 },
       expect.any(Number),
     )
   })

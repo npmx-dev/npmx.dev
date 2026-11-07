@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { PackageSocialMentions } from '#shared/types/social'
+import { PACKAGE_SUBJECT_REF } from '#shared/utils/constants'
 
 const props = defineProps<{
   packageName: string
@@ -28,9 +29,9 @@ if (import.meta.client) {
 }
 
 const totalMentions = computed(() => mentionsData.value?.totalMentions ?? 0)
-// Bluesky search has no OR, so search by package name to cover both npmx.dev and npmjs.com links.
+// Search the exact npmx.dev URL to avoid noisy matches on package names like "react".
 const searchUrl = computed(
-  () => `https://bsky.app/search?q=${encodeURIComponent(`"${props.packageName}"`)}`,
+  () => `https://bsky.app/search?q=${encodeURIComponent(PACKAGE_SUBJECT_REF(props.packageName))}`,
 )
 const label = computed(() =>
   $t(

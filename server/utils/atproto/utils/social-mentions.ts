@@ -12,17 +12,13 @@ const BLUESKY_LINK_PATHS = [
   'facets[].features[app.bsky.richtext.facet#link].uri',
 ] as const
 
-const NPMJS_PACKAGE_URL = (packageName: string) => `https://www.npmjs.com/package/${packageName}`
-
 /** The subset of Constellation that PackageSocialMentionsUtils actually needs. */
 export type ConstellationMentions = Pick<Constellation, 'getBackLinks'>
 
 /**
- * Counts unique Bluesky posts that link to an npm package.
+ * Counts unique Bluesky posts that link to an npmx.dev package.
  *
- * Both npmx.dev and npmjs.com package URLs are counted because most posts link
- * to the npmjs.com page, which is usually the larger number. Posts that link
- * multiple URLs, or both embed and facet-link one, are only counted once.
+ * Posts that both embed and facet-link the URL are only counted once.
  */
 export class PackageSocialMentionsUtils {
   private readonly constellation: ConstellationMentions
@@ -75,11 +71,9 @@ export class PackageSocialMentionsUtils {
     const cached = await this.cache.get<PackageSocialMentions>(cacheKey)
     if (cached) return cached
 
-    const targets = [PACKAGE_SUBJECT_REF(packageName), NPMJS_PACKAGE_URL(packageName)]
+    const target = PACKAGE_SUBJECT_REF(packageName)
     const postKeySets = await Promise.all(
-      targets.flatMap(target =>
-        BLUESKY_LINK_PATHS.map(recordPath => this.constellationPostKeys(target, recordPath)),
-      ),
+      BLUESKY_LINK_PATHS.map(recordPath => this.constellationPostKeys(target, recordPath)),
     )
 
     const uniquePosts = new Set<string>()
