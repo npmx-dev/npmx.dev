@@ -8,14 +8,15 @@ const props = defineProps<{
 
 const compactNumberFormatter = useCompactNumberFormatter()
 
-const { data: mentionsData, execute: fetchMentions } = useLazyFetch<PackageSocialMentions>(
-  () => `/api/social/mentions/${props.packageName}`,
-  {
-    default: () => ({ totalMentions: 0 }),
-    server: false,
-    immediate: false,
-  },
-)
+const {
+  data: mentionsData,
+  status,
+  execute: fetchMentions,
+} = useLazyFetch<PackageSocialMentions>(() => `/api/social/mentions/${props.packageName}`, {
+  default: () => ({ totalMentions: 0 }),
+  server: false,
+  immediate: false,
+})
 
 // Client-only: this decorative stat should never block SSR.
 if (import.meta.client) {
@@ -29,6 +30,7 @@ if (import.meta.client) {
 }
 
 const totalMentions = computed(() => mentionsData.value?.totalMentions ?? 0)
+const isLoading = computed(() => status.value === 'pending' || status.value === 'idle')
 // Search the exact npmx.dev URL to avoid noisy matches on package names like "react".
 const searchUrl = computed(
   () => `https://bsky.app/search?q=${encodeURIComponent(PACKAGE_SUBJECT_REF(props.packageName))}`,
@@ -47,9 +49,11 @@ const label = computed(() =>
     variant="button-secondary"
     classicon="i-lucide:message-circle"
     :to="searchUrl"
+    :aria-label="isLoading ? $t('common.loading') : label"
     data-testid="social-mentions"
     class="min-w-36"
   >
-    {{ label }}
+    <span v-if="isLoading" class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
+    <span v-else>{{ label }}</span>
   </LinkBase>
 </template>
