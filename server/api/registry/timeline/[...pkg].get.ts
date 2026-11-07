@@ -1,3 +1,4 @@
+import { enrichTimelineVersionTypes } from '#server/utils/package-timeline'
 import { compare, tryParse } from 'verkit'
 import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
@@ -140,6 +141,13 @@ export default defineCachedEventHandler(
             : Date.parse(b.time) - Date.parse(a.time),
         )
 
+      // A version is only a possible false "types removed" event when a version
+      // after it in the list (the one it is compared against) declares types.
+      await enrichTimelineVersionTypes(packageName, versionsData, version =>
+        allVersions
+          .slice(allVersions.indexOf(version) + 1)
+          .some(previous => hasBuiltInTypes(packument.versions[previous]!)),
+      )
       return {
         versions: versionsData,
         total: allVersions.length,
