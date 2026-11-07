@@ -245,8 +245,8 @@ describe('usePackageComparison', () => {
     })
   })
 
-  describe('github metadata', () => {
-    it('fetches github stars, forks, and issues when repository is on github', async () => {
+  describe('repository metadata', () => {
+    it('fetches stars, forks, and issues when repository has forge metadata', async () => {
       const pkgName = 'github-pkg'
       vi.stubGlobal(
         '$fetch',
@@ -270,7 +270,7 @@ describe('usePackageComparison', () => {
           if (fullUrl.includes('ungh.cc/repos/owner/repo')) {
             return Promise.resolve({ repo: { stars: 1500, forks: 100 } })
           }
-          if (fullUrl.includes('/api/github/issues/owner/repo')) {
+          if (fullUrl.includes('/api/repo/github/owner/repo/issues')) {
             return Promise.resolve({ issues: 50 })
           }
           return Promise.resolve(null)
@@ -282,16 +282,16 @@ describe('usePackageComparison', () => {
         expect(status.value).toBe('success')
       })
 
-      const stars = getFacetValues('githubStars')[0]
-      const forks = getFacetValues('githubForks')[0]
-      const issues = getFacetValues('githubIssues')[0]
+      const stars = getFacetValues('stars')[0]
+      const forks = getFacetValues('forks')[0]
+      const issues = getFacetValues('issues')[0]
 
       expect(stars).toMatchObject({ raw: 1500, status: 'neutral' })
       expect(forks).toMatchObject({ raw: 100, status: 'neutral' })
       expect(issues).toMatchObject({ raw: 50, status: 'neutral' })
     })
 
-    it('returns null for missing or non-numeric github metrics', async () => {
+    it('returns null for missing or non-numeric repository metrics', async () => {
       const pkgName = 'missing-metrics-pkg'
       vi.stubGlobal(
         '$fetch',
@@ -316,7 +316,7 @@ describe('usePackageComparison', () => {
             // Return malformed data (stars missing)
             return Promise.resolve({ repo: {} })
           }
-          if (fullUrl.includes('/api/github/issues/owner/repo')) {
+          if (fullUrl.includes('/api/repo/github/owner/repo/issues')) {
             // Return non-numeric data
             return Promise.resolve({ issues: 'not-a-number' })
           }
@@ -329,12 +329,12 @@ describe('usePackageComparison', () => {
         expect(status.value).toBe('success')
       })
 
-      expect(getFacetValues('githubStars')[0]).toBeNull()
-      expect(getFacetValues('githubForks')[0]).toBeNull()
-      expect(getFacetValues('githubIssues')[0]).toBeNull()
+      expect(getFacetValues('stars')[0]).toBeNull()
+      expect(getFacetValues('forks')[0]).toBeNull()
+      expect(getFacetValues('issues')[0]).toBeNull()
     })
 
-    it('skips github fetches for non-github repositories', async () => {
+    it('fetches issue counts for non-github repositories through the generic route', async () => {
       const pkgName = 'gitlab-pkg'
       const fetchMock = vi.fn().mockImplementation((url: string, options?: FetchOptions) => {
         const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
@@ -353,6 +353,9 @@ describe('usePackageComparison', () => {
             ),
           )
         }
+        if (fullUrl.includes('/api/repo/gitlab/owner/repo/issues')) {
+          return Promise.resolve({ issues: 42 })
+        }
         return Promise.resolve(null)
       })
       vi.stubGlobal('$fetch', fetchMock)
@@ -363,11 +366,11 @@ describe('usePackageComparison', () => {
       })
 
       expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining('ungh.cc'))
-      expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining('/api/github/issues'))
+      expect(fetchMock).toHaveBeenCalledWith(
+        expect.stringContaining('/api/repo/gitlab/owner/repo/issues?host=gitlab.com'),
+      )
 
-      expect(getFacetValues('githubStars')[0]).toBeNull()
-      expect(getFacetValues('githubForks')[0]).toBeNull()
-      expect(getFacetValues('githubIssues')[0]).toBeNull()
+      expect(getFacetValues('issues')[0]).toMatchObject({ raw: 42, status: 'neutral' })
     })
   })
 

@@ -1491,21 +1491,21 @@
           "label": "脆弱性",
           "description": "既知のセキュリティ脆弱性"
         },
-        "githubStars": {
-          "label": "GitHub Stars",
-          "description": "GitHubリポジトリのスター数"
-        },
-        "githubForks": {
-          "label": "GitHub Forks",
-          "description": "GitHubリポジトリのフォーク数"
-        },
-        "githubIssues": {
-          "label": "GitHub Issues",
-          "description": "GitHubリポジトリのIssues数"
-        },
         "createdAt": {
           "label": "作成日",
           "description": "パッケージが作成された日時"
+        },
+        "stars": {
+          "label": "GitHub Stars",
+          "description": "GitHubリポジトリのスター数"
+        },
+        "forks": {
+          "label": "GitHub Forks",
+          "description": "GitHubリポジトリのフォーク数"
+        },
+        "issues": {
+          "label": "GitHub Issues",
+          "description": "GitHubリポジトリのIssues数"
         }
       },
       "values": {

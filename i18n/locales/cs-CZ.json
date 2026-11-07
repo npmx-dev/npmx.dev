@@ -1612,21 +1612,21 @@
           "label": "Zranitelnosti",
           "description": "Známé bezpečnostní zranitelnosti"
         },
-        "githubStars": {
-          "label": "GitHub Hvězdy",
-          "description": "Počet hvězdiček na GitHub repozitáři"
-        },
-        "githubForks": {
-          "label": "GitHub forky",
-          "description": "Počet forků na GitHub repozitáři"
-        },
-        "githubIssues": {
-          "label": "GitHub úkoly",
-          "description": "Počet úkolů na GitHub repozitáři"
-        },
         "createdAt": {
           "label": "Vytvořeno",
           "description": "Kdy byl balíček vytvořen"
+        },
+        "stars": {
+          "label": "GitHub Hvězdy",
+          "description": "Počet hvězdiček na GitHub repozitáři"
+        },
+        "forks": {
+          "label": "GitHub forky",
+          "description": "Počet forků na GitHub repozitáři"
+        },
+        "issues": {
+          "label": "GitHub úkoly",
+          "description": "Počet úkolů na GitHub repozitáři"
         }
       },
       "values": {
