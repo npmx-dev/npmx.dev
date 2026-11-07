@@ -1,162 +1,38 @@
+import type { UrlTarget } from 'forges'
+import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
+import { forgeWeb, toForgeRepoRef } from '~~/shared/utils/forges'
 import type { MarkdownRepoInfo } from './markdown'
 
-export function createGithubRepoInfo(owner: string, repo: string, path?: string): MarkdownRepoInfo {
-  const hostBaseUrl = 'https://github.com'
+type AccountSyntax = Pick<MarkdownRepoInfo, 'accountChar' | 'keepAccountChar'>
 
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HEAD`,
-    rawBaseUrl: `https://raw.githubusercontent.com/${owner}/${repo}/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    prChar: '#',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pull`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
-  }
+/**
+ * How a forge writes an account mention, which `forges` has no syntax for, so it
+ * stays here.
+ */
+const ACCOUNT_SYNTAX: Partial<Record<ProviderId, AccountSyntax>> = {
+  // Bitbucket has no account page to link to.
+  bitbucket: { accountChar: false },
+  // Sourcehut writes accounts as `~user`, and the tilde is part of the URL.
+  sourcehut: { accountChar: '~', keepAccountChar: true },
 }
 
-export function createForgejoRepoInfo(
-  host: string,
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = `https://${host}`
+/**
+ * The markdown renderer's view of a repository, built from `forges/web`.
+ * `null` when the ref has no web entry (radicle).
+ */
+export function createRepoInfo(ref: RepoRef, path?: string): MarkdownRepoInfo | null {
+  const web = forgeWeb(ref)
+  if (!web) return null
+
+  const repo = toForgeRepoRef(ref)
+  // A base is the URL of an empty path, without the trailing slash it ends in.
+  const base = (target: UrlTarget) => web.urlFor(target)?.replace(/\/$/, '')
 
   return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/src/branch/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/branch/HEAD`,
+    forge: { web, repo },
+    blobBaseUrl: base({ file: { repo, path: '' } }) ?? '',
+    rawBaseUrl: base({ raw: { repo, path: '' } }) ?? '',
     path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    prChar: '#',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
-  }
-}
-
-export function createGitLabRepoInfo(
-  host: string,
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = `https://${host}`
-
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/blob/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/raw/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/commit`,
-    issueChar: '#',
-    // it seems that issues are work items in gitlab
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/work_items`,
-    prChar: '!',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/merge_requests`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/-/compare`,
-  }
-}
-
-export function createTangledRepoInfo(
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = 'https://tangled.org'
-
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/HEAD/`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    prChar: '#',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
-  }
-}
-
-// similar to forgejo, but they're seperate projects so keeping this also seperate
-export function createGiteaRepoInfo(
-  host: string,
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = `https://${host}`
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/src/branch/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/branch/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    prChar: '#',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
-  }
-}
-
-export function createBitbucketRepoInfo(
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = 'https://bitbucket.org'
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/src/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commits`,
-    prChar: '#',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pull-requests`,
-    accountChar: false,
-    // bitbucket uses jira instead of normal issues which can't be resolved, further the compare page also seems to be different
-  }
-}
-
-export function createSourcehutRepoInfo(
-  owner: string,
-  repo: string,
-  path?: string,
-): MarkdownRepoInfo {
-  const hostBaseUrl = 'https://git.sr.ht'
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/tree/HEAD/item`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `https://todo.sr.ht/${owner}/${repo}`,
-    accountChar: '~',
-    keepAccountChar: true,
-    // source hut doesn't have/support pr & compare
-  }
-}
-
-export function createGiteeRepoInfo(owner: string, repo: string, path?: string): MarkdownRepoInfo {
-  const hostBaseUrl = `https://gitee.com`
-  return {
-    hostBaseUrl,
-    blobBaseUrl: `${hostBaseUrl}/${owner}/${repo}/blob/HEAD`,
-    rawBaseUrl: `${hostBaseUrl}/${owner}/${repo}/raw/HEAD`,
-    path,
-    commitBaseUrl: `${hostBaseUrl}/${owner}/${repo}/commit`,
-    issueChar: '#',
-    issueBaseUrl: `${hostBaseUrl}/${owner}/${repo}/issues`,
-    issueRegex: /\B#[\dA-Z]+\b/gi,
-    prChar: '!',
-    prBaseUrl: `${hostBaseUrl}/${owner}/${repo}/pulls`,
-    compareBaseUrl: `${hostBaseUrl}/${owner}/${repo}/compare`,
+    ...ACCOUNT_SYNTAX[ref.provider],
   }
 }
