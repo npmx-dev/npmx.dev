@@ -1,7 +1,7 @@
 import type { Backlink } from '#shared/utils/constellation'
 
 const CACHE_PREFIX = 'atproto-social-mentions:'
-const CACHE_PACKAGE_TOTAL_KEY = (packageName: string) => `${CACHE_PREFIX}${packageName}:total`
+const cachePackageTotalKey = (packageName: string) => `${CACHE_PREFIX}${packageName}:total`
 
 const CACHE_MAX_AGE = CACHE_MAX_AGE_ONE_HOUR
 
@@ -67,7 +67,7 @@ export class PackageSocialMentionsUtils {
   }
 
   async getMentions(packageName: string): Promise<PackageSocialMentions> {
-    const cacheKey = CACHE_PACKAGE_TOTAL_KEY(packageName)
+    const cacheKey = cachePackageTotalKey(packageName)
     const cached = await this.cache.get<PackageSocialMentions>(cacheKey)
     if (cached) return cached
 
