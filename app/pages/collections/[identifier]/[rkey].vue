@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CollectionView, ReactionState } from '#shared/types/social'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
+import { COLLECTIONS_INDEX_INTERVAL_MINUTES } from '#shared/utils/constants'
 import {
   collectionPath,
   deleteCollection,
@@ -30,6 +31,8 @@ if (!collection.value || error.value) {
 }
 
 const { user } = useAtproto()
+// Set by the new-collection page: browse is fed by a periodic index, so say why it isn't there yet
+const justCreated = computed(() => route.query.created === '1')
 const isOwner = computed(() => !!user.value?.did && user.value.did === collection.value?.did)
 
 // useFetch data is a shallow ref, so replace rather than mutate
@@ -286,6 +289,18 @@ defineOgImage(
         </LinkBase>
       </div>
     </header>
+
+    <p
+      v-if="justCreated && isOwner"
+      class="flex items-start gap-2 rounded-lg border border-border bg-bg-subtle p-4 text-sm"
+    >
+      <span class="i-lucide:clock mt-0.5 size-4 shrink-0" aria-hidden="true" />
+      {{
+        $t('collections.created_notice', {
+          minutes: $n(COLLECTIONS_INDEX_INTERVAL_MINUTES),
+        })
+      }}
+    </p>
 
     <CollectionEditor
       v-if="isEditing"

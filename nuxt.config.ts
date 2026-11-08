@@ -283,6 +283,15 @@ export default defineNuxtConfig({
     experimental: {
       tasks: true,
     },
+    // The Vercel preset ignores `scheduledTasks`, so cron hits a route that runs the task.
+    // Vercel sends CRON_SECRET (set in the project) as a bearer token. The interval is
+    // COLLECTIONS_INDEX_INTERVAL_MINUTES, which the UI quotes.
+    vercel: {
+      config: {
+        version: 3,
+        crons: [{ path: '/api/cron/collections-index', schedule: '*/5 * * * *' }],
+      },
+    },
     externals: {
       inline: [
         'shiki',

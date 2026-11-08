@@ -348,6 +348,16 @@ export function useCommandPaletteGlobalCommands() {
         to: { name: 'tools-deps-stats' },
       },
       {
+        id: 'collections',
+        group: 'navigation',
+        label: t('nav.collections'),
+        keywords: [t('collections.title'), t('collections.tagline')],
+        iconClass: 'i-lucide:library',
+        active: route.name === 'collections',
+        activeLabel: activeLabel(route.name === 'collections', t('command_palette.here')),
+        to: { name: 'collections' },
+      },
+      {
         id: 'collections-new',
         group: 'navigation',
         label: t('collections.new'),

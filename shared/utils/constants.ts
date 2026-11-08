@@ -76,6 +76,8 @@ export const MAX_COLLECTION_ITEMS = 1000
 export const MAX_COLLECTION_NAME_LENGTH = 64
 export const MAX_COLLECTION_DESCRIPTION_LENGTH = 300
 export const MAX_COLLECTION_NOTE_LENGTH = 140
+// How often browse picks up new collections; matches the cron in nuxt.config.ts
+export const COLLECTIONS_INDEX_INTERVAL_MINUTES = 5
 export const NPMX_DEV_DID = 'did:plc:u5zp7npt5kpueado77kuihyz'
 export const TID_CLOCK_ID = 3
 

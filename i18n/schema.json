@@ -648,6 +648,9 @@
         },
         "tap_to_search": {
           "type": "string"
+        },
+        "collections": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -1405,6 +1408,15 @@
         "title": {
           "type": "string"
         },
+        "tagline": {
+          "type": "string"
+        },
+        "meta_title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
         "seo_title": {
           "type": "string"
         },
@@ -1415,6 +1427,21 @@
           "type": "string"
         },
         "new_title": {
+          "type": "string"
+        },
+        "created_notice": {
+          "type": "string"
+        },
+        "sort_label": {
+          "type": "string"
+        },
+        "sort_recent": {
+          "type": "string"
+        },
+        "sort_liked": {
+          "type": "string"
+        },
+        "sort_followed": {
           "type": "string"
         },
         "empty": {

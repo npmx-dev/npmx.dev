@@ -200,7 +200,8 @@
     "mobile_menu": "Menu de navigation",
     "open_menu": "Ouvrir le menu",
     "links": "Liens",
-    "tap_to_search": "Toucher pour rechercher"
+    "tap_to_search": "Toucher pour rechercher",
+    "collections": "collections"
   },
   "blog": {
     "title": "Blog",
@@ -373,10 +374,18 @@
   },
   "collections": {
     "title": "Collections",
+    "tagline": "Des listes de paquets npm, créées par n'importe qui et stockées dans leur propre compte Atmosphere.",
+    "meta_title": "Collections - npmx",
+    "meta_description": "Collections de paquets npm proposées par la communauté npmx",
     "seo_title": "{name} - collections npmx",
     "seo_description": "{name}, une collection de paquets npm par {'@'}{handle}",
     "new": "Nouvelle collection",
     "new_title": "Nouvelle collection - npmx",
+    "created_notice": "Enregistrée. Elle peut mettre jusqu'à {minutes} minutes à apparaître parmi les collections.",
+    "sort_label": "Trier les collections",
+    "sort_recent": "Récentes",
+    "sort_liked": "Les plus aimées",
+    "sort_followed": "Les plus suivies",
     "empty": "Aucune collection pour l'instant.",
     "load_error": "Impossible de charger les collections. Veuillez réessayer plus tard.",
     "empty_collection": "Cette collection est vide.",

@@ -214,7 +214,8 @@
     "mobile_menu": "Navigation menu",
     "open_menu": "Open menu",
     "links": "Links",
-    "tap_to_search": "Tap to search"
+    "tap_to_search": "Tap to search",
+    "collections": "collections"
   },
   "tools": {
     "title": "tools",
@@ -467,10 +468,18 @@
   },
   "collections": {
     "title": "Collections",
+    "tagline": "Curated lists of npm packages, made by anyone and stored in their own Atmosphere accounts.",
+    "meta_title": "Collections - npmx",
+    "meta_description": "Curated npm package collections from the npmx community",
     "seo_title": "{name} - npmx collections",
     "seo_description": "{name}, a collection of npm packages by {'@'}{handle}",
     "new": "New collection",
     "new_title": "New collection - npmx",
+    "created_notice": "Saved. It can take up to {minutes} minutes to show up when browsing collections.",
+    "sort_label": "Sort collections",
+    "sort_recent": "Recent",
+    "sort_liked": "Most liked",
+    "sort_followed": "Most followed",
     "empty": "No collections yet.",
     "load_error": "Couldn't load collections. Please try again later.",
     "empty_collection": "This collection is empty.",
