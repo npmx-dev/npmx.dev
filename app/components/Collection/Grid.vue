@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { CollectionSummary } from '#shared/types/social'
+import type { BrowseCollection, CollectionSummary } from '#shared/types/social'
 
 const {
   items,
   loadingMore,
   skeletons = 6,
 } = defineProps<{
-  items: CollectionSummary[]
+  items: (CollectionSummary | BrowseCollection)[]
   /** Shows skeletons while there are no items yet */
   pending: boolean
   loadingMore: boolean

@@ -37,6 +37,14 @@ const desktopLinks = computed<NavigationConfig>(() => [
     iconClass: 'i-lucide:git-compare',
   },
   {
+    name: 'Collections',
+    label: $t('nav.collections'),
+    to: { name: 'collections' },
+    type: 'link',
+    external: false,
+    iconClass: 'i-lucide:library',
+  },
+  {
     name: 'Settings',
     label: $t('nav.settings'),
     to: { name: 'settings' },

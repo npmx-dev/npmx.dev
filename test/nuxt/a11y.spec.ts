@@ -1326,6 +1326,19 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
+    it('CollectionCard should have no accessibility violations with browse stats', async () => {
+      const component = await mountSuspended(CollectionCard, {
+        props: {
+          collection: {
+            ...summary,
+            stats: { likes: 12, follows: 1, updatedAt: '2026-11-02T00:00:00.000Z' },
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
     it('CollectionGrid should have no accessibility violations', async () => {
       const component = await mountSuspended(CollectionGrid, {
         props: {
