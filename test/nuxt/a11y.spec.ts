@@ -359,7 +359,11 @@ import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 import PackageTimelineChart from '~/components/Package/TimelineChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
+import CollectionEditor from '~/components/Collection/Editor.vue'
 import PackageTypeahead from '~/components/Package/Typeahead.vue'
+import CollectionItemList from '~/components/Collection/ItemList.vue'
+import CollectionYourData from '~/components/Collection/YourData.vue'
+import type { CollectionItemView, CollectionSummary } from '#shared/types/social'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import SizeDecrease from '~/components/Package/SizeDecrease.vue'
 import Likes from '~/components/Package/Likes.vue'
@@ -1262,6 +1266,91 @@ describe('component accessibility audits', () => {
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
       expect(component.findComponent(TrustedPublishingBadge).exists()).toBe(true)
+    })
+  })
+
+  describe('collections', () => {
+    const summary: CollectionSummary = {
+      uri: 'at://did:plc:u5zp7npt5kpueado77kuihyz/dev.npmx.collection/3m5k5baifas2a',
+      cid: 'cid',
+      did: 'did:plc:u5zp7npt5kpueado77kuihyz',
+      handle: 'npmx.dev',
+      rkey: '3m5k5baifas2a',
+      name: 'Arg parsers',
+      description: 'Pick one',
+      itemCount: 3,
+      createdAt: '2026-11-01T00:00:00.000Z',
+    }
+    const items: CollectionItemView[] = [
+      {
+        kind: 'package',
+        subjectRef: 'https://npmx.dev/package/commander',
+        packageName: 'commander',
+        resolved: true,
+        note: 'The default',
+      },
+      {
+        kind: 'package',
+        subjectRef: 'https://npmx.dev/package/does-not-exist',
+        packageName: 'does-not-exist',
+        resolved: false,
+      },
+      {
+        kind: 'collection',
+        subjectRef: 'at://did:plc:bob/dev.npmx.collection/3m5k5baifas2b',
+        collection: {
+          ...summary,
+          name: 'More parsers',
+        },
+      },
+      {
+        kind: 'collection',
+        subjectRef: 'at://did:plc:gone/dev.npmx.collection/3m5k5baifas2c',
+        collection: null,
+        unavailableReason: 'unresolvable',
+      },
+      { kind: 'unknown', subjectRef: 'https://example.com/whatever' },
+    ]
+
+    it('CollectionItemList should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollectionItemList, { props: { items } })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('CollectionYourData should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollectionYourData)
+      await component.find('summary').trigger('click')
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('CollectionEditor should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollectionEditor, {
+        props: {
+          initial: {
+            name: 'Arg parsers',
+            items: [
+              {
+                kind: 'package',
+                subjectRef: 'https://npmx.dev/package/commander',
+                packageName: 'commander',
+                resolved: true,
+                note: 'x',
+              },
+              {
+                kind: 'package',
+                subjectRef: 'https://npmx.dev/package/yargs',
+                packageName: 'yargs',
+                resolved: true,
+              },
+            ],
+          },
+          errorMessage: 'Something went wrong',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
     })
   })
 
