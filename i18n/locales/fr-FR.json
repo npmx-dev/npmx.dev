@@ -305,6 +305,7 @@
   "common": {
     "loading": "Chargement...",
     "loading_more": "Chargement en cours...",
+    "load_more": "Afficher plus",
     "loading_packages": "Chargement des paquets...",
     "end_of_results": "Fin des résultats",
     "try_again": "Réessayer encore",
@@ -363,13 +364,16 @@
       "message": "Il semblerait qu'ils n'utilisent pas encore npmx. Vous voulez leur en parler ?",
       "share_button": "Partager sur Bluesky",
       "compose_text": "Salut {'@'}{handle} ! As-tu déjà testé npmx.dev ? C'est un navigateur pour le registre npm : rapide, moderne et open source.\nhttps://npmx.dev"
-    }
+    },
+    "collections": "Collections"
   },
   "collections": {
     "seo_title": "{name} - collections npmx",
     "seo_description": "{name}, une collection de paquets npm par {'@'}{handle}",
     "new": "Nouvelle collection",
     "new_title": "Nouvelle collection - npmx",
+    "empty": "Aucune collection pour l'instant.",
+    "load_error": "Impossible de charger les collections. Veuillez réessayer plus tard.",
     "empty_collection": "Cette collection est vide.",
     "by": "par {'@'}{handle}",
     "item_count": "{count} élément | {count} éléments",
