@@ -5,6 +5,7 @@ export type CommandPaletteGroup =
   | 'help'
   | 'language'
   | 'package'
+  | 'collections'
   | 'navigation'
   | 'connections'
   | 'links'

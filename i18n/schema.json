@@ -373,6 +373,9 @@
             "package_with_name": {
               "type": "string"
             },
+            "collections": {
+              "type": "string"
+            },
             "versions": {
               "type": "string"
             },
@@ -1390,6 +1393,9 @@
     "collections": {
       "type": "object",
       "properties": {
+        "title": {
+          "type": "string"
+        },
         "seo_title": {
           "type": "string"
         },

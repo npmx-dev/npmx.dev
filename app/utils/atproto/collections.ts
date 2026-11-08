@@ -1,7 +1,7 @@
 import { FetchError } from 'ofetch'
 import type { InferInput } from 'valibot'
 import type { CollectionBodySchema } from '#shared/schemas/social'
-import type { CollectionSummary } from '#shared/types/social'
+import type { CollectionSummary, OwnCollection } from '#shared/types/social'
 import { authRedirect, handleAuthError } from '~/utils/atproto/helpers'
 
 export type CollectionBody = InferInput<typeof CollectionBodySchema>
@@ -73,6 +73,10 @@ export function deleteCollection(identifier: string, rkey: string, userHandle?: 
     () => $fetch<{ uri: string }>(collectionPath(identifier, rkey), { method: 'DELETE' }),
     userHandle,
   )
+}
+
+export function fetchOwnCollections() {
+  return $fetch<OwnCollection[]>('/api/social/collections/mine')
 }
 
 export function fetchUserCollections(identifier: string, cursor?: string | null, limit = 20) {
