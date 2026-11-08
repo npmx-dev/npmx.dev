@@ -250,6 +250,7 @@ useShortcuts({
       <!-- Package metrics -->
       <div class="flex gap-2 flex-wrap items-stretch">
         <PackageLikes :packageName />
+        <PackageCollectionsCount :packageName />
         <CollectionAddButton :packages="[packageName]">
           <span class="max-sm:sr-only">{{ $t('collections.picker.title') }}</span>
         </CollectionAddButton>

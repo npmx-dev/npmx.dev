@@ -369,6 +369,7 @@ import CollectionItemList from '~/components/Collection/ItemList.vue'
 import CollectionLikeButton from '~/components/Collection/LikeButton.vue'
 import CollectionFollowButton from '~/components/Collection/FollowButton.vue'
 import CollectionYourData from '~/components/Collection/YourData.vue'
+import PackageCollectionsCount from '~/components/Package/CollectionsCount.vue'
 import type { CollectionItemView, CollectionSummary } from '#shared/types/social'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import SizeDecrease from '~/components/Package/SizeDecrease.vue'
@@ -1425,6 +1426,18 @@ describe('component accessibility audits', () => {
           },
           errorMessage: 'Something went wrong',
         },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('PackageCollectionsCount should have no accessibility violations', async () => {
+      registerEndpoint('/api/social/collections/containing', () => ({ total: 3, items: [] }))
+      const component = await mountSuspended(PackageCollectionsCount, {
+        props: { packageName: 'zod' },
+      })
+      await vi.waitFor(() => {
+        expect(component.text()).toContain('3')
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

@@ -1450,6 +1450,15 @@
         "delete_error": {
           "type": "string"
         },
+        "in_collections": {
+          "type": "string"
+        },
+        "containing_package_title": {
+          "type": "string"
+        },
+        "including_title": {
+          "type": "string"
+        },
         "includes": {
           "type": "string"
         },
