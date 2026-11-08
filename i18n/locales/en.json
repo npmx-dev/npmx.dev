@@ -395,6 +395,7 @@
   "common": {
     "loading": "Loading...",
     "loading_more": "Loading more...",
+    "load_more": "Load more",
     "loading_packages": "Loading packages...",
     "end_of_results": "End of results",
     "try_again": "Try again",
@@ -457,13 +458,16 @@
       "message": "It doesn't look like they're using npmx yet. Want to tell them about it?",
       "share_button": "Share on Bluesky",
       "compose_text": "Hey {'@'}{handle}! Have you checked out npmx.dev yet? It's a browser for the npm registry that's fast, modern, and open-source.\nhttps://npmx.dev"
-    }
+    },
+    "collections": "Collections"
   },
   "collections": {
     "seo_title": "{name} - npmx collections",
     "seo_description": "{name}, a collection of npm packages by {'@'}{handle}",
     "new": "New collection",
     "new_title": "New collection - npmx",
+    "empty": "No collections yet.",
+    "load_error": "Couldn't load collections. Please try again later.",
     "empty_collection": "This collection is empty.",
     "by": "by {'@'}{handle}",
     "item_count": "{count} item | {count} items",

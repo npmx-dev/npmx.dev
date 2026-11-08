@@ -2,6 +2,7 @@
 import { useInfiniteScroll } from '@vueuse/core'
 import { updateProfile as updateProfileUtil } from '~/utils/atproto/profile'
 import { fetchProfileLikes } from '~/utils/atproto/likes'
+import { fetchUserCollections } from '~/utils/atproto/collections'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 import { getSafeHttpUrl } from '#shared/utils/url'
 
@@ -80,6 +81,13 @@ async function updateProfile() {
     isUpdateProfileActionPending.value = false
   }
 }
+
+const isOwnProfile = computed(
+  () => !!user.value?.handle && user.value.handle === profile.value.handle,
+)
+
+const collections = usePagedCollections(cursor => fetchUserCollections(identity.value, cursor, 12))
+onMounted(() => collections.load())
 
 const allLikesRecords = ref<string[]>([])
 // undefined = not yet fetched, string = next page cursor, null = no more pages
@@ -258,6 +266,39 @@ defineOgImage(
         </div>
       </div>
     </header>
+
+    <section
+      v-if="collections.items.value.length > 0 || isOwnProfile || collections.isLoading.value"
+      class="flex flex-col gap-8 mb-12"
+      aria-labelledby="profile-collections-heading"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <h2
+          id="profile-collections-heading"
+          class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
+        >
+          {{ $t('profile.collections') }}
+        </h2>
+        <LinkBase
+          v-if="isOwnProfile"
+          variant="button-secondary"
+          classicon="i-lucide:plus"
+          :to="{ name: 'collections-new' }"
+        >
+          {{ $t('collections.new') }}
+        </LinkBase>
+      </div>
+      <CollectionGrid
+        :items="collections.items.value"
+        :pending="collections.isLoading.value"
+        :loading-more="collections.isLoading.value"
+        :error="collections.error.value"
+        :has-more="collections.hasMore.value"
+        :empty-text="$t('collections.empty')"
+        :skeletons="3"
+        @load-more="collections.load"
+      />
+    </section>
 
     <section class="flex flex-col gap-8">
       <h2

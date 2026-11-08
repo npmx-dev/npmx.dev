@@ -359,6 +359,8 @@ import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 import PackageTimelineChart from '~/components/Package/TimelineChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
+import CollectionCard from '~/components/Collection/Card.vue'
+import CollectionGrid from '~/components/Collection/Grid.vue'
 import CollectionEditor from '~/components/Collection/Editor.vue'
 import PackageTypeahead from '~/components/Package/Typeahead.vue'
 import CollectionItemList from '~/components/Collection/ItemList.vue'
@@ -1311,6 +1313,27 @@ describe('component accessibility audits', () => {
       },
       { kind: 'unknown', subjectRef: 'https://example.com/whatever' },
     ]
+
+    it('CollectionCard should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollectionCard, { props: { collection: summary } })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('CollectionGrid should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollectionGrid, {
+        props: {
+          items: [summary],
+          pending: false,
+          loadingMore: false,
+          error: false,
+          hasMore: true,
+          emptyText: 'No collections',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
 
     it('CollectionItemList should have no accessibility violations', async () => {
       const component = await mountSuspended(CollectionItemList, { props: { items } })
