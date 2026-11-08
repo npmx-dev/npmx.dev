@@ -1,0 +1,58 @@
+{
+  "lexicon": 1,
+  "id": "dev.npmx.collection",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "An ordered, curated collection of npm packages. Consumers should render an item whose subjectRef is neither a package URL nor a dev.npmx.collection AT-URI as unresolvable rather than reject the whole collection.",
+      "record": {
+        "type": "object",
+        "required": ["name", "items", "createdAt"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 640,
+            "maxGraphemes": 64
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 3000,
+            "maxGraphemes": 300
+          },
+          "items": {
+            "type": "array",
+            "maxLength": 1000,
+            "description": "Order is significant.",
+            "items": {
+              "type": "ref",
+              "ref": "#item"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    },
+    "item": {
+      "type": "object",
+      "required": ["subjectRef"],
+      "properties": {
+        "subjectRef": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 300,
+          "description": "Either a package, as https://npmx.dev/package/<name> with the name as published, not URL-encoded (the same identifier dev.npmx.feed.like uses), or the AT-URI of another dev.npmx.collection record to include it. Consumers expanding included collections should stop at 2 levels, detect cycles, and treat an unresolvable include as empty."
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 560,
+          "maxGraphemes": 140,
+          "description": "Why this item is in the collection."
+        }
+      }
+    }
+  }
+}
