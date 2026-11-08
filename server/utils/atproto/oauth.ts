@@ -9,13 +9,18 @@ import type { EventHandlerRequest, H3Event, SessionManager } from 'h3'
 import { NodeOAuthClient, AtprotoDohHandleResolver } from '@atproto/oauth-client-node'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
-import { COLLECTIONS_SCOPE, LIKES_SCOPE, PROFILE_SCOPE } from '#shared/utils/constants'
+import {
+  COLLECTIONS_SCOPE,
+  FOLLOWS_SCOPE,
+  LIKES_SCOPE,
+  PROFILE_SCOPE,
+} from '#shared/utils/constants'
 import type { UserServerSession } from '#shared/types/userSession'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
 
 // TODO: If you add writing a new record you will need to add a scope for it
-export const scope = `atproto ${LIKES_SCOPE} ${PROFILE_SCOPE} ${COLLECTIONS_SCOPE}`
+export const scope = `atproto ${LIKES_SCOPE} ${PROFILE_SCOPE} ${COLLECTIONS_SCOPE} ${FOLLOWS_SCOPE}`
 
 /**
  * Resolves a did to a handle via DoH or via the http website calls
