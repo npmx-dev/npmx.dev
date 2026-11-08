@@ -28,6 +28,7 @@ const utils = {
   getStoredRecord: vi.fn(),
   getViewerReaction: vi.fn(),
   getReaction: vi.fn(),
+  getReactionTotal: vi.fn(async () => 4),
   recordReaction: vi.fn(async () => ({ total: 1, viewerHas: true })),
   recordUnreaction: vi.fn(async () => ({ total: 0, viewerHas: false })),
 }
@@ -137,6 +138,73 @@ describe('updateCollection', () => {
       cid: 'cid-2',
       value: { $type: 'dev.npmx.collection', ...value },
     })
+  })
+})
+
+describe('setReaction', () => {
+  it('follows with a follow record pointing at the collection', async () => {
+    client.create.mockResolvedValue({ uri: `at://${VIEWER}/dev.npmx.graph.follow/3follow` })
+    expect(await writes.setReaction(sessionFor(VIEWER), REF, 'follow', true)).toEqual({
+      total: 1,
+      viewerHas: true,
+    })
+    expect(throwOnMissingOAuthScope).toHaveBeenCalledWith(
+      expect.anything(),
+      'repo:dev.npmx.graph.follow',
+    )
+    expect(client.create).toHaveBeenCalledWith(
+      expect.objectContaining({ $nsid: 'dev.npmx.graph.follow' }),
+      expect.objectContaining({ subject: URI }),
+    )
+    expect(utils.recordReaction).toHaveBeenCalledWith('follow', URI, VIEWER, '3follow', 4)
+  })
+
+  it('likes via subjectRef', async () => {
+    client.create.mockResolvedValue({ uri: `at://${VIEWER}/dev.npmx.feed.like/3like` })
+    await writes.setReaction(sessionFor(VIEWER), REF, 'like', true)
+    expect(client.create).toHaveBeenCalledWith(
+      expect.objectContaining({ $nsid: 'dev.npmx.feed.like' }),
+      expect.objectContaining({ subjectRef: URI }),
+    )
+  })
+
+  it('writes nothing when already in the requested state', async () => {
+    utils.getReaction.mockResolvedValue({ total: 5, viewerHas: false })
+    expect(await writes.setReaction(sessionFor(VIEWER), REF, 'follow', false)).toEqual({
+      total: 5,
+      viewerHas: false,
+    })
+    expect(client.create).not.toHaveBeenCalled()
+    expect(client.delete).not.toHaveBeenCalled()
+  })
+
+  it('unfollows by deleting the viewer’s follow record', async () => {
+    utils.getViewerReaction.mockResolvedValue({
+      did: VIEWER,
+      collection: 'dev.npmx.graph.follow',
+      rkey: '3follow',
+    })
+    await writes.setReaction(sessionFor(VIEWER), REF, 'follow', false)
+    expect(client.delete).toHaveBeenCalledWith(
+      expect.objectContaining({ $nsid: 'dev.npmx.graph.follow' }),
+      { rkey: '3follow' },
+    )
+    expect(utils.recordUnreaction).toHaveBeenCalledWith('follow', URI, VIEWER, 4)
+  })
+
+  it('refuses to follow your own collection', async () => {
+    await expect(writes.setReaction(sessionFor(OWNER), REF, 'follow', true)).rejects.toMatchObject({
+      statusCode: 400,
+    })
+    expect(client.create).not.toHaveBeenCalled()
+  })
+
+  it('refuses to follow a collection that does not exist', async () => {
+    utils.getStoredRecord.mockResolvedValue(null)
+    await expect(writes.setReaction(sessionFor(VIEWER), REF, 'follow', true)).rejects.toMatchObject(
+      { statusCode: 404 },
+    )
+    expect(client.create).not.toHaveBeenCalled()
   })
 })
 

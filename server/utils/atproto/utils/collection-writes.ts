@@ -1,13 +1,25 @@
 import type { OAuthSession } from '@atproto/oauth-client-node'
 import type { InferOutput } from 'valibot'
-import { Client, isDatetimeString, toDatetimeString, type UriString } from '@atproto/lex'
+import {
+  Client,
+  isDatetimeString,
+  toDatetimeString,
+  type AtUriString,
+  type UriString,
+} from '@atproto/lex'
 import * as dev from '#shared/types/lexicons/dev'
 import type { CollectionBodySchema } from '#shared/schemas/social'
-import type { MiniDoc } from '#shared/types/social'
-import { COLLECTION_SUBJECT_REF, COLLECTIONS_SCOPE } from '#shared/utils/constants'
+import type { MiniDoc, ReactionState } from '#shared/types/social'
+import {
+  COLLECTION_SUBJECT_REF,
+  COLLECTIONS_SCOPE,
+  FOLLOWS_SCOPE,
+  LIKES_SCOPE,
+} from '#shared/utils/constants'
 import { throwOnMissingOAuthScope } from '#server/utils/atproto/oauth'
+import type { Reaction } from './collections'
 
-/** Writes to collections, as the signed-in user. */
+/** Writes to collections and their likes and follows, as the signed-in user. */
 
 type CollectionBody = InferOutput<typeof CollectionBodySchema>
 type CollectionRef = { identifier: string; rkey: string }
@@ -148,4 +160,46 @@ export async function deleteCollection(session: OAuthSession | undefined, ref: C
     .setStoredRecord(did, ref.rkey, null)
     .catch(error => console.error('[collections] Caching a delete failed', error))
   return { uri: COLLECTION_SUBJECT_REF(did, ref.rkey) }
+}
+
+const REACTION_SCOPES: Record<Reaction, string> = { like: LIKES_SCOPE, follow: FOLLOWS_SCOPE }
+
+/**
+ * Likes or follows (`on`) or un-likes or un-follows a collection.
+ * Idempotent: asking for the state the viewer is already in changes nothing.
+ */
+export async function setReaction(
+  session: OAuthSession | undefined,
+  ref: CollectionRef,
+  reaction: Reaction,
+  on: boolean,
+): Promise<ReactionState> {
+  const { client, did } = await getWriter(session, REACTION_SCOPES[reaction])
+  const owner = await resolveOwner(ref)
+  const uri = COLLECTION_SUBJECT_REF(owner.did, ref.rkey)
+  const utils = new CollectionsUtils()
+  const existing = await utils.getViewerReaction(reaction, uri, did)
+  if (Boolean(existing) === on) return await utils.getReaction(reaction, uri, did)
+  // Owners follow their own collections implicitly, and a record would inflate the count
+  if (on && reaction === 'follow' && owner.did === did) {
+    throw createError({ status: 400, message: 'You already follow your own collections' })
+  }
+  const totalBefore = await utils.getReactionTotal(reaction, uri)
+
+  if (!on) {
+    await (reaction === 'like'
+      ? client.delete(dev.npmx.feed.like, { rkey: existing!.rkey })
+      : client.delete(dev.npmx.graph.follow, { rkey: existing!.rkey }))
+    return await utils.recordUnreaction(reaction, uri, did, totalBefore)
+  }
+
+  if (!(await utils.getStoredRecord(owner, ref.rkey))) {
+    throw createError({ status: 404, message: 'Collection not found' })
+  }
+  const createdAt = toDatetimeString(new Date())
+  // A like's subjectRef, not its CID-pinned `subject`: collections change, likes shouldn't break.
+  const created = await (reaction === 'like'
+    ? client.create(dev.npmx.feed.like, { createdAt, subjectRef: uri as UriString })
+    : client.create(dev.npmx.graph.follow, { createdAt, subject: uri as AtUriString }))
+  return await utils.recordReaction(reaction, uri, did, created.uri.split('/').pop()!, totalBefore)
 }
