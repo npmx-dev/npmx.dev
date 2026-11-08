@@ -1,7 +1,9 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
+import * as v from 'valibot'
 import { createError } from 'h3'
 import type * as AtprotoLex from '@atproto/lex'
-import { PACKAGE_SUBJECT_REF } from '#shared/utils/constants'
+import { CollectionItemsChangeSchema } from '#shared/schemas/social'
+import { MAX_COLLECTION_ITEMS, PACKAGE_SUBJECT_REF } from '#shared/utils/constants'
 
 const OWNER = 'did:plc:owner'
 const VIEWER = 'did:plc:viewer'
@@ -9,6 +11,7 @@ const RKEY = '3m5k5baifas2a'
 const URI = `at://${OWNER}/dev.npmx.collection/${RKEY}`
 const REF = { identifier: OWNER, rkey: RKEY }
 const ZOD = PACKAGE_SUBJECT_REF('zod')
+const VALIBOT = PACKAGE_SUBJECT_REF('valibot')
 
 const client = { create: vi.fn(), put: vi.fn(), delete: vi.fn() }
 vi.mock('@atproto/lex', async importOriginal => ({
@@ -141,6 +144,71 @@ describe('updateCollection', () => {
   })
 })
 
+const change = (add: string[], remove: string[] = []) =>
+  writes.changeCollectionItems(sessionFor(OWNER), REF, { add, remove })
+const parseChange = (body: unknown) => v.safeParse(CollectionItemsChangeSchema, body).success
+
+describe('changeCollectionItems', () => {
+  it("rejects editing someone else's collection", async () => {
+    await expect(
+      writes.changeCollectionItems(sessionFor(VIEWER), REF, { add: [VALIBOT], remove: [] }),
+    ).rejects.toMatchObject({ statusCode: 403 })
+  })
+
+  it('appends to the current record, keeping notes and unknown item fields', async () => {
+    const record = stored('cid-1', [ZOD])
+    record.value.items[0] = { ...record.value.items[0]!, 'com.example.rating': 5 } as never
+    utils.fetchRawRecord.mockResolvedValue(record)
+
+    expect(await change([VALIBOT])).toEqual({
+      uri: URI,
+      cid: 'cid-2',
+      did: OWNER,
+      rkey: RKEY,
+      subjectRefs: [ZOD, VALIBOT],
+    })
+    const [, value, options] = client.put.mock.calls[0]!
+    expect(options).toEqual({ rkey: RKEY, swapRecord: 'cid-1' })
+    expect(value.items).toEqual([
+      { 'subjectRef': ZOD, 'note': `why ${ZOD}`, 'com.example.rating': 5 },
+      { subjectRef: VALIBOT },
+    ])
+  })
+
+  it('retries a lost swap against the fresh record, so concurrent toggles both land', async () => {
+    const ARKTYPE = PACKAGE_SUBJECT_REF('arktype')
+    utils.fetchRawRecord
+      .mockResolvedValueOnce(stored('cid-1', [ZOD]))
+      .mockResolvedValueOnce(stored('cid-1b', [ZOD, ARKTYPE]))
+    client.put.mockRejectedValueOnce(swapError())
+
+    const result = await change([VALIBOT])
+
+    expect(client.put.mock.calls[1]![2]).toEqual({ rkey: RKEY, swapRecord: 'cid-1b' })
+    expect(result.subjectRefs).toEqual([ZOD, ARKTYPE, VALIBOT])
+  })
+
+  it('gives up with 409 after repeated lost swaps', async () => {
+    client.put.mockRejectedValue(swapError())
+    await expect(change([VALIBOT])).rejects.toMatchObject({ statusCode: 409 })
+    expect(client.put).toHaveBeenCalledTimes(3)
+  })
+
+  it('refuses to overflow a full collection', async () => {
+    const full = Array.from({ length: MAX_COLLECTION_ITEMS }, (_, i) =>
+      PACKAGE_SUBJECT_REF(`pkg-${i}`),
+    )
+    utils.fetchRawRecord.mockResolvedValue(stored('cid-1', full))
+    await expect(change([VALIBOT])).rejects.toMatchObject({ statusCode: 400 })
+    expect(client.put).not.toHaveBeenCalled()
+  })
+
+  it('rejects changes npmx cannot render or that contradict themselves', () => {
+    expect(parseChange({ add: ['https://example.com'] })).toBe(false)
+    expect(parseChange({ add: [ZOD], remove: [ZOD] })).toBe(false)
+  })
+})
+
 describe('setReaction', () => {
   it('follows with a follow record pointing at the collection', async () => {
     client.create.mockResolvedValue({ uri: `at://${VIEWER}/dev.npmx.graph.follow/3follow` })
@@ -218,5 +286,15 @@ describe('buildCollectionRecord', () => {
   it('replaces an invalid existing createdAt', () => {
     const record = writes.buildCollectionRecord({ name: 'x', items: [] }, { createdAt: 'nope' })
     expect(record.createdAt).not.toBe('nope')
+  })
+})
+
+describe('applyItemChanges', () => {
+  it('removes, then appends only what is missing', () => {
+    const items = [{ subjectRef: ZOD, note: 'n' }, { subjectRef: VALIBOT }]
+    expect(writes.applyItemChanges(items, [ZOD, 'x', 'x'], [VALIBOT])).toEqual([
+      { subjectRef: ZOD, note: 'n' },
+      { subjectRef: 'x' },
+    ])
   })
 })
