@@ -26,7 +26,7 @@ export type LikesLeaderboardEntry = {
   homepageLogoHeight: number | null
 }
 
-/** A collection as listed (profile, browse), without resolved items */
+/** A collection as listed (profile, package page, browse), without resolved items */
 export type CollectionSummary = {
   uri: string
   cid: string
@@ -81,6 +81,8 @@ export type CollectionView = CollectionSummary & {
   items: CollectionItemView[]
   likes: ReactionState
   follows: ReactionState
+  // How many other collections include this one
+  includedInCount: number
 }
 
 /**

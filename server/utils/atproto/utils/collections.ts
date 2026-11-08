@@ -17,6 +17,7 @@ import type { Backlink, Constellation } from '#shared/utils/constellation'
 
 const HEADERS = { 'User-Agent': 'npmx' }
 const COLLECTION_NSID = dev.npmx.collection.$nsid
+const ITEMS_PATH = 'items[].subjectRef'
 
 // Records that point at a collection and are counted once per account.
 const REACTIONS = {
@@ -31,6 +32,8 @@ const CACHE_REACTION_TOTAL_KEY = (reaction: Reaction, uri: string) =>
   `${CACHE_PREFIX}${uri}:${reaction}:total`
 const CACHE_VIEWER_REACTION_KEY = (reaction: Reaction, uri: string, did: string) =>
   `${CACHE_PREFIX}${uri}:${reaction}:${did}`
+const CACHE_CONTAINING_COUNT_KEY = (subjectRef: string) =>
+  `${CACHE_PREFIX}${subjectRef}:containing:total`
 const CACHE_MAX_AGE = CACHE_MAX_AGE_ONE_MINUTE * 5
 
 // The owner's PDS is whatever their DID doc says, so it may be slow or hostile.
@@ -211,7 +214,7 @@ export class CollectionsUtils {
     const stored = await this.getStoredRecord(miniDoc, rkey)
     if (!stored) return null
 
-    const [items, likes, follows] = await Promise.all([
+    const [items, likes, follows, includedInCount] = await Promise.all([
       mapWithConcurrency(
         stored.value.items,
         item => this.resolveItem(item.subjectRef, item.note),
@@ -219,8 +222,9 @@ export class CollectionsUtils {
       ),
       this.getReaction('like', stored.uri, viewerDid),
       this.getReaction('follow', stored.uri, viewerDid),
+      this.countCollectionsContaining(stored.uri),
     ])
-    return { ...toSummary(miniDoc, rkey, stored), items, likes, follows }
+    return { ...toSummary(miniDoc, rkey, stored), items, likes, follows, includedInCount }
   }
 
   async getReaction(reaction: Reaction, uri: string, viewerDid?: string): Promise<ReactionState> {
@@ -373,6 +377,58 @@ export class CollectionsUtils {
         return stored && toSummary(owner, subject.rkey, stored)
       }),
     }
+  }
+
+  /**
+   * Collections whose items reference `subjectRef` (a package URL or a collection AT-URI).
+   * `total` is Constellation's raw count, so it may include invalid collections.
+   */
+  async getCollectionsContaining(
+    subjectRef: string,
+    limit: number,
+    cursor?: string,
+  ): Promise<Paginated<CollectionSummary>> {
+    const { data } = await this.deps.constellation.getBackLinks(
+      subjectRef,
+      COLLECTION_NSID,
+      ITEMS_PATH,
+      limit,
+      cursor,
+      false,
+      [],
+      0,
+    )
+    return {
+      cursor: data.cursor,
+      total: data.total,
+      items: await this.hydrateBacklinks(data.records),
+    }
+  }
+
+  countCollectionsContaining(subjectRef: string): Promise<number> {
+    return this.cached(CACHE_CONTAINING_COUNT_KEY(subjectRef), async () => {
+      const { data } = await this.deps.constellation.getBackLinks(
+        subjectRef,
+        COLLECTION_NSID,
+        ITEMS_PATH,
+        1,
+        undefined,
+        false,
+        [],
+        0,
+      )
+      return data.total
+    })
+  }
+
+  private hydrateBacklinks(backlinks: Backlink[]): Promise<CollectionSummary[]> {
+    const unique = new Map(
+      backlinks.map(link => [COLLECTION_SUBJECT_REF(link.did, link.rkey), link]),
+    ).values()
+    return this.hydrate([...unique], async (miniDoc, link) => {
+      const stored = await this.getStoredRecord(miniDoc, link.rkey)
+      return stored && toSummary(miniDoc, link.rkey, stored)
+    })
   }
 
   /**

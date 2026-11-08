@@ -73,7 +73,7 @@ export class Constellation {
     // constellation API endpoint, and type casting the response.
     const source = encodeURIComponent(`${collection}:${recordPath}`)
     let urlToCall = `https://${CONSTELLATION_HOST}/xrpc/blue.microcosm.links.getBacklinks?subject=${encodeURIComponent(subject)}&source=${source}&limit=${limit}`
-    if (cursor) urlToCall += `&cursor=${cursor}`
+    if (cursor) urlToCall += `&cursor=${encodeURIComponent(cursor)}`
     if (reverse) urlToCall += '&reverse=true'
     filterByDids.forEach(did => (urlToCall += `&did=${did}`))
 
@@ -98,7 +98,7 @@ export class Constellation {
     ttl: number | undefined = undefined,
   ) {
     let urlToCall = `https://${CONSTELLATION_HOST}/links/distinct-dids?target=${encodeURIComponent(target)}&collection=${collection}&path=${recordPath}&limit=${limit}`
-    if (cursor) urlToCall += `&cursor=${cursor}`
+    if (cursor) urlToCall += `&cursor=${encodeURIComponent(cursor)}`
     return await this.cachedFetch<LinksDistinctDidsResponse>(urlToCall, { headers: HEADERS }, ttl)
   }
 

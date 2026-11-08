@@ -162,7 +162,7 @@ describe('CollectionsUtils.getCollection', () => {
     ])
   })
 
-  it('aggregates like and follow stats', async () => {
+  it('aggregates like, follow and included-in stats', async () => {
     const { utils, constellation } = setup({ [key(ALICE, RKEY_A)]: record('A', []) })
     constellation.getLinksDistinctDids.mockImplementation(async (...args: unknown[]) => ({
       data: {
@@ -191,6 +191,7 @@ describe('CollectionsUtils.getCollection', () => {
     expect(view).toMatchObject({
       likes: { total: 7, viewerHas: true },
       follows: { total: 2, viewerHas: false },
+      includedInCount: 3,
     })
     expect(constellation.getLinksDistinctDids).toHaveBeenCalledWith(
       COLLECTION_SUBJECT_REF(ALICE, RKEY_A),
@@ -291,6 +292,42 @@ describe('CollectionsUtils.listFollowedCollections', () => {
     const page = await utils.listFollowedCollections(BOB, 10)
     expect(page.cursor).toBe('next')
     expect(page.items.map(c => c.name)).toEqual(['Parsers'])
+  })
+})
+
+describe('CollectionsUtils.getCollectionsContaining', () => {
+  it('hydrates backlinks, dedupes, and drops missing collections', async () => {
+    const { utils, constellation } = setup({
+      [key(ALICE, RKEY_A)]: record('Alice', [PACKAGE_SUBJECT_REF('zod')]),
+    })
+    constellation.getBackLinks.mockResolvedValue({
+      data: {
+        total: 3,
+        cursor: 'next',
+        records: [
+          { did: ALICE, collection: 'dev.npmx.collection', rkey: RKEY_A },
+          { did: BOB, collection: 'dev.npmx.collection', rkey: RKEY_B },
+        ],
+      },
+      isStale: false,
+      cachedAt: null,
+    })
+
+    const result = await utils.getCollectionsContaining(PACKAGE_SUBJECT_REF('zod'), 10)
+
+    expect(result.total).toBe(3)
+    expect(result.cursor).toBe('next')
+    expect(result.items.map(item => item.name)).toEqual(['Alice'])
+    expect(constellation.getBackLinks).toHaveBeenCalledWith(
+      PACKAGE_SUBJECT_REF('zod'),
+      'dev.npmx.collection',
+      'items[].subjectRef',
+      10,
+      undefined,
+      false,
+      [],
+      0,
+    )
   })
 })
 
