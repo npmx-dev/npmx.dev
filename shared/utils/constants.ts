@@ -65,6 +65,16 @@ export const PACKAGE_SUBJECT_REF = (packageName: string) =>
 // OAuth scopes as we add new ones we need to check these on certain actions. If not redirect the user to login again to upgrade the scopes
 export const LIKES_SCOPE = `repo:${dev.npmx.feed.like.$nsid}`
 export const PROFILE_SCOPE = `repo:${dev.npmx.actor.profile.$nsid}`
+export const COLLECTIONS_SCOPE = `repo:${dev.npmx.collection.$nsid}`
+export const COLLECTION_SUBJECT_REF = (did: string, rkey: string) =>
+  `at://${did}/${dev.npmx.collection.$nsid}/${rkey}`
+// Keep in sync with lexicons/dev/npmx/collection.json
+// With the per-item limits there, a full collection stays under 1MB, the usual record size cap
+export const MAX_COLLECTION_ITEMS = 1000
+// In graphemes
+export const MAX_COLLECTION_NAME_LENGTH = 64
+export const MAX_COLLECTION_DESCRIPTION_LENGTH = 300
+export const MAX_COLLECTION_NOTE_LENGTH = 140
 export const NPMX_DEV_DID = 'did:plc:u5zp7npt5kpueado77kuihyz'
 export const TID_CLOCK_ID = 3
 
