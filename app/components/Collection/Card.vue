@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import type { CollectionSummary } from '#shared/types/social'
+import type { BrowseCollection, CollectionSummary } from '#shared/types/social'
 
-defineProps<{
-  collection: CollectionSummary
+const props = defineProps<{
+  /** Browse's counts show when present */
+  collection: CollectionSummary | BrowseCollection
   /** 3 by default, for lists under an h2 */
   headingLevel?: 2 | 3
 }>()
+
+const stats = computed(() => ('stats' in props.collection ? props.collection.stats : undefined))
 </script>
 
 <template>
@@ -30,10 +33,41 @@ defineProps<{
       <p v-if="collection.description" class="text-sm text-fg-muted line-clamp-2">
         {{ collection.description }}
       </p>
-      <p class="mt-auto font-mono text-xs text-fg-subtle">
-        {{
-          $t('collections.item_count', { count: $n(collection.itemCount) }, collection.itemCount)
-        }}
+      <p
+        class="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs text-fg-subtle"
+      >
+        <span>
+          {{
+            $t('collections.item_count', { count: $n(collection.itemCount) }, collection.itemCount)
+          }}
+        </span>
+        <template v-if="stats">
+          <span
+            class="flex items-center gap-1"
+            :title="$t('collections.like_count', { count: $n(stats.likes) }, stats.likes)"
+          >
+            <span class="i-lucide:heart size-3.5" aria-hidden="true" />
+            <span aria-hidden="true">{{ $n(stats.likes) }}</span>
+            <span class="sr-only">
+              {{ $t('collections.like_count', { count: $n(stats.likes) }, stats.likes) }}
+            </span>
+          </span>
+          <span
+            class="flex items-center gap-1"
+            :title="$t('collections.followers', { count: $n(stats.follows) }, stats.follows)"
+          >
+            <span class="i-lucide:bell size-3.5" aria-hidden="true" />
+            <span aria-hidden="true">{{ $n(stats.follows) }}</span>
+            <span class="sr-only">
+              {{ $t('collections.followers', { count: $n(stats.follows) }, stats.follows) }}
+            </span>
+          </span>
+          <span class="ms-auto flex items-center gap-1" :title="$t('collections.updated')">
+            <span class="i-lucide:history size-3.5" aria-hidden="true" />
+            <span class="sr-only">{{ $t('collections.updated') }}</span>
+            <DateTime :datetime="stats.updatedAt" year="numeric" month="short" day="numeric" />
+          </span>
+        </template>
       </p>
     </BaseCard>
   </NuxtLink>

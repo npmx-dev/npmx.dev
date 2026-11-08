@@ -17,3 +17,13 @@ export const Default: Story = {}
 export const WithoutDescription: Story = {
   args: { collection: { ...mockCollectionSummary, description: undefined } },
 }
+
+/** Browse adds counts and when the collection was last edited. */
+export const WithStats: Story = {
+  args: {
+    collection: {
+      ...mockCollectionSummary,
+      stats: { likes: 12, follows: 5, updatedAt: '2026-11-03T00:00:00.000Z' },
+    },
+  },
+}
