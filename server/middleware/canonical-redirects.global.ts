@@ -20,6 +20,7 @@ const pages = [
   '/accessibility',
   '/blog',
   '/brand',
+  '/collections',
   '/compare',
   '/noodles',
   '/sponsors',
