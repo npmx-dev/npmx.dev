@@ -123,6 +123,7 @@
       "npmx": "npmx",
       "package": "Package",
       "package_with_name": "Package ({name})",
+      "collections": "Your collections",
       "versions": "Versions",
       "versions_with_name": "Versions of {name}"
     },
@@ -462,6 +463,7 @@
     "collections": "Collections"
   },
   "collections": {
+    "title": "Collections",
     "seo_title": "{name} - npmx collections",
     "seo_description": "{name}, a collection of npm packages by {'@'}{handle}",
     "new": "New collection",

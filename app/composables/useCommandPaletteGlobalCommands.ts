@@ -82,7 +82,17 @@ export function useCommandPaletteGlobalCommands() {
   const { settings } = useSettings()
   const { isConnected: isNpmConnected, npmUser, disconnect: disconnectNpm } = useConnector()
   const { user: atprotoUser, logout } = useAtproto()
-  const { announce, close, setView } = useCommandPalette()
+  const { announce, close, setView, isOpen, query } = useCommandPalette()
+  const { collections: ownCollections, load: loadOwnCollections } = useOwnCollections()
+  // Refetched once per open, on the first query, so collections made or renamed elsewhere show up
+  // without a PDS request every time the palette opens
+  let loadedThisOpen = false
+  watch([isOpen, query, () => atprotoUser.value?.did], ([open, text, did]) => {
+    if (!open) loadedThisOpen = false
+    if (!open || loadedThisOpen || !did || !text.trim()) return
+    loadedThisOpen = true
+    void loadOwnCollections({ force: true })
+  })
 
   function closeThen(run: () => void | Promise<void>) {
     return async () => {
@@ -336,6 +346,16 @@ export function useCommandPaletteGlobalCommands() {
         active: route.name === 'tools-deps-stats',
         activeLabel: activeLabel(route.name === 'tools-deps-stats', t('command_palette.here')),
         to: { name: 'tools-deps-stats' },
+      },
+      {
+        id: 'collections-new',
+        group: 'navigation',
+        label: t('collections.new'),
+        keywords: [t('collections.title')],
+        iconClass: 'i-lucide:plus',
+        active: route.name === 'collections-new',
+        activeLabel: activeLabel(route.name === 'collections-new', t('command_palette.here')),
+        to: { name: 'collections-new' },
       },
       {
         id: 'settings',
@@ -669,6 +689,15 @@ export function useCommandPaletteGlobalCommands() {
     }
 
     const atprotoProfile = atprotoUser.value
+    // The route may name the owner by handle or DID
+    const isCurrentCollection = (rkey: string) => {
+      if (route.name !== 'collections-identifier-rkey') return false
+      const params = route.params as { identifier?: string; rkey?: string }
+      return (
+        params.rkey === rkey &&
+        (params.identifier === atprotoProfile?.handle || params.identifier === atprotoProfile?.did)
+      )
+    }
     if (atprotoProfile != null) {
       items.push(
         {
@@ -710,6 +739,25 @@ export function useCommandPaletteGlobalCommands() {
             },
           },
         },
+      )
+    }
+
+    // Only while searching, so a long list doesn't bury everything else
+    if (atprotoProfile != null && query.value.trim()) {
+      items.push(
+        ...(ownCollections.value ?? []).map((collection): CommandPaletteCommand => ({
+          id: `collection:${collection.uri}`,
+          group: 'collections',
+          label: collection.name,
+          keywords: collection.description ? [collection.description] : [],
+          iconClass: 'i-lucide:library',
+          active: isCurrentCollection(collection.rkey),
+          activeLabel: activeLabel(isCurrentCollection(collection.rkey), t('command_palette.here')),
+          to: {
+            name: 'collections-identifier-rkey',
+            params: { identifier: atprotoProfile.handle, rkey: collection.rkey },
+          },
+        })),
       )
     }
 
