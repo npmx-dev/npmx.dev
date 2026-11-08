@@ -57,6 +57,12 @@ export const mockCollection: CollectionView = {
         itemCount: 2,
       },
     },
+    {
+      kind: 'collection',
+      subjectRef: 'at://did:plc:spammer/dev.npmx.collection/3m5k5baifas2c',
+      collection: null,
+      unavailableReason: 'hidden',
+    },
   ],
 }
 

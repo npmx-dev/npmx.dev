@@ -12,20 +12,18 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** Packages with notes, a package missing from the registry, and a nested collection. */
+/** Packages with notes, a package missing from the registry, a nested collection, and a hidden one. */
 export const Default: Story = {}
 
-/** An included collection that can't be shown. */
-export const UnavailableCollection: Story = {
+/** Every reason an included collection can't be shown. */
+export const UnavailableCollections: Story = {
   args: {
-    items: [
-      {
-        kind: 'collection',
-        subjectRef: 'at://did:plc:x/dev.npmx.collection/3m5k5baifas2z',
-        collection: null,
-        unavailableReason: 'unresolvable',
-      },
-    ],
+    items: (['unresolvable', 'hidden'] as const).map(reason => ({
+      kind: 'collection' as const,
+      subjectRef: `at://did:plc:x/dev.npmx.collection/${reason}`,
+      collection: null,
+      unavailableReason: reason,
+    })),
   },
 }
 

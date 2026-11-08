@@ -1311,9 +1311,9 @@ describe('component accessibility audits', () => {
       },
       {
         kind: 'collection',
-        subjectRef: 'at://did:plc:gone/dev.npmx.collection/3m5k5baifas2c',
+        subjectRef: 'at://did:plc:mallory/dev.npmx.collection/3m5k5baifas2c',
         collection: null,
-        unavailableReason: 'unresolvable',
+        unavailableReason: 'hidden',
       },
       { kind: 'unknown', subjectRef: 'https://example.com/whatever' },
     ]

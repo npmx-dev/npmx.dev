@@ -40,7 +40,7 @@ export type CollectionSummary = {
 }
 
 /** Why an included collection could not be shown */
-export type CollectionUnavailableReason = 'unresolvable'
+export type CollectionUnavailableReason = 'unresolvable' | 'hidden'
 
 export type CollectionItemView =
   | {
