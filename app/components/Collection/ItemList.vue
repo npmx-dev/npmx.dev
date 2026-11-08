@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { NpmSearchResult } from '#shared/types'
-import type { CollectionItemView } from '#shared/types/social'
+import type { CollectionItemView, CollectionUnavailableReason } from '#shared/types/social'
 
 const { packages } = defineProps<{
   items: CollectionItemView[]
@@ -13,6 +13,12 @@ function cardResult(packageName: string) {
   const result = packages?.get(packageName)
   return result && { ...result, package: { ...result.package, keywords: undefined } }
 }
+
+// Static keys so the i18n unused-key check can see them
+const unavailableText = (reason: CollectionUnavailableReason | undefined) =>
+  reason === 'hidden'
+    ? $t('collections.unavailable.hidden')
+    : $t('collections.unavailable.unresolvable')
 </script>
 
 <template>
@@ -83,7 +89,7 @@ function cardResult(packageName: string) {
           <CollectionItemNote v-if="item.note">{{ item.note }}</CollectionItemNote>
         </div>
         <p v-else class="font-mono text-sm text-fg-subtle">
-          {{ $t('collections.unavailable.unresolvable') }}
+          {{ unavailableText(item.unavailableReason) }}
         </p>
       </div>
 
