@@ -366,7 +366,9 @@
       "share_button": "Partager sur Bluesky",
       "compose_text": "Salut {'@'}{handle} ! As-tu déjà testé npmx.dev ? C'est un navigateur pour le registre npm : rapide, moderne et open source.\nhttps://npmx.dev"
     },
-    "collections": "Collections"
+    "collections": "Collections",
+    "following_collections": "Collections suivies",
+    "no_following_collections": "Vous ne suivez encore aucune collection."
   },
   "collections": {
     "title": "Collections",

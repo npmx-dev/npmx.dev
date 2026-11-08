@@ -1386,6 +1386,12 @@
         },
         "collections": {
           "type": "string"
+        },
+        "following_collections": {
+          "type": "string"
+        },
+        "no_following_collections": {
+          "type": "string"
         }
       },
       "additionalProperties": false

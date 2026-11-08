@@ -93,6 +93,14 @@ export function toggleCollectionReaction(
   )
 }
 
+/** Collections the account follows, newest follow first. */
+export function fetchFollowedCollections(identifier: string, cursor?: string | null, limit = 20) {
+  return $fetch<{ cursor?: string; items: CollectionSummary[] }>(
+    `/api/social/profile/${encodeURIComponent(identifier)}/followed-collections`,
+    { query: { cursor: cursor ?? undefined, limit } },
+  )
+}
+
 export function fetchOwnCollections() {
   return $fetch<OwnCollection[]>('/api/social/collections/mine')
 }
