@@ -460,7 +460,9 @@
       "share_button": "Share on Bluesky",
       "compose_text": "Hey {'@'}{handle}! Have you checked out npmx.dev yet? It's a browser for the npm registry that's fast, modern, and open-source.\nhttps://npmx.dev"
     },
-    "collections": "Collections"
+    "collections": "Collections",
+    "following_collections": "Followed collections",
+    "no_following_collections": "You're not following any collections yet."
   },
   "collections": {
     "title": "Collections",
