@@ -42,6 +42,7 @@ export const mockCollection: CollectionView = {
   ...mockCollectionSummary,
   likes: { total: 12, viewerHas: false },
   follows: { total: 5, viewerHas: false },
+  includedInCount: 2,
   items: [
     {
       kind: 'package',
