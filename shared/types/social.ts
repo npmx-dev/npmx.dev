@@ -69,8 +69,18 @@ export type CollectionItemView =
 /** One of the viewer's own collections, with what's in it. */
 export type OwnCollection = CollectionSummary & { subjectRefs: string[] }
 
+/** Likes or follows of a collection, counted once per account. */
+export type ReactionState = {
+  total: number
+  // False when not logged in. For follows, only about follow records: owners follow their own
+  // collections implicitly.
+  viewerHas: boolean
+}
+
 export type CollectionView = CollectionSummary & {
   items: CollectionItemView[]
+  likes: ReactionState
+  follows: ReactionState
 }
 
 /**
