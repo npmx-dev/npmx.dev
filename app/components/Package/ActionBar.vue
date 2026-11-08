@@ -54,13 +54,16 @@ onKeyStroke(
           </button>
         </div>
 
-        <LinkBase
-          :to="{ name: 'compare', query: { packages: selectedPackagesParam } }"
-          variant="button-secondary"
-          classicon="i-lucide:git-compare"
-        >
-          {{ $t('package.links.compare') }}
-        </LinkBase>
+        <div class="flex items-center gap-2">
+          <LinkBase
+            :to="{ name: 'compare', query: { packages: selectedPackagesParam } }"
+            variant="button-secondary"
+            classicon="i-lucide:git-compare"
+          >
+            {{ $t('package.links.compare') }}
+          </LinkBase>
+          <CollectionAddButton :packages="selectedPackages" />
+        </div>
       </div>
     </section>
   </Transition>

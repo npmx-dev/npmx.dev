@@ -163,6 +163,7 @@ if (!isBlogPostRoute.value) {
 
     <template v-if="!isUnfurl">
       <CommandPalette />
+      <CollectionAddToModal />
 
       <AppFooter />
 
