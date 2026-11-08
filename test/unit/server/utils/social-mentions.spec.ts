@@ -2,8 +2,6 @@ import { beforeEach, describe, expect, it, vi, type Mocked } from 'vite-plus/tes
 import type { ConstellationMentions } from '#server/utils/atproto/utils/social-mentions'
 import type { CacheAdapter } from '#server/utils/cache/shared'
 
-vi.stubGlobal('CACHE_MAX_AGE_ONE_HOUR', 60 * 60)
-vi.stubGlobal('PACKAGE_SUBJECT_REF', (pkg: string) => `https://npmx.dev/package/${pkg}`)
 vi.stubGlobal('$fetch', vi.fn())
 vi.stubGlobal('Constellation', vi.fn())
 vi.stubGlobal('getCacheAdapter', vi.fn())
@@ -51,31 +49,14 @@ describe('PackageSocialMentionsUtils.getMentions', () => {
     mockConstellation.getBackLinks.mockResolvedValue(makeBacklinksPage([]))
   })
 
-  it('counts unique posts across embed and facet links', async () => {
-    const embed = 'https://npmx.dev/package/zod|embed.external.uri'
-    const facet = 'https://npmx.dev/package/zod|facets[].features[app.bsky.richtext.facet#link].uri'
-
-    mockConstellation.getBackLinks.mockImplementation(
-      async (
-        target: string,
-        _collection: string,
-        recordPath: string,
-        _limit: number = 100,
-        cursor?: string,
-      ) => {
-        const source = `${target}|${recordPath}`
-
-        if (source === embed) {
-          return cursor
-            ? makeBacklinksPage([post('did:plc:a', 'post-c')])
-            : makeBacklinksPage([post('did:plc:a', 'post-a'), post('did:plc:b', 'post-b')], 'next')
-        }
-        if (source === facet) {
-          return makeBacklinksPage([post('did:plc:b', 'post-b'), post('did:plc:c', 'post-d')])
-        }
-        return makeBacklinksPage([])
-      },
-    )
+  it('deduplicates posts across embed and facet links', async () => {
+    mockConstellation.getBackLinks
+      .mockResolvedValueOnce(
+        makeBacklinksPage([post('did:plc:a', 'post-a'), post('did:plc:b', 'post-b')]),
+      )
+      .mockResolvedValueOnce(
+        makeBacklinksPage([post('did:plc:b', 'post-b'), post('did:plc:c', 'post-c')]),
+      )
 
     const utils = new PackageSocialMentionsUtils({
       constellation: mockConstellation,
@@ -84,8 +65,8 @@ describe('PackageSocialMentionsUtils.getMentions', () => {
 
     const result = await utils.getMentions('zod')
 
-    expect(result).toEqual({ totalMentions: 4 })
-    expect(mockConstellation.getBackLinks).toHaveBeenCalledTimes(3)
+    expect(result).toEqual({ totalMentions: 3, isCapped: false })
+    expect(mockConstellation.getBackLinks).toHaveBeenCalledTimes(2)
     expect(mockConstellation.getBackLinks).toHaveBeenCalledWith(
       'https://npmx.dev/package/zod',
       'app.bsky.feed.post',
@@ -106,25 +87,66 @@ describe('PackageSocialMentionsUtils.getMentions', () => {
       [],
       0,
     )
-    expect(mockConstellation.getBackLinks).toHaveBeenCalledWith(
-      'https://npmx.dev/package/zod',
-      'app.bsky.feed.post',
-      'embed.external.uri',
-      100,
-      'next',
-      false,
-      [],
-      0,
-    )
     expect(mockCache.set).toHaveBeenCalledWith(
       expect.stringContaining('atproto-social-mentions:zod:total'),
-      { totalMentions: 4 },
+      { totalMentions: 3, isCapped: false },
       expect.any(Number),
     )
   })
 
+  it('caps at 99 when a source has another page', async () => {
+    mockConstellation.getBackLinks
+      .mockResolvedValueOnce(makeBacklinksPage([post('did:plc:a', 'post-a')], 'next'))
+      .mockResolvedValueOnce(makeBacklinksPage([post('did:plc:b', 'post-b')]))
+
+    const utils = new PackageSocialMentionsUtils({
+      constellation: mockConstellation,
+      cache: mockCache,
+    })
+
+    const result = await utils.getMentions('zod')
+
+    expect(result).toEqual({ totalMentions: 99, isCapped: true })
+    expect(mockConstellation.getBackLinks).toHaveBeenCalledTimes(2)
+    expect(mockCache.set).toHaveBeenCalledWith(
+      expect.stringContaining('atproto-social-mentions:zod:total'),
+      { totalMentions: 99, isCapped: true },
+      expect.any(Number),
+    )
+  })
+
+  it('caps at 99 when unique posts exceed 99', async () => {
+    mockConstellation.getBackLinks.mockResolvedValueOnce(
+      makeBacklinksPage(Array.from({ length: 100 }, (_, i) => post('did:plc:a', `post-${i}`))),
+    )
+
+    const utils = new PackageSocialMentionsUtils({
+      constellation: mockConstellation,
+      cache: mockCache,
+    })
+
+    const result = await utils.getMentions('zod')
+
+    expect(result).toEqual({ totalMentions: 99, isCapped: true })
+  })
+
+  it('does not cap exactly 99 unique posts', async () => {
+    mockConstellation.getBackLinks.mockResolvedValueOnce(
+      makeBacklinksPage(Array.from({ length: 99 }, (_, i) => post('did:plc:a', `post-${i}`))),
+    )
+
+    const utils = new PackageSocialMentionsUtils({
+      constellation: mockConstellation,
+      cache: mockCache,
+    })
+
+    const result = await utils.getMentions('zod')
+
+    expect(result).toEqual({ totalMentions: 99, isCapped: false })
+  })
+
   it('returns cached mentions without calling constellation', async () => {
-    mockCache.get.mockResolvedValueOnce({ totalMentions: 42 })
+    mockCache.get.mockResolvedValueOnce({ totalMentions: 42, isCapped: false })
 
     const utils = new PackageSocialMentionsUtils({
       constellation: mockConstellation,
@@ -134,7 +156,7 @@ describe('PackageSocialMentionsUtils.getMentions', () => {
     const result = await utils.getMentions('react')
 
     expect(mockConstellation.getBackLinks).not.toHaveBeenCalled()
-    expect(result).toEqual({ totalMentions: 42 })
+    expect(result).toEqual({ totalMentions: 42, isCapped: false })
   })
 
   it('caches a zero result', async () => {
@@ -145,10 +167,10 @@ describe('PackageSocialMentionsUtils.getMentions', () => {
 
     const result = await utils.getMentions('unmentioned-pkg')
 
-    expect(result).toEqual({ totalMentions: 0 })
+    expect(result).toEqual({ totalMentions: 0, isCapped: false })
     expect(mockCache.set).toHaveBeenCalledWith(
       expect.stringContaining('unmentioned-pkg:total'),
-      { totalMentions: 0 },
+      { totalMentions: 0, isCapped: false },
       expect.any(Number),
     )
   })

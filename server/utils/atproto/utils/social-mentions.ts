@@ -1,4 +1,9 @@
 import type { Backlink } from '#shared/utils/constellation'
+import {
+  CACHE_MAX_AGE_ONE_HOUR,
+  packageSubjectRef,
+  SOCIAL_MENTIONS_MAX,
+} from '#shared/utils/constants'
 
 const CACHE_PREFIX = 'atproto-social-mentions:'
 const cachePackageTotalKey = (packageName: string) => `${CACHE_PREFIX}${packageName}:total`
@@ -18,7 +23,8 @@ export type ConstellationMentions = Pick<Constellation, 'getBackLinks'>
 /**
  * Counts unique Bluesky posts that link to an npmx.dev package.
  *
- * Posts that both embed and facet-link the URL are only counted once.
+ * Posts that both embed and facet-link the URL are only counted once. At most
+ * one page of 100 records is read per source path; counts above 99 are capped.
  */
 export class PackageSocialMentionsUtils {
   private readonly constellation: ConstellationMentions
@@ -42,28 +48,21 @@ export class PackageSocialMentionsUtils {
   }
 
   private async constellationPostKeys(target: string, recordPath: string) {
-    const postKeys = new Set<string>()
-    let cursor: string | undefined
+    const { data } = await this.constellation.getBackLinks(
+      target,
+      BLUESKY_POST_COLLECTION,
+      recordPath,
+      100,
+      undefined,
+      false,
+      [],
+      0,
+    )
 
-    do {
-      const { data } = await this.constellation.getBackLinks(
-        target,
-        BLUESKY_POST_COLLECTION,
-        recordPath,
-        100,
-        cursor,
-        false,
-        [],
-        0,
-      )
-
-      for (const record of data.records) {
-        postKeys.add(postKey(record))
-      }
-      cursor = data.cursor
-    } while (cursor)
-
-    return postKeys
+    return {
+      postKeys: data.records.map(postKey),
+      hasMore: Boolean(data.cursor),
+    }
   }
 
   async getMentions(packageName: string): Promise<PackageSocialMentions> {
@@ -71,18 +70,22 @@ export class PackageSocialMentionsUtils {
     const cached = await this.cache.get<PackageSocialMentions>(cacheKey)
     if (cached) return cached
 
-    const target = PACKAGE_SUBJECT_REF(packageName)
-    const postKeySets = await Promise.all(
+    const target = packageSubjectRef(packageName)
+    const results = await Promise.all(
       BLUESKY_LINK_PATHS.map(recordPath => this.constellationPostKeys(target, recordPath)),
     )
 
     const uniquePosts = new Set<string>()
-    for (const postKeys of postKeySets) {
-      for (const key of postKeys) uniquePosts.add(key)
+    let hasMore = false
+    for (const result of results) {
+      hasMore ||= result.hasMore
+      for (const key of result.postKeys) uniquePosts.add(key)
     }
 
+    const isCapped = hasMore || uniquePosts.size > SOCIAL_MENTIONS_MAX
     const result: PackageSocialMentions = {
-      totalMentions: uniquePosts.size,
+      totalMentions: isCapped ? SOCIAL_MENTIONS_MAX : uniquePosts.size,
+      isCapped,
     }
     await this.cache.set(cacheKey, result, CACHE_MAX_AGE)
     return result

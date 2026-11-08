@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { PackageSocialMentions } from '#shared/types/social'
-import { PACKAGE_SUBJECT_REF } from '#shared/utils/constants'
+import { packageSubjectRef, SOCIAL_MENTIONS_MAX } from '#shared/utils/constants'
 
 const props = defineProps<{
   packageName: string
@@ -13,7 +13,7 @@ const {
   status,
   execute: fetchMentions,
 } = useLazyFetch<PackageSocialMentions>(() => `/api/social/mentions/${props.packageName}`, {
-  default: () => ({ totalMentions: 0 }),
+  default: () => ({ totalMentions: 0, isCapped: false }),
   server: false,
   immediate: false,
 })
@@ -30,17 +30,19 @@ if (import.meta.client) {
 }
 
 const totalMentions = computed(() => mentionsData.value?.totalMentions ?? 0)
+const isCapped = computed(() => mentionsData.value?.isCapped ?? false)
+const displayCount = computed(() =>
+  isCapped.value
+    ? `${SOCIAL_MENTIONS_MAX}+`
+    : compactNumberFormatter.value.format(totalMentions.value),
+)
 const isLoading = computed(() => status.value === 'pending' || status.value === 'idle')
 // Search the exact npmx.dev URL to avoid noisy matches on package names like "react".
 const searchUrl = computed(
-  () => `https://bsky.app/search?q=${encodeURIComponent(PACKAGE_SUBJECT_REF(props.packageName))}`,
+  () => `https://bsky.app/search?q=${encodeURIComponent(packageSubjectRef(props.packageName))}`,
 )
 const label = computed(() =>
-  $t(
-    'package.social_mentions.label',
-    { count: compactNumberFormatter.value.format(totalMentions.value) },
-    totalMentions.value,
-  ),
+  $t('package.social_mentions.label', { count: displayCount.value }, totalMentions.value),
 )
 </script>
 

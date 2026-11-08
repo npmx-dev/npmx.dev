@@ -454,7 +454,7 @@
       "top_rank_link_label": "Voir le classement des likes. Ce paquet est classé n°{rank}."
     },
     "social_mentions": {
-      "label": "{count} mention | {count} mentions"
+      "label": "{count} mention | {count} mention | {count} mentions"
     },
     "docs": {
       "contents": "Sommaire",

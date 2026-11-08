@@ -4,7 +4,7 @@ import { PackageRouteParamsSchema } from '#shared/schemas/package'
 /**
  * GET /api/social/mentions/:name
  *
- * Gets the approximate number of social posts that mention a npm package
+ * Gets the number of unique social posts that mention a npm package, capped at 99+
  */
 export default defineEventHandler(async event => {
   const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
@@ -17,9 +17,19 @@ export default defineEventHandler(async event => {
     })
   }
 
+  let decodedPackageName: string
+  try {
+    decodedPackageName = decodeURIComponent(rawPackageName)
+  } catch {
+    throw createError({
+      status: 400,
+      message: 'Invalid package name encoding',
+    })
+  }
+
   try {
     const { packageName } = v.parse(PackageRouteParamsSchema, {
-      packageName: decodeURIComponent(rawPackageName),
+      packageName: decodedPackageName,
     })
 
     const mentionsUtil = new PackageSocialMentionsUtils()

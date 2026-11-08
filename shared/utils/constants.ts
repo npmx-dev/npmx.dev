@@ -58,10 +58,11 @@ export const ERROR_UNKNOWN_GIT_HOST =
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'
 export const SLINGSHOT_HOST = 'slingshot.microcosm.blue'
 
+export const SOCIAL_MENTIONS_MAX = 99
+
 // ATProtocol
 // References used to link packages to things that are not inherently atproto
-export const PACKAGE_SUBJECT_REF = (packageName: string) =>
-  `https://npmx.dev/package/${packageName}`
+export const packageSubjectRef = (packageName: string) => `https://npmx.dev/package/${packageName}`
 // OAuth scopes as we add new ones we need to check these on certain actions. If not redirect the user to login again to upgrade the scopes
 export const LIKES_SCOPE = `repo:${dev.npmx.feed.like.$nsid}`
 export const PROFILE_SCOPE = `repo:${dev.npmx.actor.profile.$nsid}`

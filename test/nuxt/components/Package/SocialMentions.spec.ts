@@ -55,6 +55,22 @@ describe('PackageSocialMentions', () => {
     })
   })
 
+  it('renders 99+ for capped counts', async () => {
+    registerEndpoint('/api/social/mentions/popular-pkg', () => ({
+      totalMentions: 99,
+      isCapped: true,
+    }))
+
+    wrapper = await mountSuspended(SocialMentions, {
+      props: { packageName: 'popular-pkg' },
+      attachTo: document.body,
+    })
+
+    await vi.waitFor(() => {
+      expect(wrapper?.text()).toContain('99+ mentions')
+    })
+  })
+
   it('links to the exact npmx.dev package URL search', async () => {
     registerEndpoint('/api/social/mentions/vue', () => ({ totalMentions: 12 }))
 
