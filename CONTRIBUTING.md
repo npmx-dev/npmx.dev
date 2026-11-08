@@ -440,24 +440,26 @@ The command palette is a first-class navigation surface. When you add a new user
 
 #### Available route names
 
-| Route name          | URL pattern                                       | Parameters                       |
-| ------------------- | ------------------------------------------------- | -------------------------------- |
-| `index`             | `/`                                               | &mdash;                          |
-| `about`             | `/about`                                          | &mdash;                          |
-| `compare`           | `/compare`                                        | &mdash;                          |
-| `privacy`           | `/privacy`                                        | &mdash;                          |
-| `search`            | `/search`                                         | &mdash;                          |
-| `settings`          | `/settings`                                       | &mdash;                          |
-| `package`           | `/package/:org?/:name`                            | `org?`, `name`                   |
-| `package-version`   | `/package/:org?/:name/v/:version`                 | `org?`, `name`, `version`        |
-| `code`              | `/package-code/:path+`                            | `path` (array)                   |
-| `docs`              | `/package-docs/:path+`                            | `path` (array)                   |
-| `changelog`         | `/package-changelog/:org?/:name`                  | `org?`, `name`                   |
-| `changelog-version` | `/package-changelog/:org?/:name/v/:version`       | `org?`, `name`, `version`        |
-| `timeline`          | `/package-timeline/:org?/:packageName/v/:version` | `org?`, `packageName`, `version` |
-| `org`               | `/org/:org`                                       | `org`                            |
-| `~username`         | `/~:username`                                     | `username`                       |
-| `~username-orgs`    | `/~:username/orgs`                                | `username`                       |
+| Route name                    | URL pattern                                       | Parameters                           |
+| ----------------------------- | ------------------------------------------------- | ------------------------------------ |
+| `index`                       | `/`                                               | &mdash;                              |
+| `about`                       | `/about`                                          | &mdash;                              |
+| `compare`                     | `/compare`                                        | &mdash;                              |
+| `privacy`                     | `/privacy`                                        | &mdash;                              |
+| `search`                      | `/search`                                         | &mdash;                              |
+| `settings`                    | `/settings`                                       | &mdash;                              |
+| `package`                     | `/package/:org?/:name`                            | `org?`, `name`                       |
+| `package-version`             | `/package/:org?/:name/v/:version`                 | `org?`, `name`, `version`            |
+| `code`                        | `/package-code/:path+`                            | `path` (array)                       |
+| `docs`                        | `/package-docs/:path+`                            | `path` (array)                       |
+| `changelog`                   | `/package-changelog/:org?/:name`                  | `org?`, `name`                       |
+| `changelog-version`           | `/package-changelog/:org?/:name/v/:version`       | `org?`, `name`, `version`            |
+| `timeline`                    | `/package-timeline/:org?/:packageName/v/:version` | `org?`, `packageName`, `version`     |
+| `org`                         | `/org/:org`                                       | `org`                                |
+| `~username`                   | `/~:username`                                     | `username`                           |
+| `~username-orgs`              | `/~:username/orgs`                                | `username`                           |
+| `collections-new`             | `/collections/new`                                | &mdash;                              |
+| `collections-identifier-rkey` | `/collections/:identifier/:rkey`                  | `identifier` (handle or DID), `rkey` |
 
 ### Cursor and navigation
 

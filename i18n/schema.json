@@ -1258,6 +1258,9 @@
         "edit": {
           "type": "string"
         },
+        "delete": {
+          "type": "string"
+        },
         "error": {
           "type": "string"
         },
@@ -1370,6 +1373,171 @@
               "type": "string"
             },
             "compose_text": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "collections": {
+      "type": "object",
+      "properties": {
+        "seo_title": {
+          "type": "string"
+        },
+        "seo_description": {
+          "type": "string"
+        },
+        "new": {
+          "type": "string"
+        },
+        "new_title": {
+          "type": "string"
+        },
+        "empty_collection": {
+          "type": "string"
+        },
+        "by": {
+          "type": "string"
+        },
+        "item_count": {
+          "type": "string"
+        },
+        "duplicate": {
+          "type": "string"
+        },
+        "delete_title": {
+          "type": "string"
+        },
+        "delete_body": {
+          "type": "string"
+        },
+        "delete_error": {
+          "type": "string"
+        },
+        "includes": {
+          "type": "string"
+        },
+        "package_unresolved": {
+          "type": "string"
+        },
+        "unknown_item": {
+          "type": "string"
+        },
+        "unavailable": {
+          "type": "object",
+          "properties": {
+            "unresolvable": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "not_found": {
+          "type": "string"
+        },
+        "not_found_message": {
+          "type": "string"
+        },
+        "load_failed": {
+          "type": "string"
+        },
+        "load_failed_message": {
+          "type": "string"
+        },
+        "sign_in_to_create": {
+          "type": "string"
+        },
+        "editor": {
+          "type": "object",
+          "properties": {
+            "public_notice": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "items": {
+              "type": "string"
+            },
+            "item_limit": {
+              "type": "string"
+            },
+            "add_item_label": {
+              "type": "string"
+            },
+            "add_item_placeholder": {
+              "type": "string"
+            },
+            "add_item_hint": {
+              "type": "string"
+            },
+            "invalid_item": {
+              "type": "string"
+            },
+            "note_placeholder": {
+              "type": "string"
+            },
+            "note_for": {
+              "type": "string"
+            },
+            "move_up": {
+              "type": "string"
+            },
+            "move_down": {
+              "type": "string"
+            },
+            "remove": {
+              "type": "string"
+            },
+            "moved": {
+              "type": "string"
+            },
+            "removed": {
+              "type": "string"
+            },
+            "saved": {
+              "type": "string"
+            },
+            "save_error": {
+              "type": "string"
+            },
+            "conflict": {
+              "type": "string"
+            },
+            "unrecognized": {
+              "type": "string"
+            },
+            "name_required": {
+              "type": "string"
+            },
+            "unrecognized_items": {
+              "type": "string"
+            },
+            "too_many_items": {
+              "type": "string"
+            },
+            "too_long": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "your_data": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            },
+            "docs": {
               "type": "string"
             }
           },

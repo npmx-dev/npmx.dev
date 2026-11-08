@@ -10,11 +10,8 @@ const errorMessage = shallowRef('')
 const route = useRoute()
 const { user, logout } = useAtproto()
 
-// https://atproto.com supports 4 locales as of 2026-02-07
 const { locale } = useI18n()
-const currentLang = locale.value.split('-')[0] ?? 'en'
-const localeSubPath = ['ko', 'pt', 'ja'].includes(currentLang) ? currentLang : ''
-const atprotoLink = `https://atproto.com/${localeSubPath}`
+const atprotoLink = useAtprotoSiteUrl()
 
 async function handleBlueskySignIn() {
   await authRedirect('https://bsky.social', { redirectTo: route.fullPath, locale: locale.value })
