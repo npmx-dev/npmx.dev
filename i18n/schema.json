@@ -1464,6 +1464,9 @@
           "properties": {
             "unresolvable": {
               "type": "string"
+            },
+            "hidden": {
+              "type": "string"
             }
           },
           "additionalProperties": false

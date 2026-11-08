@@ -1,10 +1,12 @@
-import { describe, expect, it, vi } from 'vite-plus/test'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import type { CacheAdapter } from '#server/utils/cache/shared'
 import type { MiniDoc } from '#shared/types/social'
 import type { Backlink } from '#shared/utils/constellation'
 import { COLLECTION_SUBJECT_REF, PACKAGE_SUBJECT_REF } from '#shared/utils/constants'
 
 const { CollectionsUtils } = await import('#server/utils/atproto/utils/collections')
+const { AccountModerationUtils, BLUESKY_MODERATION_DID, isHiddenByLabels } =
+  await import('#server/utils/atproto/utils/moderation')
 
 type Deps = NonNullable<ConstructorParameters<typeof CollectionsUtils>[0]>
 
@@ -67,6 +69,7 @@ function setup(records: RecordMap, overrides: Partial<Deps> = {}) {
     listRecords: async () => ({ records: [] }),
     listFollows: async () => ({ records: [] }),
     packageExists: async name => name !== 'does-not-exist',
+    moderation: { getHiddenDids: async () => new Set(), isHidden: async () => false },
     ...overrides,
   }
   return { utils: new CollectionsUtils(deps), constellation, fetchRecord }
@@ -106,6 +109,19 @@ describe('CollectionsUtils.getCollection', () => {
     const { utils } = setup({ [key(ALICE, RKEY_B)]: { name: 'no items or createdAt' } })
     expect(await utils.getCollection(ALICE, RKEY_A)).toBeNull()
     expect(await utils.getCollection(ALICE, RKEY_B)).toBeNull()
+  })
+
+  it('returns null when the author is hidden', async () => {
+    const { utils } = setup(
+      { [key(MALLORY, RKEY_A)]: record('x', []) },
+      {
+        moderation: {
+          getHiddenDids: async () => new Set([MALLORY]),
+          isHidden: async did => did === MALLORY,
+        },
+      },
+    )
+    expect(await utils.getCollection(MALLORY, RKEY_A)).toBeNull()
   })
 
   it("names records by the owner's DID, not the URI their PDS reports", async () => {
@@ -150,14 +166,27 @@ describe('CollectionsUtils.getCollection', () => {
     expect(fetchRecord).toHaveBeenCalledTimes(2)
   })
 
-  it('marks unresolvable nested collections', async () => {
-    const { utils } = setup({
-      [key(ALICE, RKEY_A)]: record('A', [COLLECTION_SUBJECT_REF(BOB, RKEY_C)]),
-    })
+  it('marks hidden and unresolvable nested collections', async () => {
+    const { utils } = setup(
+      {
+        [key(ALICE, RKEY_A)]: record('A', [
+          COLLECTION_SUBJECT_REF(MALLORY, RKEY_B),
+          COLLECTION_SUBJECT_REF(BOB, RKEY_C),
+        ]),
+        [key(MALLORY, RKEY_B)]: record('spam', []),
+      },
+      {
+        moderation: {
+          getHiddenDids: async dids => new Set(dids.filter(did => did === MALLORY)),
+          isHidden: async did => did === MALLORY,
+        },
+      },
+    )
 
     const view = await utils.getCollection(ALICE, RKEY_A)
 
     expect(view?.items).toEqual([
+      expect.objectContaining({ collection: null, unavailableReason: 'hidden' }),
       expect.objectContaining({ collection: null, unavailableReason: 'unresolvable' }),
     ])
   })
@@ -296,16 +325,27 @@ describe('CollectionsUtils.listFollowedCollections', () => {
 })
 
 describe('CollectionsUtils.getCollectionsContaining', () => {
-  it('hydrates backlinks, dedupes, and drops missing collections', async () => {
-    const { utils, constellation } = setup({
-      [key(ALICE, RKEY_A)]: record('Alice', [PACKAGE_SUBJECT_REF('zod')]),
-    })
+  it('hydrates backlinks, dedupes, and drops hidden or missing collections', async () => {
+    const { utils, constellation } = setup(
+      {
+        [key(ALICE, RKEY_A)]: record('Alice', [PACKAGE_SUBJECT_REF('zod')]),
+        [key(MALLORY, RKEY_A)]: record('Spam', [PACKAGE_SUBJECT_REF('zod')]),
+      },
+      {
+        moderation: {
+          getHiddenDids: async dids => new Set(dids.filter(did => did === MALLORY)),
+          isHidden: async did => did === MALLORY,
+        },
+      },
+    )
     constellation.getBackLinks.mockResolvedValue({
       data: {
-        total: 3,
+        total: 4,
         cursor: 'next',
         records: [
           { did: ALICE, collection: 'dev.npmx.collection', rkey: RKEY_A },
+          { did: ALICE, collection: 'dev.npmx.collection', rkey: RKEY_A },
+          { did: MALLORY, collection: 'dev.npmx.collection', rkey: RKEY_A },
           { did: BOB, collection: 'dev.npmx.collection', rkey: RKEY_B },
         ],
       },
@@ -315,7 +355,7 @@ describe('CollectionsUtils.getCollectionsContaining', () => {
 
     const result = await utils.getCollectionsContaining(PACKAGE_SUBJECT_REF('zod'), 10)
 
-    expect(result.total).toBe(3)
+    expect(result.total).toBe(4)
     expect(result.cursor).toBe('next')
     expect(result.items.map(item => item.name)).toEqual(['Alice'])
     expect(constellation.getBackLinks).toHaveBeenCalledWith(
@@ -354,4 +394,64 @@ describe('CollectionsUtils.listUserCollections', () => {
       items: [expect.objectContaining({ rkey: RKEY_A, name: 'A', itemCount: 1, did: ALICE })],
     })
   })
+
+  it('returns nothing for hidden accounts', async () => {
+    const listRecords = vi.fn()
+    const { utils } = setup(
+      {},
+      {
+        listRecords,
+        moderation: { getHiddenDids: async () => new Set([MALLORY]), isHidden: async () => true },
+      },
+    )
+    expect(await utils.listUserCollections(MALLORY, 20)).toEqual({ items: [] })
+    expect(listRecords).not.toHaveBeenCalled()
+  })
+})
+
+const label = (val: string, extra: Record<string, unknown> = {}) => ({
+  src: BLUESKY_MODERATION_DID,
+  val,
+  ...extra,
+})
+
+describe('AccountModerationUtils', () => {
+  it('hides only on Bluesky moderation labels that hide accounts', () => {
+    expect(isHiddenByLabels([label('spam')])).toBe(true)
+    expect(isHiddenByLabels([label('!hide')])).toBe(true)
+    expect(isHiddenByLabels([label('spam', { neg: true })])).toBe(false)
+    expect(isHiddenByLabels([label('spam', { exp: '2000-01-01T00:00:00Z' })])).toBe(false)
+    expect(isHiddenByLabels([{ src: 'did:plc:someone-else', val: 'spam' }])).toBe(false)
+    expect(isHiddenByLabels([label('porn')])).toBe(false)
+    expect(isHiddenByLabels(undefined)).toBe(false)
+  })
+
+  it('batches lookups, caches results, and fails open', async () => {
+    const fetchProfileLabels = vi.fn(async (dids: string[]) =>
+      dids.map(did => ({ did, labels: did === MALLORY ? [label('spam')] : [] })),
+    )
+    const utils = new AccountModerationUtils({ fetchProfileLabels, cache: memoryCache() })
+
+    expect(await utils.getHiddenDids([ALICE, MALLORY, ALICE])).toEqual(new Set([MALLORY]))
+    expect(await utils.isHidden(MALLORY)).toBe(true)
+    expect(fetchProfileLabels).toHaveBeenCalledTimes(1)
+    expect(fetchProfileLabels).toHaveBeenCalledWith([ALICE, MALLORY])
+
+    const failing = new AccountModerationUtils({
+      fetchProfileLabels: async () => Promise.reject(new Error('down')),
+      cache: memoryCache(),
+    })
+    expect(await failing.getHiddenDids([MALLORY])).toEqual(new Set())
+  })
+
+  it('splits large lookups into batches of 25', async () => {
+    const fetchProfileLabels = vi.fn(async (dids: string[]) => dids.map(did => ({ did })))
+    const utils = new AccountModerationUtils({ fetchProfileLabels, cache: memoryCache() })
+    await utils.getHiddenDids(Array.from({ length: 30 }, (_, i) => `did:plc:${i}`))
+    expect(fetchProfileLabels.mock.calls.map(([dids]) => dids.length)).toEqual([25, 5])
+  })
+})
+
+beforeEach(() => {
+  vi.restoreAllMocks()
 })
