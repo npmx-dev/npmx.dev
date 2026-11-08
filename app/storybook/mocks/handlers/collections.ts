@@ -19,6 +19,8 @@ export const mockCollectionSummary: CollectionSummary = {
 
 export const mockCollection: CollectionView = {
   ...mockCollectionSummary,
+  likes: { total: 12, viewerHas: false },
+  follows: { total: 5, viewerHas: false },
   items: [
     {
       kind: 'package',
@@ -60,3 +62,21 @@ export const mockCollection: CollectionView = {
 export const mockCollectionHandler = http.get(`/api/social/collections/:identifier/:rkey`, () =>
   HttpResponse.json(mockCollection),
 )
+
+export const mockCollectionLikeHandlers = [
+  http.post(`/api/social/collections/:identifier/:rkey/like`, () =>
+    HttpResponse.json({ total: mockCollection.likes.total + 1, viewerHas: true }),
+  ),
+  http.delete(`/api/social/collections/:identifier/:rkey/like`, () =>
+    HttpResponse.json({ total: mockCollection.likes.total, viewerHas: false }),
+  ),
+]
+
+export const mockCollectionFollowHandlers = [
+  http.post(`/api/social/collections/:identifier/:rkey/follow`, () =>
+    HttpResponse.json({ total: mockCollection.follows.total + 1, viewerHas: true }),
+  ),
+  http.delete(`/api/social/collections/:identifier/:rkey/follow`, () =>
+    HttpResponse.json({ total: mockCollection.follows.total, viewerHas: false }),
+  ),
+]

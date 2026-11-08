@@ -4,6 +4,8 @@ import { pageDecorator } from '../../../../.storybook/decorators'
 import {
   mockCollectionHandle,
   mockCollectionHandler,
+  mockCollectionFollowHandlers,
+  mockCollectionLikeHandlers,
   mockCollectionRkey,
 } from '../../../storybook/mocks/handlers/collections'
 import { mockAuthSessionHandler } from '../../../storybook/mocks/handlers/profile'
@@ -16,7 +18,12 @@ const meta = {
     `/collections/${mockCollectionHandle}/${mockCollectionRkey}`,
   ),
   beforeEach({ msw }) {
-    msw.use(mockCollectionHandler, mockAuthSessionHandler())
+    msw.use(
+      mockCollectionHandler,
+      ...mockCollectionLikeHandlers,
+      ...mockCollectionFollowHandlers,
+      mockAuthSessionHandler(),
+    )
   },
   parameters: { layout: 'fullscreen' },
   decorators: [pageDecorator],

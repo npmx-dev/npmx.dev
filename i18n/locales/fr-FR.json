@@ -379,6 +379,8 @@
     "empty_collection": "Cette collection est vide.",
     "by": "par {'@'}{handle}",
     "item_count": "{count} élément | {count} éléments",
+    "like": "Aimer cette collection",
+    "unlike": "Ne plus aimer cette collection",
     "duplicate": "Dupliquer",
     "delete_title": "Supprimer cette collection ?",
     "delete_body": "Cette action est irréversible.",
@@ -419,6 +421,18 @@
       "unrecognized_items": "Retirez les éléments marqués « Non reconnu ». npmx ne peut enregistrer que des paquets et des collections.",
       "too_many_items": "Retirez {count} élément. Une collection en contient au maximum {max}. | Retirez {count} éléments. Une collection en contient au maximum {max}.",
       "too_long": "Raccourcissez le texte. Le nom peut compter jusqu'à {name} caractères, la description {description} et chaque note {note}."
+    },
+    "follow": "Suivre",
+    "following": "Suivie",
+    "follow_label": "Suivre cette collection",
+    "unfollow_label": "Ne plus suivre cette collection",
+    "followers": "{count} abonné | {count} abonnés",
+    "like_count": "{count} j'aime | {count} j'aime",
+    "reaction_announcements": {
+      "liked": "Vous aimez cette collection.",
+      "unliked": "Vous n'aimez plus cette collection.",
+      "followed": "Vous suivez cette collection.",
+      "unfollowed": "Vous ne suivez plus cette collection."
     },
     "your_data": {
       "summary": "Ce sont vos données",
