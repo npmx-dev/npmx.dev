@@ -369,6 +369,8 @@ import CollectionEditor from '~/components/Collection/Editor.vue'
 import PackageTypeahead from '~/components/Package/Typeahead.vue'
 import CollectionItemList from '~/components/Collection/ItemList.vue'
 import CollectionItemNote from '~/components/Collection/ItemNote.vue'
+import CollectionLikeButton from '~/components/Collection/LikeButton.vue'
+import CollectionFollowButton from '~/components/Collection/FollowButton.vue'
 import CollectionYourData from '~/components/Collection/YourData.vue'
 import type { CollectionItemView, CollectionSummary } from '#shared/types/social'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
@@ -1374,6 +1376,30 @@ describe('component accessibility audits', () => {
         props: { items, packages: new Map([['commander', commander]]) },
       })
       expect(component.text()).toContain('v1.0.0')
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('CollectionLikeButton should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollectionLikeButton, {
+        props: {
+          identifier: summary.did,
+          rkey: summary.rkey,
+          modelValue: { total: 4, viewerHas: true },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('CollectionFollowButton should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollectionFollowButton, {
+        props: {
+          identifier: summary.did,
+          rkey: summary.rkey,
+          modelValue: { total: 3, viewerHas: true },
+        },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
