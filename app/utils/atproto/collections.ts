@@ -75,6 +75,13 @@ export function deleteCollection(identifier: string, rkey: string, userHandle?: 
   )
 }
 
+export function fetchUserCollections(identifier: string, cursor?: string | null, limit = 20) {
+  return $fetch<{ cursor?: string; items: CollectionSummary[] }>(
+    `/api/social/collections/${encodeURIComponent(identifier)}`,
+    { query: { cursor: cursor ?? undefined, limit } },
+  )
+}
+
 /**
  * Turns what a user pastes into the editor into a subjectRef: a package name, an npmx package or
  * collection URL, or a collection AT-URI. Collection page URLs may use a handle, so resolving

@@ -1189,6 +1189,9 @@
         "loading_more": {
           "type": "string"
         },
+        "load_more": {
+          "type": "string"
+        },
         "loading_packages": {
           "type": "string"
         },
@@ -1377,6 +1380,9 @@
             }
           },
           "additionalProperties": false
+        },
+        "collections": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -1394,6 +1400,12 @@
           "type": "string"
         },
         "new_title": {
+          "type": "string"
+        },
+        "empty": {
+          "type": "string"
+        },
+        "load_error": {
           "type": "string"
         },
         "empty_collection": {
