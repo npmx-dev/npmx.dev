@@ -186,6 +186,7 @@ export default defineNuxtConfig({
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
+    '/api/cron/**': { isr: false, cache: false },
     '/api/atproto/bluesky-comments': {
       isr: {
         expiration: 60 * 60 /* one hour */,
@@ -274,6 +275,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-01-31',
 
   nitro: {
+    experimental: {
+      tasks: true,
+    },
     externals: {
       inline: [
         'shiki',

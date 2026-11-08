@@ -443,10 +443,10 @@ export class CollectionsUtils {
    * Turns entries into summaries via `build`, dropping hidden authors and any entry whose author
    * no longer resolves (deleted, deactivated) or that `build` rejects.
    */
-  async hydrate<T extends { did: string }>(
+  async hydrate<T extends { did: string }, S extends CollectionSummary = CollectionSummary>(
     entries: T[],
-    build: (miniDoc: MiniDoc, entry: T) => Promise<CollectionSummary | null> | CollectionSummary,
-  ): Promise<CollectionSummary[]> {
+    build: (miniDoc: MiniDoc, entry: T) => Promise<S | null> | S,
+  ): Promise<S[]> {
     const hidden = await this.deps.moderation.getHiddenDids(entries.map(entry => entry.did))
     const summaries = await Promise.all(
       entries
