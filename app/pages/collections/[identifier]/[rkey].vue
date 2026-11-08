@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import type { CollectionView, ReactionState } from '#shared/types/social'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
-import { COLLECTIONS_INDEX_INTERVAL_MINUTES } from '#shared/utils/constants'
+import {
+  COLLECTIONS_INDEX_INTERVAL_MINUTES,
+  CURATED_COLLECTION_DIDS,
+} from '#shared/utils/constants'
 import {
   collectionPath,
   deleteCollection,
@@ -34,6 +37,7 @@ const { user } = useAtproto()
 // Set by the new-collection page: browse is fed by a periodic index, so say why it isn't there yet
 const justCreated = computed(() => route.query.created === '1')
 const isOwner = computed(() => !!user.value?.did && user.value.did === collection.value?.did)
+const isCurated = computed(() => CURATED_COLLECTION_DIDS.has(collection.value?.did ?? ''))
 
 // useFetch data is a shallow ref, so replace rather than mutate
 const reactionModel = (key: 'likes' | 'follows') =>
@@ -237,9 +241,12 @@ defineOgImage(
 <template>
   <main v-if="collection" class="container flex-1 flex flex-col gap-8 py-8 sm:py-12 w-full">
     <header class="flex flex-col gap-4 border-b border-border pb-8">
-      <h1 class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words">
-        {{ collection.name }}
-      </h1>
+      <div class="flex flex-wrap items-center gap-3">
+        <h1 class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words">
+          {{ collection.name }}
+        </h1>
+        <CollectionCuratedBadge v-if="isCurated" />
+      </div>
       <p class="font-mono text-sm">
         <LinkBase :to="{ name: 'profile-identity', params: { identity: collection.handle } }">
           {{ $t('collections.by', { handle: collection.handle }) }}

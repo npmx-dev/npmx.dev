@@ -391,6 +391,7 @@
     "empty_collection": "Cette collection est vide.",
     "by": "par {'@'}{handle}",
     "item_count": "{count} élément | {count} éléments",
+    "curated": "Sélection npmx",
     "like": "Aimer cette collection",
     "unlike": "Ne plus aimer cette collection",
     "duplicate": "Dupliquer",

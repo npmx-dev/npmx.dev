@@ -485,6 +485,7 @@
     "empty_collection": "This collection is empty.",
     "by": "by {'@'}{handle}",
     "item_count": "{count} item | {count} items",
+    "curated": "Curated by npmx",
     "like": "Like this collection",
     "unlike": "Unlike this collection",
     "duplicate": "Duplicate",

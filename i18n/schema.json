@@ -1459,6 +1459,9 @@
         "item_count": {
           "type": "string"
         },
+        "curated": {
+          "type": "string"
+        },
         "like": {
           "type": "string"
         },

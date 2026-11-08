@@ -360,6 +360,7 @@ import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 import PackageTimelineChart from '~/components/Package/TimelineChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import CollectionCard from '~/components/Collection/Card.vue'
+import CollectionCuratedBadge from '~/components/Collection/CuratedBadge.vue'
 import CollectionGrid from '~/components/Collection/Grid.vue'
 import CollectionPicker from '~/components/Collection/Picker.vue'
 import CollectionAddButton from '~/components/Collection/AddButton.vue'
@@ -1362,6 +1363,12 @@ describe('component accessibility audits', () => {
 
     it('CollectionAddButton should have no accessibility violations', async () => {
       const component = await mountSuspended(CollectionAddButton, { props: { packages: ['zod'] } })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('CollectionCuratedBadge should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollectionCuratedBadge)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
