@@ -161,6 +161,7 @@ if (!isBlogPostRoute.value) {
     </div>
 
     <CommandPalette />
+    <CollectionAddToModal />
 
     <AppFooter />
 
