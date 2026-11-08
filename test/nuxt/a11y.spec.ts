@@ -361,6 +361,8 @@ import PackageTimelineChart from '~/components/Package/TimelineChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import CollectionCard from '~/components/Collection/Card.vue'
 import CollectionGrid from '~/components/Collection/Grid.vue'
+import CollectionPicker from '~/components/Collection/Picker.vue'
+import CollectionAddButton from '~/components/Collection/AddButton.vue'
 import CollectionEditor from '~/components/Collection/Editor.vue'
 import PackageTypeahead from '~/components/Package/Typeahead.vue'
 import CollectionItemList from '~/components/Collection/ItemList.vue'
@@ -1333,6 +1335,32 @@ describe('component accessibility audits', () => {
           emptyText: 'No collections',
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('CollectionPicker should have no accessibility violations', async () => {
+      registerEndpoint('/api/auth/session', () => ({ did: summary.did, handle: summary.handle }))
+      registerEndpoint('/api/social/collections/mine', () => [
+        { ...summary, subjectRefs: ['https://npmx.dev/package/zod'] },
+      ])
+      // The session is fetched once per app and was already loaded signed out
+      await refreshNuxtData()
+      try {
+        const component = await mountSuspended(CollectionPicker, { props: { packages: ['zod'] } })
+        // Audit the loaded list, not just the form shown before it arrives
+        await vi.waitFor(() => expect(component.find('input[type="checkbox"]').exists()).toBe(true))
+        const results = await runAxe(component)
+        expect(results.violations).toEqual([])
+      } finally {
+        // Later audits expect a signed-out visitor
+        registerEndpoint('/api/auth/session', () => null)
+        await refreshNuxtData()
+      }
+    })
+
+    it('CollectionAddButton should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollectionAddButton, { props: { packages: ['zod'] } })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
