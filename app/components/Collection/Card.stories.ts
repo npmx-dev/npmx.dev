@@ -14,6 +14,17 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {}
 
+/** Collections from allowlisted accounts, such as npmx's own, get a badge. */
+export const Curated: Story = {
+  args: {
+    collection: {
+      ...mockCollectionSummary,
+      did: 'did:plc:u5zp7npt5kpueado77kuihyz',
+      handle: 'npmx.dev',
+    },
+  },
+}
+
 export const WithoutDescription: Story = {
   args: { collection: { ...mockCollectionSummary, description: undefined } },
 }
