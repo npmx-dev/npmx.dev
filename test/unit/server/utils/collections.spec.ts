@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vite-plus/test'
 import type { CacheAdapter } from '#server/utils/cache/shared'
 import type { MiniDoc } from '#shared/types/social'
+import type { Backlink } from '#shared/utils/constellation'
 import { COLLECTION_SUBJECT_REF, PACKAGE_SUBJECT_REF } from '#shared/utils/constants'
 
 const { CollectionsUtils } = await import('#server/utils/atproto/utils/collections')
@@ -42,19 +43,33 @@ type RecordMap = Record<string, unknown>
 const key = (did: string, rkey: string) => `${did}/${rkey}`
 
 function setup(records: RecordMap, overrides: Partial<Deps> = {}) {
+  const constellation = {
+    getBackLinks: vi.fn(async (..._args: unknown[]) => ({
+      data: { total: 0, records: [] as Backlink[], cursor: undefined as string | undefined },
+      isStale: false,
+      cachedAt: null,
+    })),
+    getLinksDistinctDids: vi.fn(async (..._args: unknown[]) => ({
+      data: { total: 0, linking_dids: [] as string[], cursor: undefined as string | undefined },
+      isStale: false,
+      cachedAt: null,
+    })),
+  }
   const fetchRecord = vi.fn(async (doc: MiniDoc, rkey: string) => {
     const value = records[key(doc.did, rkey)]
     return value ? { uri: COLLECTION_SUBJECT_REF(doc.did, rkey), cid: `cid-${rkey}`, value } : null
   })
   const deps: Deps = {
+    constellation: constellation as unknown as Deps['constellation'],
     cache: memoryCache(),
     resolveIdentity: async identifier => miniDoc(identifier),
     fetchRecord,
     listRecords: async () => ({ records: [] }),
+    listFollows: async () => ({ records: [] }),
     packageExists: async name => name !== 'does-not-exist',
     ...overrides,
   }
-  return { utils: new CollectionsUtils(deps), fetchRecord }
+  return { utils: new CollectionsUtils(deps), constellation, fetchRecord }
 }
 
 describe('CollectionsUtils.getCollection', () => {
@@ -147,6 +162,46 @@ describe('CollectionsUtils.getCollection', () => {
     ])
   })
 
+  it('aggregates like and follow stats', async () => {
+    const { utils, constellation } = setup({ [key(ALICE, RKEY_A)]: record('A', []) })
+    constellation.getLinksDistinctDids.mockImplementation(async (...args: unknown[]) => ({
+      data: {
+        total: args[1] === 'dev.npmx.feed.like' ? 7 : 2,
+        linking_dids: [],
+        cursor: undefined,
+      },
+      isStale: false,
+      cachedAt: null,
+    }))
+    constellation.getBackLinks.mockImplementation(async (...args: unknown[]) => ({
+      data: {
+        total: args[1] === 'dev.npmx.feed.like' ? 1 : 3,
+        records:
+          args[1] === 'dev.npmx.feed.like'
+            ? [{ did: BOB, collection: 'dev.npmx.feed.like', rkey: '3likerkey' }]
+            : [],
+        cursor: undefined,
+      },
+      isStale: false,
+      cachedAt: null,
+    }))
+
+    const view = await utils.getCollection(ALICE, RKEY_A, BOB)
+
+    expect(view).toMatchObject({
+      likes: { total: 7, viewerHas: true },
+      follows: { total: 2, viewerHas: false },
+    })
+    expect(constellation.getLinksDistinctDids).toHaveBeenCalledWith(
+      COLLECTION_SUBJECT_REF(ALICE, RKEY_A),
+      'dev.npmx.feed.like',
+      '.subjectRef',
+      1,
+      undefined,
+      0,
+    )
+  })
+
   it('caches records, including misses', async () => {
     const { utils, fetchRecord } = setup({ [key(ALICE, RKEY_A)]: record('A', []) })
     await utils.getCollection(ALICE, RKEY_A)
@@ -154,6 +209,88 @@ describe('CollectionsUtils.getCollection', () => {
     await utils.getCollection(ALICE, RKEY_B)
     await utils.getCollection(ALICE, RKEY_B)
     expect(fetchRecord).toHaveBeenCalledTimes(2)
+  })
+})
+
+describe('CollectionsUtils reactions', () => {
+  const uri = COLLECTION_SUBJECT_REF(ALICE, RKEY_A)
+
+  it.each([
+    ['like', 'dev.npmx.feed.like', '.subjectRef'],
+    ['follow', 'dev.npmx.graph.follow', '.subject'],
+  ] as const)(
+    'counts a %s immediately, before Constellation sees it',
+    async (reaction, nsid, path) => {
+      const { utils, constellation } = setup({})
+      constellation.getLinksDistinctDids.mockResolvedValue({
+        data: { total: 2, linking_dids: [], cursor: undefined },
+        isStale: false,
+        cachedAt: null,
+      })
+
+      const before = await utils.getReactionTotal(reaction, uri)
+      expect(await utils.recordReaction(reaction, uri, BOB, '3recordkey', before)).toEqual({
+        total: 3,
+        viewerHas: true,
+      })
+      expect(await utils.getReaction(reaction, uri, BOB)).toEqual({ total: 3, viewerHas: true })
+      expect(await utils.getViewerReaction(reaction, uri, BOB)).toEqual({
+        did: BOB,
+        collection: nsid,
+        rkey: '3recordkey',
+      })
+      expect(constellation.getLinksDistinctDids).toHaveBeenCalledWith(
+        uri,
+        nsid,
+        path,
+        1,
+        undefined,
+        0,
+      )
+
+      expect(await utils.recordUnreaction(reaction, uri, BOB, 3)).toEqual({
+        total: 2,
+        viewerHas: false,
+      })
+      expect(await utils.getViewerReaction(reaction, uri, BOB)).toBeNull()
+      expect(constellation.getLinksDistinctDids).toHaveBeenCalledTimes(1)
+    },
+  )
+
+  it('keeps likes and follows apart', async () => {
+    const { utils } = setup({})
+    await utils.recordReaction('like', uri, BOB, '3likerkey', 0)
+    expect(await utils.getReaction('follow', uri, BOB)).toEqual({ total: 0, viewerHas: false })
+  })
+
+  it('never goes below zero', async () => {
+    const { utils } = setup({})
+    expect(await utils.recordUnreaction('like', uri, BOB, 0)).toEqual({
+      total: 0,
+      viewerHas: false,
+    })
+  })
+})
+
+describe('CollectionsUtils.listFollowedCollections', () => {
+  it('hydrates followed collections and drops unknown, missing and duplicate subjects', async () => {
+    const { utils } = setup(
+      { [key(ALICE, RKEY_A)]: record('Parsers', []) },
+      {
+        listFollows: async () => ({
+          cursor: 'next',
+          records: [
+            { rkey: 'f1', subject: COLLECTION_SUBJECT_REF(ALICE, RKEY_A) },
+            { rkey: 'f2', subject: COLLECTION_SUBJECT_REF(ALICE, RKEY_A) },
+            { rkey: 'f3', subject: COLLECTION_SUBJECT_REF(ALICE, RKEY_B) },
+            { rkey: 'f4', subject: 'at://did:plc:alice/app.bsky.feed.post/3abc' },
+          ],
+        }),
+      },
+    )
+    const page = await utils.listFollowedCollections(BOB, 10)
+    expect(page.cursor).toBe('next')
+    expect(page.items.map(c => c.name)).toEqual(['Parsers'])
   })
 })
 
