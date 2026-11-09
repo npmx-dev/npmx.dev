@@ -81,6 +81,7 @@ export default defineNuxtConfig({
   },
 
   vue: {
+    runtimeCompiler: isStorybook,
     compilerOptions: {
       isCustomElement: tag => tag === 'search',
     },
