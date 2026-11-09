@@ -95,7 +95,7 @@ export default defineConfig({
     // Ensures elements start in initial state during delay
     ['animate-fill-both', { 'animation-fill-mode': 'both' }],
   ],
-  ...(process.env.STORYBOOK && {
+  ...(process.env.STORYBOOK === 'true' && {
     safelist: storybookIconSafelist,
   }),
 })
