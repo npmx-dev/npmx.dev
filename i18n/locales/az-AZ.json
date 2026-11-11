@@ -1026,7 +1026,6 @@
       "search_label": "Paketləri axtar",
       "search_first": "Paket axtarın...",
       "search_add": "Başqa paket əlavə edin...",
-      "searching": "Axtarılır...",
       "remove_package": "{package} sil",
       "packages_selected": "{count}/{max} paket seçilib.",
       "add_hint": "Müqayisə üçün ən azı 2 paket əlavə edin."

@@ -1101,7 +1101,6 @@
       "search_label": "Pretražite pakete",
       "search_first": "Pretražite paket...",
       "search_add": "Dodajte još jedan paket...",
-      "searching": "Pretraživanje...",
       "remove_package": "Uklonite {package}",
       "packages_selected": "{count}/{max} paketa izabrano.",
       "add_hint": "Dodajte najmanje 2 paketa za poređenje."

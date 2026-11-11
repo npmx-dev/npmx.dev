@@ -1101,7 +1101,6 @@
       "search_label": "Tìm kiếm package",
       "search_first": "Tìm kiếm package...",
       "search_add": "Thêm một package khác...",
-      "searching": "Đang tìm kiếm...",
       "remove_package": "Gỡ {package}",
       "packages_selected": "Đã chọn {count}/{max} package.",
       "add_hint": "Thêm ít nhất 2 package để so sánh."

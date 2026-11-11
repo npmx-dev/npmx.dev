@@ -1510,7 +1510,6 @@
       "search_label": "Zoek voor pakketten",
       "search_first": "Zoek voor een pakket...",
       "search_add": "Voeg nog een pakket toe...",
-      "searching": "Zoeken...",
       "remove_package": "Verwijder {package}",
       "packages_selected": "{count}/{max} pakketten geselecteerd.",
       "add_hint": "Voeg tenminste 2 pakketten toe om te vergelijken"

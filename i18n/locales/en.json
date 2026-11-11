@@ -1525,7 +1525,6 @@
       "search_label": "Search for packages",
       "search_first": "Search for a package...",
       "search_add": "Add another package...",
-      "searching": "Searching...",
       "remove_package": "Remove {package}",
       "packages_selected": "{count}/{max} packages selected.",
       "add_hint": "Add at least 2 packages to compare.",

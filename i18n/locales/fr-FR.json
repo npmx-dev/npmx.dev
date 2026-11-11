@@ -1323,7 +1323,6 @@
       "search_label": "Rechercher des paquets",
       "search_first": "Rechercher un paquet...",
       "search_add": "Ajouter un autre paquet...",
-      "searching": "Recherche...",
       "remove_package": "Supprimer {package}",
       "packages_selected": "{count}/{max} paquets sélectionnés.",
       "add_hint": "Ajoutez au moins 2 paquets à comparer."
