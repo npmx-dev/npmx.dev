@@ -259,13 +259,6 @@ export default defineNuxtConfig({
     '/sponsors': { prerender: true },
     '/tools': { prerender: true },
     '/tools/deps-stats': { prerender: true },
-    // proxy for insights
-    '/_v/script.js': {
-      proxy: 'https://npmx.dev/_vercel/insights/script.js',
-    },
-    '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
-    '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
-    '/_v/session': { proxy: 'https://npmx.dev/_vercel/insights/session' },
     // lunaria status.json
     '/lunaria/status.json': {
       headers: {
