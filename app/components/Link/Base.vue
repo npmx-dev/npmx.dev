@@ -61,6 +61,13 @@ const isLinkAnchor = computed(
   () => !!props.to && typeof props.to === 'string' && props.to.startsWith('#'),
 )
 
+const router = useRouter()
+const prefetchOn = computed(() => {
+  if (!props.to || isLinkExternal.value || isLinkAnchor.value) return undefined
+  const { path } = router.resolve(props.to)
+  return getRouteRules({ path }).payload ? 'interaction' : undefined
+})
+
 /** size is only applicable for button like links */
 const isLink = computed(() => props.variant === 'link')
 const isButton = computed(() => !isLink.value)
@@ -122,6 +129,7 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
         variant === 'button-primary',
     }"
     :to="to"
+    :prefetch-on="prefetchOn"
     :aria-keyshortcuts="keyboardShortcutsEnabled ? ariaKeyshortcuts : undefined"
     :target="isLinkExternal ? '_blank' : undefined"
   >
