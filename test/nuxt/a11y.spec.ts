@@ -3097,6 +3097,22 @@ describe('component accessibility audits', () => {
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
+
+    it('should have no accessibility violations with the list open', async () => {
+      const component = await mountSuspended(PackageTypeahead, {
+        props: {
+          inputId: 'typeahead-a11y-open',
+          label: 'Search for packages',
+          leadingOptions: [{ value: 'special', label: 'Special' }],
+        },
+      })
+      const input = component.find('input')
+      await input.trigger('focus')
+      await input.trigger('keydown', { key: 'ArrowDown' })
+      expect(input.attributes('aria-activedescendant')).toBeTruthy()
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
   })
 
   describe('CompareFacetRow', () => {

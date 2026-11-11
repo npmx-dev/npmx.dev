@@ -48,6 +48,19 @@ describe('PackageTypeahead', () => {
     expect(component.emitted('select')).toEqual([['valibot']])
   })
 
+  it('navigates options even with keyboard shortcuts disabled', async () => {
+    const { settings } = useSettings()
+    settings.value.keyboardShortcuts = false
+    const component = await mount()
+    const input = component.find('input')
+    await input.setValue('schema')
+    await input.trigger('keydown', { key: 'ArrowDown' })
+    await input.trigger('keydown', { key: 'Enter' })
+    settings.value.keyboardShortcuts = true
+
+    expect(component.emitted('select')).toEqual([['zod']])
+  })
+
   it('puts leading options before results', async () => {
     const component = await mount({ leadingOptions: [{ value: 'special', label: 'Special' }] })
     const input = component.find('input')
