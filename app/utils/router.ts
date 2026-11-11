@@ -1,4 +1,6 @@
 import type { RouteLocationRaw } from 'vue-router'
+import { normalizeGitUrl, parseRepoUrl } from '#shared/utils/git-providers'
+import { parseDependencyVersion } from '#shared/utils/npm'
 import { splitPackageName } from '~/utils/package-name'
 
 export function packageRoute(
@@ -28,6 +30,21 @@ export function packageRoute(
       name,
     },
   }
+}
+
+/**
+ * Where a dependency's version links to: its version page, the repo of a git dependency,
+ * or the tarball URL. Local specs like `file:` and `workspace:` have nowhere to link.
+ */
+export function dependencyVersionRoute(
+  packageName: string,
+  spec: string,
+): RouteLocationRaw | undefined {
+  const { range } = parseDependencyVersion(spec)
+  if (range) return packageRoute(packageName, range)
+  if (parseRepoUrl(spec)) return normalizeGitUrl(spec) ?? undefined
+  if (/^https?:\/\//.test(spec)) return spec
+  return undefined
 }
 
 /**
