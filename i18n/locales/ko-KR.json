@@ -1429,7 +1429,6 @@
       "search_label": "패키지 검색",
       "search_first": "패키지 검색...",
       "search_add": "다른 패키지 추가...",
-      "searching": "검색 중...",
       "remove_package": "{package} 제거",
       "packages_selected": "{count}/{max}개 패키지 선택됨.",
       "add_hint": "비교하려면 패키지를 2개 이상 추가하세요."

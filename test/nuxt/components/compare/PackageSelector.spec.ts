@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import PackageSelector from '~/components/Compare/PackageSelector.vue'
+import PackageTypeahead from '~/components/Package/Typeahead.vue'
 
 const mockFetch = vi.fn()
 vi.stubGlobal('$fetch', mockFetch)
@@ -130,9 +131,10 @@ describe('PackageSelector', () => {
       await input.setValue('lodash')
       await input.trigger('keydown', { key: 'Enter' })
 
-      const emitted = component.emitted('update:modelValue')
-      expect(emitted).toBeTruthy()
-      expect(emitted![0]![0]).toEqual(['lodash'])
+      // Enter waits for the in-flight search before judging an exact match
+      await vi.waitFor(() =>
+        expect(component.emitted('update:modelValue')?.[0]?.[0]).toEqual(['lodash']),
+      )
     })
 
     it('adds "no dep" entry on Enter key', async () => {
@@ -146,9 +148,9 @@ describe('PackageSelector', () => {
       await input.setValue('no dep')
       await input.trigger('keydown', { key: 'Enter' })
 
-      const emitted = component.emitted('update:modelValue')
-      expect(emitted).toBeTruthy()
-      expect(emitted![0]![0]).toEqual(['__no_dependency__'])
+      await vi.waitFor(() =>
+        expect(component.emitted('update:modelValue')?.[0]?.[0]).toEqual(['__no_dependency__']),
+      )
     })
 
     it('clears input after adding package', async () => {
@@ -163,19 +165,23 @@ describe('PackageSelector', () => {
       await input.trigger('keydown', { key: 'Enter' })
 
       // Input should be cleared
-      expect((input.element as HTMLInputElement).value).toBe('')
+      await vi.waitFor(() => expect((input.element as HTMLInputElement).value).toBe(''))
     })
 
     it('does not add duplicate packages', async () => {
       const component = await mountSuspended(PackageSelector, {
         props: {
-          modelValue: ['lodash'],
+          modelValue: ['lodash@3.10.1'],
         },
       })
 
       const input = component.find('input')
-      await input.setValue('lodash')
+      await input.setValue('lodash@3.10.1')
       await input.trigger('keydown', { key: 'Enter' })
+      // The submission is deferred until search settles
+      await vi.waitFor(() =>
+        expect(component.findComponent(PackageTypeahead).emitted('submit')).toBeTruthy(),
+      )
 
       const emitted = component.emitted('update:modelValue')
       // Should not emit since lodash is already selected

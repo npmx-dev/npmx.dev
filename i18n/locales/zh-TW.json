@@ -1221,7 +1221,6 @@
       "search_label": "搜尋套件",
       "search_first": "搜尋套件…",
       "search_add": "新增另一個套件…",
-      "searching": "搜尋中…",
       "remove_package": "移除 {package}",
       "packages_selected": "已選擇 {count}/{max} 個套件。",
       "add_hint": "至少新增 2 個套件以進行比較。"

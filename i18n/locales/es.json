@@ -1404,7 +1404,6 @@
       "search_label": "Buscar paquetes",
       "search_first": "Buscar un paquete...",
       "search_add": "Añadir otro paquete...",
-      "searching": "Buscando...",
       "remove_package": "Eliminar {package}",
       "packages_selected": "{count}/{max} paquetes seleccionados.",
       "add_hint": "Añade al menos 2 paquetes para comparar."
