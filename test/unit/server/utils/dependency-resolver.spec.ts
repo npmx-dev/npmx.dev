@@ -765,6 +765,21 @@ describe('dependency-resolver', () => {
       expect(result.get('root@1.0.0')).toMatchObject({ deprecated: 'Use v2 instead' })
     })
 
+    it('records URL dependencies on the package that declares them without fetching them', async () => {
+      mockAbbreviatedPackument.mockImplementation(async (name: string) => {
+        if (name === 'root')
+          return makePackument('root', [{ version: '1.0.0', deps: { a: '^1.0.0' } }])
+        if (name === 'a')
+          return makePackument('a', [{ version: '1.0.0', deps: { evil: 'github:x/evil' } }])
+        return null
+      })
+
+      const result = await resolveDependencyTree('root', '1.0.0', { trackDepth: true })
+
+      expect(result.get('a@1.0.0')?.urlDependencies).toEqual({ evil: 'github:x/evil' })
+      expect(mockAbbreviatedPackument).not.toHaveBeenCalledWith('evil')
+    })
+
     it('defaults size to 0 when unpackedSize is missing', async () => {
       mockAbbreviatedPackument.mockResolvedValue(makePackument('root', [{ version: '1.0.0' }]))
 
