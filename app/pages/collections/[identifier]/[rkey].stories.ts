@@ -5,6 +5,7 @@ import {
   mockCollectionHandle,
   mockCollectionHandler,
   mockCollectionRkey,
+  mockPackageCardHandlers,
 } from '../../../storybook/mocks/handlers/collections'
 import { mockAuthSessionHandler } from '../../../storybook/mocks/handlers/profile'
 import { renderPageAt } from '../../../storybook/render-page'
@@ -16,7 +17,7 @@ const meta = {
     `/collections/${mockCollectionHandle}/${mockCollectionRkey}`,
   ),
   beforeEach({ msw }) {
-    msw.use(mockCollectionHandler, mockAuthSessionHandler())
+    msw.use(mockCollectionHandler, ...mockPackageCardHandlers, mockAuthSessionHandler())
   },
   parameters: { layout: 'fullscreen' },
   decorators: [pageDecorator],

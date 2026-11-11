@@ -46,24 +46,27 @@ const numberFormatter = useNumberFormatter()
 <template>
   <BaseCard :selected="isSelected" :isExactMatch="isExactMatch">
     <header class="mb-4 flex items-baseline justify-between gap-2">
-      <component
-        :is="headingLevel ?? 'h3'"
-        class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
-      >
-        <NuxtLink
-          :to="packageRoute(result.package.name)"
-          :prefetch-on="prefetch ? 'visibility' : 'interaction'"
-          class="decoration-none after:content-[''] after:absolute after:inset-0"
-          :data-result-index="index"
-          dir="ltr"
-          >{{ result.package.name }}</NuxtLink
+      <div class="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-4 gap-y-1">
+        <component
+          :is="headingLevel ?? 'h3'"
+          class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
         >
-        <span
-          v-if="isExactMatch"
-          class="text-xs px-1.5 py-0.5 ms-2 rounded bg-bg-elevated border border-border-hover text-fg"
-          >{{ $t('search.exact_match') }}</span
-        >
-      </component>
+          <NuxtLink
+            :to="packageRoute(result.package.name)"
+            :prefetch-on="prefetch ? 'visibility' : 'interaction'"
+            class="decoration-none after:content-[''] after:absolute after:inset-0"
+            :data-result-index="index"
+            dir="ltr"
+            >{{ result.package.name }}</NuxtLink
+          >
+          <span
+            v-if="isExactMatch"
+            class="text-xs px-1.5 py-0.5 ms-2 rounded bg-bg-elevated border border-border-hover text-fg"
+            >{{ $t('search.exact_match') }}</span
+          >
+        </component>
+        <slot name="annotation" />
+      </div>
 
       <PackageSelectionCheckbox
         v-if="selectable"

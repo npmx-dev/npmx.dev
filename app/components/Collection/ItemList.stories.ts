@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook-vue/nuxt'
 import ItemList from './ItemList.vue'
-import { mockCollection } from '../../storybook/mocks/handlers/collections'
+import { mockCollection, mockPackageCards } from '../../storybook/mocks/handlers/collections'
 
 const meta = {
   component: ItemList,
@@ -14,6 +14,11 @@ type Story = StoryObj<typeof meta>
 
 /** Packages with notes, a package missing from the registry, and a nested collection. */
 export const Default: Story = {}
+
+/** Packages shown as cards once their metadata has loaded. */
+export const WithPackageCards: Story = {
+  args: { packages: mockPackageCards },
+}
 
 /** An included collection that can't be shown. */
 export const UnavailableCollection: Story = {

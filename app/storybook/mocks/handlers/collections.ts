@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import type { NpmSearchResult, PackageMetaResponse } from '#shared/types'
 import type { CollectionSummary, CollectionView } from '#shared/types/social'
 
 export const mockCollectionHandle = 'mock-steward'
@@ -16,6 +17,26 @@ export const mockCollectionSummary: CollectionSummary = {
   itemCount: 5,
   createdAt: '2026-11-01T00:00:00.000Z',
 }
+
+const mockCard = (name: string, description: string, weekly: number): NpmSearchResult => ({
+  package: {
+    name,
+    version: '1.0.0',
+    description,
+    date: '2026-10-01T00:00:00.000Z',
+    links: {},
+    license: 'MIT',
+  },
+  downloads: { weekly },
+})
+
+/** Card metadata for the resolved packages in `mockCollection`. */
+export const mockPackageCards = new Map(
+  [
+    mockCard('commander', 'the complete solution for node.js command-line programs', 180_000_000),
+    mockCard('citty', 'Elegant CLI Builder', 4_000_000),
+  ].map(card => [card.package.name, card]),
+)
 
 export const mockCollection: CollectionView = {
   ...mockCollectionSummary,
@@ -60,3 +81,17 @@ export const mockCollection: CollectionView = {
 export const mockCollectionHandler = http.get(`/api/social/collections/:identifier/:rkey`, () =>
   HttpResponse.json(mockCollection),
 )
+
+/** Card metadata for collection pages: Algolia finds nothing, so the registry lookup serves it. */
+export const mockPackageCardHandlers = [
+  http.post('https://*.algolia.net/1/indexes/*/objects', () => HttpResponse.json({ results: [] })),
+  http.get('/api/registry/package-meta/:name', ({ params }) => {
+    const card = mockPackageCards.get(String(params.name))
+    if (!card) return new HttpResponse(null, { status: 404 })
+    return HttpResponse.json({
+      ...card.package,
+      links: { npm: `https://www.npmjs.com/package/${card.package.name}` },
+      weeklyDownloads: card.downloads?.weekly,
+    } satisfies PackageMetaResponse)
+  }),
+]
