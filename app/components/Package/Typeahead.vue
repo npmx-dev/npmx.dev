@@ -71,12 +71,9 @@ async function submitWhenSearched(text: string) {
   )
 }
 
-const keyboardShortcuts = useKeyboardShortcuts()
-
+// Not gated by the keyboard shortcuts setting: these are the combobox's own keys, and without
+// them the options aren't reachable by keyboard
 function handleKeydown(e: KeyboardEvent) {
-  // List navigation follows the shortcuts setting; Enter and Escape always work
-  if (!keyboardShortcuts.value && e.key !== 'Enter' && e.key !== 'Escape') return
-
   const values = navigableValues.value
   const count = values.length
 
@@ -138,15 +135,27 @@ watch(highlightedIndex, index => {
   }
 })
 
-const containerRef = useTemplateRef('containerRef')
-onClickOutside(containerRef, () => {
+const listboxId = useId()
+const optionId = (index: number) => `${listboxId}-option-${index}`
+const isOpen = computed(
+  () => isInputFocused.value && (navigableValues.value.length > 0 || isSearching.value),
+)
+const hasOptions = computed(() => isOpen.value && navigableValues.value.length > 0)
+
+function closeList() {
   isInputFocused.value = false
   highlightedIndex.value = -1
-})
+}
+const containerRef = useTemplateRef('containerRef')
+onClickOutside(containerRef, closeList)
+// Tabbing away must close it too, or the open list covers whatever gets focus next
+function onFocusout(e: FocusEvent) {
+  if (!containerRef.value?.contains(e.relatedTarget as Node | null)) closeList()
+}
 </script>
 
 <template>
-  <div ref="containerRef" class="relative">
+  <div ref="containerRef" class="relative" @focusout="onFocusout">
     <div class="relative group flex items-center">
       <label :for="inputId" class="sr-only">{{ label }}</label>
       <span
@@ -162,7 +171,14 @@ onClickOutside(containerRef, () => {
         :placeholder="placeholder"
         no-correct
         class="w-full min-w-25 ps-7"
+        role="combobox"
         aria-autocomplete="list"
+        aria-haspopup="listbox"
+        :aria-expanded="hasOptions"
+        :aria-controls="hasOptions ? listboxId : undefined"
+        :aria-activedescendant="
+          hasOptions && highlightedIndex >= 0 ? optionId(highlightedIndex) : undefined
+        "
         @focus="isInputFocused = true"
         @keydown="handleKeydown"
       />
@@ -176,46 +192,54 @@ onClickOutside(containerRef, () => {
       leave-to-class="opacity-0"
     >
       <div
-        v-if="isInputFocused && (navigableValues.length > 0 || isSearching)"
+        v-if="isOpen"
         ref="listRef"
         class="absolute top-full inset-x-0 mt-1 px-0.5 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
       >
-        <ButtonBase
-          v-for="(option, index) in leading"
-          :key="option.value"
-          data-navigable
-          class="block w-full text-start !border-transparent"
-          :class="highlightedIndex === index ? '!bg-accent/15' : ''"
-          :aria-label="option.label"
-          @mouseenter="highlightedIndex = index"
-          @click="emit('select', option.value)"
-        >
-          <slot name="option" :option="option">{{ option.label }}</slot>
-        </ButtonBase>
-
-        <div
-          v-if="isSearching && navigableValues.length === 0"
-          class="px-4 py-3 text-sm text-fg-muted"
-        >
+        <!-- Options aren't focusable: focus stays in the input, as the combobox pattern expects.
+             mousedown.prevent keeps it there when one is clicked. -->
+        <div v-if="hasOptions" :id="listboxId" role="listbox" :aria-label="label">
+          <div
+            v-for="(option, index) in leading"
+            :id="optionId(index)"
+            :key="option.value"
+            data-navigable
+            role="option"
+            :aria-selected="highlightedIndex === index"
+            :aria-label="option.label"
+            class="block w-full cursor-pointer rounded-md px-4 py-2 text-start font-mono text-sm"
+            :class="highlightedIndex === index ? 'bg-accent/15' : ''"
+            @mouseenter="highlightedIndex = index"
+            @mousedown.prevent
+            @click="emit('select', option.value)"
+          >
+            <slot name="option" :option="option">{{ option.label }}</slot>
+          </div>
+          <div
+            v-for="(result, index) in filteredResults"
+            :id="optionId(index + leading.length)"
+            :key="result.name"
+            data-navigable
+            role="option"
+            :aria-selected="highlightedIndex === index + leading.length"
+            class="block w-full cursor-pointer rounded-md px-4 py-2 my-0.5 text-start"
+            :class="highlightedIndex === index + leading.length ? 'bg-accent/15' : ''"
+            @mouseenter="highlightedIndex = index + leading.length"
+            @mousedown.prevent
+            @click="emit('select', result.name)"
+          >
+            <span class="font-mono text-sm text-fg block">{{ result.name }}</span>
+            <span
+              v-if="result.description"
+              class="text-xs text-fg-muted truncate mt-0.5 w-full block"
+            >
+              {{ stripHtmlTags(decodeHtmlEntities(result.description)) }}
+            </span>
+          </div>
+        </div>
+        <div v-else class="px-4 py-3 text-sm text-fg-muted">
           {{ $t('search.searching') }}
         </div>
-        <ButtonBase
-          v-for="(result, index) in filteredResults"
-          :key="result.name"
-          data-navigable
-          class="block w-full text-start my-0.5 !border-transparent"
-          :class="highlightedIndex === index + leading.length ? '!bg-accent/15' : ''"
-          @mouseenter="highlightedIndex = index + leading.length"
-          @click="emit('select', result.name)"
-        >
-          <span class="font-mono text-sm text-fg block">{{ result.name }}</span>
-          <span
-            v-if="result.description"
-            class="text-xs text-fg-muted truncate mt-0.5 w-full block"
-          >
-            {{ stripHtmlTags(decodeHtmlEntities(result.description)) }}
-          </span>
-        </ButtonBase>
       </div>
     </Transition>
   </div>

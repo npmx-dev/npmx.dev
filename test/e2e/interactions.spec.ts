@@ -30,7 +30,7 @@ test.describe('Compare Page', () => {
     await input.fill('nuxt')
 
     // Wait for search results and click on nuxt
-    const nuxtOption = page.locator('button:has-text("nuxt")').first()
+    const nuxtOption = page.getByRole('option').filter({ hasText: 'nuxt' }).first()
     await expect(nuxtOption).toBeVisible({ timeout: 10000 })
     await nuxtOption.click()
 
