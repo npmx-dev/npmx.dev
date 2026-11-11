@@ -50,7 +50,7 @@ describe('useCompareReplacements', () => {
       vi.stubGlobal(
         '$fetch',
         vi.fn().mockImplementation((url: string) => {
-          if (url.includes('/api/replacements/array-includes')) {
+          if (url.includes('/array-includes.json')) {
             return Promise.resolve({
               mapping: { replacements: ['Array.prototype.includes'] },
               replacement: {
@@ -89,7 +89,7 @@ describe('useCompareReplacements', () => {
       vi.stubGlobal(
         '$fetch',
         vi.fn().mockImplementation((url: string) => {
-          if (url.includes('/api/replacements/is-even')) {
+          if (url.includes('/is-even.json')) {
             return Promise.resolve({
               mapping: { replacements: ['snippet::is-even'] },
               replacement: {
@@ -119,7 +119,7 @@ describe('useCompareReplacements', () => {
       vi.stubGlobal(
         '$fetch',
         vi.fn().mockImplementation((url: string) => {
-          if (url.includes('/api/replacements/moment')) {
+          if (url.includes('/moment.json')) {
             return Promise.resolve({
               mapping: { replacements: ['date-fns'] },
               replacement: {
@@ -151,7 +151,7 @@ describe('useCompareReplacements', () => {
       vi.stubGlobal(
         '$fetch',
         vi.fn().mockImplementation((url: string) => {
-          if (url.includes('/api/replacements/is-odd')) {
+          if (url.includes('/is-odd.json')) {
             return Promise.resolve({
               mapping: { replacements: ['snippet::is-odd'] },
               replacement: {
@@ -162,7 +162,7 @@ describe('useCompareReplacements', () => {
               } satisfies ModuleReplacement,
             })
           }
-          if (url.includes('/api/replacements/lodash')) {
+          if (url.includes('/lodash.json')) {
             return Promise.resolve({
               mapping: { replacements: ['native'] },
               replacement: {
@@ -173,7 +173,7 @@ describe('useCompareReplacements', () => {
               } satisfies ModuleReplacement,
             })
           }
-          if (url.includes('/api/replacements/array-map')) {
+          if (url.includes('/array-map.json')) {
             return Promise.resolve({
               mapping: { replacements: ['Array.prototype.map'] },
               replacement: {
@@ -235,13 +235,13 @@ describe('useCompareReplacements', () => {
       vi.stubGlobal('$fetch', fetchMock)
 
       const { noDepSuggestions, infoSuggestions, replacements } =
-        await useCompareReplacementsInComponent(['some-package'])
+        await useCompareReplacementsInComponent(['is-odd'])
 
       await vi.waitFor(() => {
         expect(fetchMock).toHaveBeenCalledTimes(1)
       })
 
-      expect(replacements.value.has('some-package')).toBe(false)
+      expect(replacements.value.has('is-odd')).toBe(false)
       expect(noDepSuggestions.value).toHaveLength(0)
       expect(infoSuggestions.value).toHaveLength(0)
     })
@@ -291,25 +291,38 @@ describe('useCompareReplacements', () => {
 
       vi.stubGlobal('$fetch', fetchMock)
 
-      const packageNames = ref(['react'])
+      const packageNames = ref(['moment'])
       const { replacements } = await useCompareReplacementsInComponent(packageNames)
 
       await vi.waitFor(() => {
-        expect(replacements.value.has('react')).toBe(true)
+        expect(replacements.value.has('moment')).toBe(true)
       })
 
       packageNames.value = []
       await nextTick()
-      packageNames.value = ['react']
+      packageNames.value = ['moment']
 
       await vi.waitFor(() => {
         expect(fetchMock).toHaveBeenCalledTimes(1)
       })
     })
 
+    it('does not request packages without a module replacement', async () => {
+      const fetchMock = vi.fn().mockResolvedValue(null)
+
+      vi.stubGlobal('$fetch', fetchMock)
+
+      const { replacements } = await useCompareReplacementsInComponent(['react'])
+
+      await vi.waitFor(() => {
+        expect(replacements.value.get('react')).toBeNull()
+      })
+      expect(fetchMock).not.toHaveBeenCalled()
+    })
+
     it('caches replacement data and does not refetch', async () => {
       const fetchMock = vi.fn().mockImplementation((url: string) => {
-        if (url.includes('/api/replacements/is-even')) {
+        if (url.includes('/is-even.json')) {
           return Promise.resolve({
             mapping: { replacements: ['snippet::is-even'] },
             replacement: {
