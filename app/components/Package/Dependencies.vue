@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { parseDependencyVersion } from '#shared/utils/npm'
+import { isUrlDependency, parseDependencyVersion } from '#shared/utils/npm'
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
 import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
 
@@ -166,6 +166,19 @@ const numberFormatter = useNumberFormatter()
                 "
               >
                 <span class="i-lucide:arrow-right-left w-3 h-3" aria-hidden="true" />
+              </button>
+            </TooltipApp>
+            <TooltipApp
+              v-if="isUrlDependency(version)"
+              class="shrink-0 text-orange-700 dark:text-orange-400"
+              :text="$t('package.url_dependency.tooltip', { spec: version })"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center justify-center p-2 -m-2"
+                :aria-label="$t('package.url_dependency.tooltip', { spec: version })"
+              >
+                <span class="i-lucide:git-branch w-3 h-3" aria-hidden="true" />
               </button>
             </TooltipApp>
             <TooltipApp
@@ -376,6 +389,19 @@ const numberFormatter = useNumberFormatter()
                 "
               >
                 <span class="i-lucide:arrow-right-left w-3 h-3" aria-hidden="true" />
+              </button>
+            </TooltipApp>
+            <TooltipApp
+              v-if="isUrlDependency(version)"
+              class="shrink-0 text-orange-700 dark:text-orange-400"
+              :text="$t('package.url_dependency.tooltip', { spec: version })"
+            >
+              <button
+                type="button"
+                class="inline-flex items-center justify-center p-2 -m-2"
+                :aria-label="$t('package.url_dependency.tooltip', { spec: version })"
+              >
+                <span class="i-lucide:git-branch w-3 h-3" aria-hidden="true" />
               </button>
             </TooltipApp>
             <LinkBase
