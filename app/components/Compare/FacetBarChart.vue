@@ -142,6 +142,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
   return {
     theme: isDarkMode.value ? 'dark' : '',
     a11y: {
+      includeTable: true,
       translations: {
         keyboardNavigation: $t('package.trends.chart_assistive_text.keyboard_navigation_vertical'),
         tableAvailable: $t('package.trends.chart_assistive_text.table_available'),
