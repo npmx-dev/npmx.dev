@@ -1,17 +1,36 @@
 <script setup lang="ts">
+import type { NpmSearchResult } from '#shared/types'
 import type { CollectionItemView } from '#shared/types/social'
 
-defineProps<{
+const { packages } = defineProps<{
   items: CollectionItemView[]
+  /** Card metadata by package name; a package without it shows as a plain row */
+  packages?: ReadonlyMap<string, NpmSearchResult>
 }>()
+
+// Keyword buttons filter search results, which a collection doesn't have
+function cardResult(packageName: string) {
+  const result = packages?.get(packageName)
+  return result && { ...result, package: { ...result.package, keywords: undefined } }
+}
 </script>
 
 <template>
   <ol class="m-0 flex list-none flex-col gap-3 p-0">
     <li v-for="(item, index) in items" :key="`${index}:${item.subjectRef}`">
-      <!-- Package -->
+      <!-- Package with card metadata -->
+      <div v-if="item.kind === 'package' && item.resolved && cardResult(item.packageName)">
+        <PackageCard :result="cardResult(item.packageName)!" heading-level="h2">
+          <template v-if="item.note" #annotation>
+            <!-- Stays beside the name while ~15rem remain, then wraps below -->
+            <CollectionItemNote class="flex-1 basis-60">{{ item.note }}</CollectionItemNote>
+          </template>
+        </PackageCard>
+      </div>
+
+      <!-- Package without card metadata -->
       <div
-        v-if="item.kind === 'package'"
+        v-else-if="item.kind === 'package'"
         class="flex flex-col gap-1 rounded-lg border border-border bg-bg-subtle p-4"
         :class="{ 'border-dashed': !item.resolved }"
       >
@@ -30,7 +49,7 @@ defineProps<{
             {{ $t('collections.package_unresolved') }}
           </span>
         </div>
-        <p v-if="item.note" class="text-sm text-fg-muted">{{ item.note }}</p>
+        <CollectionItemNote v-if="item.note">{{ item.note }}</CollectionItemNote>
       </div>
 
       <!-- Included collection: a link, not expanded -->
@@ -61,7 +80,7 @@ defineProps<{
               )
             }}
           </p>
-          <p v-if="item.note" class="text-sm text-fg-muted">{{ item.note }}</p>
+          <CollectionItemNote v-if="item.note">{{ item.note }}</CollectionItemNote>
         </div>
         <p v-else class="font-mono text-sm text-fg-subtle">
           {{ $t('collections.unavailable.unresolvable') }}
@@ -75,7 +94,7 @@ defineProps<{
       >
         <span class="font-mono text-xs text-fg-muted">{{ $t('collections.unknown_item') }}</span>
         <span class="font-mono text-sm break-all">{{ item.subjectRef }}</span>
-        <p v-if="item.note" class="text-sm text-fg-muted">{{ item.note }}</p>
+        <CollectionItemNote v-if="item.note">{{ item.note }}</CollectionItemNote>
       </div>
     </li>
   </ol>

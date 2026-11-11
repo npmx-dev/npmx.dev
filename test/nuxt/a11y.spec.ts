@@ -1342,6 +1342,19 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
+    it('CollectionItemList should have no accessibility violations with package cards', async () => {
+      const commander = {
+        package: { name: 'commander', version: '1.0.0', date: '2026-10-01', links: {} },
+        downloads: { weekly: 1000 },
+      }
+      const component = await mountSuspended(CollectionItemList, {
+        props: { items, packages: new Map([['commander', commander]]) },
+      })
+      expect(component.text()).toContain('v1.0.0')
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
     it('CollectionYourData should have no accessibility violations', async () => {
       const component = await mountSuspended(CollectionYourData)
       await component.find('summary').trigger('click')

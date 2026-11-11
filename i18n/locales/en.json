@@ -518,7 +518,8 @@
       "summary": "It's your data",
       "body": "Collections live in your Atmosphere account, not on npmx. They're open, public data on the {atproto}: create, view and change them here, in any other app, or with your own scripts, and take them wherever you go. Have fun with it!",
       "docs": "Build with collections"
-    }
+    },
+    "note_label": "Curator's note:"
   },
   "package": {
     "not_found": "Package Not Found",

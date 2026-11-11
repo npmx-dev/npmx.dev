@@ -424,7 +424,8 @@
       "summary": "Ce sont vos données",
       "body": "Les collections sont stockées dans votre compte Atmosphere, pas chez npmx. Ce sont des données ouvertes et publiques sur l'{atproto} : créez-les, consultez-les et modifiez-les ici, dans n'importe quelle autre application ou avec vos propres scripts, et emportez-les où vous voulez. Amusez-vous bien !",
       "docs": "Développer avec les collections"
-    }
+    },
+    "note_label": "Note du curateur :"
   },
   "package": {
     "not_found": "Paquet introuvable",

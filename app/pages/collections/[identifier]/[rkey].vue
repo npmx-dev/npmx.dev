@@ -29,6 +29,13 @@ if (!collection.value || error.value) {
   })
 }
 
+const packageNames = computed(() =>
+  (collection.value?.items ?? []).flatMap(item =>
+    item.kind === 'package' && item.resolved ? [item.packageName] : [],
+  ),
+)
+const { data: packageCards } = usePackagesByName(packageNames)
+
 const { user } = useAtproto()
 const isOwner = computed(() => !!user.value?.did && user.value.did === collection.value?.did)
 
@@ -214,7 +221,11 @@ defineOgImage(
       @cancel="stopEditing"
     />
     <template v-else>
-      <CollectionItemList v-if="collection.items.length > 0" :items="collection.items" />
+      <CollectionItemList
+        v-if="collection.items.length > 0"
+        :items="collection.items"
+        :packages="packageCards"
+      />
       <p v-else class="text-fg-muted">{{ $t('collections.empty_collection') }}</p>
       <CollectionYourData class="mt-4" />
     </template>
