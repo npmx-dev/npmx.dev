@@ -1084,7 +1084,6 @@
       "search_label": "पैकेज खोजें",
       "search_first": "पैकेज खोजें...",
       "search_add": "एक और पैकेज जोड़ें...",
-      "searching": "खोज रहे हैं...",
       "remove_package": "{package} हटाएं",
       "packages_selected": "{count}/{max} पैकेज चुने गए।",
       "add_hint": "तुलना करने के लिए कम से कम 2 पैकेज जोड़ें।"

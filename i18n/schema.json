@@ -4585,9 +4585,6 @@
             "search_add": {
               "type": "string"
             },
-            "searching": {
-              "type": "string"
-            },
             "remove_package": {
               "type": "string"
             },

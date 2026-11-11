@@ -8,20 +8,7 @@ const props = defineProps<{
 
 const maxPackages = computed(() => props.max ?? MAX_PACKAGE_SELECTION)
 
-// Input state
 const inputValue = shallowRef('')
-const isInputFocused = shallowRef(false)
-
-// Keyboard navigation state
-const highlightedIndex = shallowRef(-1)
-const listRef = useTemplateRef('listRef')
-const PAGE_JUMP = 5
-
-// Use the shared search composable (supports both npm and Algolia providers)
-const { searchProvider } = useSearchProvider()
-const { data: searchData, status } = useSearch(inputValue, searchProvider, { size: 15 })
-
-const isSearching = computed(() => status.value === 'pending')
 
 // Trigger strings for "What Would James Do?" typeahead Easter egg
 // Intentionally not localized
@@ -46,36 +33,16 @@ const showNoDependencyOption = computed(() => {
   return EASTER_EGG_TRIGGERS.has(input)
 })
 
+const leadingOptions = computed(() =>
+  showNoDependencyOption.value
+    ? [{ value: NO_DEPENDENCY_ID, label: $t('compare.no_dependency.add_column') }]
+    : [],
+)
+
 // Filter out already selected packages
-const selectedBaseNames = computed(() => new Set(packages.value.map(p => parsePackageSpec(p).name)))
-
-const filteredResults = computed(() => {
-  if (!searchData.value?.objects) return []
-  return searchData.value.objects
-    .map(o => ({
-      name: o.package.name,
-      description: o.package.description,
-    }))
-    .filter(r => !selectedBaseNames.value.has(r.name))
-})
-
-// Unified list of navigable items for keyboard navigation
-const navigableItems = computed(() => {
-  const items: { type: 'no-dependency' | 'package'; name: string }[] = []
-  if (showNoDependencyOption.value) {
-    items.push({ type: 'no-dependency', name: NO_DEPENDENCY_ID })
-  }
-  for (const r of filteredResults.value) {
-    items.push({ type: 'package', name: r.name })
-  }
-  return items
-})
-
-const resultIndexOffset = computed(() => (showNoDependencyOption.value ? 1 : 0))
+const selectedBaseNames = computed(() => packages.value.map(p => parsePackageSpec(p).name))
 
 const numberFormatter = useNumberFormatter()
-
-const keyboardShortcuts = useKeyboardShortcuts()
 
 function addPackage(spec: string) {
   if (packages.value.length >= maxPackages.value) return
@@ -94,110 +61,20 @@ function addPackage(spec: string) {
     packages.value = [...packages.value, trimmedSpec]
   }
   inputValue.value = ''
-  highlightedIndex.value = -1
 }
 
 function removePackage(name: string) {
   packages.value = packages.value.filter(p => p !== name)
 }
 
-function handleKeydown(e: KeyboardEvent) {
-  if (!keyboardShortcuts.value) {
+// Fallback: easter egg, exact match, or manual version spec entry (e.g. lodash@3.10.1)
+function handleSubmit(query: string, exactMatch: boolean) {
+  if (showNoDependencyOption.value) {
+    addPackage(NO_DEPENDENCY_ID)
     return
   }
-
-  const items = navigableItems.value
-  const count = items.length
-
-  switch (e.key) {
-    case 'ArrowDown':
-      e.preventDefault()
-      if (count === 0) return
-      if (highlightedIndex.value < count - 1) {
-        highlightedIndex.value++
-      } else {
-        highlightedIndex.value = 0
-      }
-      break
-
-    case 'ArrowUp':
-      e.preventDefault()
-      if (count === 0) return
-      if (highlightedIndex.value > 0) {
-        highlightedIndex.value--
-      } else {
-        highlightedIndex.value = count - 1
-      }
-      break
-
-    case 'PageDown':
-      e.preventDefault()
-      if (count === 0) return
-      if (highlightedIndex.value === -1) {
-        highlightedIndex.value = Math.min(PAGE_JUMP - 1, count - 1)
-      } else {
-        highlightedIndex.value = Math.min(highlightedIndex.value + PAGE_JUMP, count - 1)
-      }
-      break
-
-    case 'PageUp':
-      e.preventDefault()
-      if (count === 0) return
-      highlightedIndex.value = Math.max(highlightedIndex.value - PAGE_JUMP, 0)
-      break
-
-    case 'Enter': {
-      const inputValueTrim = inputValue.value.trim()
-      if (!inputValueTrim) return
-
-      e.preventDefault()
-
-      // If an item is highlighted, select it
-      if (highlightedIndex.value >= 0 && highlightedIndex.value < count) {
-        addPackage(items[highlightedIndex.value]!.name)
-        return
-      }
-
-      // Fallback: exact match, easter egg, or manual version spec entry (e.g. lodash@3.10.1)
-      if (showNoDependencyOption.value) {
-        addPackage(NO_DEPENDENCY_ID)
-      } else {
-        const parsed = parsePackageSpec(inputValueTrim)
-        const hasMatch = filteredResults.value.find(r => r.name === parsed.name)
-        if (hasMatch || parsed.version) {
-          addPackage(inputValueTrim)
-        }
-      }
-      break
-    }
-
-    case 'Escape':
-      inputValue.value = ''
-      highlightedIndex.value = -1
-      break
-  }
+  if (exactMatch || parsePackageSpec(query).version) addPackage(query)
 }
-
-// Reset highlight when user types
-watch(inputValue, () => {
-  highlightedIndex.value = -1
-})
-
-// Scroll highlighted item into view
-watch(highlightedIndex, index => {
-  if (index >= 0 && listRef.value) {
-    const items = listRef.value.querySelectorAll('[data-navigable]')
-    const item = items[index] as HTMLElement | undefined
-    item?.scrollIntoView({ block: 'nearest' })
-  }
-})
-
-const containerRef = useTemplateRef('containerRef')
-
-onClickOutside(containerRef, () => {
-  isInputFocused.value = false
-  highlightedIndex.value = -1
-})
 
 const versionHintId = useId()
 </script>
@@ -235,93 +112,33 @@ const versionHintId = useId()
     </div>
 
     <!-- Add package input -->
-    <div v-if="packages.length < maxPackages" ref="containerRef" class="relative">
-      <div class="relative group flex items-center">
-        <label for="package-search" class="sr-only">
-          {{ $t('compare.selector.search_label') }}
-        </label>
-        <span
-          class="absolute inset-is-3 text-fg-subtle font-mono text-md pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
-        >
-          /
+    <PackageTypeahead
+      v-if="packages.length < maxPackages"
+      v-model:query="inputValue"
+      input-id="package-search"
+      :label="$t('compare.selector.search_label')"
+      :placeholder="
+        packages.length === 0
+          ? $t('compare.selector.search_first')
+          : $t('compare.selector.search_add')
+      "
+      :describedby="versionHintId"
+      :exclude="selectedBaseNames"
+      :leading-options="leadingOptions"
+      @select="addPackage"
+      @submit="handleSubmit"
+    >
+      <!-- No dependency option (easter egg with James) -->
+      <template #option>
+        <span class="text-sm text-accent italic flex items-center gap-2">
+          <span class="i-lucide:leaf w-4 h-4" aria-hidden="true" />
+          {{ $t('compare.no_dependency.typeahead_title') }}
         </span>
-        <InputBase
-          id="package-search"
-          v-model="inputValue"
-          type="text"
-          :aria-describedby="versionHintId"
-          :placeholder="
-            packages.length === 0
-              ? $t('compare.selector.search_first')
-              : $t('compare.selector.search_add')
-          "
-          no-correct
-          class="w-full min-w-25 ps-7"
-          aria-autocomplete="list"
-          ref="inputRef"
-          @focus="isInputFocused = true"
-          @keydown="handleKeydown"
-        />
-      </div>
-
-      <!-- Search results dropdown -->
-      <Transition
-        enter-active-class="transition-opacity duration-150"
-        enter-from-class="opacity-0"
-        leave-active-class="transition-opacity duration-100"
-        leave-from-class="opacity-100"
-        leave-to-class="opacity-0"
-      >
-        <div
-          v-if="isInputFocused && (navigableItems.length > 0 || isSearching)"
-          ref="listRef"
-          class="absolute top-full inset-x-0 mt-1 px-0.5 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
-        >
-          <!-- No dependency option (easter egg with James) -->
-          <ButtonBase
-            v-if="showNoDependencyOption"
-            data-navigable
-            class="block w-full text-start !border-transparent"
-            :class="highlightedIndex === 0 ? '!bg-accent/15' : ''"
-            :aria-label="$t('compare.no_dependency.add_column')"
-            @mouseenter="highlightedIndex = 0"
-            @click="addPackage(NO_DEPENDENCY_ID)"
-          >
-            <span class="text-sm text-accent italic flex items-center gap-2">
-              <span class="i-lucide:leaf w-4 h-4" aria-hidden="true" />
-              {{ $t('compare.no_dependency.typeahead_title') }}
-            </span>
-            <span class="text-xs text-fg-muted truncate mt-0.5">
-              {{ $t('compare.no_dependency.typeahead_description') }}
-            </span>
-          </ButtonBase>
-
-          <div
-            v-if="isSearching && navigableItems.length === 0"
-            class="px-4 py-3 text-sm text-fg-muted"
-          >
-            {{ $t('compare.selector.searching') }}
-          </div>
-          <ButtonBase
-            v-for="(result, index) in filteredResults"
-            :key="result.name"
-            data-navigable
-            class="block w-full text-start my-0.5 !border-transparent"
-            :class="highlightedIndex === index + resultIndexOffset ? '!bg-accent/15' : ''"
-            @mouseenter="highlightedIndex = index + resultIndexOffset"
-            @click="addPackage(result.name)"
-          >
-            <span class="font-mono text-sm text-fg block">{{ result.name }}</span>
-            <span
-              v-if="result.description"
-              class="text-xs text-fg-muted truncate mt-0.5 w-full block"
-            >
-              {{ stripHtmlTags(decodeHtmlEntities(result.description)) }}
-            </span>
-          </ButtonBase>
-        </div>
-      </Transition>
-    </div>
+        <span class="text-xs text-fg-muted truncate mt-0.5">
+          {{ $t('compare.no_dependency.typeahead_description') }}
+        </span>
+      </template>
+    </PackageTypeahead>
 
     <!-- Hint -->
     <i18n-t

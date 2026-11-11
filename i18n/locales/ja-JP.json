@@ -1396,7 +1396,6 @@
       "search_label": "パッケージを検索",
       "search_first": "パッケージを検索...",
       "search_add": "パッケージを追加...",
-      "searching": "検索中...",
       "remove_package": "{package} を削除",
       "packages_selected": "{count}/{max} パッケージ選択中。",
       "add_hint": "比較するには少なくとも2つのパッケージを追加してください。"

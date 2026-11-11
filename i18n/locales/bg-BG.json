@@ -977,7 +977,6 @@
       "search_label": "Търсене на пакети",
       "search_first": "Търсене на пакет...",
       "search_add": "Добавяне на още пакет...",
-      "searching": "Търсене...",
       "remove_package": "Премахване на {package}",
       "packages_selected": "{count}/{max} избрани пакета.",
       "add_hint": "Добавете поне 2 пакета за сравнение."
