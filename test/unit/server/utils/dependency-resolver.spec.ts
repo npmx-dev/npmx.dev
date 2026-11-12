@@ -5,19 +5,25 @@ import type { AbbreviatedPackument, AbbreviatedPackumentVersion } from '#shared/
 vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
 vi.stubGlobal('$fetch', vi.fn())
 
+const mockVersionsMeta = vi.hoisted(() =>
+  vi.fn<
+    (name: string) => Promise<{
+      versions: string[]
+      time: Record<string, string>
+      distTags: Record<string, string>
+    } | null>
+  >(),
+)
+
+vi.mock('#server/utils/npm', () => ({
+  fetchNpmPackageVersionsMeta: mockVersionsMeta,
+}))
+
 const mockAbbreviatedPackument = vi.fn<(name: string) => Promise<AbbreviatedPackument | null>>()
 vi.stubGlobal('fetchNpmPackageAbbreviated', mockAbbreviatedPackument)
 
 const mockVersionLibc = vi.fn<(name: string, version: string) => Promise<string[] | undefined>>()
 vi.stubGlobal('fetchNpmPackageVersionLibc', mockVersionLibc)
-
-interface VersionsMeta {
-  versions: string[]
-  time: Record<string, string>
-  distTags: Record<string, string>
-}
-const mockVersionsMeta = vi.fn<(name: string) => Promise<VersionsMeta | null>>()
-vi.stubGlobal('fetchNpmPackageVersionsMeta', mockVersionsMeta)
 
 type MockPackument = AbbreviatedPackument & { time: Record<string, string> }
 

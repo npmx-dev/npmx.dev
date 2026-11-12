@@ -1,22 +1,26 @@
+import { createError, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { generateDocsWithDeno } from '#server/utils/docs'
+import { assertValidPackageName } from '#server/utils/npm-validation'
 export default defineCachedEventHandler(
   async event => {
     const pkgParam = getRouterParam(event, 'pkg')
     if (!pkgParam) {
       // TODO: throwing 404 rather than 400 as it's cacheable
-      throw createError({ statusCode: 404, message: 'Package name is required' })
+      throw createError({ status: 404, message: 'Package name is required' })
     }
 
     const { packageName, version } = parsePackageParam(pkgParam)
 
     if (!packageName) {
       // TODO: throwing 404 rather than 400 as it's cacheable
-      throw createError({ statusCode: 404, message: 'Package name is required' })
+      throw createError({ status: 404, message: 'Package name is required' })
     }
     assertValidPackageName(packageName)
 
     if (!version) {
       // TODO: throwing 404 rather than 400 as it's cacheable
-      throw createError({ statusCode: 404, message: 'Package version is required' })
+      throw createError({ status: 404, message: 'Package version is required' })
     }
 
     let generated

@@ -4,12 +4,14 @@ import type { ExtendedPackageJson } from '~~/shared/utils/package-analysis'
 import { type RepoRef, parseRepositoryInfo } from '~~/shared/utils/git-providers'
 import { getFileUrls } from './fileUrls'
 import { ForgeApiError, RateLimitedError } from 'forges'
-import { FetchError } from 'ofetch'
+import { $fetch, FetchError } from 'ofetch'
 import { ERROR_CHANGELOG_NOT_FOUND, ERROR_UNGH_API_KEY_EXHAUSTED } from '~~/shared/utils/constants'
 import { GithubReleaseSchama } from '~~/shared/schemas/changelog/release'
 import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 import { resolveURL } from 'ufo'
 import * as v from 'valibot'
+import { createError } from 'nuxt/server'
+import { defineCachedFunction } from 'nitro/cache'
 
 type SafeResult<R, E = Error> = [R, null] | [null, E]
 
@@ -52,8 +54,8 @@ export async function detectChangelog(pkg: ExtendedPackageJson) {
   }
 
   throw createError({
-    statusCode: 404,
-    statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+    status: 404,
+    statusText: ERROR_CHANGELOG_NOT_FOUND,
   })
 }
 
@@ -108,7 +110,7 @@ const checkChangelogFile = defineCachedFunction(
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     staleMaxAge: CACHE_MAX_AGE_ONE_MINUTE * 30,
     name: 'checkChangelogFile:v1',
-    shouldBypassCache: () => import.meta.dev,
+    shouldBypassCache: () => !!import.meta.dev,
     getKey: (ref, directory) => {
       const base = [ref.provider, ref.host ?? '', ref.owner, ref.repo]
       if (directory) {
@@ -176,7 +178,7 @@ const CACHE_OPTIONS_CHECK_RELEASE: Parameters<
   staleMaxAge: CACHE_MAX_AGE_ONE_MINUTE * 30,
   group: 'changelog:checkLatestRelease:v1',
   // name is defined at the function as the provider
-  shouldBypassCache: () => import.meta.dev,
+  shouldBypassCache: () => !!import.meta.dev,
   getKey: (ref, directory) => {
     const base = [ref.provider, ref.host ?? '', ref.owner, ref.repo]
     if (directory) {
@@ -255,9 +257,9 @@ async function checkLatestGithubRelease(
       }
       if (e.statusCode === 403 || e.statusCode === 429) {
         throw createError({
-          statusCode: 502,
+          status: 502,
           message: ERROR_UNGH_API_KEY_EXHAUSTED,
-          statusMessage: ERROR_UNGH_API_KEY_EXHAUSTED,
+          statusText: ERROR_UNGH_API_KEY_EXHAUSTED,
         })
       }
     }

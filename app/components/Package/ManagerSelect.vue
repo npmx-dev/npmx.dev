@@ -14,6 +14,10 @@ const selectedPM = useSelectedPackageManager()
 
 const listRef = useTemplateRef('listRef')
 const triggerRef = useTemplateRef('triggerRef')
+const selectedPMLabel = computed(
+  () => packageManagers.find(pm => pm.id === selectedPM.value)?.label ?? selectedPM.value,
+)
+
 const isOpen = shallowRef(false)
 const highlightedIndex = shallowRef(-1)
 
@@ -100,7 +104,7 @@ function handleKeydown(event: KeyboardEvent) {
     class="cursor-pointer flex items-center gap-1.5 px-2 py-1.75 font-mono text-xs text-fg-muted bg-bg-subtle border border-border-subtle border-solid rounded-md transition-colors duration-150 hover:(text-fg border-border-hover) active:scale-95 focus:border-border-hover focus-visible:outline-accent/70"
     :aria-expanded="isOpen"
     aria-haspopup="listbox"
-    :aria-label="$t('package.get_started.pm_label')"
+    :aria-label="`${$t('package.get_started.pm_label')}: ${selectedPMLabel}`"
     :aria-controls="isOpen ? listboxId : undefined"
     @click="toggle"
     @keydown="handleKeydown"

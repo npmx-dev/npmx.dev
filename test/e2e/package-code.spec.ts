@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('Package Code Viewer', () => {
   test('/package-code/empathic/v/2.0.0 loads correctly', async ({ page, goto }) => {

@@ -1,3 +1,4 @@
+import { createError } from 'nuxt/server'
 export interface NpmWebsiteVersionDownload {
   version: string
   downloads: number
@@ -17,13 +18,13 @@ export async function fetchNpmVersionDownloadsFromApi(
   if (!versionsResponse.ok) {
     if (versionsResponse.status === 404) {
       throw createError({
-        statusCode: 404,
+        status: 404,
         message: 'Package not found',
       })
     }
 
     throw createError({
-      statusCode: 502,
+      status: 502,
       message: 'Failed to fetch version download data from npm API',
     })
   }

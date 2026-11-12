@@ -1,4 +1,5 @@
 import eventHandler, { defaultChangelogCacheOptions } from './[version].get'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 export default defineCachedEventHandler(eventHandler, {
   ...defaultChangelogCacheOptions,

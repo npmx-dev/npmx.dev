@@ -2,13 +2,15 @@ import * as v from 'valibot'
 import { Client } from '@atproto/lex'
 import * as dev from '#shared/types/lexicons/dev'
 import { PackageLikeBodySchema } from '#shared/schemas/social'
-import { throwOnMissingOAuthScope } from '#server/utils/atproto/oauth'
+import { eventHandlerWithOAuthSession, throwOnMissingOAuthScope } from '#server/utils/atproto/oauth'
+import { createError, readBody } from 'nuxt/server'
+import { PackageLikesUtils } from '#server/utils/atproto/utils/likes'
 
 export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
   const loggedInUsersDid = oAuthSession?.did.toString()
 
   if (!oAuthSession || !loggedInUsersDid) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+    throw createError({ status: 401, statusText: 'Unauthorized' })
   }
 
   //Checks if the user has a scope to like packages

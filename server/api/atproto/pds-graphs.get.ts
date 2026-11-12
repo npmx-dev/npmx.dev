@@ -3,6 +3,8 @@ import * as app from '#shared/types/lexicons/app'
 import type { AtprotoProfile } from '#shared/types/atproto'
 
 import { BLUESKY_API, ERROR_PDS_FETCH_FAILED } from '#shared/utils/constants'
+import { createError } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 interface GraphLink {
   source: string
@@ -31,7 +33,7 @@ async function fetchAllDids(): Promise<string[]> {
 
     if (!response.ok) {
       throw createError({
-        statusCode: response.status,
+        status: response.status,
         message: ERROR_PDS_FETCH_FAILED,
       })
     }

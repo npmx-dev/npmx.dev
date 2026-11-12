@@ -1,5 +1,9 @@
 import { transformPackument } from '#shared/utils/packument'
 import { CACHE_MAX_AGE_FIVE_MINUTES, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { fetchNpmPackage } from '#server/utils/npm'
+import { handleApiError } from '#server/utils/error-handler'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 /**
  * Returns an already-trimmed ("slim") packument for a package page render.
@@ -24,7 +28,7 @@ export default defineCachedEventHandler(
   async event => {
     const pkgParam = getRouterParam(event, 'pkg')
     if (!pkgParam) {
-      throw createError({ statusCode: 404, message: 'Package name is required' })
+      throw createError({ status: 404, message: 'Package name is required' })
     }
 
     const packageName = decodeURIComponent(pkgParam)
@@ -45,7 +49,7 @@ export default defineCachedEventHandler(
       return transformPackument(packument, resolvedVersion)
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: ERROR_NPM_FETCH_FAILED,
       })
     }

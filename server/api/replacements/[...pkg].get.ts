@@ -1,4 +1,5 @@
 import { all, type ModuleReplacement, type ModuleReplacementMapping } from 'module-replacements'
+import { defineEventHandler, getRouterParam } from 'nuxt/server'
 
 export default defineEventHandler(
   (event): { mapping: ModuleReplacementMapping; replacement: ModuleReplacement } | null => {

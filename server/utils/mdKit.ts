@@ -11,6 +11,7 @@ import { decodeHtmlEntities, stripHtmlTags, slugify } from '#shared/utils/html'
 import { escapeHtml } from './docs/text'
 import sanitizeHtml, { type IOptions } from 'sanitize-html'
 import { hasProtocol } from 'ufo'
+import { getShikiHighlighter } from '#server/utils/shiki'
 
 /// for marked
 

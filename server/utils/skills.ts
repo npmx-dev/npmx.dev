@@ -1,3 +1,4 @@
+import { createError } from 'nuxt/server'
 const MAX_SKILL_FILE_SIZE = 500 * 1024
 
 /**
@@ -7,7 +8,7 @@ const MAX_SKILL_FILE_SIZE = 500 * 1024
 function parseFrontmatter(raw: string): { frontmatter: SkillFrontmatter; content: string } {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/)
   if (!match) {
-    throw createError({ statusCode: 400, message: 'Invalid SKILL.md: missing YAML frontmatter' })
+    throw createError({ status: 400, message: 'Invalid SKILL.md: missing YAML frontmatter' })
   }
 
   const yamlBlock = match[1]!
@@ -49,7 +50,7 @@ function parseFrontmatter(raw: string): { frontmatter: SkillFrontmatter; content
 
   if (!frontmatter.name || !frontmatter.description) {
     throw createError({
-      statusCode: 400,
+      status: 400,
       message: 'Invalid SKILL.md: missing required name or description',
     })
   }
@@ -114,15 +115,15 @@ export async function fetchSkillFile(
 
   if (!response.ok) {
     if (response.status === 404) {
-      throw createError({ statusCode: 404, message: 'File not found' })
+      throw createError({ status: 404, message: 'File not found' })
     }
-    throw createError({ statusCode: 502, message: 'Failed to fetch file from jsDelivr' })
+    throw createError({ status: 502, message: 'Failed to fetch file from jsDelivr' })
   }
 
   const contentLength = response.headers.get('content-length')
   if (contentLength && parseInt(contentLength, 10) > MAX_SKILL_FILE_SIZE) {
     throw createError({
-      statusCode: 413,
+      status: 413,
       message: `File too large (${(parseInt(contentLength, 10) / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_SKILL_FILE_SIZE / 1024}KB.`,
     })
   }
@@ -131,7 +132,7 @@ export async function fetchSkillFile(
 
   if (content.length > MAX_SKILL_FILE_SIZE) {
     throw createError({
-      statusCode: 413,
+      status: 413,
       message: `File too large (${(content.length / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_SKILL_FILE_SIZE / 1024}KB.`,
     })
   }

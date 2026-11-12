@@ -54,9 +54,11 @@ const isLoadingLikeData = computed(
 )
 const isPackageLiked = computed(() => likesData.value?.userHasLiked ?? false)
 const topLikedRank = computed(() => likesData.value?.topLikedRank ?? null)
-const likeButtonLabel = computed(() =>
-  isPackageLiked.value ? $t('package.likes.unlike') : $t('package.likes.like'),
-)
+const likeButtonLabel = computed(() => {
+  const label = isPackageLiked.value ? $t('package.likes.unlike') : $t('package.likes.like')
+  const count = compactNumberFormatter.value.format(likesData.value?.totalLikes ?? 0)
+  return `${label} ${count}`
+})
 const likeTooltipLabel = computed(() =>
   isLoadingLikeData.value ? $t('common.loading') : likeButtonLabel.value,
 )
@@ -203,7 +205,8 @@ const likeAction = async () => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.25rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
   padding: 0.125rem 0.375rem;
   border: 1px solid var(--bg);
   border-radius: 9999px;

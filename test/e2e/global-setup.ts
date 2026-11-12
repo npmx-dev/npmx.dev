@@ -7,7 +7,7 @@
 
 // eslint-disable no-console
 
-import { MockConnectorServer, DEFAULT_MOCK_CONFIG } from './helpers/mock-connector'
+import { MockConnectorServer, DEFAULT_MOCK_CONFIG } from './helpers/mock-connector.ts'
 
 export default async function globalSetup() {
   console.log('[Global Setup] Starting mock connector server...')

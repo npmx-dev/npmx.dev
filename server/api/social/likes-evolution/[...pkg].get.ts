@@ -1,3 +1,5 @@
+import { createError, defineEventHandler, getRouterParam } from 'nuxt/server'
+import { PackageLikesUtils } from '#server/utils/atproto/utils/likes'
 export default defineEventHandler(async event => {
   const packageName = getRouterParam(event, 'pkg')
   if (!packageName) {

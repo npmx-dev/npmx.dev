@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('Compare Page', () => {
   test('no-dep column renders separately from package columns', async ({ page, goto }) => {

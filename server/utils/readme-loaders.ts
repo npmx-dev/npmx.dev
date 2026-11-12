@@ -5,6 +5,7 @@ import {
   NPM_MISSING_README_SENTINEL,
   NPM_README_TRUNCATION_THRESHOLD,
 } from '#shared/utils/constants'
+import { defineCachedFunction } from 'nitro/cache'
 
 /** Standard README filenames to try when fetching from jsdelivr (case-sensitive CDN) */
 const standardReadmeFilenames = [

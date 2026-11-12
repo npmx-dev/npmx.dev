@@ -1,26 +1,24 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
-import type { H3Event } from 'h3'
+import type { H3Event } from 'nitro/h3'
+import type * as NuxtServer from 'nuxt/server'
 
 const createForgeProviderMock = vi.hoisted(() => vi.fn())
 const getRouterParamMock = vi.hoisted(() => vi.fn())
 
-vi.mock('h3', () => ({
+vi.mock('nuxt/server', async importOriginal => ({
+  ...(await importOriginal<typeof NuxtServer>()),
   createError: vi.fn((options: unknown) => options),
   getRouterParam: getRouterParamMock,
+}))
+
+vi.mock('#server/utils/cached-handler', () => ({
+  defineCachedEventHandler: (fn: Function) => fn,
 }))
 
 vi.mock('#shared/utils/forges', () => ({
   createForgeProvider: createForgeProviderMock,
   toForgeRepoRef: (ref: unknown) => ref,
 }))
-
-vi.stubGlobal('defineCachedEventHandler', (fn: Function) => fn)
-// The route uses Nuxt's auto-imported h3 helpers, which unit tests do not get.
-vi.stubGlobal('getRouterParam', getRouterParamMock)
-vi.stubGlobal(
-  'createError',
-  vi.fn((options: unknown) => options),
-)
 
 const handler = (await import('#server/api/atproto/tangled-stats/[owner]/[...repo].get')).default
 const fakeEvent = {} as H3Event

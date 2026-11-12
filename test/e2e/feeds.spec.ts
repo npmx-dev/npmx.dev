@@ -1,4 +1,4 @@
-import { expect, test } from './test-utils'
+import { expect, test } from './test-utils.ts'
 
 test.describe('Blog feeds', () => {
   test.describe('have alternate links and matching content types', () => {

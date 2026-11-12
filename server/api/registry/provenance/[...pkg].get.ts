@@ -1,5 +1,9 @@
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
+import { createError, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { $fetch } from 'ofetch'
+import type { NpmAttestationsResponse } from '#server/utils/provenance'
 
 /**
  * GET /api/registry/provenance/:name/v/:version
@@ -15,7 +19,7 @@ export default defineCachedEventHandler(
 
     if (!rawVersion) {
       throw createError({
-        statusCode: 400,
+        status: 400,
         message: 'Version is required for provenance.',
       })
     }
@@ -31,7 +35,7 @@ export default defineCachedEventHandler(
       const versionData = packument.versions[version]
       if (!versionData) {
         throw createError({
-          statusCode: 404,
+          status: 404,
           message: `Version ${version} not found for package ${packageName}.`,
         })
       }
@@ -47,7 +51,7 @@ export default defineCachedEventHandler(
       return details
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: ERROR_PROVENANCE_FETCH_FAILED,
       })
     }

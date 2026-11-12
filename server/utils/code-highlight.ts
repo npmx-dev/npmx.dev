@@ -1,4 +1,5 @@
 import { isBuiltin } from 'node:module'
+import { getShikiHighlighter } from '#server/utils/shiki'
 // File extension to language mapping
 const EXTENSION_MAP: Record<string, string> = {
   // JavaScript/TypeScript

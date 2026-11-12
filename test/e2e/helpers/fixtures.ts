@@ -3,8 +3,8 @@
  * (which includes external API mocking) with connector-specific helpers.
  */
 
-import { test as base } from '../test-utils'
-import { DEFAULT_MOCK_CONFIG } from './mock-connector'
+import { test as base } from '../test-utils.ts'
+import { DEFAULT_MOCK_CONFIG } from './mock-connector.ts'
 
 const TEST_TOKEN = DEFAULT_MOCK_CONFIG.token
 const TEST_PORT = DEFAULT_MOCK_CONFIG.port ?? 31415

@@ -1,3 +1,4 @@
+import { defineCachedFunction } from 'nitro/cache'
 export function parseFrozenHistory(value: unknown): boolean {
   return value === 'true'
 }

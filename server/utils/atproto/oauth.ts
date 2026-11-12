@@ -5,7 +5,7 @@ import type {
   WebUri,
 } from '@atproto/oauth-client-node'
 import { JoseKey, Keyset, oauthRedirectUriSchema, webUriSchema } from '@atproto/oauth-client-node'
-import type { EventHandlerRequest, H3Event, SessionManager } from 'h3'
+import type { RequestEvent, SessionData, SessionManager } from 'nuxt/server'
 import { NodeOAuthClient, AtprotoDohHandleResolver } from '@atproto/oauth-client-node'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
@@ -13,6 +13,7 @@ import { LIKES_SCOPE, PROFILE_SCOPE } from '#shared/utils/constants'
 import type { UserServerSession } from '#shared/types/userSession'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
+import { createError, defineEventHandler, useRuntimeConfig } from 'nuxt/server'
 
 // TODO: If you add writing a new record you will need to add a scope for it
 export const scope = `atproto ${LIKES_SCOPE} ${PROFILE_SCOPE}`
@@ -61,10 +62,10 @@ export function getOauthClientMetadata(pkAlg: string | undefined = undefined): O
   }
 }
 
-type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
-  event: H3Event<T>,
+type EventHandlerWithOAuthSession<D> = (
+  event: RequestEvent,
   session: OAuthSession | undefined,
-  serverSession: SessionManager,
+  serverSession: SessionManager<UserServerSession & SessionData>,
 ) => Promise<D>
 
 export async function getNodeOAuthClient(): Promise<NodeOAuthClient> {
@@ -98,9 +99,9 @@ export async function loadJWKs(): Promise<Keyset | undefined> {
   return new Keyset([keys])
 }
 
-async function getOAuthSession(event: H3Event): Promise<{
+async function getOAuthSession(event: RequestEvent): Promise<{
   oauthSession: OAuthSession | undefined
-  serverSession: SessionManager<UserServerSession>
+  serverSession: SessionManager<UserServerSession & SessionData>
 }> {
   const serverSession = await useServerSession(event)
 
@@ -111,7 +112,9 @@ async function getOAuthSession(event: H3Event): Promise<{
       return { oauthSession: undefined, serverSession }
     }
 
-    const oauthSession = await event.context.oauthClient.restore(currentSession.public.did)
+    const oauthSession = await (event.context.oauthClient as NodeOAuthClient).restore(
+      currentSession.public.did,
+    )
     return { oauthSession, serverSession }
   } catch (error) {
     // Log error safely without using util.inspect on potentially problematic objects
@@ -142,9 +145,7 @@ export async function throwOnMissingOAuthScope(oAuthSession: OAuthSession, requi
   }
 }
 
-export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
-  handler: EventHandlerWithOAuthSession<T, D>,
-) {
+export function eventHandlerWithOAuthSession<D>(handler: EventHandlerWithOAuthSession<D>) {
   return defineEventHandler(async event => {
     const { oauthSession, serverSession } = await getOAuthSession(event)
     const publicData = serverSession.data.public

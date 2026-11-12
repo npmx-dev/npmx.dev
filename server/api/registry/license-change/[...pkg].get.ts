@@ -1,4 +1,7 @@
 import { normalizeLicense } from '#shared/utils/npm'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { fetchNpmPackage } from '#server/utils/npm'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 interface LicenseChangeRecord {
   from: string
@@ -11,8 +14,8 @@ export default defineCachedEventHandler(
     const packageName = getRouterParam(event, 'pkg')
     if (!packageName) {
       throw createError({
-        statusCode: 400,
-        statusMessage: 'Package name is required',
+        status: 400,
+        statusText: 'Package name is required',
       })
     }
     const query = getQuery(event)
@@ -25,8 +28,8 @@ export default defineCachedEventHandler(
 
       if (!data.versions || !data.time) {
         throw createError({
-          statusCode: 404,
-          statusMessage: 'Package metadata not found',
+          status: 404,
+          statusText: 'Package metadata not found',
         })
       }
       // 3. Process the logic
@@ -61,8 +64,8 @@ export default defineCachedEventHandler(
       return { change }
     } catch (error: any) {
       throw createError({
-        statusCode: error.statusCode || 500,
-        statusMessage: `Failed to fetch license data: ${error.message}`,
+        status: error.statusCode || 500,
+        statusText: `Failed to fetch license data: ${error.message}`,
       })
     }
   },

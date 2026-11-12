@@ -3,6 +3,9 @@ import { VersionSchema, PackageNameSchema } from '#shared/schemas/package'
 import { ERROR_PACKAGE_DETECT_CHANGELOG, NPM_REGISTRY } from '#shared/utils/constants'
 import * as v from 'valibot'
 import { detectChangelog } from '~~/server/utils/changelog/detectChangelog'
+import { $fetch } from 'ofetch'
+import { getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 function getChangelogRouteParams(event: Parameters<typeof getRouterParam>[0]) {
   const org = getRouterParam(event, 'org')
@@ -21,7 +24,7 @@ export const defaultChangelogCacheOptions: Parameters<typeof defineCachedEventHa
     const { rawPackageName = '', rawVersion = 'latest' } = getChangelogRouteParams(event)
     return `changelogInfo:v2:${rawPackageName.trim().replaceAll('/', ':')}:${rawVersion.trim()}`
   },
-  shouldBypassCache: () => import.meta.dev,
+  shouldBypassCache: () => !!import.meta.dev,
 }
 
 // handler
@@ -38,7 +41,7 @@ export default defineCachedEventHandler(async event => {
     return await detectChangelog(pkg)
   } catch (error) {
     handleApiError(error, {
-      statusCode: 500,
+      status: 500,
       message: ERROR_PACKAGE_DETECT_CHANGELOG,
     })
   }

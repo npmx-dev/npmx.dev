@@ -167,6 +167,15 @@ const visibleTagRows = computed(() => {
   return first
 })
 
+const otherVersionsLabel = computed(() => {
+  const state = otherVersionsExpanded.value
+    ? $t('package.versions.collapse_other')
+    : $t('package.versions.expand_other')
+  const count = hiddenTagRows.value.length
+  const suffix = count > 0 ? ` (${$t('package.versions.more_tagged', { count }, count)})` : ''
+  return `${state}: ${$t('package.versions.other_versions')}${suffix}`
+})
+
 // Hidden tag rows (all other tags) - shown in "Other versions"
 // When semver filter is active, also filter by matching version
 const hiddenTagRows = computed(() => {
@@ -739,11 +748,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           class="group/version-row flex items-center gap-2 text-start rounded-sm w-full"
           :class="otherVersionsContainsCurrent() ? 'bg-bg-subtle' : ''"
           :aria-expanded="otherVersionsExpanded"
-          :aria-label="
-            otherVersionsExpanded
-              ? $t('package.versions.collapse_other')
-              : $t('package.versions.expand_other')
-          "
+          :aria-label="otherVersionsLabel"
           @click="expandOtherVersions"
         >
           <span

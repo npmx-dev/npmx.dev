@@ -1,5 +1,7 @@
 import { CACHE_MAX_AGE_ONE_HOUR, NPM_REGISTRY } from '#shared/utils/constants'
-import { FetchError } from 'ofetch'
+import { $fetch, FetchError } from 'ofetch'
+import { createError, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
 
 // Validation pattern for npm org names - should be a url-safe symbol and not start with a dot (incl. ~test24214. or -ex~-)
 const NPM_ORG_NAME_RE = /^[\w~-][\w.~-]*$/
@@ -8,7 +10,7 @@ function validateOrgName(name: string): void {
   if (!name || name.length > 50 || !NPM_ORG_NAME_RE.test(name)) {
     throw createError({
       // TODO: throwing 404 rather than 400 as it's cacheable
-      statusCode: 404,
+      status: 404,
       message: `Invalid org name: ${name}`,
     })
   }
@@ -21,7 +23,7 @@ export default defineCachedEventHandler(
     if (!org) {
       throw createError({
         // TODO: throwing 404 rather than 400 as it's cacheable
-        statusCode: 404,
+        status: 404,
         message: 'Org name is required',
       })
     }
@@ -39,7 +41,7 @@ export default defineCachedEventHandler(
     } catch (error) {
       // Let 404s propagate (org not found) so consumers can distinguish from empty
       if (error instanceof FetchError && error.statusCode === 404) {
-        throw createError({ statusCode: 404, message: `Organization not found: ${org}` })
+        throw createError({ status: 404, message: `Organization not found: ${org}` })
       }
       // For other errors (network, etc.), return empty
       // oxlint-disable-next-line no-console -- log npm registry fetch errors for debugging

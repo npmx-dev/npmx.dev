@@ -1,15 +1,20 @@
 import * as v from 'valibot'
 import { createCanvas, type SKRSContext2D } from '@napi-rs/canvas'
 import { hash } from 'ohash'
-import { createError, getRouterParam, getQuery, setHeader } from 'h3'
+import { createError, getQuery, getRouterParam } from 'nuxt/server'
+import { setHeader } from 'nitro/h3'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
 import { fetchNpmPackage } from '#server/utils/npm'
-import { assertValidPackageName, normalizeLicense } from '#shared/utils/npm'
+import { parsePackageParams } from '#server/utils/parse-package-params'
+import { normalizeLicense } from '#shared/utils/npm'
+import { assertValidPackageName } from '#server/utils/npm-validation'
 import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { handleApiError } from '#server/utils/error-handler'
 import { isExcludedByLastKnownAffectedRange } from '#server/utils/osv'
 import type { OsvQueryResponse } from '#shared/types/dependency-analysis'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { PackageLikesUtils } from '#server/utils/atproto/utils/likes'
 
 const NPM_DOWNLOADS_API = 'https://api.npmjs.org/downloads/point'
 const OSV_QUERY_API = 'https://api.osv.dev/v1/query'
@@ -725,7 +730,7 @@ export default defineCachedEventHandler(
 
     if (pkgParamSegments.length === 0) {
       // TODO: throwing 404 rather than 400 as it's cacheable
-      throw createError({ statusCode: 404, message: 'Package name is required.' })
+      throw createError({ status: 404, message: 'Package name is required.' })
     }
 
     const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
@@ -791,7 +796,7 @@ export default defineCachedEventHandler(
       return svg
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: ERROR_NPM_FETCH_FAILED,
       })
     }

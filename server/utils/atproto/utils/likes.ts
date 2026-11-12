@@ -4,6 +4,10 @@ import type * as blue from '#shared/types/lexicons/blue'
 import * as dev from '#shared/types/lexicons/dev'
 import { Client } from '@atproto/lex'
 import * as TID from '@atcute/tid'
+import { $fetch } from 'ofetch'
+import { getCacheAdapter } from '#server/utils/cache/adapter'
+import type { CacheAdapter } from '#server/utils/cache/shared'
+import { CACHE_MAX_AGE_ONE_MINUTE } from '#shared/utils/constants'
 
 //Cache keys and helpers
 const CACHE_PREFIX = 'atproto-likes:'
@@ -60,7 +64,7 @@ export class PackageLikesUtils {
           options: Parameters<typeof $fetch>[1] = {},
           _ttl?: number,
         ): Promise<CachedFetchResult<T>> => {
-          const data = (await $fetch<T>(url, options)) as T
+          const data = (await $fetch(url, options as Parameters<typeof $fetch>[1])) as T
           return { data, isStale: false, cachedAt: null }
         },
       )

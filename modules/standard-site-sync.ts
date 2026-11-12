@@ -4,8 +4,8 @@ import { glob } from 'node:fs/promises'
 import { join } from 'node:path'
 import { defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
 import { safeParse } from 'valibot'
-import { RawBlogPostSchema, type BlogPostFrontmatter } from '#shared/schemas/blog'
-import { NPMX_DEV_DID, NPMX_SITE } from '#shared/utils/constants'
+import { RawBlogPostSchema, type BlogPostFrontmatter } from '../shared/schemas/blog.ts'
+import { NPMX_DEV_DID, NPMX_SITE } from '../shared/utils/constants.ts'
 import { read } from 'gray-matter'
 import { PasswordSession } from '@atproto/lex-password-session'
 import {
@@ -15,9 +15,9 @@ import {
   XrpcResponseError,
   type AtIdentifierString,
 } from '@atproto/lex'
-import * as com from '../shared/types/lexicons/com'
-import * as site from '../shared/types/lexicons/site'
-import { generateBlogTID, npmxPublicationRkey } from '#shared/utils/atproto'
+import * as com from '../shared/types/lexicons/com.ts'
+import * as site from '../shared/types/lexicons/site.ts'
+import { generateBlogTID, npmxPublicationRkey } from '../shared/utils/atproto.ts'
 import { setTimeout } from 'node:timers/promises'
 
 const syncedDocuments = new Map<string, string>()

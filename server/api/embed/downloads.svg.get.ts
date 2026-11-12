@@ -4,6 +4,9 @@
  */
 import { createDownloadsSvgResponse } from '~~/server/utils/embed-downloads-svg'
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
+import { getQuery } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { setHeader } from 'nitro/h3'
 
 export default defineCachedEventHandler(
   async event => {
@@ -19,6 +22,6 @@ export default defineCachedEventHandler(
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
     name: 'embed-package-downloads',
-    getKey: event => event.node.req.url || event.path,
+    getKey: event => (event.url?.pathname ?? '') + (event.url?.search ?? ''),
   },
 )

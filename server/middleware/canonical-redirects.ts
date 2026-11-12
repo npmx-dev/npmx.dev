@@ -1,3 +1,5 @@
+import { getRouteRules, sendRedirect } from 'nuxt/server'
+import { defineEventHandler, setHeader } from 'nitro/h3'
 /**
  * Redirect legacy/shorthand URLs to canonical paths.
  *
@@ -39,7 +41,8 @@ const pages = [
 const cacheControl = 's-maxage=3600, stale-while-revalidate=36000'
 
 export default defineEventHandler(async event => {
-  const [path = '/', query] = event.path.split('?')
+  const path = event.url.pathname
+  const query = event.url.search ? event.url.search.slice(1) : ''
 
   if (query) {
     const params = new URLSearchParams(query)

@@ -2,6 +2,9 @@ import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { PACKAGE_SUBJECT_REF } from '#shared/utils/constants'
 import { getTopLikedRank } from '#server/utils/likes-leaderboard'
+import { createError, getRouterParam } from 'nuxt/server'
+import { eventHandlerWithOAuthSession } from '#server/utils/atproto/oauth'
+import { PackageLikesUtils } from '#server/utils/atproto/utils/likes'
 
 /**
  * GET /api/social/likes/:name
@@ -36,7 +39,7 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
     }
   } catch (error: unknown) {
     handleApiError(error, {
-      statusCode: 502,
+      status: 502,
       message: 'Failed to get likes',
     })
   }

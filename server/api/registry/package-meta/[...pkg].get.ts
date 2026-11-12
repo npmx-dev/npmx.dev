@@ -1,4 +1,7 @@
 import { normalizeLicense } from '#shared/utils/npm'
+import { createError, getRouterParam } from 'nuxt/server'
+import { defineCachedEventHandler } from '#server/utils/cached-handler'
+import { $fetch } from 'ofetch'
 
 /**
  * Returns lightweight package metadata for search results.
@@ -15,7 +18,7 @@ export default defineCachedEventHandler(
   async event => {
     const pkgParam = getRouterParam(event, 'pkg')
     if (!pkgParam) {
-      throw createError({ statusCode: 404, message: 'Package name is required' })
+      throw createError({ status: 404, message: 'Package name is required' })
     }
 
     const packageName = decodeURIComponent(pkgParam)
@@ -89,7 +92,7 @@ export default defineCachedEventHandler(
       }
     } catch (error: unknown) {
       handleApiError(error, {
-        statusCode: 502,
+        status: 502,
         message: ERROR_NPM_FETCH_FAILED,
       })
     }
