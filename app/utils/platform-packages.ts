@@ -1,3 +1,5 @@
+import { splitPackageName } from 'npmeta'
+
 /**
  * Detects if a package name is a platform-specific native binary package.
  * These are typically optional dependencies that contain native binaries
@@ -44,7 +46,7 @@ const ABI_SUFFIXES = new Set(['gnu', 'musl', 'msvc', 'gnueabihf'])
  * @returns true if the package appears to be a platform-specific binary
  */
 export function isPlatformSpecificPackage(name: string): boolean {
-  const unscopedName = name.startsWith('@') ? (name.split('/')[1] ?? '') : name
+  const unscopedName = splitPackageName(name).name
   if (!unscopedName) return false
 
   const parts = unscopedName.split('-')

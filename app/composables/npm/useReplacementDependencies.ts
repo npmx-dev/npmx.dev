@@ -1,5 +1,5 @@
 import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
-import { parseDependencyVersion } from '#shared/utils/npm'
+import { parseDependencyVersion } from 'npmeta'
 
 async function fetchReplacements(
   deps: Record<string, string>,

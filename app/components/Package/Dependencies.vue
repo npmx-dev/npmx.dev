@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { parseDependencyVersion } from '#shared/utils/npm'
+import { parseDependencyVersion } from 'npmeta'
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
 import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
 

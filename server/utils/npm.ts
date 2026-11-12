@@ -1,4 +1,5 @@
 import { getVersions } from 'fast-npm-meta'
+import { encodePackageName } from 'npmeta'
 import { findMaxSatisfying } from 'verkit'
 
 export const fetchNpmPackage = defineCachedFunction(

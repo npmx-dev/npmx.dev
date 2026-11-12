@@ -1,3 +1,4 @@
+import { encodePackageName } from 'npmeta'
 import { emptySearchResponse, metaToSearchResult } from './search-utils'
 
 interface NpmSearchOptions {

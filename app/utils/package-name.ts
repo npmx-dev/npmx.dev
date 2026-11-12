@@ -1,13 +1,6 @@
+import { encodePackageName, splitPackageName } from 'npmeta'
 import validatePackageName from 'validate-npm-package-name'
 import { NPM_REGISTRY } from '#shared/utils/constants'
-import { encodePackageName } from '#shared/utils/npm'
-
-export function splitPackageName(packageName: string): { org: string; name: string } {
-  const [org = '', name = ''] = packageName.startsWith('@')
-    ? packageName.split('/')
-    : ['', packageName]
-  return { org, name }
-}
 
 /**
  * Normalize a package name for comparison by removing common variations.
@@ -15,7 +8,7 @@ export function splitPackageName(packageName: string): { org: string; name: stri
  */
 export function normalizePackageName(name: string): string {
   // Remove scope if present
-  const unscoped = name.startsWith('@') ? name.split('/')[1] || name : name
+  const unscoped = splitPackageName(name).name
 
   // Normalize: lowercase, remove punctuation (.-_), remove 'js' and 'node' suffixes/prefixes
   return (

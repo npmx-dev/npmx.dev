@@ -9,8 +9,8 @@
 
 import { doc, type DocNode } from '@deno/doc'
 import type { DenoDocNode, DenoDocResult, DocEntry } from '#shared/types/deno-doc'
+import { encodePackageName } from 'npmeta'
 import { mapWithConcurrency } from '#shared/utils/async'
-import { encodePackageName } from '#shared/utils/npm'
 import { isBuiltin } from 'node:module'
 
 // =============================================================================

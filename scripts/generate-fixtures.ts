@@ -12,6 +12,7 @@
 
 import { writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
+import { encodePackageName } from 'npmeta'
 
 const FIXTURES_DIR = join(import.meta.dirname, '../test/fixtures')
 
@@ -136,14 +137,6 @@ async function fetchJson<T>(url: string): Promise<T> {
     throw new Error(`HTTP ${response.status}: ${url}`)
   }
   return response.json() as Promise<T>
-}
-
-function encodePackageName(name: string): string {
-  // Encode scoped packages: @scope/name -> @scope%2Fname
-  if (name.startsWith('@')) {
-    return '@' + encodeURIComponent(name.slice(1))
-  }
-  return encodeURIComponent(name)
 }
 
 function packageToFilename(name: string): string {

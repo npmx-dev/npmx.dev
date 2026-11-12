@@ -1,7 +1,7 @@
 import type { PackageVersionsInfo } from 'fast-npm-meta'
 import { getVersionsBatch } from 'fast-npm-meta'
+import { parseDependencyVersion } from 'npmeta'
 import { difference, findMaxSatisfying, getMajor, getMinor, isGreater, isStable } from 'verkit'
-import { parseDependencyVersion } from '#shared/utils/npm'
 import {
   type OutdatedDependencyInfo,
   constraintIncludesPrerelease,

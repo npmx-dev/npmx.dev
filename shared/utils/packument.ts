@@ -1,6 +1,6 @@
+import { normalizeLicense } from 'npmeta'
 import { getTrustStatus } from 'packumeta'
 import { extractInstallScriptsInfo } from '#shared/utils/install-scripts'
-import { normalizeLicense } from '#shared/utils/npm'
 import { detectSecurityDowngradeForVersion } from '~/utils/publish-security'
 import type {
   Packument,

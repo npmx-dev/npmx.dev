@@ -1,4 +1,5 @@
 import { getVersions } from 'fast-npm-meta'
+import { encodePackageName } from 'npmeta'
 import { compare } from 'verkit'
 
 type NpmDownloadsRangeResponse = {
