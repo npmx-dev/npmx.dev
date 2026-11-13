@@ -26,6 +26,53 @@ export type LikesLeaderboardEntry = {
   homepageLogoHeight: number | null
 }
 
+/** A collection as listed (profile, browse), without resolved items */
+export type CollectionSummary = {
+  uri: string
+  cid: string
+  did: string
+  handle: string
+  rkey: string
+  name: string
+  description?: string
+  itemCount: number
+  createdAt: string
+}
+
+/** Why an included collection could not be shown */
+export type CollectionUnavailableReason = 'unresolvable'
+
+export type CollectionItemView =
+  | {
+      kind: 'package'
+      subjectRef: string
+      note?: string
+      packageName: string
+      // False when the package doesn't exist on the registry (typo, unpublished, spam)
+      resolved: boolean
+    }
+  | {
+      kind: 'collection'
+      subjectRef: string
+      note?: string
+      // A summary, not expanded: readers follow the link to see what's in it
+      collection: CollectionSummary | null
+      unavailableReason?: CollectionUnavailableReason
+    }
+  | {
+      // subjectRef we don't understand; records are untrusted
+      kind: 'unknown'
+      subjectRef: string
+      note?: string
+    }
+
+/** One of the viewer's own collections, with what's in it. */
+export type OwnCollection = CollectionSummary & { subjectRefs: string[] }
+
+export type CollectionView = CollectionSummary & {
+  items: CollectionItemView[]
+}
+
 /**
  * A shortened DID Doc for AT Protocol accounts
  * Returned by Slingshot's `/xrpc/blue.microcosm.identity.resolveMiniDoc` endpoint

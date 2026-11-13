@@ -112,6 +112,7 @@
       "npmx": "npmx",
       "package": "Paquet",
       "package_with_name": "Paquet ({name})",
+      "collections": "Vos collections",
       "versions": "Versions",
       "versions_with_name": "Versions de {name}"
     },
@@ -305,6 +306,7 @@
   "common": {
     "loading": "Chargement...",
     "loading_more": "Chargement en cours...",
+    "load_more": "Afficher plus",
     "loading_packages": "Chargement des paquets...",
     "end_of_results": "Fin des résultats",
     "try_again": "Réessayer encore",
@@ -328,6 +330,7 @@
     "cancel": "Annuler",
     "save": "Enregistrer",
     "edit": "Modifier",
+    "delete": "Supprimer",
     "error": "Erreur",
     "view_on": {
       "npm": "voir sur npm",
@@ -362,6 +365,65 @@
       "message": "Il semblerait qu'ils n'utilisent pas encore npmx. Vous voulez leur en parler ?",
       "share_button": "Partager sur Bluesky",
       "compose_text": "Salut {'@'}{handle} ! As-tu déjà testé npmx.dev ? C'est un navigateur pour le registre npm : rapide, moderne et open source.\nhttps://npmx.dev"
+    },
+    "collections": "Collections"
+  },
+  "collections": {
+    "title": "Collections",
+    "seo_title": "{name} - collections npmx",
+    "seo_description": "{name}, une collection de paquets npm par {'@'}{handle}",
+    "new": "Nouvelle collection",
+    "new_title": "Nouvelle collection - npmx",
+    "empty": "Aucune collection pour l'instant.",
+    "load_error": "Impossible de charger les collections. Veuillez réessayer plus tard.",
+    "empty_collection": "Cette collection est vide.",
+    "by": "par {'@'}{handle}",
+    "item_count": "{count} élément | {count} éléments",
+    "duplicate": "Dupliquer",
+    "delete_title": "Supprimer cette collection ?",
+    "delete_body": "Cette action est irréversible.",
+    "delete_error": "Impossible de supprimer la collection. Veuillez réessayer.",
+    "includes": "Inclut",
+    "package_unresolved": "Introuvable sur le registre npm",
+    "unknown_item": "Élément non reconnu",
+    "unavailable": {
+      "unresolvable": "Impossible de charger cette collection."
+    },
+    "not_found": "Collection introuvable",
+    "not_found_message": "Cette collection n'existe pas, a été supprimée ou est masquée.",
+    "load_failed": "Impossible de charger cette collection",
+    "load_failed_message": "Le serveur qui la stocke n'a pas répondu. Réessayez dans un instant.",
+    "sign_in_to_create": "Connectez votre compte Atmosphere pour créer une collection.",
+    "editor": {
+      "public_notice": "Les collections sont enregistrées dans votre compte Atmosphere et sont publiques. Tout le monde peut les voir, sur npmx ou dans n'importe quelle autre application.",
+      "name": "Nom",
+      "description": "Description",
+      "items": "Éléments",
+      "item_limit": "jusqu'à {max}",
+      "add_item_label": "Ajouter un paquet ou une collection",
+      "add_item_placeholder": "Rechercher des paquets...",
+      "add_item_hint": "Choisissez un paquet dans la liste, ou collez le lien d’une autre collection puis appuyez sur Entrée.",
+      "invalid_item": "Ce n’est ni un paquet de la liste ni un lien de collection.",
+      "note_placeholder": "Pourquoi est-il là ? (facultatif)",
+      "note_for": "Note pour {name}",
+      "move_up": "Monter {name}",
+      "move_down": "Descendre {name}",
+      "remove": "Retirer {name}",
+      "moved": "{name} déplacé en position {position} sur {total}",
+      "removed": "{name} retiré",
+      "saved": "Collection enregistrée",
+      "save_error": "Impossible d'enregistrer la collection. Veuillez réessayer.",
+      "conflict": "Cette collection a été modifiée ailleurs depuis son ouverture. Rechargez pour obtenir la dernière version.",
+      "unrecognized": "Non reconnu",
+      "name_required": "Donnez un nom à la collection.",
+      "unrecognized_items": "Retirez les éléments marqués « Non reconnu ». npmx ne peut enregistrer que des paquets et des collections.",
+      "too_many_items": "Retirez {count} élément. Une collection en contient au maximum {max}. | Retirez {count} éléments. Une collection en contient au maximum {max}.",
+      "too_long": "Raccourcissez le texte. Le nom peut compter jusqu'à {name} caractères, la description {description} et chaque note {note}."
+    },
+    "your_data": {
+      "summary": "Ce sont vos données",
+      "body": "Les collections sont stockées dans votre compte Atmosphere, pas chez npmx. Ce sont des données ouvertes et publiques sur l'{atproto} : créez-les, consultez-les et modifiez-les ici, dans n'importe quelle autre application ou avec vos propres scripts, et emportez-les où vous voulez. Amusez-vous bien !",
+      "docs": "Développer avec les collections"
     }
   },
   "package": {
