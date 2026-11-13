@@ -6,9 +6,9 @@ export const NO_DEPENDENCY_ID = '__no_dependency__'
 
 const VERSION_COMPARISON_EXCLUDED_FACETS = [
   'downloads',
-  'githubStars',
-  'githubForks',
-  'githubIssues',
+  'stars',
+  'forks',
+  'issues',
   'totalLikes',
   'createdAt',
 ] as const

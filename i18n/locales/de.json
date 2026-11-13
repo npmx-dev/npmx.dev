@@ -1385,17 +1385,17 @@
           "label": "Sicherheitslücken",
           "description": "Bekannte Sicherheitsrisiken"
         },
-        "githubStars": {
-          "label": "GitHub-Sterne",
-          "description": "Anzahl der Sterne im GitHub-Repository"
-        },
-        "githubIssues": {
-          "label": "GitHub-Issues",
-          "description": "Anzahl der Issues im GitHub-Repository"
-        },
         "createdAt": {
           "label": "Erstellt am",
           "description": "Wann das Paket erstellt wurde"
+        },
+        "stars": {
+          "label": "GitHub-Sterne",
+          "description": "Anzahl der Sterne im GitHub-Repository"
+        },
+        "issues": {
+          "label": "GitHub-Issues",
+          "description": "Anzahl der Issues im GitHub-Repository"
         }
       },
       "values": {

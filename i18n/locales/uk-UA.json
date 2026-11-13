@@ -1584,21 +1584,21 @@
           "label": "Вразливості",
           "description": "Відомі вразливості безпеки"
         },
-        "githubStars": {
-          "label": "Зірки GitHub",
-          "description": "Кількість зірок у репозиторії GitHub"
-        },
-        "githubForks": {
-          "label": "Форки GitHub",
-          "description": "Кількість форків у репозиторії GitHub"
-        },
-        "githubIssues": {
-          "label": "Issues GitHub",
-          "description": "Кількість issues у репозиторії GitHub"
-        },
         "createdAt": {
           "label": "Створено",
           "description": "Коли пакет було створено"
+        },
+        "stars": {
+          "label": "Зірки GitHub",
+          "description": "Кількість зірок у репозиторії GitHub"
+        },
+        "forks": {
+          "label": "Форки GitHub",
+          "description": "Кількість форків у репозиторії GitHub"
+        },
+        "issues": {
+          "label": "Issues GitHub",
+          "description": "Кількість issues у репозиторії GitHub"
         }
       },
       "values": {
