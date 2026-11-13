@@ -49,6 +49,18 @@ export const CollectionUpdateBodySchema = v.object({
   cid: v.pipe(v.string(), v.nonEmpty()),
 })
 
+/** Adds and removes items without sending the whole collection, as the picker does. */
+export const CollectionItemsChangeSchema = v.pipe(
+  v.object({
+    add: v.optional(
+      v.pipe(v.array(CollectionItemSchema.entries.subjectRef), v.maxLength(MAX_COLLECTION_ITEMS)),
+      [],
+    ),
+    remove: v.optional(v.pipe(v.array(v.string()), v.maxLength(MAX_COLLECTION_ITEMS)), []),
+  }),
+  v.check(({ add, remove }) => !add.some(ref => remove.includes(ref)), 'Add and remove overlap'),
+)
+
 // TODO: add 'avatar'
 export const ProfileEditBodySchema = v.object({
   displayName: v.pipe(v.string(), v.maxLength(640)),

@@ -155,7 +155,8 @@
       "diff": "Diff",
       "compare": "Comparer ce paquet",
       "download": "Télécharger le tarball",
-      "changelog": "Changements"
+      "changelog": "Changements",
+      "add_to_collection": "Ajouter à une collection"
     },
     "code": {
       "copy_file": "Copier le contenu du fichier"
@@ -398,6 +399,18 @@
     "load_failed": "Impossible de charger cette collection",
     "load_failed_message": "Le serveur qui la stocke n'a pas répondu. Réessayez dans un instant.",
     "sign_in_to_create": "Connectez votre compte Atmosphere pour créer une collection.",
+    "picker": {
+      "title": "Ajouter à une collection",
+      "packages": "{count} paquet | {count} paquets",
+      "none_yet": "Vous n'avez encore aucune collection. Donnez un nom ci-dessous pour en créer une.",
+      "full": "Pleine",
+      "full_reason": "Une collection peut contenir jusqu'à {max} éléments.",
+      "save_error": "Impossible de mettre à jour cette collection. Veuillez réessayer.",
+      "create_error": "Impossible de créer la collection. Veuillez réessayer.",
+      "name_placeholder": "Nom",
+      "create": "Créer",
+      "created": "{name} créée"
+    },
     "editor": {
       "public_notice": "Les collections sont enregistrées dans votre compte Atmosphere et sont publiques. Tout le monde peut les voir, sur npmx ou dans n'importe quelle autre application.",
       "name": "Nom",

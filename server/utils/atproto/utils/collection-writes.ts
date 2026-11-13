@@ -15,6 +15,7 @@ import {
   COLLECTIONS_SCOPE,
   FOLLOWS_SCOPE,
   LIKES_SCOPE,
+  MAX_COLLECTION_ITEMS,
 } from '#shared/utils/constants'
 import { throwOnMissingOAuthScope } from '#server/utils/atproto/oauth'
 import type { Reaction } from './collections'
@@ -24,7 +25,11 @@ import type { Reaction } from './collections'
 type CollectionBody = InferOutput<typeof CollectionBodySchema>
 type CollectionRef = { identifier: string; rkey: string }
 type RawRecord = { cid: string; value: unknown }
+type Item = { subjectRef: string; note?: string }
 export type CollectionWriteResult = { uri: string; cid: string; did: string; rkey: string }
+
+// Quick toggles in the picker race each other; a lost swap is retried on the fresh record.
+const ITEM_CHANGE_ATTEMPTS = 3
 
 export function requireOAuthSession(oAuthSession: OAuthSession | undefined) {
   const did = oAuthSession?.did.toString()
@@ -89,6 +94,21 @@ export function buildCollectionRecord(body: CollectionBody, existing?: unknown) 
 }
 type CollectionRecordValue = ReturnType<typeof buildCollectionRecord>
 
+/** Drops `remove`, then appends whatever of `add` isn't already there. Existing items are kept as is. */
+export function applyItemChanges<T extends Item>(
+  items: T[],
+  add: string[],
+  remove: string[],
+): (T | Item)[] {
+  const removed = new Set(remove)
+  const kept = items.filter(item => !removed.has(item.subjectRef))
+  const present = new Set(kept.map(item => item.subjectRef))
+  const added = [...new Set(add)]
+    .filter(ref => !present.has(ref))
+    .map(subjectRef => ({ subjectRef }))
+  return [...kept, ...added]
+}
+
 const isInvalidSwapError = (error: unknown) =>
   (error as { error?: unknown } | null)?.error === 'InvalidSwap'
 
@@ -109,25 +129,31 @@ async function afterWrite(
 
 /**
  * Read-modify-write against the PDS, with `swapRecord` so a concurrent edit is never clobbered.
- * `build` may throw to reject the current record.
+ * `build` may throw to reject the current record; a lost swap re-runs it on the fresh one.
  */
 async function editCollection(
   client: Client,
   owner: MiniDoc,
   rkey: string,
   build: (existing: RawRecord) => CollectionRecordValue,
+  maxAttempts = 1,
 ) {
-  const existing = await new CollectionsUtils().fetchRawRecord(owner, rkey)
-  if (!existing) throw createError({ status: 404, message: 'Collection not found' })
-  const value = build(existing)
-  try {
-    const result = await client.put(dev.npmx.collection, value, {
-      rkey,
-      swapRecord: existing.cid,
-    })
-    return await afterWrite(owner.did, rkey, result.cid, value)
-  } catch (error) {
-    throw isInvalidSwapError(error) ? conflict() : error
+  const utils = new CollectionsUtils()
+  for (let attempt = 1; ; attempt++) {
+    const existing = await utils.fetchRawRecord(owner, rkey)
+    if (!existing) throw createError({ status: 404, message: 'Collection not found' })
+    const value = build(existing)
+    try {
+      const result = await client.put(dev.npmx.collection, value, {
+        rkey,
+        swapRecord: existing.cid,
+      })
+      return { ...(await afterWrite(owner.did, rkey, result.cid, value)), value }
+    } catch (error) {
+      if (!isInvalidSwapError(error) || attempt >= maxAttempts) {
+        throw isInvalidSwapError(error) ? conflict() : error
+      }
+    }
   }
 }
 
@@ -146,10 +172,45 @@ export async function updateCollection(
 ) {
   const { client, did } = await getWriter(session, COLLECTIONS_SCOPE)
   const owner = await requireOwnCollection(ref, did)
-  return await editCollection(client, owner, ref.rkey, existing => {
+  const { value: _, ...result } = await editCollection(client, owner, ref.rkey, existing => {
     if (existing.cid !== cid) throw conflict()
     return buildCollectionRecord(body, existing.value)
   })
+  return result
+}
+
+/** Adds and removes items without the caller sending the whole collection. */
+export async function changeCollectionItems(
+  session: OAuthSession | undefined,
+  ref: CollectionRef,
+  { add, remove }: { add: string[]; remove: string[] },
+) {
+  const { client, did } = await getWriter(session, COLLECTIONS_SCOPE)
+  const owner = await requireOwnCollection(ref, did)
+  const { value, ...result } = await editCollection(
+    client,
+    owner,
+    ref.rkey,
+    existing => {
+      const current = dev.npmx.collection.$safeValidate(existing.value)
+      if (!current.success) {
+        throw createError({ status: 422, message: 'Collection record is not valid' })
+      }
+      // The raw items, not the validated copies, so fields other apps put on items survive
+      const rawItems = (existing.value as { items: dev.npmx.collection.Item[] }).items
+      const items = applyItemChanges(rawItems, add, remove)
+      if (items.length > MAX_COLLECTION_ITEMS) {
+        throw createError({ status: 400, message: 'Collection is full' })
+      }
+      const { name, description } = current.value
+      return {
+        ...buildCollectionRecord({ name, description, items: [] }, existing.value),
+        items: items as dev.npmx.collection.Item[],
+      }
+    },
+    ITEM_CHANGE_ATTEMPTS,
+  )
+  return { ...result, subjectRefs: value.items.map(item => item.subjectRef) }
 }
 
 export async function deleteCollection(session: OAuthSession | undefined, ref: CollectionRef) {
