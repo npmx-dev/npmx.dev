@@ -90,6 +90,19 @@ const { data: docsData, status: docsStatus } = useLazyFetch<DocsResponse>(
   },
 )
 
+// fetch the docs as Markdown to copy
+const {
+  data: docsMarkdownData,
+  status: docsMarkdownStatus,
+  execute: fetchDocsMarkdown,
+} = useLazyFetch<DocsMarkdownResponse>(
+  () => `/api/registry/docs-markdown/${packageName.value}/v/${resolvedVersion.value}`,
+  {
+    server: false,
+    immediate: false,
+  },
+)
+
 // The docs HTML is only fetched client-side, so on a direct load the router's scroll behavior runs
 // before the hash target exists. Navigate to the hash again once the content has rendered.
 if (import.meta.client) {
@@ -216,6 +229,14 @@ const stickyStyle = computed(() => {
         </div>
 
         <div v-else class="container mx-auto py-6 sm:py-8 lg:py-12">
+          <div class="flex justify-end mb-6">
+            <ButtonCopyMd
+              :fetchMarkdown="fetchDocsMarkdown"
+              :markdown="docsMarkdownData?.markdown"
+              :status="docsMarkdownStatus"
+              :text="$t('package.docs.copy_as_markdown')"
+            />
+          </div>
           <!-- eslint-disable vue/no-v-html -->
           <div class="docs-content" v-html="docsData?.html" />
         </div>
