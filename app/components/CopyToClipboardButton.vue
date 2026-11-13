@@ -7,6 +7,7 @@ defineOptions({
 
 const props = defineProps<{
   copied: boolean
+  inline?: boolean
   copyText?: string
   copiedText?: string
   ariaLabelCopy?: string
@@ -29,12 +30,12 @@ function handleClick() {
 </script>
 
 <template>
-  <div class="group relative" v-bind="$attrs">
+  <component :is="inline ? 'span' : 'div'" class="group relative" v-bind="$attrs">
     <slot />
     <button
       type="button"
       @click="handleClick"
-      class="absolute z-70 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
+      class="select-none absolute z-70 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
       :class="[
         $style.copyButton,
         copied ? ['text-accent', $style.copiedBg] : 'text-fg-muted bg-bg border-border',
@@ -49,7 +50,7 @@ function handleClick() {
       />
       {{ copied ? buttonCopiedText : buttonCopyText }}
     </button>
-  </div>
+  </component>
 </template>
 
 <style module>
@@ -68,7 +69,8 @@ function handleClick() {
     width 0.01s 0.34s allow-discrete;
 }
 
-:global(.group):hover .copyButton,
+/* Nested copy controls should only reveal the innermost hovered button. */
+:global(.group):hover:not(:has(:global(.group):hover)) > .copyButton,
 .copyButton:focus-visible {
   clip: auto;
   clip-path: none;
