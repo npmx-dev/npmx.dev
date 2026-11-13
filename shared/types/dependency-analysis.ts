@@ -169,6 +169,19 @@ export interface DeprecatedPackageInfo {
 }
 
 /**
+ * A dependency installed from git or a tarball URL instead of the npm registry
+ */
+export interface UrlDependencyInfo {
+  name: string
+  /** Raw spec, e.g. `github:user/repo` */
+  spec: string
+  /** A URL dependency is always declared by another package, so it is never the root */
+  depth: Exclude<DependencyDepth, 'root'>
+  /** Path from the root package to the package that declares it */
+  path: string[]
+}
+
+/**
  * Result of dependency tree analysis
  */
 export interface VulnerabilityTreeResult {
@@ -180,6 +193,8 @@ export interface VulnerabilityTreeResult {
   vulnerablePackages: PackageVulnerabilityInfo[]
   /** All deprecated packages in the tree */
   deprecatedPackages: DeprecatedPackageInfo[]
+  /** All packages using unsafe `git:`, `https:` (etc.) URLs in the tree */
+  packagesWithUrlVersion: UrlDependencyInfo[]
   /** Total packages analyzed */
   totalPackages: number
   /** Number of packages that could not be checked (OSV query failed) */

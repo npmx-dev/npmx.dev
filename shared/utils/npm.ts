@@ -55,10 +55,18 @@ export interface ParsedDependencyVersion {
   range: string | null
 }
 
-/** Git references, e.g. `git://`, `git+ssh://`, `git+https://`, `github:user/repo` */
-const GIT_REFERENCE_RE = /^(?:git(?:\+(?:ssh|https?|file))?:|github:)/
+/** Git references, e.g. `git://`, `git+ssh://`, `git+https://`, `github:user/repo`, `gist:id` */
+const GIT_REFERENCE_RE = /^(?:git(?:\+(?:ssh|https?|file))?:|(?:github|gitlab|bitbucket|gist):)/
 /** Tarball URLs, e.g. `https://example.com/pkg.tgz` */
 const HTTP_REFERENCE_RE = /^https?:\/\//
+/** Local references, e.g. `file:../foo`, `link:../foo`, `workspace:*` */
+const LOCAL_REFERENCE_RE = /^(?:file|link|workspace):/
+
+/** Whether a dependency installs from git or a tarball URL instead of the npm registry */
+export function isUrlDependency(spec: string): boolean {
+  if (spec.startsWith('npm:') || LOCAL_REFERENCE_RE.test(spec)) return false
+  return GIT_REFERENCE_RE.test(spec) || HTTP_REFERENCE_RE.test(spec) || spec.includes('/')
+}
 
 /**
  * Check if a constraint is a non-semver value (git URL, file path, etc.)
@@ -67,14 +75,7 @@ const HTTP_REFERENCE_RE = /^https?:\/\//
  * start with them (`git`, `github`, `http`) are still treated as resolvable.
  */
 function isNonSemverConstraint(constraint: string): boolean {
-  return (
-    GIT_REFERENCE_RE.test(constraint) ||
-    HTTP_REFERENCE_RE.test(constraint) ||
-    constraint.startsWith('file:') ||
-    constraint.startsWith('link:') ||
-    constraint.startsWith('workspace:') ||
-    constraint.includes('/')
-  )
+  return isUrlDependency(constraint) || LOCAL_REFERENCE_RE.test(constraint)
 }
 
 /**

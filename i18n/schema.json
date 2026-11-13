@@ -2776,6 +2776,21 @@
           },
           "additionalProperties": false
         },
+        "url_dependency": {
+          "type": "object",
+          "properties": {
+            "tooltip": {
+              "type": "string"
+            },
+            "tree_found": {
+              "type": "string"
+            },
+            "show_all": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "access": {
           "type": "object",
           "properties": {

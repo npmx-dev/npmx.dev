@@ -126,6 +126,11 @@ function formatFacetValue(value: FacetValue): string {
           :package-name="packageName"
           :version="resolvedVersion"
         />
+        <PackageUrlDependencyTree
+          v-if="resolvedVersion"
+          :package-name="packageName"
+          :version="resolvedVersion"
+        />
       </ClientOnly>
     </div>
 

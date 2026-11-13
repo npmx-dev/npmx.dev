@@ -1,5 +1,5 @@
 import { mapWithConcurrency } from '#shared/utils/async'
-import { parseDependencyVersion } from '#shared/utils/npm'
+import { isUrlDependency, parseDependencyVersion } from '#shared/utils/npm'
 import { findMaxSatisfying, findMinSatisfying, isGreater, isStable } from 'verkit'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
@@ -245,6 +245,8 @@ export interface ResolvedPackage {
   path?: string[]
   /** Deprecation message if the version is deprecated */
   deprecated?: string
+  /** Dependencies installed from git or a tarball URL instead of the registry, by name */
+  urlDependencies?: Record<string, string>
 }
 
 type DependencyRequest = {
@@ -368,10 +370,16 @@ export async function resolveDependencyTree(
           resolved.set(key, pkg)
         }
 
+        const entry = resolved.get(key)!
+
         // Collect dependencies for next level.
         // An npm alias ("npm:pkg@range") is resolved against the aliased package, not the dependency key.
         if (versionData.dependencies) {
           for (const [depKey, depRange] of Object.entries(versionData.dependencies)) {
+            if (isUrlDependency(depRange)) {
+              entry.urlDependencies = { ...entry.urlDependencies, [depKey]: depRange }
+              continue
+            }
             const depName = parseDependencyVersion(depRange).name ?? depKey
             const reqKey = requestKey(depName, depRange)
             const queued = nextLevel.get(reqKey)
@@ -393,6 +401,10 @@ export async function resolveDependencyTree(
         // Collect optional dependencies
         if (versionData.optionalDependencies) {
           for (const [depKey, depRange] of Object.entries(versionData.optionalDependencies)) {
+            if (isUrlDependency(depRange)) {
+              entry.urlDependencies = { ...entry.urlDependencies, [depKey]: depRange }
+              continue
+            }
             const depName = parseDependencyVersion(depRange).name ?? depKey
             const reqKey = requestKey(depName, depRange)
 

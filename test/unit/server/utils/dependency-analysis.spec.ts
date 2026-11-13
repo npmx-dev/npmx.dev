@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vite-plus/test'
+import type { ResolvedPackage } from '#server/utils/dependency-resolver'
 
 // Mock Nitro globals before importing the module
 vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
@@ -635,6 +636,56 @@ describe('dependency-analysis', () => {
       expect(result.deprecatedPackages[1]?.depth).toBe('direct')
       expect(result.deprecatedPackages[2]?.name).toBe('transitive-dep')
       expect(result.deprecatedPackages[2]?.depth).toBe('transitive')
+    })
+
+    it('lists URL dependencies with the depth and path of the package that declares them', async () => {
+      const mockResolved = new Map<string, ResolvedPackage>([
+        [
+          'root@1.0.0',
+          {
+            name: 'root',
+            version: '1.0.0',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['root@1.0.0'],
+            tarballUrl: 'https://example.com/root-1.0.0.tgz',
+            urlDependencies: { 'direct-git': 'github:user/direct-git' },
+          },
+        ],
+        [
+          'a@1.0.0',
+          {
+            name: 'a',
+            version: '1.0.0',
+            size: 500,
+            optional: false,
+            depth: 'direct' as const,
+            path: ['root@1.0.0', 'a@1.0.0'],
+            tarballUrl: 'https://example.com/a-1.0.0.tgz',
+            urlDependencies: { 'deep-tarball': 'https://example.com/deep.tgz' },
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+      mockOsvApi([{ vulns: [] }, { vulns: [] }])
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(result.packagesWithUrlVersion).toEqual([
+        {
+          name: 'direct-git',
+          spec: 'github:user/direct-git',
+          depth: 'direct',
+          path: ['root@1.0.0'],
+        },
+        {
+          name: 'deep-tarball',
+          spec: 'https://example.com/deep.tgz',
+          depth: 'transitive',
+          path: ['root@1.0.0', 'a@1.0.0'],
+        },
+      ])
     })
 
     it('extracts correct fixedIn version for the current version range', async () => {

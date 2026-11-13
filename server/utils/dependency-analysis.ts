@@ -8,6 +8,7 @@ import type {
   PackageVulnerabilityInfo,
   VulnerabilityTreeResult,
   DeprecatedPackageInfo,
+  UrlDependencyInfo,
   DirectDependencyHealthResult,
   OsvAffected,
 } from '#shared/types/dependency-analysis'
@@ -260,6 +261,18 @@ export const analyzeDependencyTree = defineCachedFunction(
         return depthOrder[a.depth] - depthOrder[b.depth]
       })
 
+    // Collect URL dependencies (no API call needed, recorded while resolving the tree)
+    const packagesWithUrlVersion: UrlDependencyInfo[] = [...resolved.values()]
+      .flatMap(parent =>
+        Object.entries(parent.urlDependencies ?? {}).map(([depName, spec]): UrlDependencyInfo => ({
+          name: depName,
+          spec,
+          depth: parent.depth === 'root' ? 'direct' : 'transitive',
+          path: parent.path || [],
+        })),
+      )
+      .sort((a, b) => (a.depth === b.depth ? 0 : a.depth === 'direct' ? -1 : 1))
+
     // Step 1: Use batch API to find which packages have vulnerabilities
     // This is much faster than individual queries - one request for all packages
     const { vulnerableIndices, failed: batchFailed } = await queryOsvBatch(packages)
@@ -318,6 +331,7 @@ export const analyzeDependencyTree = defineCachedFunction(
       version,
       vulnerablePackages,
       deprecatedPackages,
+      packagesWithUrlVersion,
       totalPackages: packages.length,
       failedQueries,
       totalCounts,
@@ -327,7 +341,7 @@ export const analyzeDependencyTree = defineCachedFunction(
     maxAge: 60 * 60,
     swr: true,
     name: 'dependency-analysis',
-    getKey: (name: string, version: string) => `v2:${name}@${version}`,
+    getKey: (name: string, version: string) => `v3:${name}@${version}`,
   },
 )
 

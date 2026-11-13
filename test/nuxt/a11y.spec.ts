@@ -297,6 +297,7 @@ import {
   PackageTimelineChartDepSizeSvgSlot,
   PackageTimelineChartXyTooltip,
   PackageTimelineChartXySvgSlot,
+  PackageUrlDependencyTree,
   PackageVersions,
   PackageVulnerabilityTree,
   PaginationControls,
@@ -2976,6 +2977,19 @@ describe('component accessibility audits', () => {
   describe('PackageDeprecatedTree', () => {
     it('should have no accessibility violations in idle state', async () => {
       const component = await mountSuspended(PackageDeprecatedTree, {
+        props: {
+          packageName: 'vue',
+          version: '3.5.0',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageUrlDependencyTree', () => {
+    it('should have no accessibility violations in idle state', async () => {
+      const component = await mountSuspended(PackageUrlDependencyTree, {
         props: {
           packageName: 'vue',
           version: '3.5.0',

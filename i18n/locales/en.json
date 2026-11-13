@@ -924,6 +924,11 @@
       "tree_found": "{count} deprecated dependency | {count} deprecated dependencies",
       "show_all": "show {count} deprecated package | show all {count} deprecated packages"
     },
+    "url_dependency": {
+      "tooltip": "Installed from {spec} instead of the npm registry",
+      "tree_found": "{count} dependency installed from a URL | {count} dependencies installed from URLs",
+      "show_all": "show {count} dependency | show all {count} dependencies"
+    },
     "access": {
       "title": "Team Access",
       "refresh": "Refresh team access",
