@@ -1,7 +1,7 @@
 {
   "defs": {
     "main": {
-      "description": "A like of a package on npmx",
+      "description": "A like of a package or collection on npmx",
       "key": "tid",
       "record": {
         "properties": {
@@ -15,7 +15,7 @@
             "ref": "com.atproto.repo.strongRef"
           },
           "subjectRef": {
-            "description": "The npmx URL to the package to allow for counting of packages that do not have a record in an atproto repo.",
+            "description": "What is liked: the npmx URL of a package (https://npmx.dev/package/<name>), or the AT-URI of a dev.npmx.collection record. Collections are mutable, so like them via this field and never via the CID-pinned subject.",
             "type": "string",
             "format": "uri"
           }
