@@ -231,7 +231,8 @@ const numberFormatter = useNumberFormatter()
               classicon="i-lucide:octagon-alert"
             />
             <LinkBase
-              :to="packageRoute(resolveDepName(dep, version), depRange(version))"
+              :to="dependencyVersionRoute(resolveDepName(dep, version), version)"
+              :disabled="!dependencyVersionRoute(resolveDepName(dep, version), version)"
               class="block truncate"
               :class="getDepVersionClass(dep, resolveDepName(dep, version))"
               :title="getDepVersionTooltip(dep, resolveDepName(dep, version), depRange(version))"
@@ -305,7 +306,10 @@ const numberFormatter = useNumberFormatter()
             </TagStatic>
           </div>
           <LinkBase
-            :to="packageRoute(resolveDepName(peer.name, peer.version), depRange(peer.version))"
+            :to="dependencyVersionRoute(resolveDepName(peer.name, peer.version), peer.version)"
+            :disabled="
+              !dependencyVersionRoute(resolveDepName(peer.name, peer.version), peer.version)
+            "
             class="block truncate shrink-0 max-w-20"
             :title="depRange(peer.version)"
             dir="ltr"
@@ -379,7 +383,8 @@ const numberFormatter = useNumberFormatter()
               </button>
             </TooltipApp>
             <LinkBase
-              :to="packageRoute(resolveDepName(dep, version), depRange(version))"
+              :to="dependencyVersionRoute(resolveDepName(dep, version), version)"
+              :disabled="!dependencyVersionRoute(resolveDepName(dep, version), version)"
               class="block truncate"
               :title="depRange(version)"
               dir="ltr"
