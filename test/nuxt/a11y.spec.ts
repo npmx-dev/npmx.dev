@@ -256,6 +256,7 @@ import {
   FilterChips,
   FilterPanel,
   HeaderAccountMenu,
+  HeaderAuthHandleCombobox,
   HeaderConnectorModal,
   HeaderSearchBox,
   InstantSearch,
@@ -2292,6 +2293,16 @@ describe('component accessibility audits', () => {
             params: { packageName: 'vue', version: '3.0.0', filePath: '' },
           },
         },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('HeaderAuthHandleCombobox', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(HeaderAuthHandleCombobox, {
+        props: { modelValue: '', label: 'Handle' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
