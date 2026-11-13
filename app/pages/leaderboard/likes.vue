@@ -146,6 +146,7 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
 
               <NuxtLink
                 :to="packageRoute(entry.packageName)"
+                prefetch-on="interaction"
                 class="leaderboard-package-link block w-full rounded-lg no-underline text-inherit hover:no-underline focus-visible:outline-none"
               >
                 <BaseCard
@@ -247,6 +248,7 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
 
               <NuxtLink
                 :to="packageRoute(entry.packageName)"
+                prefetch-on="interaction"
                 class="leaderboard-package-link block h-full w-full rounded-lg no-underline text-inherit hover:no-underline focus-visible:outline-none"
               >
                 <BaseCard
@@ -334,6 +336,7 @@ function getEntryAnimationStyle(index: number): Record<string, string> {
           >
             <NuxtLink
               :to="packageRoute(entry.packageName)"
+              prefetch-on="interaction"
               class="leaderboard-package-link block w-full rounded-lg no-underline hover:no-underline focus-visible:outline-none"
             >
               <BaseCard
