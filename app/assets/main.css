@@ -401,3 +401,55 @@ html:has(dialog:modal) {
 .vue-ui-pen-and-paper-group-actions {
   background-color: transparent !important;
 }
+
+/* Like button heart, shared by package and collection likes */
+@keyframes heart-spring {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(0.78);
+  }
+  45% {
+    transform: scale(1.55);
+  }
+  65% {
+    transform: scale(0.93);
+  }
+  80% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes heart-unlike {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(0.85);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes heart-spring {
+    from,
+    to {
+      transform: scale(1);
+    }
+  }
+  @keyframes heart-unlike {
+    from,
+    to {
+      transform: scale(1);
+    }
+  }
+}

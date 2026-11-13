@@ -40,6 +40,20 @@ export function aggregateBacklinksByDay(
     .map(([day, likes]) => ({ day, likes }))
 }
 
+/** For callers that cache Constellation results themselves. */
+export function createUncachedConstellation() {
+  return new Constellation(
+    async <T = unknown>(
+      url: string,
+      options: Parameters<typeof $fetch>[1] = {},
+      _ttl?: number,
+    ): Promise<CachedFetchResult<T>> => {
+      const data = (await $fetch<T>(url, options)) as T
+      return { data, isStale: false, cachedAt: null }
+    },
+  )
+}
+
 /** The subset of Constellation that PackageLikesUtils actually needs. */
 export type ConstellationLike = Pick<Constellation, 'getBackLinks' | 'getLinksDistinctDids'>
 
@@ -51,19 +65,8 @@ export class PackageLikesUtils {
   private readonly cache: CacheAdapter
 
   constructor(deps?: { constellation?: ConstellationLike; cache?: CacheAdapter }) {
-    this.constellation =
-      deps?.constellation ??
-      new Constellation(
-        // Passes in a fetch wrapped as CachedFetch because we're already doing some heavy caching here
-        async <T = unknown>(
-          url: string,
-          options: Parameters<typeof $fetch>[1] = {},
-          _ttl?: number,
-        ): Promise<CachedFetchResult<T>> => {
-          const data = (await $fetch<T>(url, options)) as T
-          return { data, isStale: false, cachedAt: null }
-        },
-      )
+    // Uncached because we're already doing some heavy caching here
+    this.constellation = deps?.constellation ?? createUncachedConstellation()
     this.cache = deps?.cache ?? getCacheAdapter('generic')
   }
 

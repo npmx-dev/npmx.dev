@@ -2,7 +2,7 @@
 import { useInfiniteScroll } from '@vueuse/core'
 import { updateProfile as updateProfileUtil } from '~/utils/atproto/profile'
 import { fetchProfileLikes } from '~/utils/atproto/likes'
-import { fetchUserCollections } from '~/utils/atproto/collections'
+import { fetchFollowedCollections, fetchUserCollections } from '~/utils/atproto/collections'
 import type { CommandPaletteContextCommandInput } from '~/types/command-palette'
 import { getSafeHttpUrl } from '#shared/utils/url'
 
@@ -87,7 +87,13 @@ const isOwnProfile = computed(
 )
 
 const collections = usePagedCollections(cursor => fetchUserCollections(identity.value, cursor, 12))
-onMounted(() => collections.load())
+const following = usePagedCollections(cursor =>
+  fetchFollowedCollections(identity.value, cursor, 12),
+)
+onMounted(() => {
+  collections.load()
+  following.load()
+})
 
 const allLikesRecords = ref<string[]>([])
 // undefined = not yet fetched, string = next page cursor, null = no more pages
@@ -297,6 +303,34 @@ defineOgImage(
         :empty-text="$t('collections.empty')"
         :skeletons="3"
         @load-more="collections.load"
+      />
+    </section>
+
+    <section
+      v-if="
+        following.items.value.length > 0 ||
+        isOwnProfile ||
+        following.isLoading.value ||
+        following.error.value
+      "
+      class="flex flex-col gap-8 mb-12"
+      aria-labelledby="profile-following-heading"
+    >
+      <h2
+        id="profile-following-heading"
+        class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
+      >
+        {{ $t('profile.following_collections') }}
+      </h2>
+      <CollectionGrid
+        :items="following.items.value"
+        :pending="following.isLoading.value"
+        :loading-more="following.isLoading.value"
+        :error="following.error.value"
+        :has-more="following.hasMore.value"
+        :empty-text="$t('profile.no_following_collections')"
+        :skeletons="3"
+        @load-more="following.load"
       />
     </section>
 

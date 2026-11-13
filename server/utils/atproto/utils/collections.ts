@@ -8,16 +8,29 @@ import type {
   CollectionView,
   MiniDoc,
   OwnCollection,
+  ReactionState,
 } from '#shared/types/social'
 import { parseSubjectRef } from '#shared/utils/collections'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { CACHE_MAX_AGE_ONE_MINUTE, COLLECTION_SUBJECT_REF } from '#shared/utils/constants'
+import type { Backlink, Constellation } from '#shared/utils/constellation'
 
 const HEADERS = { 'User-Agent': 'npmx' }
 const COLLECTION_NSID = dev.npmx.collection.$nsid
 
+// Records that point at a collection and are counted once per account.
+const REACTIONS = {
+  like: { nsid: dev.npmx.feed.like.$nsid, path: 'subjectRef' },
+  follow: { nsid: dev.npmx.graph.follow.$nsid, path: 'subject' },
+} as const
+export type Reaction = keyof typeof REACTIONS
+
 const CACHE_PREFIX = 'atproto-collections:'
 const CACHE_RECORD_KEY = (did: string, rkey: string) => `${CACHE_PREFIX}${did}:${rkey}:record`
+const CACHE_REACTION_TOTAL_KEY = (reaction: Reaction, uri: string) =>
+  `${CACHE_PREFIX}${uri}:${reaction}:total`
+const CACHE_VIEWER_REACTION_KEY = (reaction: Reaction, uri: string, did: string) =>
+  `${CACHE_PREFIX}${uri}:${reaction}:${did}`
 const CACHE_MAX_AGE = CACHE_MAX_AGE_ONE_MINUTE * 5
 
 // The owner's PDS is whatever their DID doc says, so it may be slow or hostile.
@@ -27,6 +40,7 @@ const RESOLVE_CONCURRENCY = 16
 export type StoredRecord = { uri: string; cid: string; value: dev.npmx.collection.Main }
 
 export type CollectionsDeps = {
+  constellation: Pick<Constellation, 'getBackLinks' | 'getLinksDistinctDids'>
   cache: CacheAdapter
   resolveIdentity: (identifier: string) => Promise<MiniDoc>
   /** Raw record from the owner's PDS, or null when it doesn't exist. Not yet validated. */
@@ -39,6 +53,12 @@ export type CollectionsDeps = {
     limit: number,
     cursor?: string,
   ) => Promise<{ cursor?: string; records: StoredRecord[] }>
+  /** The account's follow records, with subjects not yet validated. */
+  listFollows: (
+    miniDoc: MiniDoc,
+    limit: number,
+    cursor?: string,
+  ) => Promise<{ cursor?: string; records: { rkey: string; subject: string }[] }>
   packageExists: (packageName: string) => Promise<boolean>
 }
 
@@ -75,6 +95,8 @@ function toSummary(miniDoc: MiniDoc, rkey: string, stored: StoredRecord): Collec
 function defaultDeps(): CollectionsDeps {
   const identity = new IdentityUtils()
   return {
+    // CollectionsUtils caches what it needs
+    constellation: createUncachedConstellation(),
     cache: getCacheAdapter('generic'),
     resolveIdentity: identifier => identity.getMiniDoc(identifier) as Promise<MiniDoc>,
     fetchRecord: async (miniDoc, rkey) => {
@@ -110,6 +132,22 @@ function defaultDeps(): CollectionsDeps {
           if (!record.valid || !rkey) return []
           const uri = COLLECTION_SUBJECT_REF(miniDoc.did, rkey)
           return [{ uri, cid: record.cid, value: record.value }]
+        }),
+      }
+    },
+    listFollows: async (miniDoc, limit, cursor) => {
+      const client = new Client(miniDoc.pds, { headers: HEADERS })
+      const result = await client.list(dev.npmx.graph.follow, {
+        repo: miniDoc.did as `did:${string}:${string}`,
+        limit,
+        cursor,
+        signal: AbortSignal.timeout(PDS_TIMEOUT_MS),
+      })
+      return {
+        cursor: result.cursor,
+        records: result.records.flatMap(record => {
+          const rkey = record.uri.split('/').pop()
+          return record.valid && rkey ? [{ rkey, subject: record.value.subject }] : []
         }),
       }
     },
@@ -164,17 +202,99 @@ export class CollectionsUtils {
     await this.setCached(CACHE_RECORD_KEY(did, rkey), record)
   }
 
-  async getCollection(identifier: string, rkey: string): Promise<CollectionView | null> {
+  async getCollection(
+    identifier: string,
+    rkey: string,
+    viewerDid?: string,
+  ): Promise<CollectionView | null> {
     const miniDoc = await this.deps.resolveIdentity(identifier)
     const stored = await this.getStoredRecord(miniDoc, rkey)
     if (!stored) return null
 
-    const items = await mapWithConcurrency(
-      stored.value.items,
-      item => this.resolveItem(item.subjectRef, item.note),
-      RESOLVE_CONCURRENCY,
-    )
-    return { ...toSummary(miniDoc, rkey, stored), items }
+    const [items, likes, follows] = await Promise.all([
+      mapWithConcurrency(
+        stored.value.items,
+        item => this.resolveItem(item.subjectRef, item.note),
+        RESOLVE_CONCURRENCY,
+      ),
+      this.getReaction('like', stored.uri, viewerDid),
+      this.getReaction('follow', stored.uri, viewerDid),
+    ])
+    return { ...toSummary(miniDoc, rkey, stored), items, likes, follows }
+  }
+
+  async getReaction(reaction: Reaction, uri: string, viewerDid?: string): Promise<ReactionState> {
+    const [total, viewerRecord] = await Promise.all([
+      this.getReactionTotal(reaction, uri),
+      viewerDid ? this.getViewerReaction(reaction, uri, viewerDid) : null,
+    ])
+    return { total, viewerHas: viewerRecord !== null }
+  }
+
+  getReactionTotal(reaction: Reaction, uri: string): Promise<number> {
+    const { nsid, path } = REACTIONS[reaction]
+    return this.cached(CACHE_REACTION_TOTAL_KEY(reaction, uri), async () => {
+      const { data } = await this.deps.constellation.getLinksDistinctDids(
+        uri,
+        nsid,
+        `.${path}`,
+        1,
+        undefined,
+        0,
+      )
+      return data.total
+    })
+  }
+
+  /** The viewer's like or follow record for a collection, or null. */
+  getViewerReaction(reaction: Reaction, uri: string, viewerDid: string): Promise<Backlink | null> {
+    const { nsid, path } = REACTIONS[reaction]
+    return this.cached(CACHE_VIEWER_REACTION_KEY(reaction, uri, viewerDid), async () => {
+      const { data } = await this.deps.constellation.getBackLinks(
+        uri,
+        nsid,
+        path,
+        1,
+        undefined,
+        false,
+        [[viewerDid]],
+        0,
+      )
+      return data.records[0] ?? null
+    })
+  }
+
+  // Constellation takes a few seconds to see a new record, so writes update the cache directly,
+  // as PackageLikesUtils does for packages. `totalBefore` must be read before the PDS write, or a
+  // refresh that already saw it would be counted twice.
+  async recordReaction(
+    reaction: Reaction,
+    uri: string,
+    viewerDid: string,
+    rkey: string,
+    totalBefore: number,
+  ): Promise<ReactionState> {
+    const backlink: Backlink = { did: viewerDid, collection: REACTIONS[reaction].nsid, rkey }
+    const total = totalBefore + 1
+    await Promise.all([
+      this.setCached(CACHE_VIEWER_REACTION_KEY(reaction, uri, viewerDid), backlink),
+      this.setCached(CACHE_REACTION_TOTAL_KEY(reaction, uri), total),
+    ])
+    return { total, viewerHas: true }
+  }
+
+  async recordUnreaction(
+    reaction: Reaction,
+    uri: string,
+    viewerDid: string,
+    totalBefore: number,
+  ): Promise<ReactionState> {
+    const total = Math.max(totalBefore - 1, 0)
+    await Promise.all([
+      this.setCached(CACHE_VIEWER_REACTION_KEY(reaction, uri, viewerDid), null),
+      this.setCached(CACHE_REACTION_TOTAL_KEY(reaction, uri), total),
+    ])
+    return { total, viewerHas: false }
   }
 
   // Included collections resolve to a summary, not their items, so a view's work is bounded by
@@ -231,5 +351,47 @@ export class CollectionsUtils {
         subjectRefs: record.value.items.map(item => item.subjectRef),
       }),
     )
+  }
+
+  /** Collections the account follows, newest follow first. Unresolvable subjects are dropped. */
+  async listFollowedCollections(
+    identifier: string,
+    limit: number,
+    cursor?: string,
+  ): Promise<Paginated<CollectionSummary>> {
+    const miniDoc = await this.deps.resolveIdentity(identifier)
+    const { cursor: nextCursor, records } = await this.deps.listFollows(miniDoc, limit, cursor)
+    const subjects = new Map<string, { did: string; rkey: string }>()
+    for (const record of records) {
+      const subject = parseSubjectRef(record.subject)
+      if (subject?.kind === 'collection') subjects.set(subject.uri, subject)
+    }
+    return {
+      cursor: nextCursor,
+      items: await this.hydrate([...subjects.values()], async (owner, subject) => {
+        const stored = await this.getStoredRecord(owner, subject.rkey)
+        return stored && toSummary(owner, subject.rkey, stored)
+      }),
+    }
+  }
+
+  /**
+   * Turns entries into summaries via `build`, dropping any entry whose author no longer resolves
+   * (deleted, deactivated) or that `build` rejects.
+   */
+  async hydrate<T extends { did: string }>(
+    entries: T[],
+    build: (miniDoc: MiniDoc, entry: T) => Promise<CollectionSummary | null> | CollectionSummary,
+  ): Promise<CollectionSummary[]> {
+    const summaries = await Promise.all(
+      entries.map(async entry => {
+        try {
+          return await build(await this.deps.resolveIdentity(entry.did), entry)
+        } catch {
+          return null
+        }
+      }),
+    )
+    return summaries.filter(summary => summary !== null)
   }
 }

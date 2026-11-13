@@ -460,7 +460,9 @@
       "share_button": "Share on Bluesky",
       "compose_text": "Hey {'@'}{handle}! Have you checked out npmx.dev yet? It's a browser for the npm registry that's fast, modern, and open-source.\nhttps://npmx.dev"
     },
-    "collections": "Collections"
+    "collections": "Collections",
+    "following_collections": "Followed collections",
+    "no_following_collections": "You're not following any collections yet."
   },
   "collections": {
     "title": "Collections",
@@ -473,6 +475,8 @@
     "empty_collection": "This collection is empty.",
     "by": "by {'@'}{handle}",
     "item_count": "{count} item | {count} items",
+    "like": "Like this collection",
+    "unlike": "Unlike this collection",
     "duplicate": "Duplicate",
     "delete_title": "Delete this collection?",
     "delete_body": "This can't be undone.",
@@ -513,6 +517,18 @@
       "unrecognized_items": "Remove the items marked “Not recognized”. npmx can only save packages and collections.",
       "too_many_items": "Remove {count} item. A collection holds up to {max}. | Remove {count} items. A collection holds up to {max}.",
       "too_long": "Shorten the text. The name can be up to {name} characters, the description {description} and each note {note}."
+    },
+    "follow": "Follow",
+    "following": "Following",
+    "follow_label": "Follow this collection",
+    "unfollow_label": "Unfollow this collection",
+    "followers": "{count} follower | {count} followers",
+    "like_count": "{count} like | {count} likes",
+    "reaction_announcements": {
+      "liked": "You like this collection.",
+      "unliked": "You no longer like this collection.",
+      "followed": "You follow this collection.",
+      "unfollowed": "You no longer follow this collection."
     },
     "your_data": {
       "summary": "It's your data",
