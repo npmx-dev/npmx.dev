@@ -7,4 +7,4 @@ export const FOOTER_SPONSOR_NAMES = [
   'Bluesky',
   'Chromatic',
   'Badrap',
-]
+] as const

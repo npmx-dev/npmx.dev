@@ -1,3 +1,4 @@
+import type { FOOTER_SPONSOR_NAMES } from './names'
 import LogoVercel from './vercel.svg'
 import LogoVercelLight from './vercel-light.svg'
 import LogoVoidZero from './void-zero.svg'
@@ -99,4 +100,14 @@ export const SPONSORS = {
       url: 'https://badrap.io/',
     },
   ],
-}
+} as const
+
+type Names<T extends readonly { name: string }[]> = { [K in keyof T]: T[K]['name'] }
+type IsEqual<A, B> =
+  (<T>() => T extends A ? 1 : 2) extends <T>() => T extends B ? 1 : 2 ? true : false
+
+// Update FOOTER_SPONSOR_NAMES in ./names.ts when changing the sponsors above.
+true satisfies IsEqual<
+  readonly [...Names<typeof SPONSORS.gold>, ...Names<typeof SPONSORS.silver>],
+  typeof FOOTER_SPONSOR_NAMES
+>
