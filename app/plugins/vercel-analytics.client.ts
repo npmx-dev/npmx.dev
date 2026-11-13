@@ -1,3 +1,5 @@
+import { vercelAnalytics } from '#vercel-analytics'
+
 export default defineNuxtPlugin({
   enforce: 'pre',
   env: { islands: false },
@@ -11,8 +13,10 @@ export default defineNuxtPlugin({
     }
 
     useScript({
-      'src': '/_v/script.js',
-      'data-endpoint': '/_v',
+      'src': vercelAnalytics.scriptSrc ?? '/_vercel/insights/script.js',
+      'data-view-endpoint': vercelAnalytics.viewEndpoint,
+      'data-event-endpoint': vercelAnalytics.eventEndpoint,
+      'data-session-endpoint': vercelAnalytics.sessionEndpoint,
     })
   },
 })
