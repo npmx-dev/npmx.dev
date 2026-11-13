@@ -6,140 +6,268 @@
  * @module server/utils/docs/format
  */
 
-import type { DenoDocNode, FunctionParam, TsType } from '#shared/types/deno-doc'
+import type { LiteralDef, ParamDef, TruePlusMinus, TsTypeDef, TsTypeParamDef } from '@deno/doc'
+import type { DocNode } from './types'
 import { cleanSymbolName, stripAnsi } from './text'
 
 /**
  * Generate a TypeScript signature string for a node.
  */
-export function getNodeSignature(node: DenoDocNode): string | null {
+export function getNodeSignature(node: DocNode): string | null {
   const name = cleanSymbolName(node.name)
 
   switch (node.kind) {
     case 'function': {
-      const typeParams = node.functionDef?.typeParams?.map(t => t.name).join(', ')
-      const typeParamsStr = typeParams ? `<${typeParams}>` : ''
-      const params = formatParams(node.functionDef?.params)
-      const ret = formatType(node.functionDef?.returnType) || 'void'
-      const asyncStr = node.functionDef?.isAsync ? 'async ' : ''
-      return `${asyncStr}function ${name}${typeParamsStr}(${params}): ${ret}`
+      const { typeParams, params, returnType, isAsync } = node.def
+      const asyncStr = isAsync ? 'async ' : ''
+      return `${asyncStr}function ${name}${formatTypeParams(typeParams)}(${formatParams(params)}): ${formatType(returnType) || 'void'}`
     }
     case 'class': {
-      const ext = node.classDef?.extends ? ` extends ${node.classDef.extends}` : ''
-      const impl = node.classDef?.implements?.map(t => formatType(t)).join(', ')
+      const { extends: superClass, superTypeParams, typeParams, implements: interfaces } = node.def
+      const superArgs = superTypeParams?.map(t => formatType(t)).join(', ')
+      const ext = superClass ? ` extends ${superClass}${superArgs ? `<${superArgs}>` : ''}` : ''
+      const impl = interfaces?.map(t => formatType(t)).join(', ')
       const implStr = impl ? ` implements ${impl}` : ''
-      const abstractStr = node.classDef?.isAbstract ? 'abstract ' : ''
-      return `${abstractStr}class ${name}${ext}${implStr}`
+      const abstractStr = node.def.isAbstract ? 'abstract ' : ''
+      return `${abstractStr}class ${name}${formatTypeParams(typeParams)}${ext}${implStr}`
     }
     case 'interface': {
-      const typeParams = node.interfaceDef?.typeParams?.map(t => t.name).join(', ')
-      const typeParamsStr = typeParams ? `<${typeParams}>` : ''
-      const ext = node.interfaceDef?.extends?.map(t => formatType(t)).join(', ')
+      const ext = node.def.extends?.map(t => formatType(t)).join(', ')
       const extStr = ext ? ` extends ${ext}` : ''
-      return `interface ${name}${typeParamsStr}${extStr}`
+      return `interface ${name}${formatTypeParams(node.def.typeParams)}${extStr}`
     }
     case 'typeAlias': {
-      const typeParams = node.typeAliasDef?.typeParams?.map(t => t.name).join(', ')
-      const typeParamsStr = typeParams ? `<${typeParams}>` : ''
-      const type = formatType(node.typeAliasDef?.tsType) || 'unknown'
-      return `type ${name}${typeParamsStr} = ${type}`
+      const type = formatType(node.def.tsType) || 'unknown'
+      return `type ${name}${formatTypeParams(node.def.typeParams)} = ${type}`
     }
     case 'variable': {
-      const keyword = node.variableDef?.kind === 'const' ? 'const' : 'let'
-      const type = formatType(node.variableDef?.tsType) || 'unknown'
-      return `${keyword} ${name}: ${type}`
+      const keyword = node.def.kind === 'const' ? 'const' : 'let'
+      return `${keyword} ${name}: ${formatType(node.def.tsType) || 'unknown'}`
     }
-    case 'enum': {
+    case 'enum':
       return `enum ${name}`
-    }
     default:
       return null
   }
 }
 
+function formatTypeParam(param: TsTypeParamDef): string {
+  const constraint = param.constraint ? ` extends ${formatType(param.constraint)}` : ''
+  const fallback = param.default ? ` = ${formatType(param.default)}` : ''
+  return `${param.name}${constraint}${fallback}`
+}
+
+function formatTypeParams(typeParams?: TsTypeParamDef[]): string {
+  return typeParams?.length ? `<${typeParams.map(formatTypeParam).join(', ')}>` : ''
+}
+
+function getParamName(param: ParamDef): string | undefined {
+  switch (param.kind) {
+    case 'identifier':
+      return param.name
+    case 'assign':
+      return getParamName(param.left)
+    case 'rest':
+      return getParamName(param.arg)
+    case 'array':
+    case 'object':
+      return undefined
+  }
+}
+
+function isOptionalParam(param: ParamDef): boolean {
+  switch (param.kind) {
+    case 'assign':
+      return true
+    case 'identifier':
+    case 'array':
+    case 'object':
+      return param.optional
+    case 'rest':
+      return false
+  }
+}
+
+function getParamType(param: ParamDef): TsTypeDef | undefined {
+  // A parameter with a default value keeps its type on the wrapped parameter
+  return param.kind === 'assign' ? getParamType(param.left) : param.tsType
+}
+
 /**
  * Format a function parameter.
  */
-function formatParam(param: FunctionParam, index = 0): string {
-  const name = param.name || `arg_${index}`
-  const optional = param.optional ? '?' : ''
-  const type = formatType(param.tsType)
+function formatParam(param: ParamDef, index = 0): string {
+  const name = `${param.kind === 'rest' ? '...' : ''}${getParamName(param) || `arg_${index}`}`
+  const optional = isOptionalParam(param) ? '?' : ''
+  const type = formatType(getParamType(param))
   return type ? `${name}${optional}: ${type}` : `${name}${optional}`
 }
 
 /**
  * Format a function parameter list.
  */
-export function formatParams(params?: FunctionParam[]): string {
+export function formatParams(params?: ParamDef[]): string {
   return params?.map((param, index) => formatParam(param, index)).join(', ') || ''
 }
 
 /**
  * Format a TypeScript type.
  */
-export function formatType(type?: TsType): string {
+export function formatType(type?: TsTypeDef): string {
   if (!type) return ''
 
-  const formatter = TYPE_FORMATTERS[type.kind]
-  const formatted = formatter?.(type)
-
+  const formatted = formatKnownType(type)
   if (formatted) return formatted
+
   return type.repr ? stripAnsi(type.repr) : 'unknown'
 }
 
-const TYPE_FORMATTERS: Partial<Record<TsType['kind'], (type: TsType) => string>> = {
-  keyword: type => type.keyword || '',
-  literal: type => {
-    if (!type.literal) return ''
-    if (type.literal.kind === 'string') return `"${type.literal.string}"`
-    if (type.literal.kind === 'number') return String(type.literal.number)
-    if (type.literal.kind === 'boolean') return String(type.literal.boolean)
-    return ''
-  },
-  typeRef: type => {
-    if (!type.typeRef) return ''
-    const params = type.typeRef.typeParams?.map(t => formatType(t)).join(', ')
-    return params ? `${type.typeRef.typeName}<${params}>` : type.typeRef.typeName
-  },
-  array: type => {
-    if (!type.array) return ''
-    const element = formatType(type.array)
-    return type.array.kind === 'union' ? `(${element})[]` : `${element}[]`
-  },
-  union: type => (type.union ? type.union.map(t => formatType(t)).join(' | ') : ''),
-  this: () => 'this',
-  indexedAccess: type => {
-    if (!type.indexedAccess) return ''
-    return `${formatType(type.indexedAccess.objType)}[${formatType(type.indexedAccess.indexType)}]`
-  },
-  typeOperator: type => {
-    if (!type.typeOperator) return ''
-    return `${type.typeOperator.operator} ${formatType(type.typeOperator.tsType)}`
-  },
-  fnOrConstructor: type =>
-    type.fnOrConstructor ? formatFnOrConstructorType(type.fnOrConstructor) : '',
-  typeLiteral: type => (type.typeLiteral ? formatTypeLiteralType(type.typeLiteral) : ''),
+function formatKnownType(type: TsTypeDef): string {
+  switch (type.kind) {
+    case 'keyword':
+      return type.value
+    case 'literal':
+      return formatLiteral(type.value)
+    case 'typeRef': {
+      const params = type.value.typeParams?.map(t => formatType(t)).join(', ')
+      return params ? `${type.value.typeName}<${params}>` : type.value.typeName
+    }
+    case 'array': {
+      const element = formatType(type.value)
+      return type.value.kind === 'union' ? `(${element})[]` : `${element}[]`
+    }
+    case 'union':
+      return type.value.map(t => formatType(t)).join(' | ')
+    case 'intersection':
+      return type.value.map(t => formatType(t)).join(' & ')
+    case 'tuple':
+      return `[${type.value.map(t => formatType(t)).join(', ')}]`
+    case 'parenthesized':
+      return `(${formatType(type.value)})`
+    case 'rest':
+      return `...${formatType(type.value)}`
+    case 'optional':
+      return `${formatType(type.value)}?`
+    case 'this':
+      return 'this'
+    case 'indexedAccess':
+      return `${formatType(type.value.objType)}[${formatType(type.value.indexType)}]`
+    case 'typeOperator':
+      return `${type.value.operator} ${formatType(type.value.tsType)}`
+    case 'fnOrConstructor': {
+      const { constructor: isConstructor, typeParams, params, tsType } = type.value
+      const newStr = isConstructor ? 'new ' : ''
+      return `${newStr}${formatTypeParams(typeParams)}(${formatParams(params)}) => ${formatType(tsType) || 'void'}`
+    }
+    case 'typeQuery':
+      return `typeof ${type.value}`
+    case 'typeLiteral':
+      return formatTypeLiteral(type.value)
+    case 'conditional': {
+      const { checkType, extendsType, trueType, falseType } = type.value
+      return `${formatType(checkType)} extends ${formatType(extendsType)} ? ${formatType(trueType)} : ${formatType(falseType)}`
+    }
+    case 'infer':
+      return `infer ${formatTypeParam(type.value.typeParam)}`
+    case 'mapped':
+      return formatMappedType(type.value)
+    default:
+      return ''
+  }
 }
 
-function formatFnOrConstructorType(fn: NonNullable<TsType['fnOrConstructor']>): string {
-  const typeParams = fn.typeParams?.map(t => t.name).join(', ')
-  const typeParamsStr = typeParams ? `<${typeParams}>` : ''
-  const params = formatParams(fn.params)
-  const ret = formatType(fn.tsType) || 'void'
-  return `${typeParamsStr}(${params}) => ${ret}`
+function formatModifier(modifier: TruePlusMinus | undefined, keyword: string): string {
+  if (modifier === undefined) return ''
+  if (modifier === '+' || modifier === '-') return `${modifier}${keyword}`
+  return keyword
 }
 
-function formatTypeLiteralType(lit: NonNullable<TsType['typeLiteral']>): string {
+function formatMappedType(mapped: Extract<TsTypeDef, { kind: 'mapped' }>['value']): string {
+  const { readonly, typeParam, nameType, optional, tsType } = mapped
+  const readonlyStr = formatModifier(readonly, 'readonly')
+  const constraint = formatType(typeParam.constraint) || 'unknown'
+  const asStr = nameType ? ` as ${formatType(nameType)}` : ''
+  const optionalStr = formatModifier(optional, '?')
+  return `{ ${readonlyStr ? `${readonlyStr} ` : ''}[${typeParam.name} in ${constraint}${asStr}]${optionalStr}: ${formatType(tsType) || 'unknown'} }`
+}
+
+/**
+ * Text chunks are emitted as string literals and interpolations as any other type.
+ * An interpolated string literal (`${'a'}`) can't be told apart from a chunk, so it renders inline.
+ */
+function formatTemplateLiteral(tsTypes: TsTypeDef[]): string {
+  const body = tsTypes
+    .map(t =>
+      t.kind === 'literal' && t.value.kind === 'string'
+        ? t.value.string.replaceAll('`', '\\`')
+        : `\${${formatType(t)}}`,
+    )
+    .join('')
+  return `\`${body}\``
+}
+
+function formatLiteral(literal: LiteralDef): string {
+  switch (literal.kind) {
+    case 'string':
+      return JSON.stringify(literal.string)
+    case 'number':
+      return String(literal.number)
+    case 'boolean':
+      return String(literal.boolean)
+    case 'bigInt':
+      return `${literal.string}n`
+    case 'template':
+      return formatTemplateLiteral(literal.tsTypes)
+    default:
+      return ''
+  }
+}
+
+interface TypeLiteralConstructor {
+  params: ParamDef[]
+  returnType?: TsTypeDef
+}
+
+function getTypeLiteralConstructors(
+  literal: Extract<TsTypeDef, { kind: 'typeLiteral' }>['value'],
+): TypeLiteralConstructor[] {
+  return (literal.constructors ?? []).filter(
+    (signature): signature is TypeLiteralConstructor =>
+      typeof signature === 'object' &&
+      signature !== null &&
+      'params' in signature &&
+      Array.isArray(signature.params),
+  )
+}
+
+function formatTypeLiteral(literal: Extract<TsTypeDef, { kind: 'typeLiteral' }>['value']): string {
   const parts: string[] = []
-  for (const prop of lit.properties) {
+  for (const signature of literal.indexSignatures ?? []) {
+    const ro = signature.readonly ? 'readonly ' : ''
+    parts.push(
+      `${ro}[${formatParams(signature.params)}]: ${formatType(signature.tsType) || 'unknown'}`,
+    )
+  }
+  for (const signature of literal.callSignatures ?? []) {
+    const ret = formatType(signature.tsType) || 'void'
+    parts.push(
+      `${formatTypeParams(signature.typeParams)}(${formatParams(signature.params)}): ${ret}`,
+    )
+  }
+  // The published types only declare `constructors` as `unknown[]`
+  for (const signature of getTypeLiteralConstructors(literal)) {
+    const ret = formatType(signature.returnType) || 'unknown'
+    parts.push(`new (${formatParams(signature.params)}): ${ret}`)
+  }
+  for (const prop of literal.properties ?? []) {
     const opt = prop.optional ? '?' : ''
     const ro = prop.readonly ? 'readonly ' : ''
     parts.push(`${ro}${prop.name}${opt}: ${formatType(prop.tsType) || 'unknown'}`)
   }
-  for (const method of lit.methods) {
+  for (const method of literal.methods ?? []) {
     const params = formatParams(method.params)
     const ret = formatType(method.returnType) || 'void'
     parts.push(`${method.name}(${params}): ${ret}`)
   }
-  return `{ ${parts.join('; ')} }`
+  return parts.length > 0 ? `{ ${parts.join('; ')} }` : '{}'
 }

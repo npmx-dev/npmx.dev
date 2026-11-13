@@ -2,57 +2,50 @@ import { describe, expect, it } from 'vite-plus/test'
 import { renderDocNodes, renderEntries, renderEntriesToc } from '#server/utils/docs/render'
 import { buildSymbolLookup, mergeOverloads } from '#server/utils/docs/processing'
 import { entrySlug } from '#server/utils/docs/text'
-import type { DenoDocNode } from '#shared/types/deno-doc'
-import type { MergedSymbol, ProcessedEntry } from '#server/utils/docs/types'
+import type { JsDoc } from '@deno/doc'
+import type { DocNode, MergedSymbol, ProcessedEntry } from '#server/utils/docs/types'
+import {
+  classConstructor,
+  classMethod,
+  classNode,
+  classProperty,
+  enumNode,
+  functionNode,
+  interfaceMethod,
+  interfaceNode,
+  interfaceProperty,
+  keywordType,
+  param,
+  typeRefType,
+} from './helpers'
 
 // =============================================================================
 // Issue #1943: class getters shown as methods
 // https://github.com/npmx-dev/npmx.dev/issues/1943
 // =============================================================================
 
-function createClassSymbol(classDef: DenoDocNode['classDef']): MergedSymbol {
-  const node: DenoDocNode = {
-    name: 'TestClass',
-    kind: 'class',
-    classDef,
-  }
+function createClassSymbol(def: Parameters<typeof classNode>[1]): MergedSymbol {
   return {
     name: 'TestClass',
     kind: 'class',
-    nodes: [node],
+    nodes: [classNode('TestClass', def)],
   }
 }
 
-function createFunctionSymbol(name: string, jsDoc?: DenoDocNode['jsDoc']): MergedSymbol {
-  const node: DenoDocNode = {
-    name,
-    kind: 'function',
-    jsDoc,
-    functionDef: {
-      params: [],
-      returnType: { repr: 'void', kind: 'keyword', keyword: 'void' },
-    },
-  }
-
+function createFunctionSymbol(name: string, jsDoc?: JsDoc): MergedSymbol {
   return {
     name,
     kind: 'function',
     jsDoc,
-    nodes: [node],
+    nodes: [functionNode(name, {}, jsDoc)],
   }
 }
 
 function createInterfaceSymbol(name: string): MergedSymbol {
-  const node: DenoDocNode = {
-    name,
-    kind: 'interface',
-    interfaceDef: {},
-  }
-
   return {
     name,
     kind: 'interface',
-    nodes: [node],
+    nodes: [interfaceNode(name)],
   }
 }
 
@@ -60,13 +53,11 @@ describe('issue #1943 - class getters separated from methods', () => {
   it('renders getters under a "Getters" heading, not "Methods"', async () => {
     const symbol = createClassSymbol({
       methods: [
-        {
+        classMethod({
           name: 'clientId',
           kind: 'getter',
-          functionDef: {
-            returnType: { repr: 'string', kind: 'keyword', keyword: 'string' },
-          },
-        },
+          functionDef: { returnType: keywordType('string') },
+        }),
       ],
     })
 
@@ -80,14 +71,10 @@ describe('issue #1943 - class getters separated from methods', () => {
   it('renders regular methods under "Methods" heading', async () => {
     const symbol = createClassSymbol({
       methods: [
-        {
+        classMethod({
           name: 'connect',
-          kind: 'method',
-          functionDef: {
-            params: [],
-            returnType: { repr: 'void', kind: 'keyword', keyword: 'void' },
-          },
-        },
+          functionDef: { returnType: keywordType('void') },
+        }),
       ],
     })
 
@@ -101,29 +88,20 @@ describe('issue #1943 - class getters separated from methods', () => {
   it('renders both getters and methods in separate sections', async () => {
     const symbol = createClassSymbol({
       methods: [
-        {
+        classMethod({
           name: 'clientId',
           kind: 'getter',
-          functionDef: {
-            returnType: { repr: 'string', kind: 'keyword', keyword: 'string' },
-          },
+          functionDef: { returnType: keywordType('string') },
           jsDoc: { doc: 'The client ID' },
-        },
-        {
+        }),
+        classMethod({
           name: 'connect',
-          kind: 'method',
           functionDef: {
-            params: [
-              {
-                kind: 'identifier',
-                name: 'url',
-                tsType: { repr: 'string', kind: 'keyword', keyword: 'string' },
-              },
-            ],
-            returnType: { repr: 'void', kind: 'keyword', keyword: 'void' },
+            params: [param('url', keywordType('string'))],
+            returnType: keywordType('void'),
           },
           jsDoc: { doc: 'Connect to server' },
-        },
+        }),
       ],
     })
 
@@ -150,14 +128,12 @@ describe('issue #1943 - class getters separated from methods', () => {
   it('renders static getter correctly', async () => {
     const symbol = createClassSymbol({
       methods: [
-        {
+        classMethod({
           name: 'instance',
           kind: 'getter',
           isStatic: true,
-          functionDef: {
-            returnType: { repr: 'TestClass', kind: 'typeRef', typeRef: { typeName: 'TestClass' } },
-          },
-        },
+          functionDef: { returnType: typeRefType('TestClass') },
+        }),
       ],
     })
 
@@ -224,32 +200,28 @@ describe('renderDocNodes examples', () => {
 // https://github.com/npmx-dev/npmx.dev/issues/3279
 // =============================================================================
 
-function renderNodes(nodes: DenoDocNode[]): Promise<string> {
+function renderNodes(nodes: DocNode[]): Promise<string> {
   return renderDocNodes(mergeOverloads(nodes), buildSymbolLookup(nodes))
 }
 
 function createAddColumnMethod(doc: string) {
-  return {
+  return classMethod({
     name: 'addColumn',
-    functionDef: { params: [], returnType: { repr: 'void', kind: 'keyword', keyword: 'void' } },
+    functionDef: { returnType: keywordType('void') },
     jsDoc: { doc },
-  }
+  })
 }
 
 describe('issue #3279 - {@link} in member descriptions', () => {
   it('links `Class.member` in class method descriptions to the member anchor', async () => {
     // Mirrors kysely, where `AlterTableBuilder.addColumn` says "See {@link CreateTableBuilder.addColumn}"
     const html = await renderNodes([
-      {
-        name: 'AlterTableBuilder',
-        kind: 'class',
-        classDef: { methods: [createAddColumnMethod('See {@link CreateTableBuilder.addColumn}')] },
-      },
-      {
-        name: 'CreateTableBuilder',
-        kind: 'class',
-        classDef: { methods: [createAddColumnMethod('Adds a column to the table.')] },
-      },
+      classNode('AlterTableBuilder', {
+        methods: [createAddColumnMethod('See {@link CreateTableBuilder.addColumn}')],
+      }),
+      classNode('CreateTableBuilder', {
+        methods: [createAddColumnMethod('Adds a column to the table.')],
+      }),
     ])
 
     expect(html).toContain(
@@ -261,22 +233,17 @@ describe('issue #3279 - {@link} in member descriptions', () => {
 
   it('resolves {@link} in class property and getter descriptions', async () => {
     const html = await renderNodes([
-      {
-        name: 'Config',
-        kind: 'class',
-        classDef: {
-          properties: [{ name: 'mode', jsDoc: { doc: 'Uses {@link Mode}.' } }],
-          methods: [
-            {
-              name: 'current',
-              kind: 'getter',
-              functionDef: {},
-              jsDoc: { doc: 'Same as {@link Config#mode}.' },
-            },
-          ],
-        },
-      },
-      { name: 'Mode', kind: 'enum', enumDef: { members: [{ name: 'Fast' }] } },
+      classNode('Config', {
+        properties: [classProperty('mode', { jsDoc: { doc: 'Uses {@link Mode}.' } })],
+        methods: [
+          classMethod({
+            name: 'current',
+            kind: 'getter',
+            jsDoc: { doc: 'Same as {@link Config#mode}.' },
+          }),
+        ],
+      }),
+      enumNode('Mode', ['Fast']),
     ])
 
     expect(html).toContain('Uses <a href="#enum-Mode" class="docs-symbol-link">Mode</a>.')
@@ -287,15 +254,13 @@ describe('issue #3279 - {@link} in member descriptions', () => {
 
   it('resolves {@link} in interface property and method descriptions', async () => {
     const html = await renderNodes([
-      {
-        name: 'Options',
-        kind: 'interface',
-        interfaceDef: {
-          properties: [{ name: 'level', jsDoc: { doc: 'One of {@link Level.High}.\nMore text.' } }],
-          methods: [{ name: 'reset', jsDoc: { doc: 'Resets {@link Options.level}.' } }],
-        },
-      },
-      { name: 'Level', kind: 'enum', enumDef: { members: [{ name: 'High' }] } },
+      interfaceNode('Options', {
+        properties: [
+          interfaceProperty('level', { jsDoc: { doc: 'One of {@link Level.High}.\nMore text.' } }),
+        ],
+        methods: [interfaceMethod('reset', { jsDoc: { doc: 'Resets {@link Options.level}.' } })],
+      }),
+      enumNode('Level', ['High']),
     ])
 
     expect(html).toContain(
@@ -310,11 +275,9 @@ describe('issue #3279 - {@link} in member descriptions', () => {
 
   it('renders unknown member references as code', async () => {
     const html = await renderNodes([
-      {
-        name: 'Client',
-        kind: 'class',
-        classDef: { properties: [{ name: 'url', jsDoc: { doc: 'See {@link Missing.thing}' } }] },
-      },
+      classNode('Client', {
+        properties: [classProperty('url', { jsDoc: { doc: 'See {@link Missing.thing}' } })],
+      }),
     ])
 
     expect(html).toContain('<dd>See <code class="docs-symbol-ref">Missing.thing</code></dd>')
@@ -322,11 +285,9 @@ describe('issue #3279 - {@link} in member descriptions', () => {
 
   it('still escapes HTML in member descriptions', async () => {
     const html = await renderNodes([
-      {
-        name: 'Client',
-        kind: 'class',
-        classDef: { properties: [{ name: 'url', jsDoc: { doc: 'A <script> tag' } }] },
-      },
+      classNode('Client', {
+        properties: [classProperty('url', { jsDoc: { doc: 'A <script> tag' } })],
+      }),
     ])
 
     expect(html).toContain('<dd>A &lt;script&gt; tag</dd>')
@@ -334,17 +295,13 @@ describe('issue #3279 - {@link} in member descriptions', () => {
 
   it('gives overloaded methods a single member anchor', async () => {
     const html = await renderNodes([
-      {
-        name: 'Store',
-        kind: 'class',
-        classDef: {
-          methods: [
-            { name: 'value', kind: 'getter', functionDef: {} },
-            { name: 'get', functionDef: { params: [] } },
-            { name: 'get', functionDef: { params: [{ kind: 'identifier', name: 'key' }] } },
-          ],
-        },
-      },
+      classNode('Store', {
+        methods: [
+          classMethod({ name: 'value', kind: 'getter' }),
+          classMethod({ name: 'get' }),
+          classMethod({ name: 'get', functionDef: { params: [param('key')] } }),
+        ],
+      }),
     ])
 
     expect(html.match(/id="class-Store--get"/g)).toHaveLength(1)
@@ -353,14 +310,12 @@ describe('issue #3279 - {@link} in member descriptions', () => {
 
   it('links {@link Class#constructor} to the first constructor overload', async () => {
     const html = await renderNodes([
-      {
-        name: 'Client',
-        kind: 'class',
-        classDef: {
-          constructors: [{ params: [] }, { params: [{ kind: 'identifier', name: 'url' }] }],
-          properties: [{ name: 'url', jsDoc: { doc: 'Set via {@link Client#constructor}.' } }],
-        },
-      },
+      classNode('Client', {
+        constructors: [classConstructor(), classConstructor([param('url')])],
+        properties: [
+          classProperty('url', { jsDoc: { doc: 'Set via {@link Client#constructor}.' } }),
+        ],
+      }),
     ])
 
     expect(html).toContain(
@@ -370,17 +325,13 @@ describe('issue #3279 - {@link} in member descriptions', () => {
   })
 
   it('prefixes member links and anchors for subpath entries', async () => {
-    const nodes: DenoDocNode[] = [
-      {
-        name: 'AlterTableBuilder',
-        kind: 'class',
-        classDef: { methods: [createAddColumnMethod('See {@link CreateTableBuilder.addColumn}')] },
-      },
-      {
-        name: 'CreateTableBuilder',
-        kind: 'class',
-        classDef: { methods: [createAddColumnMethod('Adds a column to the table.')] },
-      },
+    const nodes: DocNode[] = [
+      classNode('AlterTableBuilder', {
+        methods: [createAddColumnMethod('See {@link CreateTableBuilder.addColumn}')],
+      }),
+      classNode('CreateTableBuilder', {
+        methods: [createAddColumnMethod('Adds a column to the table.')],
+      }),
     ]
     const entries: ProcessedEntry[] = [
       { entryPoint: '.', prefix: '', symbols: [], lookup: new Map() },
@@ -404,14 +355,7 @@ describe('issue #3279 - {@link} in member descriptions', () => {
 // =============================================================================
 
 function createEntry(entryPoint: string, fnNames: string[]): ProcessedEntry {
-  const nodes: DenoDocNode[] = fnNames.map(name => ({
-    name,
-    kind: 'function',
-    functionDef: {
-      params: [],
-      returnType: { repr: 'void', kind: 'keyword', keyword: 'void' },
-    },
-  }))
+  const nodes: DocNode[] = fnNames.map(name => functionNode(name))
   const prefix = entryPoint === '.' ? '' : entrySlug(entryPoint)
   return {
     entryPoint,

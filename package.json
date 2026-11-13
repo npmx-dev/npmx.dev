@@ -50,7 +50,7 @@
     "@atproto/lex": "0.3.6",
     "@atproto/lex-password-session": "0.2.0",
     "@atproto/oauth-client-node": "0.3.15",
-    "@deno/doc": "jsr:^0.189.1",
+    "@deno/doc": "jsr:^0.210.0",
     "@floating-ui/vue": "2.0.1",
     "@iconify-json/lucide": "1.2.123",
     "@iconify-json/simple-icons": "1.2.93",
