@@ -289,6 +289,7 @@ import {
   PackagePlaygrounds,
   PackageReplacement,
   PackageSidebar,
+  PackageSocialMentions,
   PackageSkeleton,
   PackageSkillsCard,
   PackageTable,
@@ -942,6 +943,26 @@ describe('component accessibility audits', () => {
       await vi.waitFor(() => {
         expect(component.text()).toContain('#3')
       })
+
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageSocialMentions', () => {
+    it('should have no accessibility violations', async () => {
+      registerEndpoint('/api/social/mentions/vue', () => ({ totalMentions: 12 }))
+
+      const component = await mountSuspended(PackageSocialMentions, {
+        props: { packageName: 'vue' },
+      })
+
+      await vi.waitFor(
+        () => {
+          expect(component.text()).toContain('12 mentions')
+        },
+        { timeout: 3000 },
+      )
 
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
