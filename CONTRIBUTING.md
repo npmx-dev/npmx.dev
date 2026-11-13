@@ -458,6 +458,7 @@ The command palette is a first-class navigation surface. When you add a new user
 | `org`                         | `/org/:org`                                       | `org`                                |
 | `~username`                   | `/~:username`                                     | `username`                           |
 | `~username-orgs`              | `/~:username/orgs`                                | `username`                           |
+| `collections`                 | `/collections`                                    | &mdash;                              |
 | `collections-new`             | `/collections/new`                                | &mdash;                              |
 | `collections-identifier-rkey` | `/collections/:identifier/:rkey`                  | `identifier` (handle or DID), `rkey` |
 

@@ -14,9 +14,11 @@ import { parseSubjectRef } from '#shared/utils/collections'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { CACHE_MAX_AGE_ONE_MINUTE, COLLECTION_SUBJECT_REF } from '#shared/utils/constants'
 import type { Backlink, Constellation } from '#shared/utils/constellation'
+import { AccountModerationUtils } from './moderation'
 
 const HEADERS = { 'User-Agent': 'npmx' }
 const COLLECTION_NSID = dev.npmx.collection.$nsid
+const ITEMS_PATH = 'items[].subjectRef'
 
 // Records that point at a collection and are counted once per account.
 const REACTIONS = {
@@ -31,6 +33,8 @@ const CACHE_REACTION_TOTAL_KEY = (reaction: Reaction, uri: string) =>
   `${CACHE_PREFIX}${uri}:${reaction}:total`
 const CACHE_VIEWER_REACTION_KEY = (reaction: Reaction, uri: string, did: string) =>
   `${CACHE_PREFIX}${uri}:${reaction}:${did}`
+const CACHE_CONTAINING_COUNT_KEY = (subjectRef: string) =>
+  `${CACHE_PREFIX}${subjectRef}:containing:total`
 const CACHE_MAX_AGE = CACHE_MAX_AGE_ONE_MINUTE * 5
 
 // The owner's PDS is whatever their DID doc says, so it may be slow or hostile.
@@ -60,6 +64,7 @@ export type CollectionsDeps = {
     cursor?: string,
   ) => Promise<{ cursor?: string; records: { rkey: string; subject: string }[] }>
   packageExists: (packageName: string) => Promise<boolean>
+  moderation: Pick<AccountModerationUtils, 'getHiddenDids' | 'isHidden'>
 }
 
 type IndexedCollection = Omit<CollectionSummary, 'handle'>
@@ -152,6 +157,7 @@ function defaultDeps(): CollectionsDeps {
       }
     },
     packageExists: name => fetchNpmPackageExists(name),
+    moderation: new AccountModerationUtils(),
   }
 }
 
@@ -208,10 +214,11 @@ export class CollectionsUtils {
     viewerDid?: string,
   ): Promise<CollectionView | null> {
     const miniDoc = await this.deps.resolveIdentity(identifier)
+    if (await this.deps.moderation.isHidden(miniDoc.did)) return null
     const stored = await this.getStoredRecord(miniDoc, rkey)
     if (!stored) return null
 
-    const [items, likes, follows] = await Promise.all([
+    const [items, likes, follows, includedInCount] = await Promise.all([
       mapWithConcurrency(
         stored.value.items,
         item => this.resolveItem(item.subjectRef, item.note),
@@ -219,8 +226,9 @@ export class CollectionsUtils {
       ),
       this.getReaction('like', stored.uri, viewerDid),
       this.getReaction('follow', stored.uri, viewerDid),
+      this.countCollectionsContaining(stored.uri),
     ])
-    return { ...toSummary(miniDoc, rkey, stored), items, likes, follows }
+    return { ...toSummary(miniDoc, rkey, stored), items, likes, follows, includedInCount }
   }
 
   async getReaction(reaction: Reaction, uri: string, viewerDid?: string): Promise<ReactionState> {
@@ -316,6 +324,7 @@ export class CollectionsUtils {
       ({ kind: 'collection', subjectRef, note, collection: null, unavailableReason }) as const
     try {
       const miniDoc = await this.deps.resolveIdentity(subject.did)
+      if (await this.deps.moderation.isHidden(miniDoc.did)) return unavailable('hidden')
       const stored = await this.getStoredRecord(miniDoc, subject.rkey)
       if (!stored) return unavailable('unresolvable')
       return {
@@ -335,6 +344,7 @@ export class CollectionsUtils {
     cursor?: string,
   ): Promise<Paginated<CollectionSummary>> {
     const miniDoc = await this.deps.resolveIdentity(identifier)
+    if (await this.deps.moderation.isHidden(miniDoc.did)) return { items: [] }
     const { cursor: nextCursor, records } = await this.deps.listRecords(miniDoc, limit, cursor)
     return {
       cursor: nextCursor,
@@ -360,6 +370,7 @@ export class CollectionsUtils {
     cursor?: string,
   ): Promise<Paginated<CollectionSummary>> {
     const miniDoc = await this.deps.resolveIdentity(identifier)
+    if (await this.deps.moderation.isHidden(miniDoc.did)) return { items: [] }
     const { cursor: nextCursor, records } = await this.deps.listFollows(miniDoc, limit, cursor)
     const subjects = new Map<string, { did: string; rkey: string }>()
     for (const record of records) {
@@ -376,21 +387,76 @@ export class CollectionsUtils {
   }
 
   /**
-   * Turns entries into summaries via `build`, dropping any entry whose author no longer resolves
-   * (deleted, deactivated) or that `build` rejects.
+   * Collections whose items reference `subjectRef` (a package URL or a collection AT-URI).
+   * `total` is Constellation's raw count, so it may include hidden or invalid collections.
+   */
+  async getCollectionsContaining(
+    subjectRef: string,
+    limit: number,
+    cursor?: string,
+  ): Promise<Paginated<CollectionSummary>> {
+    const { data } = await this.deps.constellation.getBackLinks(
+      subjectRef,
+      COLLECTION_NSID,
+      ITEMS_PATH,
+      limit,
+      cursor,
+      false,
+      [],
+      0,
+    )
+    return {
+      cursor: data.cursor,
+      total: data.total,
+      items: await this.hydrateBacklinks(data.records),
+    }
+  }
+
+  countCollectionsContaining(subjectRef: string): Promise<number> {
+    return this.cached(CACHE_CONTAINING_COUNT_KEY(subjectRef), async () => {
+      const { data } = await this.deps.constellation.getBackLinks(
+        subjectRef,
+        COLLECTION_NSID,
+        ITEMS_PATH,
+        1,
+        undefined,
+        false,
+        [],
+        0,
+      )
+      return data.total
+    })
+  }
+
+  private hydrateBacklinks(backlinks: Backlink[]): Promise<CollectionSummary[]> {
+    const unique = new Map(
+      backlinks.map(link => [COLLECTION_SUBJECT_REF(link.did, link.rkey), link]),
+    ).values()
+    return this.hydrate([...unique], async (miniDoc, link) => {
+      const stored = await this.getStoredRecord(miniDoc, link.rkey)
+      return stored && toSummary(miniDoc, link.rkey, stored)
+    })
+  }
+
+  /**
+   * Turns entries into summaries via `build`, dropping hidden authors and any entry whose author
+   * no longer resolves (deleted, deactivated) or that `build` rejects.
    */
   async hydrate<T extends { did: string }>(
     entries: T[],
     build: (miniDoc: MiniDoc, entry: T) => Promise<CollectionSummary | null> | CollectionSummary,
   ): Promise<CollectionSummary[]> {
+    const hidden = await this.deps.moderation.getHiddenDids(entries.map(entry => entry.did))
     const summaries = await Promise.all(
-      entries.map(async entry => {
-        try {
-          return await build(await this.deps.resolveIdentity(entry.did), entry)
-        } catch {
-          return null
-        }
-      }),
+      entries
+        .filter(entry => !hidden.has(entry.did))
+        .map(async entry => {
+          try {
+            return await build(await this.deps.resolveIdentity(entry.did), entry)
+          } catch {
+            return null
+          }
+        }),
     )
     return summaries.filter(summary => summary !== null)
   }

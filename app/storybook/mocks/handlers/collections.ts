@@ -21,6 +21,7 @@ export const mockCollection: CollectionView = {
   ...mockCollectionSummary,
   likes: { total: 12, viewerHas: false },
   follows: { total: 5, viewerHas: false },
+  includedInCount: 2,
   items: [
     {
       kind: 'package',
@@ -55,6 +56,12 @@ export const mockCollection: CollectionView = {
         description: undefined,
         itemCount: 2,
       },
+    },
+    {
+      kind: 'collection',
+      subjectRef: 'at://did:plc:spammer/dev.npmx.collection/3m5k5baifas2c',
+      collection: null,
+      unavailableReason: 'hidden',
     },
   ],
 }

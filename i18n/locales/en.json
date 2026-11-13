@@ -482,11 +482,15 @@
     "delete_title": "Delete this collection?",
     "delete_body": "This can't be undone.",
     "delete_error": "Couldn't delete the collection. Please try again.",
+    "in_collections": "In {count} collection | In {count} collections",
+    "containing_package_title": "Collections with {name}",
+    "including_title": "Collections that include this one",
     "includes": "Includes",
     "package_unresolved": "Not found on the npm registry",
     "unknown_item": "Unrecognized item",
     "unavailable": {
-      "unresolvable": "This collection couldn't be loaded."
+      "unresolvable": "This collection couldn't be loaded.",
+      "hidden": "This collection is hidden."
     },
     "not_found": "Collection Not Found",
     "not_found_message": "This collection doesn't exist, was deleted, or is hidden.",

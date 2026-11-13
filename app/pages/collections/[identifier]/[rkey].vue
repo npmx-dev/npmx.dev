@@ -111,6 +111,7 @@ async function remove() {
   await navigateTo({ name: 'profile-identity', params: { identity: handle } })
 }
 
+const compactNumberFormatter = useCompactNumberFormatter()
 const duplicateRoute = computed(() => ({
   name: 'collections-new' as const,
   query: { from: `${collection.value?.did}/${collection.value?.rkey}` },
@@ -269,6 +270,20 @@ defineOgImage(
             {{ $t('common.delete') }}
           </ButtonBase>
         </template>
+        <LinkBase
+          v-if="collection.includedInCount > 0"
+          variant="button-secondary"
+          classicon="i-lucide:library"
+          :to="{ name: 'collections', query: { includes: `${collection.did}/${collection.rkey}` } }"
+        >
+          {{
+            $t(
+              'collections.in_collections',
+              { count: compactNumberFormatter.format(collection.includedInCount) },
+              collection.includedInCount,
+            )
+          }}
+        </LinkBase>
       </div>
     </header>
 
