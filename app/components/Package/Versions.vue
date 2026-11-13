@@ -48,11 +48,23 @@ const effectiveCurrentVersion = computed(
   () => props.selectedVersion ?? props.distTags.latest ?? undefined,
 )
 
-// Semver range filter
-const semverFilter = ref('')
+// Semver range filter (initialized from ?semver= query param if present)
+const semverFilter = ref((typeof route.query.semver === 'string' ? route.query.semver : '') || '')
+
+// Navigating to another ?semver= on the same page (e.g. searching `pkg@^2`) reuses this component
+watch(
+  () => route.query.semver,
+  semver => {
+    if (typeof semver === 'string') semverFilter.value = semver
+  },
+)
 
 // Load all versions when a valid semver filter is entered
-watch(semverFilter, async newFilter => {
+watch(semverFilter, loadVersionsForFilter)
+// A filter from ?semver= is set before mount, so the watcher never sees it change
+onMounted(() => loadVersionsForFilter(semverFilter.value))
+
+async function loadVersionsForFilter(newFilter: string) {
   const trimmed = newFilter.trim()
   if (trimmed === '' || hasLoadedAll.value) return
   if (!normalizeRange(trimmed)) return
@@ -65,7 +77,7 @@ watch(semverFilter, async newFilter => {
   } catch {
     // Silently fail — user can still use the filter with already-known versions
   }
-})
+}
 // Collect all known versions: initial props + dynamically loaded ones
 const allKnownVersions = computed(() => {
   const versions = new Set(Object.keys(props.versions))
