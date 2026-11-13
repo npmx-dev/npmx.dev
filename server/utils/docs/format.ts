@@ -57,6 +57,71 @@ export function getNodeSignature(node: DenoDocNode): string | null {
   }
 }
 
+type ClassDef = NonNullable<DenoDocNode['classDef']>
+type ClassProperty = NonNullable<ClassDef['properties']>[number]
+type ClassMethod = NonNullable<ClassDef['methods']>[number]
+type InterfaceDef = NonNullable<DenoDocNode['interfaceDef']>
+type InterfaceProperty = NonNullable<InterfaceDef['properties']>[number]
+type InterfaceMethod = NonNullable<InterfaceDef['methods']>[number]
+
+/**
+ * Format a class constructor signature.
+ */
+export function formatConstructorSignature(ctor: NonNullable<ClassDef['constructors']>[number]) {
+  return `constructor(${formatParams(ctor.params)})`
+}
+
+/**
+ * Format a class property signature, including its modifiers.
+ */
+export function formatClassPropertySignature(prop: ClassProperty): string {
+  const modifiers: string[] = []
+  if (prop.isStatic) modifiers.push('static')
+  if (prop.readonly) modifiers.push('readonly')
+  const modStr = modifiers.length > 0 ? `${modifiers.join(' ')} ` : ''
+  const type = formatType(prop.tsType)
+  const opt = prop.optional ? '?' : ''
+  const typeStr = type ? `: ${type}` : ''
+  return `${modStr}${prop.name}${opt}${typeStr}`
+}
+
+/**
+ * Format a class getter signature.
+ */
+export function formatClassGetterSignature(getter: ClassMethod): string {
+  const ret = formatType(getter.functionDef?.returnType) || 'unknown'
+  const staticStr = getter.isStatic ? 'static ' : ''
+  return `${staticStr}get ${getter.name}: ${ret}`
+}
+
+/**
+ * Format a class method signature.
+ */
+export function formatClassMethodSignature(method: ClassMethod): string {
+  const params = formatParams(method.functionDef?.params)
+  const ret = formatType(method.functionDef?.returnType) || 'void'
+  const staticStr = method.isStatic ? 'static ' : ''
+  return `${staticStr}${method.name}(${params}): ${ret}`
+}
+
+/**
+ * Format an interface property signature.
+ */
+export function formatInterfacePropertySignature(prop: InterfaceProperty): string {
+  const ro = prop.readonly ? 'readonly ' : ''
+  const opt = prop.optional ? '?' : ''
+  return `${ro}${prop.name}${opt}: ${formatType(prop.tsType)}`
+}
+
+/**
+ * Format an interface method signature.
+ */
+export function formatInterfaceMethodSignature(method: InterfaceMethod): string {
+  const params = formatParams(method.params)
+  const ret = formatType(method.returnType) || 'void'
+  return `${method.name}(${params}): ${ret}`
+}
+
 /**
  * Format a function parameter.
  */
