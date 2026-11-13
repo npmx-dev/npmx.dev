@@ -12,7 +12,7 @@ const { title, description } = defineProps<{
 
       <div v-if="title" class="flex flex-col max-w-full gap-3">
         <div
-          class="lg:text-7xl text-5xl tracking-tighter font-mono leading-none"
+          class="lg:text-7xl text-5xl tracking-tighter font-ogmono leading-none"
           :style="{ lineClamp: 1, textOverflow: 'ellipsis' }"
         >
           {{ title }}

@@ -251,13 +251,13 @@ const sparklineSrc = computed(() => {
       <div class="flex flex-col max-w-full gap-3">
         <div
           v-if="pkgNameParts.org"
-          class="lg:text-5xl text-3xl font-mono tracking-tight leading-none"
+          class="lg:text-5xl text-3xl font-ogmono tracking-tight leading-none"
           style="opacity: 0.5; text-overflow: ellipsis; line-clamp: 1"
         >
           {{ pkgNameParts.org }}
         </div>
         <div
-          class="tracking-tighter font-mono leading-none overflow-hidden"
+          class="tracking-tighter font-ogmono leading-none overflow-hidden"
           :class="
             (pkgNameParts.short?.length ?? 0) > 20 ? 'lg:text-6xl text-4xl' : 'lg:text-7xl text-5xl'
           "
@@ -267,7 +267,7 @@ const sparklineSrc = computed(() => {
         </div>
         <div
           v-if="version"
-          class="pt-3 lg:text-4xl text-3xl font-mono tracking-tight leading-none"
+          class="pt-3 lg:text-4xl text-3xl font-ogmono tracking-tight leading-none"
           style="opacity: 0.7; text-overflow: ellipsis; line-clamp: 1"
         >
           {{ versionLabel }}
@@ -393,7 +393,7 @@ const sparklineSrc = computed(() => {
     <!-- Code tree variant -->
     <div
       v-else-if="variant === 'code-tree' && treeRows.length"
-      class="text-fg-muted absolute top-8 bottom-8 w-[340px] flex flex-col gap-0 opacity-30 overflow-hidden font-mono text-4.5 leading-8"
+      class="text-fg-muted absolute top-8 bottom-8 w-[340px] flex flex-col gap-0 opacity-30 overflow-hidden font-ogmono text-4.5 leading-8"
       style="right: 2rem"
     >
       <div
@@ -419,7 +419,7 @@ const sparklineSrc = computed(() => {
     <!-- Function tree variant (API symbols) -->
     <div
       v-else-if="variant === 'function-tree' && symbolRows.length"
-      class="absolute top-8 bottom-8 w-[340px] flex flex-col gap-0 opacity-30 overflow-hidden font-mono text-4.5 leading-8"
+      class="absolute top-8 bottom-8 w-[340px] flex flex-col gap-0 opacity-30 overflow-hidden font-ogmono text-4.5 leading-8"
       style="right: 2rem"
     >
       <div

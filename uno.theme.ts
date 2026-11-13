@@ -5,6 +5,8 @@ export const theme = {
   font: {
     mono: "'Geist Mono', 'IBM Plex Sans Arabic', monospace",
     sans: "'Geist', 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif",
+    ogmono: "'Geist Mono OG', monospace",
+    ogsans: "'Geist OG', sans-serif",
     noodle: "'Baloo 2', sans-serif",
   },
   text: {
