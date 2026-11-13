@@ -1480,7 +1480,6 @@
       "search_label": "प्याकेज खोज्नुहोस्",
       "search_first": "प्याकेज खोज्नुहोस्...",
       "search_add": "अर्को प्याकेज थप्नुहोस्...",
-      "searching": "खोजिँदैछ...",
       "remove_package": "{package} हटाउनुहोस्",
       "packages_selected": "{count}/{max} प्याकेज चयन गरिएका छन्।",
       "add_hint": "तुलना गर्न कम्तीमा 2 प्याकेज थप्नुहोस्।"

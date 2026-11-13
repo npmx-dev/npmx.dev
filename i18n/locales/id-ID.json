@@ -1105,7 +1105,6 @@
       "search_label": "Cari paket",
       "search_first": "Cari paket...",
       "search_add": "Tambah paket lain...",
-      "searching": "Mencari...",
       "remove_package": "Hapus {package}",
       "packages_selected": "{count}/{max} paket dipilih.",
       "add_hint": "Tambah setidaknya 2 paket untuk dibandingkan."

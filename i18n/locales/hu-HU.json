@@ -977,7 +977,6 @@
       "search_label": "Csomagok keresése",
       "search_first": "Csomag keresése...",
       "search_add": "Egy másik csomag hozzáadása...",
-      "searching": "Keresés...",
       "remove_package": "{package} eltávolítása",
       "packages_selected": "{count}/{max} csomag kiválasztva.",
       "add_hint": "Adj hozzá legalább 2 csomagot az összehasonlításhoz."

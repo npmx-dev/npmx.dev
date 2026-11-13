@@ -360,6 +360,7 @@ import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 import PackageTimelineChart from '~/components/Package/TimelineChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
+import PackageTypeahead from '~/components/Package/Typeahead.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 import SizeDecrease from '~/components/Package/SizeDecrease.vue'
 import Likes from '~/components/Package/Likes.vue'
@@ -3196,6 +3197,32 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(ComparePackageSelector, {
         props: { modelValue: ['vue', 'react', 'angular', 'svelte'], max: 4 },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageTypeahead', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageTypeahead, {
+        props: { inputId: 'typeahead-a11y', label: 'Search for packages' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with the list open', async () => {
+      const component = await mountSuspended(PackageTypeahead, {
+        props: {
+          inputId: 'typeahead-a11y-open',
+          label: 'Search for packages',
+          leadingOptions: [{ value: 'special', label: 'Special' }],
+        },
+      })
+      const input = component.find('input')
+      await input.trigger('focus')
+      await input.trigger('keydown', { key: 'ArrowDown' })
+      expect(input.attributes('aria-activedescendant')).toBeTruthy()
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

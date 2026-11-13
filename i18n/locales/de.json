@@ -1290,7 +1290,6 @@
       "search_label": "Nach Paketen suchen",
       "search_first": "Nach einem Paket suchen...",
       "search_add": "Weiteres Paket hinzufügen...",
-      "searching": "Suche läuft...",
       "remove_package": "{package} entfernen",
       "packages_selected": "{count}/{max} Pakete ausgewählt.",
       "add_hint": "Füge mindestens 2 Pakete zum Vergleichen hinzu."

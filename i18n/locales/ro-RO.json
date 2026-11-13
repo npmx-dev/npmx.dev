@@ -1276,7 +1276,6 @@
       "search_label": "Căută pachete",
       "search_first": "Căută pachetul...",
       "search_add": "Adaugă alt pachet...",
-      "searching": "Căutare...",
       "remove_package": "Șterge {package}",
       "packages_selected": "{count}/{max} pachete selectate.",
       "add_hint": "Adaugă cel puțin 2 pachete pentru a le compara."

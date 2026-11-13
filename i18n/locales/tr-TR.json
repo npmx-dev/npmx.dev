@@ -1284,7 +1284,6 @@
       "search_label": "Paket ara",
       "search_first": "İlk paketi ara...",
       "search_add": "Paket ekle...",
-      "searching": "Aranıyor...",
       "remove_package": "{package} paketini kaldır",
       "packages_selected": "{count} paket seçildi",
       "add_hint": "Karşılaştırmak için paket ekleyin"
