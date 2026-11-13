@@ -186,6 +186,7 @@ export default defineNuxtConfig({
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
+    '/api/cron/**': { isr: false, cache: false },
     '/api/atproto/bluesky-comments': {
       isr: {
         expiration: 60 * 60 /* one hour */,
@@ -278,6 +279,18 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-01-31',
 
   nitro: {
+    experimental: {
+      tasks: true,
+    },
+    // The Vercel preset ignores `scheduledTasks`, so cron hits a route that runs the task.
+    // Vercel sends CRON_SECRET (set in the project) as a bearer token. The interval is
+    // COLLECTIONS_INDEX_INTERVAL_MINUTES, which the UI quotes.
+    vercel: {
+      config: {
+        version: 3,
+        crons: [{ path: '/api/cron/collections-index', schedule: '*/5 * * * *' }],
+      },
+    },
     externals: {
       inline: [
         'shiki',

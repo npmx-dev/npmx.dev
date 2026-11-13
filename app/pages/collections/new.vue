@@ -50,6 +50,7 @@ async function save(body: CollectionBody) {
   await navigateTo({
     name: 'collections-identifier-rkey',
     params: { identifier: user.value?.handle ?? created.did, rkey: created.rkey },
+    query: { created: '1' },
   })
 }
 
@@ -57,7 +58,7 @@ const router = useRouter()
 const canGoBack = useCanGoBack()
 function cancel() {
   if (canGoBack.value) router.back()
-  else navigateTo('/')
+  else navigateTo({ name: 'collections' })
 }
 
 useSeoMeta({

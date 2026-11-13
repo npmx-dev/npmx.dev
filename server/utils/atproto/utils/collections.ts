@@ -67,10 +67,10 @@ export type CollectionsDeps = {
   moderation: Pick<AccountModerationUtils, 'getHiddenDids' | 'isHidden'>
 }
 
-type IndexedCollection = Omit<CollectionSummary, 'handle'>
+export type IndexedCollection = Omit<CollectionSummary, 'handle'>
 
 /** A record's listing fields, as browse indexes them and summaries show them. */
-function toCollectionFields(
+export function toCollectionFields(
   did: string,
   rkey: string,
   cid: string,
