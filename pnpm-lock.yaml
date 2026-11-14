@@ -198,6 +198,9 @@ importers:
       focus-trap:
         specifier: ^8.0.0
         version: 8.2.2
+      forges:
+        specifier: ^0.3.2
+        version: 0.3.2
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
@@ -238,8 +241,8 @@ importers:
         specifier: 4.4.3
         version: 4.4.3
       simple-git:
-        specifier: 3.36.0
-        version: 3.36.0(supports-color@10.2.2)
+        specifier: 4.0.2
+        version: 4.0.2(supports-color@10.2.2)
       spdx-license-list:
         specifier: 6.12.0
         version: 6.12.0
@@ -274,8 +277,8 @@ importers:
         specifier: 3.5.42
         version: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
       vue-data-ui:
-        specifier: 3.28.7
-        version: 3.28.7(vue@3.5.42)
+        specifier: 3.29.1
+        version: 3.29.1(vue@3.5.42)
       vue-router:
         specifier: 5.2.0
         version: 5.2.0(@voidzero-dev/vite-plus-core@1.4.0)(@vue/compiler-sfc@3.5.42)(esbuild@0.28.1)(rolldown@1.2.4)(rollup@4.62.2)(vue@3.5.42)(webpack@5.108.4)
@@ -331,12 +334,9 @@ importers:
       chromatic:
         specifier: 18.2.0
         version: 18.2.0
-      devalue:
-        specifier: 6.0.0
-        version: 6.0.0
       eslint-plugin-regexp:
-        specifier: 3.3.2
-        version: 3.3.2(eslint@10.6.0)
+        specifier: 3.3.3
+        version: 3.3.3(eslint@10.6.0)
       fast-check:
         specifier: 4.9.0
         version: 4.9.0
@@ -350,8 +350,8 @@ importers:
         specifier: npm:h3@2.0.1-rc.26
         version: h3@2.0.1-rc.26(crossws@0.4.15)
       knip:
-        specifier: 6.44.0
-        version: 6.44.0
+        specifier: 6.44.1
+        version: 6.44.1
       markdown-it-anchor:
         specifier: 10.0.0
         version: 10.0.0(@types/markdown-it@14.1.2)(markdown-it@14.3.0)
@@ -4127,11 +4127,14 @@ packages:
     peerDependencies:
       ajv: ^6.12.3 || ^7.0.0 || ^8.0.0
 
-  '@simple-git/args-pathspec@1.0.3':
-    resolution: {integrity: sha512-ngJMaHlsWDTfjyq9F3VIQ8b7NXbBLq5j9i5bJ6XLYtD6qlDXT7fdKY2KscWWUF8t18xx052Y/PUO1K1TRc9yKA==}
+  '@simple-git/args-pathspec@1.0.4':
+    resolution: {integrity: sha512-EtMX6XjRWSastG2SdkmSQByPtJ9dx/NIjnHbpQPCYt62j4RmSx5rgLTGpw0YCjF5h191gZOmBfheOT23cRSFdw==}
 
   '@simple-git/argv-parser@1.1.1':
     resolution: {integrity: sha512-Q9lBcfQ+VQCpQqGJFHe5yooOS5hGdLFFbJ5R+R5aDsnkPCahtn1hSkMcORX65J2Z5lxSkD0lQorMsncuBQxYUw==}
+
+  '@simple-git/argv-parser@2.0.1':
+    resolution: {integrity: sha512-M++IaVWrN+vYalilOHfwvT2IL3wYZtVEBQpmX6DLSOJLtxbZ+SUeIDE3IiPogzhPACLajwtxfa5rp+ZX1FczzQ==}
 
   '@sindresorhus/is@4.6.0':
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
@@ -6470,10 +6473,6 @@ packages:
   devalue@5.9.0:
     resolution: {integrity: sha512-RWrqdArjvPbsATEhOPUo6Wndc/iWnkWKlhIrdlF3zMMYo/c3CVtoaVAyLtWxz5h8nSlkHzxnzV2uLydPXmtF+A==}
 
-  devalue@6.0.0:
-    resolution: {integrity: sha512-jITRGmc7d+UInNVsQxcz3zsbDwP1MvvVzlNto94FAeieVO5oAk3lupptFvTVBcB+rM2BAagsKtTjgVKFsddCkA==}
-    engines: {node: '>=22.17'}
-
   devframe@0.7.16:
     resolution: {integrity: sha512-U4vqEPgjYfovFEyOAmUlNG5DVGnb6Sx0Tgy9QiQAbtGieC5zTraOBL7GUyXGqdc53SCx/DhFfwjJcebt85T/Bw==}
     peerDependencies:
@@ -6772,8 +6771,8 @@ packages:
     engines: {node: '>=6.0'}
     hasBin: true
 
-  eslint-plugin-regexp@3.3.2:
-    resolution: {integrity: sha512-hdkHQVDUtP3+U66PMZSQxw++mburJyJbFY8fu8lryMvJ2glo7xjq1Ov8A/uczxNU+IS87TFXUUBIJ7dxqgcJwg==}
+  eslint-plugin-regexp@3.3.3:
+    resolution: {integrity: sha512-bIpFf1uL9AB6MY5cDUXL2lrfuBA+/WLc1AwC+56OsHWo93zoKQ4EcAQ+wsOxq5ozLC9xfTYAb4Si+0w0Ll1hYA==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     peerDependencies:
       eslint: '>=9.38.0'
@@ -7057,6 +7056,10 @@ packages:
   foreground-child@3.3.1:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
+
+  forges@0.3.2:
+    resolution: {integrity: sha512-x6epJowWXC8yOQThyxmvgPL4duk8iB9/smsmEU0gKuq7M6CGgzcljoA1KDyIlhrYwTZP8HtMNMQXIPm931OiyA==}
+    engines: {node: '>=22.18'}
 
   formatly@0.11.4:
     resolution: {integrity: sha512-TeCC10lP8KCgoX+Fe5lryILIT0/Dy+nP0OSVnsuB5CwXoLuOdqxCYlPFF1inR8S/zTy1ec7TjhS2TeRKWzzImA==}
@@ -7881,8 +7884,8 @@ packages:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
 
-  knip@6.44.0:
-    resolution: {integrity: sha512-mT0fl71Mqrko91azUO2Jw/uhYKwldORKT4liRq6yV0ZAtt6G2eYusdnvx8eBSQJDjvhRGKkpKUUx+vUG6syV4w==}
+  knip@6.44.1:
+    resolution: {integrity: sha512-Hbd8nvkIsNgFfXgC7Jsb5LHv7jj6VwA3tmfHd53XPX2z9Vc9RnAZqV0BIiP4OrtYqKwCoLseFHQZerb1bNlbSw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -9735,6 +9738,9 @@ packages:
   simple-git@3.36.0:
     resolution: {integrity: sha512-cGQjLjK8bxJw4QuYT7gxHw3/IouVESbhahSsHrX97MzCL1gu2u7oy38W6L2ZIGECEfIBG4BabsWDPjBxJENv9Q==}
 
+  simple-git@4.0.2:
+    resolution: {integrity: sha512-l0sIsv9VrPwovKELFDBOj/lhmIcbMvxBk2B+hRhsMM4/VL3gKtuZvYnBNixVo+N/0HnqQx2cBdLvxnAbygHpqA==}
+
   sirv@3.0.2:
     resolution: {integrity: sha512-2wcC/oGxHis/BoHkkPwldgiPSYcpZK3JU28WoMVv55yHJgcZ8rlXvuG9iZggz+sU1d4bRgIGASwyWqjxu3FM0g==}
     engines: {node: '>=18'}
@@ -10800,8 +10806,8 @@ packages:
   vue-component-type-helpers@3.3.12:
     resolution: {integrity: sha512-HwCqmgTfLFskQc4P5TRnbduCMyPat2Ezu0elLWOGn0dD/6BKHP15B5bxce6aDi+E4kblPtru8amIBQzu0Di3qQ==}
 
-  vue-data-ui@3.28.7:
-    resolution: {integrity: sha512-QZP0SYW/7RoKVdvER1hDcQSnXfkIIpqde3zc6X6m0c8mP0UNS5MwP+/VJtDtsfnijhWz8BTDUZG7ij6Rwx+M+A==}
+  vue-data-ui@3.29.1:
+    resolution: {integrity: sha512-jEYmsZH94Pv6bHWlDf3tgzvJdCAxcNSLuL/4GuwQ5TrXHLmvwXxcID7HYyDbGnQUwXXMIBqrWD96qTZnoc+cbg==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: 3.5.42
@@ -15456,11 +15462,15 @@ snapshots:
       ajv: 8.20.0
       kleur: 4.1.5
 
-  '@simple-git/args-pathspec@1.0.3': {}
+  '@simple-git/args-pathspec@1.0.4': {}
 
   '@simple-git/argv-parser@1.1.1':
     dependencies:
-      '@simple-git/args-pathspec': 1.0.3
+      '@simple-git/args-pathspec': 1.0.4
+
+  '@simple-git/argv-parser@2.0.1':
+    dependencies:
+      '@simple-git/args-pathspec': 1.0.4
 
   '@sindresorhus/is@4.6.0': {}
 
@@ -17886,8 +17896,6 @@ snapshots:
 
   devalue@5.9.0: {}
 
-  devalue@6.0.0: {}
-
   devframe@0.7.16(@modelcontextprotocol/sdk@1.29.0)(cac@7.0.0)(srvx@0.11.22)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2):
     dependencies:
       '@valibot/to-json-schema': 1.7.1(valibot@1.4.2)
@@ -18459,7 +18467,7 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-plugin-regexp@3.3.2(eslint@10.6.0):
+  eslint-plugin-regexp@3.3.3(eslint@10.6.0):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.6.0)
       '@eslint-community/regexpp': 4.12.2
@@ -18845,6 +18853,8 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
+
+  forges@0.3.2: {}
 
   formatly@0.11.4:
     dependencies:
@@ -19776,7 +19786,7 @@ snapshots:
 
   klona@2.0.6: {}
 
-  knip@6.44.0:
+  knip@6.44.1:
     dependencies:
       formatly: 0.11.4
       get-tsconfig: 4.14.3
@@ -22645,8 +22655,18 @@ snapshots:
     dependencies:
       '@kwsites/file-exists': 1.1.1(supports-color@10.2.2)
       '@kwsites/promise-deferred': 1.1.1
-      '@simple-git/args-pathspec': 1.0.3
+      '@simple-git/args-pathspec': 1.0.4
       '@simple-git/argv-parser': 1.1.1
+      debug: 4.4.3(supports-color@10.2.2)
+    transitivePeerDependencies:
+      - supports-color
+
+  simple-git@4.0.2(supports-color@10.2.2):
+    dependencies:
+      '@kwsites/file-exists': 1.1.1(supports-color@10.2.2)
+      '@kwsites/promise-deferred': 1.1.1
+      '@simple-git/args-pathspec': 1.0.4
+      '@simple-git/argv-parser': 2.0.1
       debug: 4.4.3(supports-color@10.2.2)
     transitivePeerDependencies:
       - supports-color
@@ -23826,7 +23846,7 @@ snapshots:
 
   vue-component-type-helpers@3.3.12: {}
 
-  vue-data-ui@3.28.7(vue@3.5.42):
+  vue-data-ui@3.29.1(vue@3.5.42):
     dependencies:
       vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
 

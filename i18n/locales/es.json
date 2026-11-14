@@ -380,9 +380,7 @@
       "tangled": "Ver en Tangled"
     },
     "collapse": "Contraer",
-    "collapse_with_name": "Contraer {name}",
-    "expand": "Expandir",
-    "expand_with_name": "Expandir {name}"
+    "expand": "Expandir"
   },
   "profile": {
     "display_name": "Nombre visible",
@@ -1084,8 +1082,7 @@
   "badges": {
     "provenance": {
       "verified": "verificado",
-      "verified_title": "Procedencia verificada",
-      "verified_via": "Verificado: publicado vía {provider}"
+      "verified_title": "Procedencia verificada"
     },
     "jsr": {
       "title": "también disponible en JSR"

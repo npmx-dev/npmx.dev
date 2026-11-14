@@ -345,9 +345,7 @@
       "tangled": "Auf Tangled ansehen"
     },
     "collapse": "Einklappen",
-    "collapse_with_name": "{name} einklappen",
-    "expand": "Ausklappen",
-    "expand_with_name": "{name} ausklappen"
+    "expand": "Ausklappen"
   },
   "profile": {
     "display_name": "Anzeigename",
@@ -1030,8 +1028,7 @@
   "badges": {
     "provenance": {
       "verified": "verifiziert",
-      "verified_title": "Verifizierter Herkunftsnachweis",
-      "verified_via": "Verifiziert: veröffentlicht via {provider}"
+      "verified_title": "Verifizierter Herkunftsnachweis"
     },
     "jsr": {
       "title": "auch auf JSR verfügbar"

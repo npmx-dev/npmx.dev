@@ -954,6 +954,9 @@
             },
             "keyboard_shortcuts": {
               "type": "string"
+            },
+            "reset": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1121,6 +1124,15 @@
           "type": "string"
         },
         "enable_changelog_autoscroll_description": {
+          "type": "string"
+        },
+        "reset_settings": {
+          "type": "string"
+        },
+        "reset_settings_description": {
+          "type": "string"
+        },
+        "reset_settings_confirm": {
           "type": "string"
         }
       },
@@ -1303,13 +1315,13 @@
         "collapse": {
           "type": "string"
         },
-        "collapse_with_name": {
-          "type": "string"
-        },
         "expand": {
           "type": "string"
         },
-        "expand_with_name": {
+        "copy_section_link": {
+          "type": "string"
+        },
+        "section_link_copied": {
           "type": "string"
         },
         "copyMdError": {
@@ -1520,6 +1532,9 @@
                   "type": "string"
                 },
                 "total": {
+                  "type": "string"
+                },
+                "frozen": {
                   "type": "string"
                 }
               },
@@ -2077,6 +2092,9 @@
         "timeline": {
           "type": "object",
           "properties": {
+            "load_newer": {
+              "type": "string"
+            },
             "load_more": {
               "type": "string"
             },
@@ -2150,6 +2168,9 @@
                   "type": "string"
                 },
                 "ordered_versions": {
+                  "type": "string"
+                },
+                "frozen_history": {
                   "type": "string"
                 },
                 "sort_label": {
@@ -2329,6 +2350,9 @@
               },
               "additionalProperties": false
             },
+            "table_view": {
+              "type": "string"
+            },
             "chart_view_toggle": {
               "type": "string"
             },
@@ -2336,6 +2360,9 @@
               "type": "string"
             },
             "chart_view_split": {
+              "type": "string"
+            },
+            "date": {
               "type": "string"
             },
             "granularity": {
@@ -3576,9 +3603,6 @@
             },
             "verified_title": {
               "type": "string"
-            },
-            "verified_via": {
-              "type": "string"
             }
           },
           "additionalProperties": false
@@ -3590,6 +3614,21 @@
               "type": "string"
             },
             "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "trusted_publishing": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "title_via": {
               "type": "string"
             }
           },

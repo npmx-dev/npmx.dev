@@ -637,8 +637,7 @@
   "badges": {
     "provenance": {
       "verified": "சரிபார்க்கப்பட்டது",
-      "verified_title": "சரிபார்க்கப்பட்ட மூலநிலை",
-      "verified_via": "சரிபார்க்கப்பட்டது: {provider} வழியாக வெளியிடப்பட்டது"
+      "verified_title": "சரிபார்க்கப்பட்ட மூலநிலை"
     },
     "jsr": {
       "title": "JSR-லும் கிடைக்கிறது"

@@ -380,9 +380,7 @@
       "tangled": "Tangledで表示"
     },
     "collapse": "折りたたむ",
-    "collapse_with_name": "{name} を折りたたむ",
-    "expand": "展開",
-    "expand_with_name": "{name} を展開"
+    "expand": "展開"
   },
   "profile": {
     "display_name": "表示名",
@@ -1076,8 +1074,7 @@
   "badges": {
     "provenance": {
       "verified": "検証済み",
-      "verified_title": "検証済みprovenance",
-      "verified_via": "検証済み: {provider} 経由で公開"
+      "verified_title": "検証済みprovenance"
     },
     "jsr": {
       "title": "JSRでも利用可能"

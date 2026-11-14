@@ -432,9 +432,7 @@
       "tangled": "Bekijk op Tangled"
     },
     "collapse": "inklappen",
-    "collapse_with_name": "inklappen {name}",
     "expand": "uitklappen",
-    "expand_with_name": "uitklappen {name}",
     "copyMdError": "Markdown kon niet worden opgehaald. Probeer het later opnieuw"
   },
   "profile": {
@@ -1186,8 +1184,7 @@
   "badges": {
     "provenance": {
       "verified": "geverifieerd",
-      "verified_title": "geverifieerde herkomstgegevens",
-      "verified_via": "Geverifieerd: gepubliceerd via {provider}"
+      "verified_title": "geverifieerde herkomstgegevens"
     },
     "staged_publish": {
       "label": "Gefaseerde publicatie",

@@ -451,6 +451,9 @@ const xAxisLabelsModulo = computed(() => {
 
 const config = computed<VueUiXyConfig>(() => {
   return {
+    a11y: {
+      includeTable: true,
+    },
     theme: isDarkMode.value ? 'dark' : '',
     transitions: {
       pauseOnDatasetChange: true, // prevents transitions on axis labels when switching from install size to dependencies
@@ -721,6 +724,9 @@ const indexSelection = computed(() => {
 })
 
 const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
+  a11y: {
+    includeTable: true,
+  },
   theme: isDarkMode.value ? 'dark' : '',
   useCssAnimation: false,
   userOptions: {
@@ -850,6 +856,9 @@ const sort = usePermalink<'time' | 'semver'>('sort', 'semver')
 // "Stable only" filter shared with the page + list via the query string.
 const stableOnly = useTimelineStableOnly()
 
+// "Frozen history" toggle for the size metrics
+const frozenHistory = useTimelineFrozenHistory()
+
 const timelineSortOptions = computed(() => [
   { value: 'time' as const, label: $t('package.timeline.chart.sort_time') },
   { value: 'semver' as const, label: $t('package.timeline.chart.sort_semver') },
@@ -932,6 +941,10 @@ const timelineMetricTabs = computed(() => [
         <SettingsToggle
           v-model="stableOnly"
           :label="$t('package.timeline.chart.ordered_versions')"
+        />
+        <SettingsToggle
+          v-model="frozenHistory"
+          :label="$t('package.timeline.chart.frozen_history')"
         />
         <template v-if="activeTab === 'totalSize' || activeTab === 'dependencyCount'">
           <SettingsToggle

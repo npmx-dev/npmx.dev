@@ -388,9 +388,7 @@
       "tangled": "Tangled에서 보기"
     },
     "collapse": "접기",
-    "collapse_with_name": "{name} 접기",
     "expand": "펼치기",
-    "expand_with_name": "{name} 펼치기",
     "copyMdError": "Markdown을 불러오지 못했습니다. 나중에 다시 시도하세요"
   },
   "profile": {
@@ -1109,8 +1107,7 @@
   "badges": {
     "provenance": {
       "verified": "검증됨",
-      "verified_title": "검증된 출처",
-      "verified_via": "검증됨: {provider}를 통해 게시됨"
+      "verified_title": "검증된 출처"
     },
     "jsr": {
       "title": "JSR에서도 사용 가능"

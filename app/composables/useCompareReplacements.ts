@@ -1,4 +1,4 @@
-import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
+import type { ModuleReplacement } from 'module-replacements'
 import { NO_DEPENDENCY_ID } from '#shared/utils/compare'
 import { parsePackageSpec } from '#shared/utils/parse-package-param'
 
@@ -53,10 +53,7 @@ export function useCompareReplacements(packageNames: MaybeRefOrGetter<string[]>)
       const results = await Promise.all(
         namesToCheck.map(async name => {
           try {
-            const result = await $fetch<{
-              mapping: ModuleReplacementMapping
-              replacement: ModuleReplacement
-            } | null>(`/api/replacements/${name}`)
+            const result = await fetchModuleReplacement(name)
             return { name, replacement: result?.replacement ?? null, failed: false as const }
           } catch {
             return { name, failed: true as const }

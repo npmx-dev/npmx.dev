@@ -1,5 +1,6 @@
 import * as v from 'valibot'
 import type { InternalImportsMap, PackageExportsMap } from '#server/utils/import-resolver'
+import { publishedRevision } from '#server/utils/readme-loaders'
 import { PackageFileQuerySchema } from '#shared/schemas/package'
 import type { ReadmeResponse } from '#shared/types/readme'
 import {
@@ -186,7 +187,12 @@ export default defineCachedEventHandler(
         try {
           const packageData = await fetchNpmPackage(rawPackageName)
           const repoInfo = parseRepositoryInfo(packageData.repository)
-          markdownHtml = await renderReadmeHtml(content, rawPackageName, repoInfo)
+          markdownHtml = await renderReadmeHtml(
+            content,
+            rawPackageName,
+            repoInfo,
+            publishedRevision(packageData, version),
+          )
         } catch {
           markdownHtml = undefined
         }
