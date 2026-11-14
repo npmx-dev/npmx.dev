@@ -585,6 +585,15 @@ const config = computed<VueUiXyConfig>(() => {
           strokeWidth: 1,
           strokeDasharray: 3,
         },
+        dragToZoom: {
+          show: true,
+          selection: {
+            fill: colors.value.accent,
+            fillOpacity: isDarkMode.value ? 0.05 : 0.08,
+            stroke: colors.value.accent,
+            strokeDasharray: 3,
+          },
+        },
       },
     },
   }
