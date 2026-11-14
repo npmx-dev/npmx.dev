@@ -176,6 +176,7 @@ const previewPackageJson = computed(() => {
       <div class="flex gap-3">
         <NuxtLink
           :to="packageRoute(packageName)"
+          prefetch-on="interaction"
           class="flex-1 px-4 py-2 font-mono text-sm text-center text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
           @click="close"
         >

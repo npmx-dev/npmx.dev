@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NPMX_DOCS_SITE } from '#shared/utils/constants'
-import { SPONSORS } from '~/assets/logos/sponsors'
+import { FOOTER_SPONSOR_NAMES } from '~/assets/logos/sponsors/names'
 
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
@@ -38,8 +38,9 @@ const socialLinks = computed(() => [
 ])
 
 const sponsorList = computed(() => {
-  const names = [...SPONSORS.gold, ...SPONSORS.silver].map(s => s.name)
-  return new Intl.ListFormat(locale.value, { style: 'long', type: 'conjunction' }).format(names)
+  return new Intl.ListFormat(locale.value, { style: 'long', type: 'conjunction' }).format(
+    FOOTER_SPONSOR_NAMES,
+  )
 })
 
 const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>(() => [

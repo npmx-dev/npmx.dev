@@ -207,6 +207,7 @@ const stickyStyle = computed(() => {
               <NuxtLink
                 v-if="packageName"
                 :to="packageRoute(packageName)"
+                prefetch-on="interaction"
                 class="link-subtle font-mono text-sm"
               >
                 {{ $t('package.docs.view_package') }}
