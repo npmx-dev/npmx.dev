@@ -148,28 +148,44 @@ export interface DataPipelineContext {
  * 2. Data correction – smoothing & averaging
  */
 export function applyDataPipeline(
-  series: number[],
+  series: Array<number | null>,
   settings: DataPipelineSettings,
   ctx: DataPipelineContext,
-): number[] {
+): Array<number | null> {
   if (series.length === 0) return series
 
-  // Step 1: prediction
-  let s = series
-  if (!ctx.isAbsoluteMetric) {
-    const projected = extrapolateLastValue({
-      series,
-      granularity: ctx.granularity,
-      lastDateMs: ctx.lastDateMs,
-      referenceMs: ctx.referenceMs,
-      predictionPoints: settings.predictionPoints,
-    })
-    s = [...series.slice(0, -1), projected]
-  }
+  // Keep gaps at their original indices and process each continuous run independently.
+  const result = [...series]
+  let start = 0
+  while (start < series.length) {
+    if (series[start] === null) {
+      start += 1
+      continue
+    }
 
-  // Step 2: smoothing & averaging
-  return applyDataCorrection(
-    s.map(value => ({ value })),
-    settings,
-  ).map(d => d.value)
+    let end = start
+    while (end < series.length && series[end] !== null) end += 1
+    const run = series.slice(start, end) as number[]
+
+    // Only the run containing the final bucket can have a partial endpoint.
+    if (end === series.length && !ctx.isAbsoluteMetric) {
+      run[run.length - 1] = extrapolateLastValue({
+        series: run,
+        granularity: ctx.granularity,
+        lastDateMs: ctx.lastDateMs,
+        referenceMs: ctx.referenceMs,
+        predictionPoints: settings.predictionPoints,
+      })
+    }
+
+    const corrected = applyDataCorrection(
+      run.map(value => ({ value })),
+      settings,
+    )
+    corrected.forEach((point, index) => {
+      result[start + index] = point.value
+    })
+    start = end
+  }
+  return result
 }

@@ -8,6 +8,8 @@ import { fetchNpmPackage } from '#server/utils/npm'
 import { assertValidPackageName, normalizeLicense } from '#shared/utils/npm'
 import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { handleApiError } from '#server/utils/error-handler'
+import { isExcludedByLastKnownAffectedRange } from '#server/utils/osv'
+import type { OsvQueryResponse } from '#shared/types/dependency-analysis'
 
 const NPM_DOWNLOADS_API = 'https://api.npmjs.org/downloads/point'
 const OSV_QUERY_API = 'https://api.osv.dev/v1/query'
@@ -522,8 +524,11 @@ async function fetchVulnerabilities(packageName: string, version: string): Promi
         package: { name: packageName, ecosystem: 'npm' },
       }),
     })
-    const data = await response.json()
-    return data.vulns?.length ?? 0
+    const data: OsvQueryResponse = await response.json()
+    return (
+      data.vulns?.filter(vuln => !isExcludedByLastKnownAffectedRange(vuln, packageName, version))
+        .length ?? 0
+    )
   } catch {
     return 0
   }

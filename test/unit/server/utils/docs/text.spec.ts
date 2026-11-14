@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import * as fc from 'fast-check'
 import {
   computeEntryPrefixes,
@@ -100,6 +100,40 @@ describe('parseJsDocLinks', () => {
     expect(result).toContain('>Example Site</a>')
   })
 
+  it('should handle pipe syntax for external URLs', () => {
+    const result = parseJsDocLinks('{@link https://example.com | Pipe Syntax}', emptyLookup)
+    expect(result).toBe(
+      '<a href="https://example.com" target="_blank" rel="noreferrer" class="docs-link">Pipe Syntax</a>',
+    )
+  })
+
+  it.each([
+    '{@link Command | entry command}',
+    '{@link Command|entry command}',
+    '{@link Command |entry command}',
+    '{@link Command| entry command}',
+    '{@link Command  |  entry command }',
+  ])('should handle pipe syntax for symbol references: %s', input => {
+    const lookup: SymbolLookup = new Map([['Command', 'interface-Command']])
+    expect(parseJsDocLinks(input, lookup)).toBe(
+      '<a href="#interface-Command" class="docs-symbol-link">entry command</a>',
+    )
+  })
+
+  it('should keep pipes inside a pipe syntax label', () => {
+    const result = parseJsDocLinks('{@link Command | a | b}', emptyLookup)
+    expect(result).toBe('<code class="docs-symbol-ref">a | b</code>')
+  })
+
+  it.each(['{@link Command |}', '{@link Command | }', '{@link Command|}'])(
+    'should fall back to the target when the pipe syntax label is empty: %s',
+    input => {
+      expect(parseJsDocLinks(input, emptyLookup)).toBe(
+        '<code class="docs-symbol-ref">Command</code>',
+      )
+    },
+  )
+
   it('should convert internal symbol references to anchor links', () => {
     const lookup: SymbolLookup = new Map([['MyFunction', 'function-MyFunction']])
     const result = parseJsDocLinks('{@link MyFunction}', lookup)
@@ -152,13 +186,28 @@ describe('parseJsDocLinks', () => {
 
   it('should convert external URLs using {@link url text} to links', () => {
     fc.assert(
-      fc.property(fc.webUrl(), fc.stringMatching(/^[^}\s][^}]+[^}\s]$/), (url, text) => {
+      fc.property(fc.webUrl(), fc.stringMatching(/^[^}\s|][^}]+[^}\s]$/), (url, text) => {
         const result = parseJsDocLinks(`{@link ${url} ${text}}`, emptyLookup)
         expect(result).toContain(`href="${escapeHtml(url)}"`)
         expect(result).toContain('target="_blank"')
         expect(result).toContain('rel="noreferrer"')
         expect(result).toContain(escapeHtml(text))
       }),
+    )
+  })
+
+  it('should convert external URLs using {@link url | text} to links', () => {
+    fc.assert(
+      fc.property(
+        fc.webUrl(),
+        fc.constantFrom('|', ' |', '| ', ' | '),
+        fc.stringMatching(/^[^}\s][^}]+[^}\s]$/),
+        (url, separator, text) => {
+          const result = parseJsDocLinks(`{@link ${url}${separator}${text}}`, emptyLookup)
+          expect(result).toContain(`href="${escapeHtml(url)}"`)
+          expect(result).toContain(`>${escapeHtml(text)}</a>`)
+        },
+      ),
     )
   })
 

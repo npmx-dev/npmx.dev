@@ -4,7 +4,7 @@ const MAX_SKILL_FILE_SIZE = 500 * 1024
  * Parse YAML frontmatter from SKILL.md content.
  * Returns { frontmatter, content } where content is the markdown body without frontmatter.
  */
-export function parseFrontmatter(raw: string): { frontmatter: SkillFrontmatter; content: string } {
+function parseFrontmatter(raw: string): { frontmatter: SkillFrontmatter; content: string } {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/)
   if (!match) {
     throw createError({ statusCode: 400, message: 'Invalid SKILL.md: missing YAML frontmatter' })
@@ -85,7 +85,7 @@ const countFilesRecursive = (nodes: PackageFileTree[]): number =>
 /**
  * Count files in skill subdirectories (scripts, references, assets).
  */
-export function countSkillFiles(children: PackageFileTree[]): SkillFileCounts | undefined {
+function countSkillFiles(children: PackageFileTree[]): SkillFileCounts | undefined {
   const counts: SkillFileCounts = {}
 
   for (const child of children) {
@@ -154,7 +154,7 @@ export async function fetchSkillContent(
 /**
  * Validate skill frontmatter and return warnings.
  */
-export function validateSkill(frontmatter: SkillFrontmatter): SkillWarning[] {
+function validateSkill(frontmatter: SkillFrontmatter): SkillWarning[] {
   const warnings: SkillWarning[] = []
   if (!frontmatter.license) {
     warnings.push({ type: 'warning', message: 'No license specified' })

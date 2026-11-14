@@ -12,19 +12,6 @@ interface ProcessedVersion {
 }
 
 /**
- * Filter out versions below a usage threshold
- * @param versions Array of version download points
- * @param thresholdPercent Minimum percentage to include (default: 0.1%)
- * @returns Filtered array of versions
- */
-export function filterLowUsageVersions(
-  versions: VersionDownloadPoint[],
-  thresholdPercent: number = 0.1,
-): VersionDownloadPoint[] {
-  return versions.filter(v => v.percentage >= thresholdPercent)
-}
-
-/**
  * Parse and validate version strings, calculating total downloads
  * @param rawDownloads Raw download data from npm API
  * @returns Array of processed versions with parsed semver data
@@ -72,7 +59,7 @@ function addPercentages(
  * @param rawDownloads Raw download data from npm API
  * @returns Array of version groups sorted by downloads descending
  */
-export function groupByMajor(rawDownloads: Record<string, number>): VersionGroupDownloads[] {
+function groupByMajor(rawDownloads: Record<string, number>): VersionGroupDownloads[] {
   const processed = parseVersions(rawDownloads)
   const totalDownloads = processed.reduce((sum, v) => sum + v.downloads, 0)
 
@@ -108,7 +95,7 @@ export function groupByMajor(rawDownloads: Record<string, number>): VersionGroup
  * @param rawDownloads Raw download data from npm API
  * @returns Array of version groups sorted by downloads descending
  */
-export function groupByMinor(rawDownloads: Record<string, number>): VersionGroupDownloads[] {
+function groupByMinor(rawDownloads: Record<string, number>): VersionGroupDownloads[] {
   const processed = parseVersions(rawDownloads)
   const totalDownloads = processed.reduce((sum, v) => sum + v.downloads, 0)
 

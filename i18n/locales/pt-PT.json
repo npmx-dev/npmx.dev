@@ -155,9 +155,6 @@
       "compare": "Comparar este pacote",
       "download": "Transferir tarball"
     },
-    "package_actions": {
-      "copy_run": "Copiar comando de execução"
-    },
     "code": {
       "copy_file": "Copiar conteúdo do ficheiro"
     },
@@ -345,9 +342,7 @@
       "tangled": "Ver no Tangled"
     },
     "collapse": "Recolher",
-    "collapse_with_name": "Recolher {name}",
-    "expand": "Expandir",
-    "expand_with_name": "Expandir {name}"
+    "expand": "Expandir"
   },
   "profile": {
     "display_name": "Nome a apresentar",
@@ -586,10 +581,7 @@
       "trusted_publisher_added": "Publicação de confiança ativada",
       "trusted_publisher_removed": "Publicação de confiança removida",
       "provenance_added": "Proveniência ativada",
-      "provenance_removed": "Proveniência removida",
-      "chart": {
-        "copy_alt": {}
-      }
+      "provenance_removed": "Proveniência removida"
     },
     "dependencies": {
       "title": "Dependência ({count}) | Dependências ({count})",
@@ -1014,8 +1006,7 @@
   "badges": {
     "provenance": {
       "verified": "verificado",
-      "verified_title": "Proveniência verificada",
-      "verified_via": "Verificado: publicado via {provider}"
+      "verified_title": "Proveniência verificada"
     },
     "jsr": {
       "title": "também disponível no JSR"
@@ -1597,18 +1588,10 @@
     "p2": "Antes de começar, por favor lê o nosso {guide} para saberes mais sobre o nosso processo de tradução e como podes contribuir.",
     "guide": "Guia de tradução (i18n)",
     "by_locale": "Progresso de tradução por locale",
-    "by_file": "Progresso de tradução por ficheiro",
     "complete_text": "Esta tradução está completa, ótimo trabalho!",
     "missing_text": "em falta",
     "missing_keys": "Não existem traduções em falta | Tradução em falta | Traduções em falta",
-    "progress_label": "Estado de progresso para {locale}",
-    "table": {
-      "file": "Ficheiro",
-      "status": "Estado",
-      "error": "Erro ao carregar a lista de ficheiros.",
-      "empty": "Nenhum ficheiro encontrado",
-      "file_link": "Editar {file} ({lang}) no GitHub"
-    }
+    "progress_label": "Estado de progresso para {locale}"
   },
   "vacations": {
     "title": "de férias",
@@ -1700,8 +1683,5 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logótipo do npmx.",
-  "changelog": {
-    "error": {}
-  }
+  "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logótipo do npmx."
 }

@@ -136,6 +136,14 @@ useSeoMeta({
             permalink
           />
         </section>
+
+        <section id="daily-downloads-heatmap" class="mt-12">
+          <h2 class="text-fg-muted mb-6 uppercase">
+            {{ $t('package.stats.daily_downloads_heatmap') }}
+          </h2>
+          <PackageDailyDownloadsHeatmap :package-name="packageName" />
+        </section>
+
         <section id="distribution" class="mt-12">
           <h2 class="text-fg-muted mb-6 uppercase">
             {{ $t('package.stats.version_distribution') }}

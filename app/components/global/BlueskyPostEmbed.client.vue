@@ -12,6 +12,8 @@ const props = defineProps<{
   url?: string
   /** Optional preload hint. Rendering still depends on the fetched embed metadata. */
   mediaHint?: 'video'
+  /** Render the post quoted by this post (if any) inside the embed */
+  showQuotedPost?: boolean
 }>()
 
 if (props.mediaHint === 'video') {
@@ -39,9 +41,10 @@ interface EmbedExternal {
   uri: string
 }
 
-interface EmbedGallery {
-  $type: 'app.bsky.embed.gallery#view'
-  items: EmbedImage[]
+interface EmbedRecord {
+  uri: string
+  /** Present on `app.bsky.embed.recordWithMedia#view`, where the quoted record is nested */
+  record?: { uri: string }
 }
 
 interface BlueskyPost {
@@ -51,11 +54,14 @@ interface BlueskyPost {
   embed?: {
     $type: string
     images?: EmbedImage[]
+    items?: EmbedImage[]
     external?: EmbedExternal
     thumbnail?: string
     playlist?: string
     aspectRatio?: { width: number; height: number }
-  } & EmbedGallery
+    record?: EmbedRecord
+    media?: BlueskyPost['embed']
+  }
   likeCount?: number
   replyCount?: number
   repostCount?: number
@@ -117,6 +123,19 @@ const postUrl = computed(() => {
   const [, did, rkey] = match
   return `https://bsky.app/profile/${did}/post/${rkey}`
 })
+
+const media = computed(() => {
+  const embed = post.value?.embed
+  if (embed?.$type === 'app.bsky.embed.recordWithMedia#view') return embed.media
+  return embed
+})
+
+const quotedPostUri = computed(() => {
+  const embed = post.value?.embed
+  if (embed?.$type === 'app.bsky.embed.record#view') return embed.record?.uri
+  if (embed?.$type === 'app.bsky.embed.recordWithMedia#view') return embed.record?.record?.uri
+  return undefined
+})
 </script>
 
 <template>
@@ -165,9 +184,9 @@ const postUrl = computed(() => {
     <p class="text-fg-muted whitespace-pre-wrap leading-relaxed mb-3">{{ post.record.text }}</p>
 
     <!-- Embedded images -->
-    <template v-if="post.embed?.images?.length">
+    <template v-if="media?.images?.length">
       <img
-        v-for="(img, i) in post.embed.images"
+        v-for="(img, i) in media.images"
         :key="i"
         :src="img.fullsize"
         :alt="img.alt"
@@ -182,40 +201,40 @@ const postUrl = computed(() => {
     </template>
 
     <!-- Embedded external embed -->
-    <template v-if="post.embed?.external && post.embed.external.uri">
+    <template v-if="media?.external && media.external.uri">
       <a
-        :href="post.embed.external.uri"
+        :href="media.external.uri"
         target="_blank"
         rel="noopener noreferrer"
         class="relative block mb-3 p-0.5 bg-bg-muted hover:bg-bg-elevated rounded-lg z-10 duration-300 transition-colors"
       >
         <img
-          v-if="post.embed.external.thumb"
-          :src="post.embed.external.thumb"
+          v-if="media.external.thumb"
+          :src="media.external.thumb"
           alt=""
           class="w-full rounded-lg object-cover"
           loading="lazy"
         />
         <div class="text-fg-muted text-sm p-2">
           <p class="font-medium truncate">
-            {{ post.embed.external.title || post.embed.external.uri }}
+            {{ media.external.title || media.external.uri }}
           </p>
-          <p v-if="post.embed.external.description" class="text-sm line-clamp-2 mt-1">
-            {{ post.embed.external.description }}
+          <p v-if="media.external.description" class="text-sm line-clamp-2 mt-1">
+            {{ media.external.description }}
           </p>
         </div>
       </a>
     </template>
 
     <!-- Embedded video -->
-    <template v-if="post.embed?.playlist">
+    <template v-if="media?.playlist">
       <div class="relative block mb-3 p-0.5 bg-bg-muted rounded-lg">
         <LazyVideoPlayer
-          :poster="post.embed.thumbnail"
+          :poster="media.thumbnail"
           playsInline
           controls
           preload="none"
-          :src="post.embed.playlist"
+          :src="media.playlist"
           muted
           loop
           class="block max-h-150 object-contain w-full rounded-lg"
@@ -224,10 +243,10 @@ const postUrl = computed(() => {
     </template>
 
     <!-- Embedded gallery -->
-    <template v-if="post.embed?.$type === 'app.bsky.embed.gallery#view'">
+    <template v-if="media?.$type === 'app.bsky.embed.gallery#view'">
       <div class="relative overflow-x-auto flex gap-3 z-10">
         <img
-          v-for="(img, i) in post.embed.items"
+          v-for="(img, i) in media.items"
           :key="i"
           :src="img.fullsize"
           :alt="img.alt"
@@ -236,6 +255,11 @@ const postUrl = computed(() => {
         />
       </div>
     </template>
+
+    <!-- Quoted post -->
+    <div v-if="showQuotedPost && quotedPostUri" class="relative z-10">
+      <LazyBlueskyPostEmbed :uri="quotedPostUri" />
+    </div>
 
     <!-- Timestamp + engagement -->
     <div class="flex items-center gap-4 text-sm text-fg-subtle mt-3">

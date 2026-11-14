@@ -6,7 +6,7 @@
  *
  * @param halfWindow - number of points on each side (0 = disabled)
  */
-export function movingAverage<T extends { value: number }>(data: T[], halfWindow: number): T[] {
+function movingAverage<T extends { value: number }>(data: T[], halfWindow: number): T[] {
   if (halfWindow <= 0 || data.length < 3) return data
 
   const n = data.length
@@ -46,7 +46,7 @@ export function movingAverage<T extends { value: number }>(data: T[], halfWindow
  *
  * @param tau - time constant (0 = disabled, higher = smoother)
  */
-export function smoothing<T extends { value: number }>(data: T[], tau: number): T[] {
+function smoothing<T extends { value: number }>(data: T[], tau: number): T[] {
   if (tau <= 0 || data.length < 3) return data
 
   const alpha = 1 / (1 + tau)

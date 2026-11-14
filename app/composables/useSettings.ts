@@ -1,6 +1,7 @@
 import type { RemovableRef } from '@vueuse/core'
 import type { LocaleObject } from '@nuxtjs/i18n'
 import { useLocalStorage, useMounted } from '@vueuse/core'
+import { isEqual } from 'ohash'
 import { ACCENT_COLORS, type AccentColorId } from '#shared/utils/constants'
 import { BACKGROUND_THEMES, FOREGROUND_THEMES } from '#shared/utils/constants'
 
@@ -38,6 +39,8 @@ export interface AppSettings {
   keyboardShortcuts: boolean
   /** Enable/disable auto scrolling to requested version at package changelog */
   changelogAutoScroll: boolean
+  /** Keep the additional install commands panel expanded */
+  installCommandsExpanded: boolean
   /** Connector preferences */
   connector: {
     /** Automatically open the web auth page in the browser */
@@ -79,6 +82,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   instantSearch: true,
   keyboardShortcuts: true,
   changelogAutoScroll: true,
+  installCommandsExpanded: false,
   connector: {
     autoOpenURL: false,
     showLikesBadge: true,
@@ -114,13 +118,44 @@ let settingsRef: RemovableRef<AppSettings> | null = null
  */
 export function useSettings() {
   if (!settingsRef) {
-    settingsRef = useLocalStorage<AppSettings>(STORAGE_KEY, DEFAULT_SETTINGS, {
+    // Clone so that changing settings never mutates DEFAULT_SETTINGS
+    settingsRef = useLocalStorage<AppSettings>(STORAGE_KEY, structuredClone(DEFAULT_SETTINGS), {
       mergeDefaults: true,
     })
   }
 
   return {
     settings: settingsRef,
+    resetSettings,
+    areSettingsDefault,
+  }
+}
+
+/**
+ * Whether all settings match their defaults, ignoring the selected language.
+ */
+function areSettingsDefault() {
+  if (!settingsRef) return true
+
+  return isEqual({ ...settingsRef.value, selectedLocale: null }, DEFAULT_SETTINGS)
+}
+
+/**
+ * Restore all settings to their defaults, keeping the selected language.
+ */
+function resetSettings() {
+  if (!settingsRef) return
+
+  settingsRef.value = {
+    ...structuredClone(DEFAULT_SETTINGS),
+    selectedLocale: settingsRef.value.selectedLocale,
+  }
+
+  if (import.meta.client) {
+    document.documentElement.style.removeProperty('--accent-color')
+    document.documentElement.removeAttribute('data-bg-theme')
+    document.documentElement.removeAttribute('data-fg-theme')
+    document.documentElement.removeAttribute('data-collapsed')
   }
 }
 
@@ -354,3 +389,17 @@ export const useCodeLigatures = createSharedComposable(function useCodeLigatures
     toggleCodeLigatures,
   }
 })
+
+export function useInstallCommandsExpanded() {
+  const { settings } = useSettings()
+  const installCommandsExpanded = computed(() => settings.value.installCommandsExpanded)
+
+  function toggleInstallCommandsExpanded() {
+    settings.value.installCommandsExpanded = !settings.value.installCommandsExpanded
+  }
+
+  return {
+    installCommandsExpanded,
+    toggleInstallCommandsExpanded,
+  }
+}

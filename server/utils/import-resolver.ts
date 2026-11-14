@@ -177,7 +177,7 @@ export type InternalImportTarget = string | { default?: string; import?: string 
 
 export type InternalImportsMap = Record<string, InternalImportTarget>
 
-export type PackageExportTarget =
+type PackageExportTarget =
   | string
   | {
       default?: string

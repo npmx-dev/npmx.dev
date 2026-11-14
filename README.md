@@ -53,7 +53,7 @@ What npmx offers:
 - **Changelog view** &ndash; read release notes when packages publish them
 - **Timeline view** &ndash; scan publish history and notable version events such as deprecations and install size changes
 - **Provenance indicators** &ndash; verified build badges and provenance section below the README
-- **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, Sourcehut, Forgejo, Gitea, Radicle, and Tangled
+- **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, Sourcehut, Forgejo, Gitea, Radicle, Tangled, and Pushin
 - **JSR availability** &ndash; see if scoped packages are also available on JSR
 - **Package badges** &ndash; module format (ESM/CJS/dual), TypeScript types (with `@types/*` links), and engine constraints
 - **Outdated dependency indicators** &ndash; visual cues showing which dependencies are behind

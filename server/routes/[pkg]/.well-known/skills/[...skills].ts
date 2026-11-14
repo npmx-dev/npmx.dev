@@ -17,7 +17,7 @@ export default defineCachedEventHandler(
       packageName: pkgPath,
       version: undefined,
     })
-    const packument = await fetchNpmPackage(validated.packageName)
+    const packument = await fetchNpmPackageAbbreviated(validated.packageName)
     const version = packument['dist-tags']?.latest
     if (!version) throw createError({ statusCode: 404, message: 'No latest version found' })
 

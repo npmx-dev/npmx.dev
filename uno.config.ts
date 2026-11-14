@@ -27,6 +27,8 @@ export default defineConfig({
         /\.(vue|mdx|html)($|\?)/,
         // git provider icons composable
         '**/composables/useProviderIcon.ts',
+        // Shared chart annotator icon classes
+        '**/utils/charts.ts',
       ],
     },
   },

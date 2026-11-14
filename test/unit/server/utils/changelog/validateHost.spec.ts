@@ -1,5 +1,5 @@
 import type { ProviderId } from '~~/shared/utils/git-providers'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { object, safeParse } from 'valibot'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
 

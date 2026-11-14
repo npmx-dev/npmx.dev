@@ -60,6 +60,13 @@ export function createSymbolId(kind: string, name: string, prefix = ''): string 
 }
 
 /**
+ * Create a URL-safe HTML anchor ID for a class, interface or enum member.
+ */
+export function createMemberId(symbolId: string, memberName: string): string {
+  return `${symbolId}--${memberName.replace(/[^a-z0-9-]/gi, '_')}`
+}
+
+/**
  * Derive a stable, URL-safe slug from a package entry point.
  */
 export function entrySlug(entryPoint: string): string {
@@ -105,29 +112,35 @@ export function computeEntryPrefixes(entryPoints: string[]): Map<string, string>
  * - {@link https://example.com} - external URL
  * - {@link https://example.com Link Text} - external URL with label
  * - {@link SomeSymbol} - internal cross-reference
+ * - {@link SomeSymbol | Link Text} - TSDoc pipe syntax, whitespace around `|` is optional
+ *
+ * @see https://tsdoc.org/pages/tags/link/
  *
  * @internal Exported for testing
  */
 export function parseJsDocLinks(text: string, symbolLookup: SymbolLookup): string {
   let result = escapeHtml(text)
 
-  result = result.replace(/\{@link\s+([^\s}]+)(?:\s+([^}]+))?\}/g, (_, target, label) => {
-    const displayText = label || target
+  result = result.replace(
+    /\{@link\s+([^\s|}]+)(?:(?:\s*\||\s)([^}]*))?\}/g,
+    (_, target: string, label: string | undefined) => {
+      const displayText = label?.trim() || target
 
-    // External URL
-    if (target.startsWith('http://') || target.startsWith('https://')) {
-      return `<a href="${target}" target="_blank" rel="noreferrer" class="docs-link">${displayText}</a>`
-    }
+      // External URL
+      if (target.startsWith('http://') || target.startsWith('https://')) {
+        return `<a href="${target}" target="_blank" rel="noreferrer" class="docs-link">${displayText}</a>`
+      }
 
-    // Internal symbol reference
-    const symbolId = symbolLookup.get(target)
-    if (symbolId) {
-      return `<a href="#${symbolId}" class="docs-symbol-link">${displayText}</a>`
-    }
+      // Internal symbol reference
+      const symbolId = symbolLookup.get(target)
+      if (symbolId) {
+        return `<a href="#${symbolId}" class="docs-symbol-link">${displayText}</a>`
+      }
 
-    // Unknown symbol
-    return `<code class="docs-symbol-ref">${displayText}</code>`
-  })
+      // Unknown symbol
+      return `<code class="docs-symbol-ref">${displayText}</code>`
+    },
+  )
 
   return result
 }

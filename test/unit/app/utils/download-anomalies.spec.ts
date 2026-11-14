@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { applyBlocklistCorrection } from '~/utils/download-anomalies'
 import type { MonthlyDataPoint, WeeklyDataPoint, YearlyDataPoint } from '~/types/chart'
 

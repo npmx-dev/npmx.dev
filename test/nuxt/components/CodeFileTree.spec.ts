@@ -1,5 +1,5 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import CodeFileTree from '~/components/Code/FileTree.vue'
 
 const mockTree: PackageFileTree[] = [

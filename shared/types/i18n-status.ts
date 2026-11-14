@@ -37,13 +37,3 @@ export interface I18nLocaleStatus {
   /** GitHub URL to view history of this locale file */
   githubHistoryUrl: string
 }
-
-export interface FileStatus extends Omit<I18nLocaleStatus, 'lang'> {
-  file: string
-  lang: string
-}
-
-export interface FileEntryStatus extends FileStatus {
-  done: number
-  missing: number
-}

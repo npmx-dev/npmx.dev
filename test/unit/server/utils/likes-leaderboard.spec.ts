@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { fetchNpmPackage } from '#server/utils/npm'
 import { getHomepageMetadata } from '#server/utils/npm-homepage'
 import { NPM_API } from '#shared/utils/constants'

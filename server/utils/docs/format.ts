@@ -60,7 +60,7 @@ export function getNodeSignature(node: DenoDocNode): string | null {
 /**
  * Format a function parameter.
  */
-export function formatParam(param: FunctionParam, index = 0): string {
+function formatParam(param: FunctionParam, index = 0): string {
   const name = param.name || `arg_${index}`
   const optional = param.optional ? '?' : ''
   const type = formatType(param.tsType)

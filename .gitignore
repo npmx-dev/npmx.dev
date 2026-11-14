@@ -55,3 +55,4 @@ storybook-static
 .agents
 .vscode/mcp.json
 AGENTS.md
+.vitest/

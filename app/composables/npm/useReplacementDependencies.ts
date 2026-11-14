@@ -1,4 +1,4 @@
-import type { ModuleReplacement, ModuleReplacementMapping } from 'module-replacements'
+import type { ModuleReplacement } from 'module-replacements'
 import { parseDependencyVersion } from '#shared/utils/npm'
 
 async function fetchReplacements(
@@ -13,10 +13,7 @@ async function fetchReplacements(
   const results = await Promise.all(
     names.map(async name => {
       try {
-        const response = await $fetch<{
-          mapping: ModuleReplacementMapping
-          replacement: ModuleReplacement
-        } | null>(`/api/replacements/${name}`)
+        const response = await fetchModuleReplacement(name)
         const replacement = response?.replacement ?? null
         return { name, replacement }
       } catch {

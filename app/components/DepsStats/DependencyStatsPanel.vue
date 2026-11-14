@@ -34,13 +34,16 @@ const { data: installSize, execute: fetchInstallSize } = useLazyFetch<InstallSiz
   },
 )
 
-watch(
-  resolvedVersion,
-  version => {
-    if (version) fetchInstallSize()
-  },
-  { immediate: true },
-)
+// Client-only: install size walks the whole dependency tree, so never block SSR on it.
+if (import.meta.client) {
+  watch(
+    resolvedVersion,
+    version => {
+      if (version) fetchInstallSize()
+    },
+    { immediate: true },
+  )
+}
 
 const { diff: sizeDiff } = useInstallSizeDiff(
   () => props.packageName,
@@ -81,6 +84,7 @@ function formatFacetValue(value: FacetValue): string {
       <h2 class="font-mono text-lg font-medium truncate">
         <NuxtLink
           :to="packageRoute(packageName, resolvedVersion)"
+          prefetch-on="interaction"
           class="text-fg hover:text-accent transition-colors"
         >
           {{ packageName }}

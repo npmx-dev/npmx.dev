@@ -3,9 +3,6 @@ import { createError } from 'h3'
 import validatePackageName from 'validate-npm-package-name'
 import type { PackumentLicense } from '#shared/types/npm-registry'
 
-const NPM_USERNAME_RE = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
-const NPM_USERNAME_MAX_LENGTH = 50
-
 /**
  * Encode package name for URL usage.
  * Scoped packages need special handling (@scope/name → @scope%2Fname)
@@ -46,20 +43,6 @@ export function assertValidPackageName(name: string): void {
       // TODO: throwing 404 rather than 400 as it's cacheable
       statusCode: 404,
       message: `Invalid package name: ${errors[0] ?? 'unknown error'}`,
-    })
-  }
-}
-
-/**
- * Validate an npm username and throw an HTTP error if invalid.
- * Uses a regular expression to check against npm naming rules.
- */
-export function assertValidUsername(username: string): void {
-  if (!username || username.length > NPM_USERNAME_MAX_LENGTH || !NPM_USERNAME_RE.test(username)) {
-    throw createError({
-      // TODO: throwing 404 rather than 400 as it's cacheable
-      statusCode: 404,
-      message: `Invalid username: ${username}`,
     })
   }
 }

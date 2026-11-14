@@ -1,6 +1,7 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import type { ModuleReplacement } from 'module-replacements'
+import { replacementsBaseURL } from '#module-replacements'
 
 const SIMPLE_REPLACEMENT: ModuleReplacement = {
   id: 'snippet::is-even',
@@ -62,8 +63,10 @@ async function mountWithDeps(deps: Record<string, string> | undefined) {
 
 describe('useReplacementDependencies', () => {
   it('returns replacements for dependencies that have them', async () => {
-    registerEndpoint('/api/replacements/is-even', () => ({ replacement: SIMPLE_REPLACEMENT }))
-    registerEndpoint('/api/replacements/picoquery', () => null)
+    registerEndpoint(`${replacementsBaseURL}/is-even.json`, () => ({
+      replacement: SIMPLE_REPLACEMENT,
+    }))
+    registerEndpoint(`${replacementsBaseURL}/picoquery.json`, () => null)
 
     const replacements = await mountWithDeps({
       'is-even': '^1.0.0',
@@ -76,6 +79,25 @@ describe('useReplacementDependencies', () => {
 
     expect(replacements.value['is-even']?.type).toBe('simple')
     expect(replacements.value['picoquery']).toBeUndefined()
+  })
+
+  it('only requests dependencies that have a replacement', async () => {
+    const requested: string[] = []
+    registerEndpoint(`${replacementsBaseURL}/is-even.json`, () => {
+      requested.push('is-even')
+      return { replacement: SIMPLE_REPLACEMENT }
+    })
+    registerEndpoint(`${replacementsBaseURL}/picoquery.json`, () => {
+      requested.push('picoquery')
+      return null
+    })
+
+    const replacements = await mountWithDeps({ 'is-even': '^1.0.0', 'picoquery': '^1.0.0' })
+
+    await vi.waitFor(() => {
+      expect(replacements.value['is-even']).toBeDefined()
+    })
+    expect(requested).toEqual(['is-even'])
   })
 
   it('returns empty object for undefined dependencies', async () => {
@@ -95,11 +117,13 @@ describe('useReplacementDependencies', () => {
   })
 
   it('handles multiple dependencies with replacements', async () => {
-    registerEndpoint('/api/replacements/is-even', () => ({ replacement: SIMPLE_REPLACEMENT }))
-    registerEndpoint('/api/replacements/array-includes', () => ({
+    registerEndpoint(`${replacementsBaseURL}/is-even.json`, () => ({
+      replacement: SIMPLE_REPLACEMENT,
+    }))
+    registerEndpoint(`${replacementsBaseURL}/array-includes.json`, () => ({
       replacement: NATIVE_REPLACEMENT,
     }))
-    registerEndpoint('/api/replacements/picoquery', () => null)
+    registerEndpoint(`${replacementsBaseURL}/picoquery.json`, () => null)
 
     const replacements = await mountWithDeps({
       'is-even': '^1.0.0',
@@ -121,21 +145,26 @@ describe('useReplacementDependencies', () => {
   })
 
   it('handles fetch errors gracefully', async () => {
-    registerEndpoint('/api/replacements/failing-package', () => {
+    let failedRequests = 0
+    registerEndpoint(`${replacementsBaseURL}/is-odd.json`, () => {
+      failedRequests++
       throw new Error('Network error')
     })
-    registerEndpoint('/api/replacements/is-even', () => ({ replacement: SIMPLE_REPLACEMENT }))
+    registerEndpoint(`${replacementsBaseURL}/is-even.json`, () => ({
+      replacement: SIMPLE_REPLACEMENT,
+    }))
 
     const replacements = await mountWithDeps({
-      'failing-package': '^1.0.0',
+      'is-odd': '^1.0.0',
       'is-even': '^1.0.0',
     })
 
     await vi.waitFor(() => {
+      expect(failedRequests).toBeGreaterThan(0)
       expect(replacements.value['is-even']).toBeDefined()
     })
 
-    expect(replacements.value['failing-package']).toBeUndefined()
+    expect(replacements.value['is-odd']).toBeUndefined()
     expect(replacements.value['is-even']?.type).toBe('simple')
   })
 })

@@ -16,19 +16,25 @@ import type {
 import { DATE_INPUT_MAX } from '~/utils/input'
 import { endDateOnlyToUtcMs } from '~/utils/chart-data-prediction'
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
-import { copyAltTextForTrendLineChart, sanitise, applyEllipsis } from '~/utils/charts'
+import {
+  CHART_ANNOTATOR_SLOTS,
+  copyAltTextForTrendLineChart,
+  sanitise,
+  applyEllipsis,
+} from '~/utils/charts'
 import {
   buildNormalisedTrendsDataset,
   buildTrendsChartConfig,
   buildTrendsChartData,
   isWeeklyDataset,
   getTrendsDatetimeFormatterOptions,
-  nullifyZeroValues,
   isMissingDownloadValue,
   isLargeDownloadSeries,
+  MULTI_PACKAGE_MODE_TOP_PADDING,
 } from '#shared/utils/trends-chart'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
+import { getDownloadChartGaps } from '#shared/utils/download-chart-gaps'
 import { createLastDatapointLabelsSvg } from '#shared/utils/download-chart-last-label'
 
 import('vue-data-ui/style.css')
@@ -71,10 +77,19 @@ const { copy, copied } = useClipboard()
 
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
+const gapPatternId = useId()
 const rootEl = shallowRef<HTMLElement | null>(null)
 const isZoomed = shallowRef(false)
 const zoomStartIndex = shallowRef(0)
 const zoomEndIndex = shallowRef<number | null>(null)
+
+const showDataTable = shallowRef(false)
+const chartPanel = useTemplateRef('chartPanel')
+const { height: renderedChartHeight } = useElementSize(chartPanel)
+const lastChartHeight = shallowRef(0)
+watch(renderedChartHeight, height => {
+  if (height > 0) lastChartHeight.value = height
+})
 
 const chartRef = useTemplateRef('chartRef')
 const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
@@ -199,17 +214,11 @@ const normalisedDataset = computed(() => {
   data.forEach((item, index) => {
     const packageName = getPackageNameForSeriesIndex(index)
 
-    item.series = nullifyZeroValues({
-      enabled: selectedMetric.value === DEFAULT_METRIC_ID && isLargePackage.value[packageName],
-      values: item.series,
-      keepLastZero: false,
-    }) as number[]
-
     if (selectedMetric.value !== DEFAULT_METRIC_ID || !item.series.length) return
 
     const rawLastValue = chartData.value.dataset?.[index]?.series?.at(-1)
 
-    if (!isLargePackage.value[packageName] && isMissingDownloadValue(rawLastValue)) {
+    if (!isLargePackage.value[packageName] && rawLastValue === 0) {
       const series = item.series as Array<number | null>
       series[series.length - 1] = 0
     }
@@ -217,6 +226,10 @@ const normalisedDataset = computed(() => {
 
   return data
 })
+
+const hasEstimatedTableEndpoint = computed(
+  () => supportsEstimation.value && !isEndDateOnPeriodEnd.value,
+)
 
 function getPackageNameForSeriesIndex(index: number): string {
   return (
@@ -353,10 +366,18 @@ const supportsEstimation = computed(
     selectedMetric.value !== 'contributors',
 )
 
-const hasDownloadAnomalies = computed(() =>
-  normalisedDataset.value?.some(
-    datapoint => !!datapoint?.dashIndices?.length || datapoint?.series?.some(d => d == null),
-  ),
+const hasDashedSegments = computed(() =>
+  normalisedDataset.value.some((datapoint, index) => {
+    if (datapoint.dashIndices?.length) return true
+
+    return (
+      selectedMetric.value === DEFAULT_METRIC_ID &&
+      isLargePackage.value[getPackageNameForSeriesIndex(index)] === true &&
+      datapoint.series.length > 1 &&
+      isMissingDownloadValue(datapoint.series.at(-1)) &&
+      datapoint.series.slice(0, -1).some(value => !isMissingDownloadValue(value))
+    )
+  }),
 )
 
 const shouldRenderEstimationOverlay = computed(() => !pending.value && supportsEstimation.value)
@@ -1094,7 +1115,7 @@ function drawEstimationLine(svg: Record<string, any>) {
 
     const previousPoint = plots.at(-2)
     const lastPoint = plots.at(-1)
-    if (!previousPoint || !lastPoint) continue
+    if (previousPoint?.value == null || lastPoint?.value == null) continue
 
     const stroke = String(serie?.color ?? colors.value.fg)
 
@@ -1205,6 +1226,7 @@ function drawLastDatapointLabel(svg: VueUiXySvgSlotProps['svg']) {
 
   return createLastDatapointLabelsSvg({
     series: labelSeries,
+    missingValueLabel: isDownloadsMetric.value ? $t('package.trends.no_data_short') : undefined,
     drawingArea: svg.drawingArea,
     svgWidth: svg.width,
     fontSize: 20,
@@ -1261,7 +1283,7 @@ function drawSvgPrintLegend(svg: Record<string, any>) {
   // Inject the estimation legend item when necessary
   if (
     (supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value) ||
-    hasDownloadAnomalies.value
+    hasDashedSegments.value
   ) {
     seriesNames.push(`
         <line
@@ -1299,10 +1321,13 @@ const chartHeight = computed(() => {
   if (isMobile.value) {
     return 950
   }
+
+  const additionalHeight = isMultiPackageMode.value ? MULTI_PACKAGE_MODE_TOP_PADDING : 0
+
   if (props.hideControls) {
-    return 460
+    return 460 + additionalHeight
   }
-  return 600
+  return 600 + additionalHeight
 })
 
 const { start } = useTimeoutFn(
@@ -1437,8 +1462,9 @@ const chartConfig = computed<VueUiXyConfig>(() => {
                 : datapoint?.value
               const isNoDataValue =
                 selectedMetric.value === DEFAULT_METRIC_ID &&
-                isLargePackage.value[packageName] === true &&
-                isMissingDownloadValue(rawDataValue)
+                (rawDataValue == null ||
+                  (isLargePackage.value[packageName] === true &&
+                    isMissingDownloadValue(rawDataValue)))
               const rawValue = Number(datapoint?.value ?? 0)
               const value = isNoDataValue
                 ? $t('package.trends.no_data_short')
@@ -1489,6 +1515,15 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           stroke: transparentizeOklch(accent.value, 0.5),
           strokeWidth: 1,
           strokeDasharray: 3,
+        },
+        dragToZoom: {
+          show: true,
+          selection: {
+            fill: accent.value,
+            fillOpacity: isDarkMode.value ? 0.05 : 0.08,
+            stroke: accent.value,
+            strokeDasharray: 3,
+          },
         },
       },
     },
@@ -1635,7 +1670,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
     :aria-busy="activeMetricState.pending ? 'true' : 'false'"
   >
     <TabRoot
-      v-if="isMultiPackageMode"
+      v-if="isMultiPackageMode && !showDataTable"
       v-model="chartLayout"
       id-prefix="chart-layout"
       class="mt-4 mb-8"
@@ -1882,312 +1917,323 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
       {{ $t('package.trends.title') }} — {{ activeMetricDef?.label }}
     </h2>
 
+    <div v-if="chartData.dataset" class="flex justify-end mb-3">
+      <SettingsToggle v-model="showDataTable" :label="$t('package.trends.table_view')" />
+    </div>
+
     <!-- Chart panel (active metric) -->
     <div role="region" aria-labelledby="trends-chart-title">
-      <ClientOnly v-if="chartData.dataset">
-        <div
-          v-if="isSparklineLayout"
-          id="split-chart-layout-panel"
-          :role="isMultiPackageMode ? 'tabpanel' : undefined"
-          :aria-labelledby="isMultiPackageMode ? 'split-chart-layout-tab' : undefined"
-        >
-          <ChartSplitSparkline
-            :dataset="normalisedDataset"
-            :dates="chartData.dates"
-            :datetimeFormatterOptions
-            :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
-            :nullify-zero-values="selectedMetric === DEFAULT_METRIC_ID"
-            :granularity="selectedGranularity"
-            :large-package-series="largePackageSeries"
-          />
-        </div>
-
-        <div
-          :data-pending="pending"
-          :data-minimap-visible="maxDatapoints > 6"
-          v-else
-          id="combined-chart-layout-panel"
-          :role="isMultiPackageMode ? 'tabpanel' : undefined"
-          :aria-labelledby="isMultiPackageMode ? 'combined-chart-layout-tab' : undefined"
-        >
-          <VueUiXy
-            ref="chartRef"
-            :dataset="normalisedDataset"
-            :config="chartConfig"
-            :class="{
-              '[direction:ltr]': true,
-              'no-transition': isResizing,
-            }"
-            @zoomStart="setZoomStart"
-            @zoomEnd="setZoomEnd"
-            @zoomReset="resetZoomTracking"
+      <PackageTrendsDataTable
+        v-if="showDataTable && chartData.dataset"
+        :dataset="normalisedDataset"
+        :package-names="effectivePackageNamesForMetric"
+        :dates="chartData.dates"
+        :metric-label="activeMetricDef?.label ?? ''"
+        :date-formatter="tooltipDateFormatter"
+        :max-height="lastChartHeight || chartHeight"
+        :estimated-last-value="hasEstimatedTableEndpoint"
+      />
+      <div v-else-if="chartData.dataset" ref="chartPanel">
+        <ClientOnly>
+          <div
+            v-if="isSparklineLayout"
+            id="split-chart-layout-panel"
+            :role="isMultiPackageMode ? 'tabpanel' : undefined"
+            :aria-labelledby="isMultiPackageMode ? 'split-chart-layout-tab' : undefined"
           >
-            <!-- Keyboard navigation hint -->
-            <template #hint="{ isVisible }">
-              <p v-if="isVisible" class="text-accent text-xs -mt-6 text-center" aria-hidden="true">
-                {{ $t('compare.packages.line_chart_nav_hint') }}
-              </p>
-            </template>
+            <ChartSplitSparkline
+              :dataset="normalisedDataset"
+              :dates="chartData.dates"
+              :datetimeFormatterOptions
+              :showLastDatapointEstimation="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd"
+              :granularity="selectedGranularity"
+              :large-package-series="largePackageSeries"
+            />
+          </div>
 
-            <!-- Injecting custom svg elements -->
-            <template #svg="{ svg }">
-              <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
-              <g
-                v-if="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd && !isZoomed"
-                v-html="drawEstimationLine(svg)"
-              />
-
-              <!-- Flat dashed tail for large packages when the final downloads bucket has no data -->
-              <g v-if="!pending && isDownloadsMetric" v-html="drawNoDataTail(svg)" />
-
-              <!-- Asterisk explaination for the last label value when the last value is null -->
-              <g v-if="!pending && isDownloadsMetric && selectedGranularity === 'daily'">
-                <text
-                  :x="svg.drawingArea.left"
-                  :y="svg.height - 12"
-                  :fill="colors.fgSubtle"
-                  :font-size="16"
-                  text-anchor="start"
+          <div
+            :data-pending="pending"
+            :data-minimap-visible="maxDatapoints > 6"
+            v-else
+            id="combined-chart-layout-panel"
+            :role="isMultiPackageMode ? 'tabpanel' : undefined"
+            :aria-labelledby="isMultiPackageMode ? 'combined-chart-layout-tab' : undefined"
+          >
+            <VueUiXy
+              ref="chartRef"
+              :dataset="normalisedDataset"
+              :config="chartConfig"
+              :class="{
+                '[direction:ltr]': true,
+                'no-transition': isResizing,
+              }"
+              @zoomStart="setZoomStart"
+              @zoomEnd="setZoomEnd"
+              @zoomReset="resetZoomTracking"
+            >
+              <!-- Keyboard navigation hint -->
+              <template #hint="{ isVisible }">
+                <p
+                  v-if="isVisible"
+                  class="text-accent text-xs -mt-6 text-center"
+                  aria-hidden="true"
                 >
-                  {{ $t('package.trends.last_recorded_value') }}
-                </text>
-              </g>
+                  {{ $t('compare.packages.line_chart_nav_hint') }}
+                </p>
+              </template>
 
-              <!-- Last value label for all other cases -->
-              <g v-if="!pending" v-html="drawLastDatapointLabel(svg)" />
+              <!-- Injecting custom svg elements on the bottom layer -->
+              <template #svg-underlayer="{ svg }">
+                <g v-if="!pending && isDownloadsMetric" pointer-events="none" aria-hidden="true">
+                  <template v-for="(gap, index) in getDownloadChartGaps(svg)" :key="index">
+                    <defs>
+                      <pattern
+                        :id="`${gapPatternId}-${index}`"
+                        width="6"
+                        height="6"
+                        patternUnits="userSpaceOnUse"
+                        patternTransform="rotate(45)"
+                      >
+                        <line
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="10"
+                          :stroke="colors.borderHover"
+                          stroke-width="5"
+                        />
+                      </pattern>
+                    </defs>
+                    <rect
+                      :x="gap.x"
+                      :y="gap.y"
+                      :width="gap.width"
+                      :height="gap.height"
+                      :fill="`url(#${gapPatternId}-${index})`"
+                      opacity="0.45"
+                    />
+                    <line
+                      v-for="x in [gap.x, gap.x + gap.width]"
+                      :key="x"
+                      :x1="x"
+                      :x2="x"
+                      :y1="gap.y"
+                      :y2="gap.y + gap.height"
+                      :stroke="colors.borderHover"
+                      stroke-width="0.5"
+                    />
+                  </template>
+                </g>
+              </template>
 
-              <!-- Inject legend during SVG print only -->
-              <g v-if="svg.isPrintingSvg" v-html="drawSvgPrintLegend(svg)" />
+              <!-- Injecting custom svg elements on the top layer -->
+              <template #svg="{ svg }">
+                <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
+                <g
+                  v-if="shouldRenderEstimationOverlay && !isEndDateOnPeriodEnd && !isZoomed"
+                  v-html="drawEstimationLine(svg)"
+                />
 
-              <!-- Inject npmx logo & tagline during SVG and PNG print -->
-              <g
-                v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
-                v-html="
-                  drawNpmxLogoAndTaglineWatermark({
-                    svg,
-                    colors: watermarkColors,
-                    translateFn: $t,
-                    positioning: 'bottom',
-                  })
-                "
-              />
+                <!-- Flat dashed tail for large packages when the final downloads bucket has no data -->
+                <g v-if="!pending && isDownloadsMetric" v-html="drawNoDataTail(svg)" />
 
-              <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->
-              <rect
-                v-if="pending"
-                :x="svg.drawingArea.left - 3"
-                :y="svg.drawingArea.top - 12"
-                :width="svg.drawingArea.width + 15"
-                :height="svg.drawingArea.height + 48"
-                :fill="colors.bg"
-              />
-            </template>
-
-            <!-- Subtle gradient applied for a unique series (chart modal) -->
-            <template #area-gradient="{ series: chartModalSeries, id: gradientId }">
-              <linearGradient :id="gradientId" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" :stop-color="chartModalSeries.color" stop-opacity="0.2" />
-                <stop offset="100%" :stop-color="colors.bg" stop-opacity="0" />
-              </linearGradient>
-            </template>
-
-            <!-- Custom legend for multiple series -->
-            <template #legend="{ legend }">
-              <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-                <template v-if="isMultiPackageMode">
-                  <button
-                    v-for="datapoint in legend"
-                    :key="datapoint.name"
-                    :aria-pressed="datapoint.isSegregated"
-                    :aria-label="datapoint.name"
-                    type="button"
-                    class="flex shrink-0 items-center gap-1 whitespace-nowrap"
-                    @click="datapoint.segregate()"
+                <!-- Asterisk explaination for the last label value when the last value is null -->
+                <g v-if="!pending && isDownloadsMetric && selectedGranularity === 'daily'">
+                  <text
+                    :x="svg.drawingArea.left"
+                    :y="svg.height - 12"
+                    :fill="colors.fgSubtle"
+                    :font-size="16"
+                    text-anchor="start"
                   >
-                    <div class="h-3 w-3 shrink-0">
-                      <svg viewBox="0 0 2 2" class="w-full">
-                        <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="datapoint.color" />
-                      </svg>
-                    </div>
+                    {{ $t('package.trends.last_recorded_value') }}
+                  </text>
+                </g>
 
-                    <span
-                      class="shrink-0 whitespace-nowrap"
-                      :style="{
-                        textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
-                      }"
+                <!-- Last value label for all other cases -->
+                <g v-if="!pending" v-html="drawLastDatapointLabel(svg)" />
+
+                <!-- Inject legend during SVG print only -->
+                <g v-if="svg.isPrintingSvg" v-html="drawSvgPrintLegend(svg)" />
+
+                <!-- Inject npmx logo & tagline during SVG and PNG print -->
+                <g
+                  v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
+                  v-html="
+                    drawNpmxLogoAndTaglineWatermark({
+                      svg,
+                      colors: watermarkColors,
+                      translateFn: $t,
+                      positioning: 'bottom',
+                    })
+                  "
+                />
+
+                <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->
+                <rect
+                  v-if="pending"
+                  :x="svg.drawingArea.left - 3"
+                  :y="svg.drawingArea.top - 12"
+                  :width="svg.drawingArea.width + 15"
+                  :height="svg.drawingArea.height + 48"
+                  :fill="colors.bg"
+                />
+              </template>
+
+              <!-- Subtle gradient applied for a unique series (chart modal) -->
+              <template #area-gradient="{ series: chartModalSeries, id: gradientId }">
+                <linearGradient :id="gradientId" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" :stop-color="chartModalSeries.color" stop-opacity="0.2" />
+                  <stop offset="100%" :stop-color="colors.bg" stop-opacity="0" />
+                </linearGradient>
+              </template>
+
+              <!-- Custom legend for multiple series -->
+              <template #legend="{ legend }">
+                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+                  <template v-if="isMultiPackageMode">
+                    <button
+                      v-for="datapoint in legend"
+                      :key="datapoint.name"
+                      :aria-pressed="datapoint.isSegregated"
+                      :aria-label="datapoint.name"
+                      type="button"
+                      class="flex shrink-0 items-center gap-1 whitespace-nowrap"
+                      @click="datapoint.segregate()"
                     >
-                      {{ datapoint.name }}
-                    </span>
-                  </button>
-                </template>
+                      <div class="h-3 w-3 shrink-0">
+                        <svg viewBox="0 0 2 2" class="w-full">
+                          <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="datapoint.color" />
+                        </svg>
+                      </div>
 
-                <!-- Single series legend (no user interaction) -->
-                <template v-else-if="legend.length > 0">
-                  <div class="flex shrink-0 items-center gap-1 whitespace-nowrap">
-                    <div class="h-3 w-3 shrink-0">
-                      <svg viewBox="0 0 2 2" class="w-full">
-                        <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="legend[0]?.color" />
-                      </svg>
+                      <span
+                        class="shrink-0 whitespace-nowrap"
+                        :style="{
+                          textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
+                        }"
+                      >
+                        {{ datapoint.name }}
+                      </span>
+                    </button>
+                  </template>
+
+                  <!-- Single series legend (no user interaction) -->
+                  <template v-else-if="legend.length > 0">
+                    <div class="flex shrink-0 items-center gap-1 whitespace-nowrap">
+                      <div class="h-3 w-3 shrink-0">
+                        <svg viewBox="0 0 2 2" class="w-full">
+                          <rect
+                            x="0"
+                            y="0"
+                            width="2"
+                            height="2"
+                            rx="0.3"
+                            :fill="legend[0]?.color"
+                          />
+                        </svg>
+                      </div>
+                      <span class="shrink-0 whitespace-nowrap">
+                        {{ legend[0]?.name }}
+                      </span>
                     </div>
-                    <span class="shrink-0 whitespace-nowrap">
-                      {{ legend[0]?.name }}
+                  </template>
+
+                  <!-- Estimation extra legend item -->
+                  <div
+                    class="flex shrink-0 items-center gap-1 whitespace-nowrap"
+                    v-if="supportsEstimation || hasDashedSegments"
+                  >
+                    <svg viewBox="0 0 20 2" width="20" class="shrink-0">
+                      <line
+                        x1="0"
+                        y1="1"
+                        x2="20"
+                        y2="1"
+                        :stroke="colors.fg"
+                        stroke-dasharray="4"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <span class="shrink-0 whitespace-nowrap text-fg-subtle">
+                      {{ $t('package.trends.legend_estimation') }}
                     </span>
                   </div>
-                </template>
-
-                <!-- Estimation extra legend item -->
-                <div
-                  class="flex shrink-0 items-center gap-1 whitespace-nowrap"
-                  v-if="supportsEstimation || hasDownloadAnomalies"
-                >
-                  <svg viewBox="0 0 20 2" width="20" class="shrink-0">
-                    <line
-                      x1="0"
-                      y1="1"
-                      x2="20"
-                      y2="1"
-                      :stroke="colors.fg"
-                      stroke-dasharray="4"
-                      stroke-linecap="round"
-                    />
-                  </svg>
-                  <span class="shrink-0 whitespace-nowrap text-fg-subtle">
-                    {{ $t('package.trends.legend_estimation') }}
-                  </span>
                 </div>
-              </div>
-            </template>
+              </template>
 
-            <!-- Custom minimap reset button -->
-            <template #reset-action="{ reset: resetMinimap }">
-              <button
-                type="button"
-                aria-label="reset minimap"
-                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-16 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
-                style="pointer-events: all !important"
-                @click="resetMinimap"
-              >
-                <span class="i-lucide:undo-2 w-5 h-5" aria-hidden="true" />
-              </button>
-            </template>
+              <!-- Custom minimap reset button -->
+              <template #reset-action="{ reset: resetMinimap }">
+                <button
+                  type="button"
+                  aria-label="reset minimap"
+                  class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-16 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+                  style="pointer-events: all !important"
+                  @click="resetMinimap"
+                >
+                  <span class="i-lucide:undo-2 w-5 h-5" aria-hidden="true" />
+                </button>
+              </template>
 
-            <template #menuIcon="{ isOpen }">
-              <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
-              <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
-            </template>
-            <template #optionCsv>
-              <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
-            </template>
-            <template #custom-menu-before>
-              <ChartCopyPngButton
-                :copied="copiedPng"
-                :copying="isCopyingPng"
-                @click="copyChartPng"
-              />
-            </template>
-            <template #optionImg>
-              <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
-            </template>
-            <template #optionSvg>
-              <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
-            </template>
-            <template #optionStack="{ isStack }">
-              <span
-                v-if="isStack"
-                class="i-lucide:layers-2 text-fg-subtle w-6 h-6 pointer-events-none"
-                aria-hidden="true"
-              />
-              <span
-                v-else
-                class="i-lucide:chart-line text-fg-subtle w-6 h-6 pointer-events-none"
-                aria-hidden="true"
-              />
-            </template>
+              <template #menuIcon="{ isOpen }">
+                <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
+                <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
+              </template>
+              <template #optionCsv>
+                <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+              </template>
+              <template #custom-menu-before>
+                <ChartCopyPngButton
+                  :copied="copiedPng"
+                  :copying="isCopyingPng"
+                  @click="copyChartPng"
+                />
+              </template>
+              <template #optionFullscreen="{ isFullscreen }">
+                <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+              </template>
+              <template #optionImg>
+                <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
+              </template>
+              <template #optionSvg>
+                <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
+              </template>
+              <template #optionStack="{ isStack }">
+                <span
+                  v-if="isStack"
+                  class="i-lucide:layers-2 text-fg-subtle w-6 h-6 pointer-events-none"
+                  aria-hidden="true"
+                />
+                <span
+                  v-else
+                  class="i-lucide:chart-line text-fg-subtle w-6 h-6 pointer-events-none"
+                  aria-hidden="true"
+                />
+              </template>
 
-            <template #annotator-action-close>
-              <span
-                class="i-lucide:x w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-color="{ color }">
-              <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
-            </template>
-            <template #annotator-action-draw="{ mode }">
-              <span
-                v-if="mode === 'arrow'"
-                class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'text'"
-                class="i-lucide:type text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'line'"
-                class="i-lucide:pen-line text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-              <span
-                v-if="mode === 'draw'"
-                class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-undo>
-              <span
-                class="i-lucide:undo-2 w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-redo>
-              <span
-                class="i-lucide:redo-2 w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #annotator-action-delete>
-              <span
-                class="i-lucide:trash w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #optionAnnotator="{ isAnnotator }">
-              <span
-                v-if="isAnnotator"
-                class="i-lucide:pen-off w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-              <span
-                v-else
-                class="i-lucide:pen w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-            <template #optionAltCopy>
-              <span
-                class="w-6 h-6"
-                :class="
-                  copied ? 'i-lucide:check text-accent' : 'i-lucide:person-standing text-fg-subtle'
-                "
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-          </VueUiXy>
-        </div>
+              <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
+                <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
+              </template>
+              <template #optionAltCopy>
+                <span
+                  class="w-6 h-6"
+                  :class="
+                    copied
+                      ? 'i-lucide:check text-accent'
+                      : 'i-lucide:person-standing text-fg-subtle'
+                  "
+                  style="pointer-events: none"
+                  aria-hidden="true"
+                />
+              </template>
+            </VueUiXy>
+          </div>
 
-        <template #fallback>
-          <div class="min-h-[260px]" />
-        </template>
-      </ClientOnly>
+          <template #fallback>
+            <div class="min-h-[260px]" />
+          </template>
+        </ClientOnly>
+      </div>
 
       <div
         v-if="!chartData.dataset && !activeMetricState.pending"
@@ -2207,7 +2253,7 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
     </div>
 
     <!-- Chart embedding -->
-    <div v-if="isDownloadsMetric && !!chartData.dataset && !hideControls">
+    <div v-if="isDownloadsMetric && !!chartData.dataset && !hideControls" class="mt-4">
       <div class="flex flex-col gap-2">
         <button
           type="button"

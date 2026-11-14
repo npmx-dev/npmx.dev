@@ -1,15 +1,18 @@
+import { CHART_ANNOTATOR_SLOTS, type AnnotatorSlotName } from '~/utils/charts'
 import { DEFAULT_FILTERS, type ColumnConfig, type FilterChip } from '#shared/types/preferences'
-import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
-import type { VueWrapper } from '@vue/test-utils'
+import { mountSuspended, registerEndpoint, mockNuxtImport } from '@nuxt/test-utils/runtime'
+import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import 'axe-core'
 import type { AxeResults, RunOptions } from 'axe-core'
-import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vite-plus/test'
 import { createLikesLeaderboardEntry } from '~~/test/fixtures/likes-leaderboard'
 
 // axe-core is a UMD module that exposes itself as window.axe in the browser
 declare const axe: {
   run: (context: Element, options?: RunOptions) => Promise<AxeResults>
 }
+
+mockNuxtImport('useCharts', original => vi.fn(original))
 
 // Track mounted containers for cleanup
 const mountedContainers: HTMLElement[] = []
@@ -128,6 +131,53 @@ vi.mock('vue-data-ui/vue-ui-xy', () => {
   }
 })
 
+// VueUiHeatmap relies on browser measurements that are not
+// available in isolated a11y tests. Keep the component's SVG slot rendered.
+vi.mock('vue-data-ui/vue-ui-heatmap', () => {
+  return {
+    VueUiHeatmap: defineComponent({
+      name: 'VueUiHeatmap',
+      inheritAttrs: false,
+      props: {
+        dataset: { type: Array, default: () => [] },
+        config: { type: Object, default: () => ({}) },
+      },
+      setup(props, { slots }) {
+        return () => {
+          const rows = props.dataset as Array<{ values: Array<number | null> }>
+          const cells = rows.flatMap((row, rowIndex) =>
+            row.values.map((value, columnIndex) => ({
+              rowIndex,
+              columnIndex,
+              x: 48 + columnIndex * 12,
+              y: 8 + rowIndex * 12,
+              width: 11,
+              height: 11,
+              datapoint: { id: `${rowIndex}-${columnIndex}`, value },
+            })),
+          )
+
+          return h('div', { 'data-test-id': 'vue-ui-heatmap-stub' }, [
+            h(
+              'svg',
+              { 'role': 'img', 'aria-label': 'Daily downloads heatmap', 'viewBox': '0 0 720 160' },
+              slots.svg?.({
+                svg: {
+                  cells,
+                  drawingArea: { left: 40, bottom: 112 },
+                  width: 720,
+                  height: 160,
+                },
+              }) ?? [],
+            ),
+            slots.default?.() ?? [],
+          ])
+        }
+      },
+    }),
+  }
+})
+
 vi.mock('~/composables/useCanGoBack', () => {
   return {
     useCanGoBack: () => shallowRef(true),
@@ -174,6 +224,8 @@ import {
   NoodleGifDayLogo,
   NoodleGifDayGifText,
   NoodleIojsNodejsLogo,
+  NoodleBlenderLogo,
+  NoodleBlenderArt,
   LinkBase,
   CallToAction,
   ChangelogCard,
@@ -227,7 +279,11 @@ import {
   PackageListControls,
   PackageListToolbar,
   PackageMaintainers,
-  PackageDownloadButton,
+  PackageInstallDownloadTarball,
+  PackageInstallDropdown,
+  PackageInstallAdditionalCommands,
+  PackageSecurityDowngradeAlert,
+  PackageTrendsDataTable,
   PackageManagerSelect,
   PackageMetricsBadges,
   PackagePlaygrounds,
@@ -246,6 +302,8 @@ import {
   PaginationControls,
   ProgressBar,
   ProvenanceBadge,
+  StagedPublishBadge,
+  TrustedPublishingBadge,
   Readme,
   ReadmeTocDropdown,
   SearchProviderToggle,
@@ -259,7 +317,6 @@ import {
   TagStatic,
   TagRadioButton,
   TerminalExecute,
-  TerminalInstall,
   TooltipAnnounce,
   TooltipApp,
   TooltipBase,
@@ -281,6 +338,8 @@ import {
   LicenseChangeWarning,
   ChartSplitSparkline,
   ChartCopyPngButton,
+  ChartAnnotatorIcon,
+  ChartFullscreenIcon,
   TabRoot,
   TabList,
   TabItem,
@@ -296,6 +355,7 @@ import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
 import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
+import DailyDownloadsHeatmap from '~/components/Package/DailyDownloadsHeatmap.vue'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 import PackageTimelineChart from '~/components/Package/TimelineChart.vue'
@@ -493,6 +553,18 @@ describe('component accessibility audits', () => {
 
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(NoodleIojsNodejsLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleBlenderLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(NoodleBlenderArt)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -996,7 +1068,6 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with link', async () => {
       const component = await mountSuspended(ProvenanceBadge, {
         props: {
-          provider: 'github',
           packageName: 'vue',
           version: '3.0.0',
         },
@@ -1008,11 +1079,55 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations in compact mode', async () => {
       const component = await mountSuspended(ProvenanceBadge, {
         props: {
-          provider: 'github',
           packageName: 'vue',
           version: '3.0.0',
           compact: true,
         },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('StagedPublishBadge', () => {
+    it('should have no accessibility violations with link', async () => {
+      const component = await mountSuspended(StagedPublishBadge)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations without link', async () => {
+      const component = await mountSuspended(StagedPublishBadge, {
+        props: { linked: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TrustedPublishingBadge', () => {
+    it('should have no accessibility violations with link', async () => {
+      const component = await mountSuspended(TrustedPublishingBadge, {
+        props: { provider: 'github' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+      expect(component.find('a').attributes('title')).toBe(
+        'Published with trusted publishing via GitHub Actions',
+      )
+    })
+
+    it('should have no accessibility violations without link', async () => {
+      const component = await mountSuspended(TrustedPublishingBadge, {
+        props: { provider: 'github', linked: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in compact mode', async () => {
+      const component = await mountSuspended(TrustedPublishingBadge, {
+        props: { compact: true },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -1131,6 +1246,23 @@ describe('component accessibility audits', () => {
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
+
+    it('should have no accessibility violations with a trusted publisher', async () => {
+      const component = await mountSuspended(PackageCard, {
+        props: {
+          result: {
+            ...mockResult,
+            package: {
+              ...mockResult.package,
+              publisher: { ...mockResult.package.publisher, trustedPublisher: { id: 'github' } },
+            },
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+      expect(component.findComponent(TrustedPublishingBadge).exists()).toBe(true)
+    })
   })
 
   describe('PackageLikeCard', () => {
@@ -1221,6 +1353,78 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
+    it('hides layout tabs in table view and restores them when returning to the chart', async () => {
+      const useChartsMock = vi.mocked(useCharts)
+      const originalUseCharts = useChartsMock.getMockImplementation()!
+      useChartsMock.mockImplementation(() => ({
+        ...originalUseCharts(),
+        fetchPackageDownloadEvolution: vi.fn().mockResolvedValue(mockWeeklyDownloads),
+      }))
+      const wrapper = await mountSuspended(PackageTrendsChart, {
+        props: {
+          weeklyDownloads: mockWeeklyDownloads,
+          packageNames: ['vue', 'nuxt'],
+        },
+      })
+      await flushPromises()
+      await vi.waitFor(() => {
+        expect(wrapper.find('input[role="switch"]').exists()).toBe(true)
+      })
+      useChartsMock.mockImplementation(originalUseCharts)
+      expect(wrapper.find('#combined-chart-layout-tab').exists()).toBe(true)
+      const toggle = wrapper.get('input[role="switch"]')
+      await toggle.setValue(true)
+      expect(wrapper.find('table').exists()).toBe(true)
+      expect(wrapper.find('#combined-chart-layout-tab').exists()).toBe(false)
+      expect(wrapper.find('#split-chart-layout-tab').exists()).toBe(false)
+      const results = await runAxe(wrapper)
+      expect(results.violations).toEqual([])
+      await toggle.setValue(false)
+      expect(wrapper.find('#combined-chart-layout-tab').exists()).toBe(true)
+      expect(wrapper.find('#combined-chart-layout-panel').exists()).toBe(true)
+      wrapper.unmount()
+    })
+
+    it('labels the incomplete monthly endpoint in table view even with prediction disabled', async () => {
+      const useChartsMock = vi.mocked(useCharts)
+      const originalUseCharts = useChartsMock.getMockImplementation()!
+      useChartsMock.mockImplementation(() => ({
+        ...originalUseCharts(),
+        fetchPackageDownloadEvolution: vi.fn().mockResolvedValue([
+          { month: '2026-01', timestamp: Date.UTC(2026, 0, 1), value: 100 },
+          { month: '2026-02', timestamp: Date.UTC(2026, 1, 1), value: 200 },
+        ]),
+      }))
+      let wrapper: VueWrapper | undefined
+      try {
+        wrapper = await mountSuspended(PackageTrendsChart, {
+          props: { packageName: 'vue', permalink: true },
+          route: '/?granularity=monthly&start=2026-01-01&end=2026-02-15',
+        })
+        await flushPromises()
+        await vi.waitFor(() => {
+          expect(wrapper!.find('input[role="switch"]').exists()).toBe(true)
+        })
+        await wrapper.findAll('input[type="range"]').at(-1)!.setValue('0')
+        await wrapper.get('input[role="switch"]').setValue(true)
+        expect(wrapper.get('tbody').text()).toContain('*')
+        expect(wrapper.text()).toContain('* Estimation')
+        expect(wrapper.get('tbody tr').text()).not.toContain('Estimation')
+        const results = await runAxe(wrapper)
+        expect(results.violations).toEqual([])
+
+        await wrapper.findAll('input[type="date"]')[1]!.setValue('2026-02-28')
+        await flushPromises()
+        await vi.waitFor(() => {
+          expect(wrapper!.get('tbody').text()).not.toContain('*')
+          expect(wrapper!.text()).not.toContain('* Estimation')
+        })
+      } finally {
+        wrapper?.unmount()
+        useChartsMock.mockImplementation(originalUseCharts)
+      }
+    })
+
     describe('PackageTimelineChart', () => {
       it('should have no accessibility violations', async () => {
         const wrapper = await mountSuspended(PackageTimelineChart, {
@@ -1244,6 +1448,84 @@ describe('component accessibility audits', () => {
             values: [
               { raw: 100, display: '100 MB' },
               { raw: 50, display: '50 MB' },
+            ],
+            packagesData: [
+              {
+                package: {
+                  name: 'nuxt',
+                  version: '4.3.1',
+                },
+                downloads: 1156058,
+                packageSize: 1667656,
+                directDeps: 66,
+                analysis: {
+                  package: 'nuxt',
+                  version: '4.3.1',
+                  devDependencySuggestion: {
+                    recommended: false,
+                  },
+                  moduleFormat: 'dual',
+                  types: {
+                    kind: 'included',
+                  },
+                  createPackage: {
+                    packageName: 'create-nuxt',
+                  },
+                },
+                vulnerabilities: {
+                  count: 0,
+                  severity: {
+                    critical: 0,
+                    high: 0,
+                    moderate: 0,
+                    low: 0,
+                  },
+                },
+                metadata: {
+                  license: 'MIT',
+                  lastUpdated: '2026-04-03T05:41:39.680Z',
+                },
+                isBinaryOnly: false,
+                totalLikes: 156,
+              },
+              {
+                package: {
+                  name: 'vue',
+                  version: '3.5.32',
+                },
+                downloads: 10979552,
+                packageSize: 2480183,
+                directDeps: 5,
+                analysis: {
+                  package: 'vue',
+                  version: '3.5.32',
+                  devDependencySuggestion: {
+                    recommended: false,
+                  },
+                  moduleFormat: 'dual',
+                  types: {
+                    kind: 'included',
+                  },
+                  createPackage: {
+                    packageName: 'create-vue',
+                  },
+                },
+                vulnerabilities: {
+                  count: 0,
+                  severity: {
+                    critical: 0,
+                    high: 0,
+                    moderate: 0,
+                    low: 0,
+                  },
+                },
+                metadata: {
+                  license: 'MIT',
+                  lastUpdated: '2026-04-03T05:41:39.680Z',
+                },
+                isBinaryOnly: false,
+                totalLikes: 85,
+              },
             ],
             packages: ['nuxt', 'vue'],
             label: 'Package Size',
@@ -1438,6 +1720,47 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('ChartAnnotatorIcon', () => {
+    const cases = CHART_ANNOTATOR_SLOTS.flatMap<{
+      slotName: AnnotatorSlotName
+      slotProps: Record<string, string | boolean>
+    }>(slotName => {
+      if (slotName === 'annotator-action-draw') {
+        return ['arrow', 'text', 'line', 'draw'].map(mode => ({
+          slotName,
+          slotProps: { mode },
+        }))
+      }
+      if (slotName === 'annotator-action-color') {
+        return [{ slotName, slotProps: { color: '#ff0000' } }]
+      }
+      return [false, true].map(state => ({
+        slotName,
+        slotProps: { disabled: state, isSelecting: state, isAnnotator: state },
+      }))
+    })
+
+    it.each(cases)('keeps $slotName decorative with $slotProps', async props => {
+      const component = await mountSuspended(ChartAnnotatorIcon, { props })
+      expect(component.get('span').attributes('aria-hidden')).toBe('true')
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ChartFullscreenIcon', () => {
+    it.each([false, true])('stays decorative when fullscreen is %s', async isFullscreen => {
+      const component = await mountSuspended(ChartFullscreenIcon, {
+        props: { isFullscreen },
+      })
+      const icon = component.get('span')
+      expect(icon.attributes('aria-hidden')).toBe('true')
+      expect(icon.classes()).toContain(isFullscreen ? 'i-lucide:minimize' : 'i-lucide:maximize')
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('ChartCopyPngButton', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(ChartCopyPngButton, {
@@ -1482,6 +1805,91 @@ describe('component accessibility audits', () => {
       // The spinner is decorative, so aria-busy is what conveys the pending state
       expect(button.attributes('aria-busy')).toBe('true')
       expect(button.attributes('aria-label')).toBeTruthy()
+    })
+  })
+
+  describe('DailyDownloadsHeatmap', () => {
+    const useChartsMock = vi.mocked(useCharts)
+    const originalUseCharts = useChartsMock.getMockImplementation()!
+
+    afterEach(() => {
+      useChartsMock.mockImplementation(originalUseCharts)
+    })
+
+    it('should have no accessibility violations when loaded', async () => {
+      const now = new Date()
+
+      const fetchMock = vi.fn().mockResolvedValue([
+        {
+          day: now.toISOString().slice(0, 10),
+          timestamp: now.getTime(),
+          value: 123,
+        },
+      ])
+
+      useChartsMock.mockImplementation(() => ({
+        ...originalUseCharts(),
+        fetchPackageDownloadEvolution: fetchMock,
+      }))
+
+      const wrapper = await mountSuspended(DailyDownloadsHeatmap, {
+        props: { packageName: 'vue' },
+      })
+
+      await flushPromises()
+
+      await vi.waitFor(() => {
+        expect(wrapper.find('[data-test-id="vue-ui-heatmap-stub"]').exists()).toBe(true)
+      })
+
+      expect(fetchMock).toHaveBeenCalledWith(
+        'vue',
+        null,
+        expect.objectContaining({ granularity: 'day' }),
+      )
+
+      const results = await runAxe(wrapper)
+      expect(results.violations).toEqual([])
+    })
+    it('has an accessible table view with heatmap markers and can return to the chart', async () => {
+      const yesterday = new Date()
+      yesterday.setUTCDate(yesterday.getUTCDate() - 1)
+      const day = yesterday.toISOString().slice(0, 10)
+      useChartsMock.mockImplementation(() => ({
+        ...originalUseCharts(),
+        fetchPackageDownloadEvolution: vi
+          .fn()
+          .mockResolvedValue([{ day, timestamp: yesterday.getTime(), value: 1234 }]),
+      }))
+
+      const wrapper = await mountSuspended(DailyDownloadsHeatmap, {
+        props: { packageName: 'vue' },
+      })
+      await flushPromises()
+      const toggle = wrapper.get('input[role="switch"]')
+      expect(wrapper.text()).toContain('Table view')
+      await toggle.setValue(true)
+
+      expect(wrapper.find('[data-test-id="vue-ui-heatmap-stub"]').exists()).toBe(false)
+      const table = wrapper.get('table')
+      expect(table.get('caption').text()).toContain('Downloads')
+      const rows = table.findAll('tbody tr')
+      const lastRow = rows.at(-1)!
+      expect(lastRow.get('th[scope="row"]').text()).toContain(String(yesterday.getUTCFullYear()))
+      expect(lastRow.get('td').text()).toBe('1.2K')
+      expect(lastRow.get('td [aria-hidden="true"]').attributes('style')).toContain(
+        'background-color',
+      )
+      expect(table.text()).toContain('No data')
+      expect(wrapper.get('[role="region"]').attributes('tabindex')).toBe('0')
+
+      const results = await runAxe(wrapper)
+      expect(results.violations).toEqual([])
+
+      await toggle.setValue(false)
+      expect(wrapper.find('table').exists()).toBe(false)
+      expect(wrapper.find('[data-test-id="vue-ui-heatmap-stub"]').exists()).toBe(true)
+      wrapper.unmount()
     })
   })
 
@@ -3159,6 +3567,107 @@ describe('component accessibility audits', () => {
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
+
+    it('should have no accessibility violations with a subtitle', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: {
+          title: 'Section Title',
+          subtitle: 'Describes the section',
+          id: 'test-section',
+        },
+        slots: { default: '<p>Section content</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('exposes the title as a button inside the heading', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Dependencies', id: 'test-section', headingLevel: 'h3' },
+        slots: { default: '<p>Section content</p>' },
+      })
+
+      const toggle = component.get('h3 button')
+      expect(toggle.text()).toContain('Dependencies')
+    })
+
+    it('toggles aria-expanded when the title button is activated', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Dependencies', id: 'test-section' },
+        slots: { default: '<p>Section content</p>' },
+      })
+
+      const toggle = component.get('#test-section-collapsible-button')
+      expect(toggle.attributes('aria-expanded')).toBe('true')
+
+      await toggle.trigger('click')
+      expect(toggle.attributes('aria-expanded')).toBe('false')
+
+      await toggle.trigger('click')
+      expect(toggle.attributes('aria-expanded')).toBe('true')
+    })
+
+    it('points aria-controls at the content it expands', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Dependencies', id: 'test-section' },
+        slots: { default: '<p>Section content</p>' },
+      })
+
+      const controls = component.get('#test-section-collapsible-button').attributes('aria-controls')
+      expect(controls).toBe('test-section-collapsible-content')
+      expect(component.find(`#${controls}`).exists()).toBe(true)
+    })
+
+    it('gives the section link button an accessible name', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Dependencies', id: 'test-section' },
+        slots: { default: '<p>Section content</p>' },
+      })
+
+      const linkButton = component
+        .findAll('button')
+        .find(b => b.attributes('aria-label')?.includes('Dependencies'))
+      expect(linkButton).toBeDefined()
+    })
+
+    it('copies the current url with the section hash', async () => {
+      let copiedText: string | undefined
+
+      const writeSpy = vi.spyOn(navigator.clipboard, 'write').mockImplementation(async items => {
+        copiedText = await (await items[0]!.getType('text/plain')).text()
+      })
+      const execSpy = vi.spyOn(document, 'execCommand').mockImplementation(command => {
+        if (command === 'copy') {
+          copiedText = (document.activeElement as HTMLTextAreaElement | null)?.value
+        }
+        return true
+      })
+
+      try {
+        const component = await mountSuspended(CollapsibleSection, {
+          props: { title: 'Dependencies', id: 'test-section' },
+          slots: { default: '<p>Section content</p>' },
+        })
+
+        const linkButton = component
+          .findAll('button')
+          .find(b => b.attributes('aria-label')?.includes('Dependencies'))
+        expect(linkButton).toBeDefined()
+
+        await linkButton!.trigger('click')
+        await vi.waitFor(() => {
+          expect(copiedText).toBeDefined()
+        })
+
+        const copied = new URL(copiedText!)
+        expect(copied.hash).toBe('#test-section')
+        expect(copied.origin).toBe(window.location.origin)
+        expect(copied.pathname).toBe(window.location.pathname)
+      } finally {
+        writeSpy.mockRestore()
+        execSpy.mockRestore()
+      }
+    })
   })
 
   describe('TerminalExecute', () => {
@@ -3173,43 +3682,6 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations for create package', async () => {
       const component = await mountSuspended(TerminalExecute, {
         props: { packageName: 'create-vite', isCreatePackage: true },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('TerminalInstall', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: { packageName: 'vue' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations with version', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: { packageName: 'vue', requestedVersion: '3.5.0' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations with types package', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: { packageName: 'lodash', typesPackageName: '@types/lodash' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations with executable info', async () => {
-      const component = await mountSuspended(TerminalInstall, {
-        props: {
-          packageName: 'eslint',
-          executableInfo: { hasExecutable: true, primaryCommand: 'eslint' },
-        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -3926,9 +4398,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('PackageDownloadButton', () => {
+  describe('PackageInstallDownloadTarball', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(PackageDownloadButton, {
+      const component = await mountSuspended(PackageInstallDownloadTarball, {
         props: {
           packageName: 'vue',
           version: {
@@ -3936,6 +4408,131 @@ describe('component accessibility audits', () => {
             dist: { tarball: 'https://registry.npmjs.org/vue/-/vue-3.5.0.tgz' },
           } as any,
           dependencies: null,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageInstallDropdown', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageInstallDropdown, {
+        props: {
+          packageName: 'vue',
+          headingId: 'get-started-test',
+          displayVersion: {
+            version: '3.5.0',
+            dist: { tarball: 'https://registry.npmjs.org/vue/-/vue-3.5.0.tgz' },
+          } as any,
+          typesPackageName: '@types/vue',
+          devDependencySuggestion: { recommended: true },
+          executableInfo: { hasExecutable: true, primaryCommand: 'vue' },
+          createPackageInfo: { packageName: 'create-vue' },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageInstallAdditionalCommands', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageInstallAdditionalCommands, {
+        props: {
+          packageName: 'vue',
+          selectedPm: 'npm',
+          typesPackageName: '@types/vue',
+          showTypes: true,
+          devDependencySuggestion: { recommended: true },
+          executableInfo: { hasExecutable: true, primaryCommand: 'vue' },
+          createPackageInfo: { packageName: 'create-vue' },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageTrendsDataTable', () => {
+    it.each([1, 2])('has accessible headers and scrolling with %i packages', async count => {
+      const component = await mountSuspended(PackageTrendsDataTable, {
+        props: {
+          dataset: [
+            { name: 'vue', series: [1234, null] },
+            { name: 'nuxt', series: [0, 5678] },
+          ].slice(0, count),
+          packageNames: ['vue', 'nuxt'].slice(0, count),
+          dates: [Date.UTC(2026, 0, 1), Date.UTC(2026, 0, 8)],
+          metricLabel: 'Downloads',
+          dateFormatter: new Intl.DateTimeFormat('en', { timeZone: 'UTC' }),
+          maxHeight: 300,
+        },
+      })
+
+      expect(component.attributes('role')).toBe('region')
+      expect(component.attributes('tabindex')).toBe('0')
+      expect(component.attributes('aria-label')).toBe('Chart data table')
+      expect(component.get('caption').text()).toContain('Downloads')
+      expect(component.get('th[scope="colgroup"]').attributes('colspan')).toBe(String(count + 1))
+      expect(component.findAll('th[scope="col"]')).toHaveLength(count + 1)
+      expect(component.findAll('th[scope="row"]')).toHaveLength(2)
+      expect(component.text()).toContain('No data')
+      expect(
+        component
+          .get('tbody tr')
+          .findAll('td')
+          .map(cell => cell.text()),
+      ).toEqual(['1.2K', '0'].slice(0, count))
+
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+      component.unmount()
+    })
+    it.each([false, true])('labels estimated endpoints only when enabled (%s)', async estimated => {
+      const component = await mountSuspended(PackageTrendsDataTable, {
+        props: {
+          dataset: [
+            { name: 'vue', series: [100, 200] },
+            { name: 'nuxt', series: [100, null] },
+          ],
+          packageNames: ['vue', 'nuxt'],
+          dates: [Date.UTC(2026, 0, 1), Date.UTC(2026, 1, 1)],
+          metricLabel: 'Downloads',
+          dateFormatter: new Intl.DateTimeFormat('en', { timeZone: 'UTC' }),
+          maxHeight: 300,
+          estimatedLastValue: estimated,
+        },
+      })
+      const rows = component.findAll('tbody tr')
+      expect(rows[0]!.text()).not.toContain('Estimation')
+      expect(rows[1]!.findAll('td')[0]!.text()).toBe(estimated ? '200*' : '200')
+      expect(rows[1]!.findAll('td')[1]!.text()).toBe('No data')
+      expect(component.find('p').exists()).toBe(estimated)
+      expect(rows[0]!.get('td').attributes('aria-describedby')).toBeUndefined()
+      expect(rows[1]!.findAll('td')[1]!.attributes('aria-describedby')).toBeUndefined()
+      expect(rows[1]!.get('td').attributes('aria-describedby')).toBe(
+        component.element.querySelector('p')?.id,
+      )
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+      component.unmount()
+    })
+  })
+
+  describe('PackageSecurityDowngradeAlert', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageSecurityDowngradeAlert, {
+        props: {
+          packageName: 'vue',
+          downgrade: {
+            downgradedVersion: '2.0.0',
+            downgradedTrustLevel: 'none',
+            downgradedTrustedPublisher: true,
+            trustedVersion: '1.9.0',
+            trustedTrustLevel: 'provenance',
+          },
+          fallbackInstallText: 'Consider installing 1.9.0 instead.',
         },
       })
       const results = await runAxe(component)
@@ -4883,12 +5480,12 @@ describe('background theme accessibility', () => {
       name: 'ProvenanceBadge',
       mount: () =>
         mountSuspended(ProvenanceBadge, {
-          props: { provider: 'github', packageName: 'vue', version: '3.0.0' },
+          props: { packageName: 'vue', version: '3.0.0' },
         }),
     },
     {
-      name: 'TerminalInstall',
-      mount: () => mountSuspended(TerminalInstall, { props: { packageName: 'vue' } }),
+      name: 'TrustedPublishingBadge',
+      mount: () => mountSuspended(TrustedPublishingBadge, { props: { provider: 'github' } }),
     },
     {
       name: 'LicenseDisplay',

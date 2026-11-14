@@ -86,6 +86,15 @@ export const packageManagers = [
     create: 'na create',
     icon: 'i-custom-ni',
   },
+  {
+    id: 'upm',
+    label: 'upm',
+    action: 'add',
+    executeLocal: 'upx',
+    executeRemote: 'upx',
+    create: 'upm create',
+    icon: 'i-custom-upm',
+  },
 ] as const
 
 export type PackageManagerId = (typeof packageManagers)[number]['id']

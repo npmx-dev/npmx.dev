@@ -155,9 +155,6 @@
       "compare": "Comparar este pacote",
       "download": "Baixar tarball"
     },
-    "package_actions": {
-      "copy_run": "Copiar comando de execução"
-    },
     "code": {
       "copy_file": "Copiar conteúdo do arquivo"
     },
@@ -344,9 +341,7 @@
       "tangled": "Ver em Tangled"
     },
     "collapse": "Colapsar",
-    "collapse_with_name": "Colapsar {name}",
-    "expand": "Expandir",
-    "expand_with_name": "Expandir {name}"
+    "expand": "Expandir"
   },
   "profile": {
     "display_name": "Nome visível",
@@ -582,10 +577,7 @@
       "trusted_publisher_added": "Publicação de confiança ativada",
       "trusted_publisher_removed": "Publicação de confiança removida",
       "provenance_added": "Proveniência ativada",
-      "provenance_removed": "Proveniência removida",
-      "chart": {
-        "copy_alt": {}
-      }
+      "provenance_removed": "Proveniência removida"
     },
     "dependencies": {
       "title": "Dependências ({count})",
@@ -788,9 +780,6 @@
       "button": "Baixar",
       "tarball": "Baixar Tarball como .tar.gz"
     }
-  },
-  "leaderboard": {
-    "likes": {}
   },
   "connector": {
     "modal": {
@@ -1003,8 +992,7 @@
   "badges": {
     "provenance": {
       "verified": "verificado",
-      "verified_title": "Proveniência verificada",
-      "verified_via": "Verificado: publicado via {provider}"
+      "verified_title": "Proveniência verificada"
     },
     "jsr": {
       "title": "também disponível no JSR"
@@ -1586,18 +1574,10 @@
     "p2": "Antes de começar, por favor, leia nosso {guide} para aprender sobre nosso processo de tradução e como você pode contribuir.",
     "guide": "Guia de tradução (i18n)",
     "by_locale": "Progresso de tradução por localidade",
-    "by_file": "Progresso de tradução por arquivo",
     "complete_text": "Esta tradução está completa, ótimo trabalho!",
     "missing_text": "faltando",
     "missing_keys": "Não existem traduções faltando | Tradução faltando | Traduções faltando",
-    "progress_label": "Status de progresso para {locale}",
-    "table": {
-      "file": "Arquivo",
-      "status": "Status",
-      "error": "Erro enquanto carregava a lista de arquivos.",
-      "empty": "Nenhum arquivo encontrado",
-      "file_link": "Editar {file} ({lang}) no GitHub"
-    }
+    "progress_label": "Status de progresso para {locale}"
   },
   "vacations": {
     "title": "de férias",
@@ -1689,8 +1669,5 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logotipo do npmx.",
-  "changelog": {
-    "error": {}
-  }
+  "alt_logo_kawaii": "Uma versão fofa, arredondada e colorida do logotipo do npmx."
 }

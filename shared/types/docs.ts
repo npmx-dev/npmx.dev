@@ -1,4 +1,4 @@
-export type DocsStatus = 'ok' | 'missing' | 'error'
+type DocsStatus = 'ok' | 'missing' | 'error'
 
 export interface DocsResponse {
   package: string
@@ -8,10 +8,4 @@ export interface DocsResponse {
   breadcrumbs?: string | null
   status: DocsStatus
   message?: string
-}
-
-export interface DocsSearchResponse {
-  package: string
-  version: string
-  index: Record<string, unknown>
 }

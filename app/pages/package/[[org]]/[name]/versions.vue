@@ -273,6 +273,7 @@ const flatItems = computed<FlatItem[]>(() => {
         <div class="flex items-center gap-2 min-w-0">
           <NuxtLink
             :to="packageRoute(packageName)"
+            prefetch-on="interaction"
             class="text-lg font-medium hover:text-fg-muted transition-colors min-w-0 truncate"
             :title="packageName"
             dir="ltr"
@@ -329,6 +330,11 @@ const flatItems = computed<FlatItem[]>(() => {
                 dir="ltr"
                 >v{{ latestTagRow!.version }}</LinkBase
               >
+              <StagedPublishBadge
+                v-if="fullVersionMap?.get(latestTagRow!.version)?.trustStatus?.stagedPublish"
+                compact
+                class="relative z-10"
+              />
               <ProvenanceBadge
                 v-if="fullVersionMap?.get(latestTagRow!.version)?.trustStatus?.provenance"
                 :package-name="packageName"
@@ -403,6 +409,11 @@ const flatItems = computed<FlatItem[]>(() => {
               >
                 v{{ row.version }}
               </LinkBase>
+              <StagedPublishBadge
+                v-if="fullVersionMap?.get(row.version)?.trustStatus?.stagedPublish"
+                compact
+                class="relative z-10"
+              />
               <ProvenanceBadge
                 v-if="fullVersionMap?.get(row.version)?.trustStatus?.provenance"
                 :package-name="packageName"
@@ -625,6 +636,11 @@ const flatItems = computed<FlatItem[]>(() => {
                         >
                           v{{ item.version }}
                         </LinkBase>
+                        <StagedPublishBadge
+                          v-if="fullVersionMap?.get(item.version)?.trustStatus?.stagedPublish"
+                          compact
+                          class="relative z-10"
+                        />
                         <ProvenanceBadge
                           v-if="fullVersionMap?.get(item.version)?.trustStatus?.provenance"
                           :package-name="packageName"

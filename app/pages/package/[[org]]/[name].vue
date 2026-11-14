@@ -62,7 +62,6 @@ const { data: readmeData, status: readmeStatus } = useLazyFetch<ReadmeResponse>(
       mdExists: false,
       playgroundLinks: [],
       toc: [],
-      defaultValue: true,
     }),
   },
 )
@@ -128,16 +127,19 @@ const {
   },
 )
 
-// Trigger fetch only when we have the real resolved version
-watch(
-  [resolvedVersion, resolvedStatus],
-  ([version, status]) => {
-    if (version && status === 'success') {
-      fetchInstallSize()
-    }
-  },
-  { immediate: true },
-)
+// Trigger fetch only when we have the real resolved version.
+// Client-only: install size walks the whole dependency tree, so never block SSR on it.
+if (import.meta.client) {
+  watch(
+    [resolvedVersion, resolvedStatus],
+    ([version, status]) => {
+      if (version && status === 'success') {
+        fetchInstallSize()
+      }
+    },
+    { immediate: true },
+  )
+}
 
 const { data: skillsData } = useLazyFetch<SkillsListResponse>(
   () => {
@@ -184,6 +186,42 @@ const {
 } = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
 
 const { data: licenseChangeData } = useLicenseChanges(packageName, resolvedVersion)
+
+// `latest` resolves the same either way, so only fetch the "frozen size" for
+// older versions
+const versionIsLatest = computed(() => {
+  const version = resolvedVersion.value
+  return !!version && pkg.value?.['dist-tags']?.latest === version
+})
+
+const { data: frozenInstallSize, execute: fetchFrozenInstallSize } =
+  useLazyFetch<InstallSizeResult | null>(
+    () =>
+      `/api/registry/install-size/${packageName.value}/v/${resolvedVersion.value}?frozen-history=true`,
+    {
+      server: false,
+      immediate: false,
+      watch: false,
+    },
+  )
+
+watch(
+  [resolvedVersion, resolvedStatus, versionIsLatest],
+  ([version, resolveStatus, isLatest]) => {
+    if (version && resolveStatus === 'success' && pkg.value && !isLatest) {
+      fetchFrozenInstallSize()
+    }
+  },
+  { immediate: true },
+)
+
+const frozenSize = computed(() => {
+  const frozen = frozenInstallSize.value
+  if (!frozen?.totalSize) return null
+  if (frozen.package !== packageName.value || frozen.version !== resolvedVersion.value) return null
+  return frozen.totalSize
+})
+
 const { diff: sizeDiff } = useInstallSizeDiff(packageName, resolvedVersion, pkg, installSize)
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
@@ -206,57 +244,12 @@ useCommandPalettePackageContext(commandPalettePackageContext, {
 })
 useCommandPalettePackageCommands(commandPalettePackageContext)
 
-// Detect two hydration scenarios where the external _payload.json is missing:
-//
-// 1. SPA fallback (200.html): No real content was server-rendered.
-//    → Show skeleton while data fetches on the client.
-//
-// 2. SSR-rendered HTML missing payload: Content was rendered but the external _payload.json
-//    returned an ISR fallback.
-//    → Preserve the server-rendered DOM, don't flash to skeleton.
-const nuxtApp = useNuxtApp()
 const route = useRoute()
 // Gates template rendering only — data fetches intentionally still run.
 // immediate is set once at mount — skipped requests won't re-fire on navigation, leaving data permanently missing.
 const isVersionsRoute = computed(() => route.name === 'package-versions')
-const hasEmptyPayload =
-  import.meta.client &&
-  nuxtApp.payload.serverRendered &&
-  !Object.keys(nuxtApp.payload.data ?? {}).length
-const isSpaFallback = shallowRef(nuxtApp.isHydrating && hasEmptyPayload && !nuxtApp.payload.path)
-const isHydratingWithServerContent = shallowRef(
-  nuxtApp.isHydrating && hasEmptyPayload && nuxtApp.payload.path === route.path,
-)
-const hasServerContentOnly = shallowRef(hasEmptyPayload && nuxtApp.payload.path === route.path)
-
-// When we have server-rendered content but no payload data, capture the server
-// DOM before Vue's hydration replaces it. This lets us show the server-rendered
-// HTML as a static snapshot while data refetches, avoiding any visual flash.
-const serverRenderedHtml = shallowRef<string | null>(
-  hasServerContentOnly.value
-    ? (document.getElementById('package-article')?.innerHTML ?? null)
-    : null,
-)
-
-if (isSpaFallback.value || isHydratingWithServerContent.value) {
-  nuxtApp.hooks.hookOnce('app:suspense:resolve', () => {
-    isSpaFallback.value = false
-    isHydratingWithServerContent.value = false
-  })
-}
 
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
-const versionSecurityMetadata = computed<PackageVersionInfo[]>(() => {
-  if (!pkg.value) return []
-  if (pkg.value.securityVersions?.length) return pkg.value.securityVersions
-
-  return Object.entries(pkg.value.versions).map(([version, metadata]) => ({
-    version,
-    time: pkg.value?.time?.[version],
-    trustStatus: metadata.trustStatus,
-    deprecated: metadata.deprecated,
-  }))
-})
 
 // Process package description
 const pkgDescription = useMarkdown(() => ({
@@ -327,13 +320,11 @@ const deprecationNotice = computed(() => {
 
 const deprecationNoticeMessage = useMarkdown(() => ({
   text: deprecationNotice.value?.message ?? '',
+  linkifyPackages: true,
+  excludePackage: packageName.value,
 }))
 
-const publishSecurityDowngrade = computed(() => {
-  const currentVersion = displayVersion.value?.version
-  if (!currentVersion) return null
-  return detectPublishSecurityDowngradeForVersion(versionSecurityMetadata.value, currentVersion)
-})
+const publishSecurityDowngrade = computed(() => pkg.value?.publishSecurityDowngrade ?? null)
 
 const installVersionOverride = computed(
   () => publishSecurityDowngrade.value?.trustedVersion ?? null,
@@ -342,7 +333,7 @@ const installVersionOverride = computed(
 const downgradeFallbackInstallText = computed(() => {
   const d = publishSecurityDowngrade.value
   if (!d?.trustedVersion) return null
-  if (d.trustedTrustLevel === 'provenance')
+  if (d.trustedTrustLevel === 'provenance' || d.downgradedTrustedPublisher)
     return $t('package.security_downgrade.fallback_install_provenance', {
       version: d.trustedVersion,
     })
@@ -365,6 +356,14 @@ const sizeTooltip = computed(() => {
       $t('package.stats.size_tooltip.total', {
         size: bytesFormatter.format(installSize.value.totalSize),
         count: installSize.value.dependencyCount,
+      }),
+    frozenSize.value &&
+      installSize.value &&
+      installSize.value.package === packageName.value &&
+      installSize.value.version === resolvedVersion.value &&
+      frozenSize.value !== installSize.value.totalSize &&
+      $t('package.stats.size_tooltip.frozen', {
+        size: bytesFormatter.format(frozenSize.value),
       }),
   ]
   return chunks.filter(Boolean).join('\n')
@@ -503,28 +502,7 @@ const showSkeleton = shallowRef(false)
     </ButtonBase>
   </DevOnly>
   <main v-if="!isVersionsRoute" class="flex-1 pb-8">
-    <!-- Scenario 1: SPA fallback — show skeleton (no real content to preserve) -->
-    <!-- Scenario 2: SSR missing payload — preserve server DOM, skip skeleton -->
-    <PackageSkeleton
-      v-if="isSpaFallback || (!hasServerContentOnly && (showSkeleton || status === 'pending'))"
-    />
-
-    <!-- During hydration without payload, show captured server HTML as a static snapshot.
-         This avoids a visual flash: the user sees the server content while data refetches.
-         v-html is safe here: the content originates from the server's own SSR output,
-         captured from the DOM before hydration — it is not user-controlled input.
-         We also show SSR output until critical data is loaded, so that after rendering dynamic
-         content, the user receives the same result as he received from the server-->
-    <article
-      v-else-if="
-        isHydratingWithServerContent ||
-        (hasServerContentOnly && serverRenderedHtml && (!pkg || readmeData?.defaultValue))
-      "
-      id="package-article"
-      class="container w-full"
-      :class="$style.packagePage"
-      v-html="serverRenderedHtml"
-    />
+    <PackageSkeleton v-if="showSkeleton || status === 'pending'" />
 
     <template v-else-if="pkg">
       <PackageHeader
@@ -573,7 +551,10 @@ const showSkeleton = shallowRef(false)
               }}
             </h2>
             <p v-if="deprecationNoticeMessage" class="text-base m-0">
-              <span v-html="deprecationNoticeMessage" />
+              <span
+                class="[&_a]:underline [&_a]:underline-offset-4 [&_a]:decoration-red-700/60 dark:[&_a]:decoration-red-400/50 [&_a:hover]:decoration-fg"
+                v-html="deprecationNoticeMessage"
+              />
             </p>
             <p v-else class="text-base m-0 italic">
               {{ $t('package.deprecation.no_reason') }}
@@ -672,23 +653,28 @@ const showSkeleton = shallowRef(false)
                   <span v-else>-</span>
                 </span>
 
-                <!-- Total install size in parens -->
-                <template v-if="displayVersion?.dist?.unpackedSize !== installSize?.totalSize">
-                  <span class="ms-1">
-                    <span
-                      v-if="installSizeStatus === 'pending'"
-                      class="inline-flex items-center gap-1 text-fg-subtle"
-                    >
-                      (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
+                <!-- Total install size in parens.
+                     Client-only: the lazy install-size fetch can resolve after the server HTML is
+                     rendered but before the payload is serialized, so the value would be hydrated
+                     even though the server rendered something else (a spinner or '-'). -->
+                <ClientOnly>
+                  <template v-if="displayVersion?.dist?.unpackedSize !== installSize?.totalSize">
+                    <span class="ms-1">
+                      <span
+                        v-if="installSizeStatus === 'pending'"
+                        class="inline-flex items-center gap-1 text-fg-subtle"
+                      >
+                        (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
+                      </span>
+                      <span v-else-if="installSize?.totalSize" dir="ltr">
+                        <span class="text-fg-subtle">(</span
+                        >{{ bytesFormatter.format(installSize.totalSize)
+                        }}<span class="text-fg-subtle">)</span>
+                      </span>
+                      <span v-else class="text-fg-subtle">(-)</span>
                     </span>
-                    <span v-else-if="installSize?.totalSize" dir="ltr">
-                      <span class="text-fg-subtle">(</span
-                      >{{ bytesFormatter.format(installSize.totalSize)
-                      }}<span class="text-fg-subtle">)</span>
-                    </span>
-                    <span v-else class="text-fg-subtle">(-)</span>
-                  </span>
-                </template>
+                  </template>
+                </ClientOnly>
               </dd>
             </div>
 
@@ -748,174 +734,73 @@ const showSkeleton = shallowRef(false)
           </ClientOnly>
         </section>
 
-        <!-- Binary-only packages: Show only execute command (no install) -->
-        <section v-if="isBinaryOnly" class="scroll-mt-20" :class="$style.areaInstall">
-          <div class="flex flex-wrap items-center justify-between mb-3">
-            <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
-              {{ $t('package.run.title') }}
-            </h2>
-            <!-- Package manager dropdown -->
-            <PackageManagerSelect />
-          </div>
-          <div>
-            <TerminalExecute
-              :package-name="pkg.name"
-              :jsr-info="jsrInfo"
-              :is-create-package="isCreatePkg"
-            />
-          </div>
-        </section>
-
-        <!-- Regular packages: Install command with optional run command -->
-        <section v-else id="get-started" class="scroll-mt-20" :class="$style.areaInstall">
-          <div class="flex flex-wrap items-center justify-between mb-3">
-            <h2
-              id="get-started-heading"
-              class="group text-xs text-fg-subtle uppercase tracking-wider"
-            >
-              <LinkBase to="#get-started">
-                {{ $t('package.get_started.title') }}
-              </LinkBase>
-            </h2>
-            <!-- Package manager dropdown + Download button -->
-            <div class="flex items-center gap-2">
-              <PackageDownloadButton
-                v-if="displayVersion"
-                :package-name="pkg.name"
-                :version="displayVersion"
-              />
+        <div class="flex flex-col gap-8" :class="$style.areaInstall">
+          <!-- Binary-only packages: Show only execute command (no install) -->
+          <section v-if="isBinaryOnly" class="scroll-mt-20">
+            <div class="flex flex-wrap items-center justify-between mb-3">
+              <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
+                {{ $t('package.run.title') }}
+              </h2>
+              <!-- Package manager dropdown -->
               <PackageManagerSelect />
             </div>
-          </div>
-          <div>
-            <div
-              v-if="publishSecurityDowngrade"
-              role="alert"
-              class="mb-4 rounded-lg border border-amber-600/40 bg-amber-500/10 px-4 py-3 text-amber-700 dark:text-amber-400"
-            >
-              <h3 class="m-0 flex items-center gap-2 font-mono text-sm font-medium">
-                <span class="i-lucide:circle-alert w-4 h-4 shrink-0" aria-hidden="true" />
-                {{ $t('package.security_downgrade.title') }}
-              </h3>
-              <p class="mt-2 mb-0 text-sm">
-                <i18n-t
-                  v-if="
-                    publishSecurityDowngrade.downgradedTrustLevel === 'none' &&
-                    publishSecurityDowngrade.trustedTrustLevel === 'provenance'
-                  "
-                  keypath="package.security_downgrade.description_to_none_provenance"
-                  tag="span"
-                  scope="global"
-                >
-                  <template #provenance>
-                    <a
-                      href="https://docs.npmjs.com/generating-provenance-statements"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
-                      >{{ $t('package.security_downgrade.provenance_link_text')
-                      }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
-                    /></a>
-                  </template>
-                </i18n-t>
-                <i18n-t
-                  v-else-if="
-                    publishSecurityDowngrade.downgradedTrustLevel === 'none' &&
-                    publishSecurityDowngrade.trustedTrustLevel === 'trustedPublisher'
-                  "
-                  keypath="package.security_downgrade.description_to_none_trustedPublisher"
-                  tag="span"
-                  scope="global"
-                >
-                  <template #trustedPublishing>
-                    <a
-                      href="https://docs.npmjs.com/trusted-publishers"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
-                      >{{ $t('package.security_downgrade.trusted_publishing_link_text')
-                      }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
-                    /></a>
-                  </template>
-                </i18n-t>
-                <i18n-t
-                  v-else-if="
-                    publishSecurityDowngrade.downgradedTrustLevel === 'provenance' &&
-                    publishSecurityDowngrade.trustedTrustLevel === 'trustedPublisher'
-                  "
-                  keypath="package.security_downgrade.description_to_provenance_trustedPublisher"
-                  tag="span"
-                  scope="global"
-                >
-                  <template #provenance>
-                    <a
-                      href="https://docs.npmjs.com/generating-provenance-statements"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
-                      >{{ $t('package.security_downgrade.provenance_link_text')
-                      }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
-                    /></a>
-                  </template>
-                  <template #trustedPublishing>
-                    <a
-                      href="https://docs.npmjs.com/trusted-publishers"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
-                      >{{ $t('package.security_downgrade.trusted_publishing_link_text')
-                      }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
-                    /></a>
-                  </template>
-                </i18n-t>
-                {{ ' ' }}
-                <template v-if="downgradeFallbackInstallText">
-                  {{ downgradeFallbackInstallText }}
-                </template>
-              </p>
+            <div>
+              <TerminalExecute
+                :package-name="pkg.name"
+                :jsr-info="jsrInfo"
+                :is-create-package="isCreatePkg"
+              />
             </div>
-            <TerminalInstall
-              :package-name="pkg.name"
-              :requested-version="
-                requestedVersion && requestedVersion !== 'latest' ? resolvedVersion : null
-              "
-              :install-version-override="installVersionOverride"
-              :jsr-info="jsrInfo"
-              :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
-              :types-package-name="typesPackageName"
-              :executable-info="executableInfo"
-              :create-package-info="createPackageInfo"
-            />
-          </div>
-        </section>
+          </section>
 
-        <div class="space-y-6" :class="$style.areaVulns">
-          <!-- license change warning -->
-          <LicenseChangeWarning :change="licenseChangeData?.change ?? null" />
-          <!-- Bad package warning -->
-          <PackageReplacement
-            v-if="moduleReplacement"
-            :mapping="moduleReplacement.mapping"
-            :replacement="moduleReplacement.replacement"
+          <!-- Regular packages: Install command with optional run command -->
+          <PackageInstallDropdown
+            v-else
+            heading-id="get-started"
+            :package-name="pkg.name"
+            :display-version="displayVersion"
+            :requested-version="
+              requestedVersion && requestedVersion !== 'latest' ? resolvedVersion : null
+            "
+            :install-version-override="installVersionOverride"
+            :jsr-info="jsrInfo"
+            :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
+            :types-package-name="typesPackageName"
+            :executable-info="executableInfo"
+            :create-package-info="createPackageInfo"
+            :publish-security-downgrade="publishSecurityDowngrade"
+            :downgrade-fallback-install-text="downgradeFallbackInstallText"
           />
-          <!-- Size / dependency increase notice -->
-          <PackageSizeIncrease v-if="sizeDiff?.direction === 'increase'" :diff="sizeDiff" />
-          <!-- Size / dependency decrease celebration -->
-          <PackageSizeDecrease v-else-if="sizeDiff?.direction === 'decrease'" :diff="sizeDiff" />
-          <!-- Vulnerability scan -->
-          <ClientOnly>
-            <PackageVulnerabilityTree
-              v-if="resolvedVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
+
+          <div class="space-y-6" :class="$style.areaVulns">
+            <!-- license change warning -->
+            <LicenseChangeWarning :change="licenseChangeData?.change ?? null" />
+            <!-- Bad package warning -->
+            <PackageReplacement
+              v-if="moduleReplacement"
+              :mapping="moduleReplacement.mapping"
+              :replacement="moduleReplacement.replacement"
             />
-            <PackageDeprecatedTree
-              v-if="resolvedVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
-              class="mt-3"
-            />
-          </ClientOnly>
+            <!-- Size / dependency increase notice -->
+            <PackageSizeIncrease v-if="sizeDiff?.direction === 'increase'" :diff="sizeDiff" />
+            <!-- Size / dependency decrease celebration -->
+            <PackageSizeDecrease v-else-if="sizeDiff?.direction === 'decrease'" :diff="sizeDiff" />
+            <!-- Vulnerability scan -->
+            <ClientOnly>
+              <PackageVulnerabilityTree
+                v-if="resolvedVersion"
+                :package-name="pkg.name"
+                :version="resolvedVersion"
+              />
+              <PackageDeprecatedTree
+                v-if="resolvedVersion"
+                :package-name="pkg.name"
+                :version="resolvedVersion"
+                class="mt-3"
+              />
+              <template #fallback />
+            </ClientOnly>
+          </div>
         </div>
 
         <PackageSidebar :class="$style.areaSidebar">
@@ -1109,7 +994,6 @@ const showSkeleton = shallowRef(false)
   grid-template-areas:
     'details'
     'install'
-    'vulns'
     'sidebar'
     'readme';
 }
@@ -1121,9 +1005,8 @@ const showSkeleton = shallowRef(false)
     grid-template-areas:
       'details details'
       'install sidebar'
-      'vulns   sidebar'
       'readme  sidebar';
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto 1fr;
   }
 }
 
@@ -1134,9 +1017,8 @@ const showSkeleton = shallowRef(false)
     grid-template-areas:
       'details sidebar'
       'install sidebar'
-      'vulns   sidebar'
       'readme  sidebar';
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto 1fr;
   }
 }
 
@@ -1161,9 +1043,13 @@ const showSkeleton = shallowRef(false)
   white-space: pre-wrap;
 }
 
+/* Vulns children render only comments when there is nothing to show */
 .areaVulns {
-  grid-area: vulns;
   overflow-x: hidden;
+}
+
+.areaVulns:empty {
+  display: none;
 }
 
 .areaReadme {
