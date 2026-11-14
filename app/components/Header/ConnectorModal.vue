@@ -90,6 +90,11 @@ const executeNpmxConnectorCommand = computed(() => {
           :label="$t('connector.modal.auto_open_url')"
           v-model="settings.connector.autoOpenURL"
         />
+        <SettingsToggle
+          :label="$t('connector.modal.show_likes_badge')"
+          :description="$t('connector.modal.show_likes_badge_description')"
+          v-model="settings.connector.showLikesBadge"
+        />
       </div>
 
       <div class="border-t border-border my-3" />

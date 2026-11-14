@@ -106,6 +106,7 @@ function resetMockState() {
   }
   mockSettings.value.connector = {
     autoOpenURL: false,
+    showLikesBadge: true,
   }
 }
 
@@ -126,6 +127,7 @@ const mockSettings = ref({
   searchProvider: 'npm',
   connector: {
     autoOpenURL: false,
+    showLikesBadge: true,
   },
   sidebar: {
     collapsed: [],

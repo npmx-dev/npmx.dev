@@ -222,6 +222,56 @@ useShortcuts({
 })
 </script>
 
+<style scoped>
+/*
+ * Window Controls Overlay — moves the app header into the installed PWA title
+ * bar, making the chrome controls (close/min/max) sit flush with the header.
+ *
+ * env(titlebar-area-x)     — horizontal start after macOS traffic lights (0 on Windows)
+ * env(titlebar-area-y)     — vertical offset from viewport top (usually 0)
+ * env(titlebar-area-width) — usable width (viewport minus controls on both sides)
+ *
+ * header has `drag` so the full strip is a window-move target.
+ * Interactive descendants each declare `no-drag`; the gaps between them
+ * inherit `drag` from the header and act as the drag handle.
+ */
+@media (display-mode: window-controls-overlay) {
+  header {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    padding-top: env(titlebar-area-y, 0px);
+    -webkit-app-region: drag;
+    app-region: drag;
+  }
+
+  /* Solid, opaque background so the web content matches the OS title-bar color
+     and scrolling content cannot bleed through the translucent layer. */
+  header > div {
+    background-color: var(--bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  nav {
+    /* Span the full header width so the inline padding can reference 100% = viewport */
+    max-width: 100%;
+    margin-inline: 0;
+    /* Two-value shorthand in one declaration beats the container class's padding-inline.
+       Left:  macOS traffic-lights width (0 on Windows).
+       Right: Windows min/max/close width (0 on macOS). */
+    padding-inline: env(titlebar-area-x, 0px)
+      calc(100% - env(titlebar-area-x, 0px) - env(titlebar-area-width, 100%));
+  }
+
+  /* Every interactive descendant must cancel the inherited drag so it stays clickable */
+  header :deep(:is(a, button, input, select, [role='button'], [role='combobox'])) {
+    -webkit-app-region: no-drag;
+    app-region: no-drag;
+  }
+}
+</style>
+
 <template>
   <header class="sticky top-0 z-50 border-b border-border">
     <div class="absolute inset-0 bg-bg/80 backdrop-blur-md" />

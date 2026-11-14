@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/a11y',
     '@nuxt/test-utils',
-    '@vite-pwa/nuxt',
+    '@composable-vite-pwa/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/color-mode',
@@ -81,7 +81,7 @@ export default defineNuxtConfig({
 
   vue: {
     compilerOptions: {
-      isCustomElement: tag => tag === 'search',
+      isCustomElement: (tag: string) => tag === 'search',
     },
   },
 
@@ -384,43 +384,7 @@ export default defineNuxtConfig({
   },
 
   pwa: {
-    // Disable service worker
-    disable: true,
-    pwaAssets: {
-      disabled: isStorybook,
-      config: false,
-    },
-    manifest: {
-      name: 'npmx',
-      short_name: 'npmx',
-      description: 'A fast, modern browser for the npm registry',
-      theme_color: '#0a0a0a',
-      background_color: '#0a0a0a',
-      icons: [
-        {
-          src: 'pwa-64x64.png',
-          sizes: '64x64',
-          type: 'image/png',
-        },
-        {
-          src: 'pwa-192x192.png',
-          sizes: '192x192',
-          type: 'image/png',
-        },
-        {
-          src: 'pwa-512x512.png',
-          sizes: '512x512',
-          type: 'image/png',
-          purpose: 'any',
-        },
-        {
-          src: 'maskable-icon-512x512.png',
-          sizes: '512x512',
-          type: 'image/png',
-          purpose: 'maskable',
-        },
-      ],
-    },
+    path: '~~/pwa.config.ts',
   },
 
   typescript: {
@@ -432,6 +396,7 @@ export default defineNuxtConfig({
           '#cli/*': ['../cli/src/*'],
         },
       },
+      exclude: ['../service-worker.ts'],
       include: ['../test/unit/app/**/*.ts'],
     },
     sharedTsConfig: {

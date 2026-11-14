@@ -62,6 +62,8 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Changelog/Markdown.vue': 'Requires API call & mostly renders markdown html',
   'ColorScheme/Img.vue': 'Image component, basic ui',
   'VideoPlayer.vue': 'Atproto video component, basic ui',
+  'PwaPrompt.client.vue':
+    'Requires active service worker - only renders when a PWA update is pending',
 }
 
 function normalizeComponentPath(filePath: string): string {
