@@ -56,6 +56,7 @@ const id = useId()
     <input
       switch
       type="checkbox"
+      role="switch"
       :id="id"
       v-model="checked"
       class="shrink-0 focus-visible:(outline-2 outline-accent outline-offset-2)"
