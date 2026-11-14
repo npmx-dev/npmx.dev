@@ -2341,6 +2341,9 @@
               },
               "additionalProperties": false
             },
+            "table_view": {
+              "type": "string"
+            },
             "chart_view_toggle": {
               "type": "string"
             },
@@ -2348,6 +2351,9 @@
               "type": "string"
             },
             "chart_view_split": {
+              "type": "string"
+            },
+            "date": {
               "type": "string"
             },
             "granularity": {

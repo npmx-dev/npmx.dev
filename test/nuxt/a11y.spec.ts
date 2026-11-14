@@ -283,6 +283,7 @@ import {
   PackageInstallDropdown,
   PackageInstallAdditionalCommands,
   PackageSecurityDowngradeAlert,
+  PackageTrendsDataTable,
   PackageManagerSelect,
   PackageMetricsBadges,
   PackagePlaygrounds,
@@ -1352,6 +1353,78 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
+    it('hides layout tabs in table view and restores them when returning to the chart', async () => {
+      const useChartsMock = vi.mocked(useCharts)
+      const originalUseCharts = useChartsMock.getMockImplementation()!
+      useChartsMock.mockImplementation(() => ({
+        ...originalUseCharts(),
+        fetchPackageDownloadEvolution: vi.fn().mockResolvedValue(mockWeeklyDownloads),
+      }))
+      const wrapper = await mountSuspended(PackageTrendsChart, {
+        props: {
+          weeklyDownloads: mockWeeklyDownloads,
+          packageNames: ['vue', 'nuxt'],
+        },
+      })
+      await flushPromises()
+      await vi.waitFor(() => {
+        expect(wrapper.find('input[role="switch"]').exists()).toBe(true)
+      })
+      useChartsMock.mockImplementation(originalUseCharts)
+      expect(wrapper.find('#combined-chart-layout-tab').exists()).toBe(true)
+      const toggle = wrapper.get('input[role="switch"]')
+      await toggle.setValue(true)
+      expect(wrapper.find('table').exists()).toBe(true)
+      expect(wrapper.find('#combined-chart-layout-tab').exists()).toBe(false)
+      expect(wrapper.find('#split-chart-layout-tab').exists()).toBe(false)
+      const results = await runAxe(wrapper)
+      expect(results.violations).toEqual([])
+      await toggle.setValue(false)
+      expect(wrapper.find('#combined-chart-layout-tab').exists()).toBe(true)
+      expect(wrapper.find('#combined-chart-layout-panel').exists()).toBe(true)
+      wrapper.unmount()
+    })
+
+    it('labels the incomplete monthly endpoint in table view even with prediction disabled', async () => {
+      const useChartsMock = vi.mocked(useCharts)
+      const originalUseCharts = useChartsMock.getMockImplementation()!
+      useChartsMock.mockImplementation(() => ({
+        ...originalUseCharts(),
+        fetchPackageDownloadEvolution: vi.fn().mockResolvedValue([
+          { month: '2026-01', timestamp: Date.UTC(2026, 0, 1), value: 100 },
+          { month: '2026-02', timestamp: Date.UTC(2026, 1, 1), value: 200 },
+        ]),
+      }))
+      let wrapper: VueWrapper | undefined
+      try {
+        wrapper = await mountSuspended(PackageTrendsChart, {
+          props: { packageName: 'vue', permalink: true },
+          route: '/?granularity=monthly&start=2026-01-01&end=2026-02-15',
+        })
+        await flushPromises()
+        await vi.waitFor(() => {
+          expect(wrapper!.find('input[role="switch"]').exists()).toBe(true)
+        })
+        await wrapper.findAll('input[type="range"]').at(-1)!.setValue('0')
+        await wrapper.get('input[role="switch"]').setValue(true)
+        expect(wrapper.get('tbody').text()).toContain('*')
+        expect(wrapper.text()).toContain('* Estimation')
+        expect(wrapper.get('tbody tr').text()).not.toContain('Estimation')
+        const results = await runAxe(wrapper)
+        expect(results.violations).toEqual([])
+
+        await wrapper.findAll('input[type="date"]')[1]!.setValue('2026-02-28')
+        await flushPromises()
+        await vi.waitFor(() => {
+          expect(wrapper!.get('tbody').text()).not.toContain('*')
+          expect(wrapper!.text()).not.toContain('* Estimation')
+        })
+      } finally {
+        wrapper?.unmount()
+        useChartsMock.mockImplementation(originalUseCharts)
+      }
+    })
+
     describe('PackageTimelineChart', () => {
       it('should have no accessibility violations', async () => {
         const wrapper = await mountSuspended(PackageTimelineChart, {
@@ -1777,6 +1850,46 @@ describe('component accessibility audits', () => {
 
       const results = await runAxe(wrapper)
       expect(results.violations).toEqual([])
+    })
+    it('has an accessible table view with heatmap markers and can return to the chart', async () => {
+      const yesterday = new Date()
+      yesterday.setUTCDate(yesterday.getUTCDate() - 1)
+      const day = yesterday.toISOString().slice(0, 10)
+      useChartsMock.mockImplementation(() => ({
+        ...originalUseCharts(),
+        fetchPackageDownloadEvolution: vi
+          .fn()
+          .mockResolvedValue([{ day, timestamp: yesterday.getTime(), value: 1234 }]),
+      }))
+
+      const wrapper = await mountSuspended(DailyDownloadsHeatmap, {
+        props: { packageName: 'vue' },
+      })
+      await flushPromises()
+      const toggle = wrapper.get('input[role="switch"]')
+      expect(wrapper.text()).toContain('Table view')
+      await toggle.setValue(true)
+
+      expect(wrapper.find('[data-test-id="vue-ui-heatmap-stub"]').exists()).toBe(false)
+      const table = wrapper.get('table')
+      expect(table.get('caption').text()).toContain('Downloads')
+      const rows = table.findAll('tbody tr')
+      const lastRow = rows.at(-1)!
+      expect(lastRow.get('th[scope="row"]').text()).toContain(String(yesterday.getUTCFullYear()))
+      expect(lastRow.get('td').text()).toBe('1.2K')
+      expect(lastRow.get('td [aria-hidden="true"]').attributes('style')).toContain(
+        'background-color',
+      )
+      expect(table.text()).toContain('No data')
+      expect(wrapper.get('[role="region"]').attributes('tabindex')).toBe('0')
+
+      const results = await runAxe(wrapper)
+      expect(results.violations).toEqual([])
+
+      await toggle.setValue(false)
+      expect(wrapper.find('table').exists()).toBe(false)
+      expect(wrapper.find('[data-test-id="vue-ui-heatmap-stub"]').exists()).toBe(true)
+      wrapper.unmount()
     })
   })
 
@@ -4338,6 +4451,72 @@ describe('component accessibility audits', () => {
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageTrendsDataTable', () => {
+    it.each([1, 2])('has accessible headers and scrolling with %i packages', async count => {
+      const component = await mountSuspended(PackageTrendsDataTable, {
+        props: {
+          dataset: [
+            { name: 'vue', series: [1234, null] },
+            { name: 'nuxt', series: [0, 5678] },
+          ].slice(0, count),
+          packageNames: ['vue', 'nuxt'].slice(0, count),
+          dates: [Date.UTC(2026, 0, 1), Date.UTC(2026, 0, 8)],
+          metricLabel: 'Downloads',
+          dateFormatter: new Intl.DateTimeFormat('en', { timeZone: 'UTC' }),
+          maxHeight: 300,
+        },
+      })
+
+      expect(component.attributes('role')).toBe('region')
+      expect(component.attributes('tabindex')).toBe('0')
+      expect(component.attributes('aria-label')).toBe('Chart data table')
+      expect(component.get('caption').text()).toContain('Downloads')
+      expect(component.get('th[scope="colgroup"]').attributes('colspan')).toBe(String(count + 1))
+      expect(component.findAll('th[scope="col"]')).toHaveLength(count + 1)
+      expect(component.findAll('th[scope="row"]')).toHaveLength(2)
+      expect(component.text()).toContain('No data')
+      expect(
+        component
+          .get('tbody tr')
+          .findAll('td')
+          .map(cell => cell.text()),
+      ).toEqual(['1.2K', '0'].slice(0, count))
+
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+      component.unmount()
+    })
+    it.each([false, true])('labels estimated endpoints only when enabled (%s)', async estimated => {
+      const component = await mountSuspended(PackageTrendsDataTable, {
+        props: {
+          dataset: [
+            { name: 'vue', series: [100, 200] },
+            { name: 'nuxt', series: [100, null] },
+          ],
+          packageNames: ['vue', 'nuxt'],
+          dates: [Date.UTC(2026, 0, 1), Date.UTC(2026, 1, 1)],
+          metricLabel: 'Downloads',
+          dateFormatter: new Intl.DateTimeFormat('en', { timeZone: 'UTC' }),
+          maxHeight: 300,
+          estimatedLastValue: estimated,
+        },
+      })
+      const rows = component.findAll('tbody tr')
+      expect(rows[0]!.text()).not.toContain('Estimation')
+      expect(rows[1]!.findAll('td')[0]!.text()).toBe(estimated ? '200*' : '200')
+      expect(rows[1]!.findAll('td')[1]!.text()).toBe('No data')
+      expect(component.find('p').exists()).toBe(estimated)
+      expect(rows[0]!.get('td').attributes('aria-describedby')).toBeUndefined()
+      expect(rows[1]!.findAll('td')[1]!.attributes('aria-describedby')).toBeUndefined()
+      expect(rows[1]!.get('td').attributes('aria-describedby')).toBe(
+        component.element.querySelector('p')?.id,
+      )
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+      component.unmount()
     })
   })
 

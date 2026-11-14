@@ -84,6 +84,7 @@ function formatFacetValue(value: FacetValue): string {
       <h2 class="font-mono text-lg font-medium truncate">
         <NuxtLink
           :to="packageRoute(packageName, resolvedVersion)"
+          prefetch-on="interaction"
           class="text-fg hover:text-accent transition-colors"
         >
           {{ packageName }}

@@ -95,6 +95,7 @@ function handleKeydown(event: KeyboardEvent) {
             <li v-for="pkg in packages" :key="pkg">
               <NuxtLink
                 :to="packageRoute(pkg)"
+                prefetch-on="interaction"
                 class="block px-3 py-2 font-mono text-sm text-fg hover:bg-bg-subtle transition-colors truncate"
               >
                 {{ pkg }}

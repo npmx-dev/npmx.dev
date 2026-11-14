@@ -6,7 +6,6 @@ const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORY
 
 export default defineNuxtConfig({
   modules: [
-    '@vercel/speed-insights',
     '@unocss/nuxt',
     'nuxt-og-image',
     '@nuxtjs/html-validator',
@@ -217,10 +216,17 @@ export default defineNuxtConfig({
       passQuery: true,
       allowQuery: ['activeTab'],
     }),
-    '/package/:name/_payload.json': getISRConfig(300, { fallback: 'json' }),
-    '/package/:name/v/:version/_payload.json': getISRConfig(300, { fallback: 'json' }),
-    '/package/:org/:name/_payload.json': getISRConfig(300, { fallback: 'json' }),
-    '/package/:org/:name/v/:version/_payload.json': getISRConfig(300, { fallback: 'json' }),
+    // payloads do not depend on the query, including the `_b` build id
+    '/package/:name/_payload.json': getISRConfig(300, { fallback: 'json', allowQuery: [] }),
+    '/package/:name/v/:version/_payload.json': getISRConfig(300, {
+      fallback: 'json',
+      allowQuery: [],
+    }),
+    '/package/:org/:name/_payload.json': getISRConfig(300, { fallback: 'json', allowQuery: [] }),
+    '/package/:org/:name/v/:version/_payload.json': getISRConfig(300, {
+      fallback: 'json',
+      allowQuery: [],
+    }),
     // infinite cache (versioned - doesn't change)
     '/package-code/**': {
       headers: { 'Cache-Control': 'public, s-maxage=31536000, stale-while-revalidate=31536000' },
@@ -253,13 +259,6 @@ export default defineNuxtConfig({
     '/sponsors': { prerender: true },
     '/tools': { prerender: true },
     '/tools/deps-stats': { prerender: true },
-    // proxy for insights
-    '/_v/script.js': {
-      proxy: 'https://npmx.dev/_vercel/insights/script.js',
-    },
-    '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
-    '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
-    '/_v/session': { proxy: 'https://npmx.dev/_vercel/insights/session' },
     // lunaria status.json
     '/lunaria/status.json': {
       headers: {

@@ -156,6 +156,9 @@ const isOrderedByDownloads = computed(
 )
 
 const barConfig = computed<VueUiHorizontalBarConfig>(() => ({
+  a11y: {
+    includeTable: true,
+  },
   userOptions: {
     buttons: {
       pdf: false,

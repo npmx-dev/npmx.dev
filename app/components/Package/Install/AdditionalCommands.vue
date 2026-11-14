@@ -204,6 +204,7 @@ function copyCreateCommand() {
         >
         <NuxtLink
           :to="packageRoute(typesPackageName!)"
+          prefetch-on="interaction"
           class="shrink-0 text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded select-none -m-1 p-1"
           :title="$t('package.get_started.view_types', { package: typesPackageName })"
         >
@@ -273,6 +274,7 @@ function copyCreateCommand() {
         >
           <NuxtLink
             :to="packageRoute(createPackageInfo.packageName)"
+            prefetch-on="interaction"
             class="mb-0.5 inline-flex items-center justify-center min-w-5 min-h-5 -m-1 p-1 text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
           >
             <span class="i-lucide:info w-3 h-3" aria-hidden="true" />
