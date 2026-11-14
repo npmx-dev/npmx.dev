@@ -451,6 +451,9 @@ const xAxisLabelsModulo = computed(() => {
 
 const config = computed<VueUiXyConfig>(() => {
   return {
+    a11y: {
+      includeTable: true,
+    },
     theme: isDarkMode.value ? 'dark' : '',
     transitions: {
       pauseOnDatasetChange: true, // prevents transitions on axis labels when switching from install size to dependencies
@@ -721,6 +724,9 @@ const indexSelection = computed(() => {
 })
 
 const stackbarConfig = computed<VueUiStackbarConfig>(() => ({
+  a11y: {
+    includeTable: true,
+  },
   theme: isDarkMode.value ? 'dark' : '',
   useCssAnimation: false,
   userOptions: {

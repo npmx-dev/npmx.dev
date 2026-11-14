@@ -136,6 +136,9 @@ function buildExportFilename(extension: string): string {
 
 const config = computed<VueUiScatterConfig>(() => {
   return {
+    a11y: {
+      includeTable: true,
+    },
     theme: isDarkMode.value ? 'dark' : '',
     userOptions: {
       buttons: {

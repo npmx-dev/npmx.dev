@@ -14,13 +14,14 @@ export default defineCachedEventHandler(
   async event => {
     try {
       const packagePath = getRouterParam(event, 'pkg') ?? ''
-      const { packageName, markdown, repoInfo } = await resolvePackageReadmeSource(packagePath)
+      const { packageName, markdown, repoInfo, revision } =
+        await resolvePackageReadmeSource(packagePath)
 
       if (!markdown) {
         return { html: '', mdExists: false, playgroundLinks: [], toc: [] }
       }
 
-      return await renderReadmeHtml(markdown, packageName, repoInfo)
+      return await renderReadmeHtml(markdown, packageName, repoInfo, revision)
     } catch (error: unknown) {
       handleApiError(error, {
         statusCode: 502,

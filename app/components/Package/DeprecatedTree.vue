@@ -88,6 +88,7 @@ function getDepthStyle(depth: DependencyDepth) {
 
               <NuxtLink
                 :to="packageRoute(pkg.name, pkg.version)"
+                prefetch-on="interaction"
                 class="font-mono text-sm font-medium hover:underline truncate py-4"
                 :class="getDepthStyle(pkg.depth).text"
               >

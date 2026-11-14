@@ -79,6 +79,19 @@ export async function fetchReadmeFromJsdelivr(
   return null
 }
 
+/**
+ * The commit a version was built from (`gitHead`), or `undefined`: npm omits it
+ * for many versions, and callers then link to the default branch.
+ */
+export function publishedRevision(packageData: Packument, version?: string): string | undefined {
+  const requested = version ?? packageData['dist-tags']?.latest
+  const resolved =
+    requested && packageData.versions[requested]
+      ? requested
+      : packageData['dist-tags']?.[requested ?? '']
+  return resolved ? packageData.versions[resolved]?.gitHead : undefined
+}
+
 export const resolvePackageReadmeSource = defineCachedFunction(
   async (packagePath: string) => {
     const pkgParamSegments = packagePath.split('/')
@@ -142,6 +155,7 @@ export const resolvePackageReadmeSource = defineCachedFunction(
         version,
         markdown: undefined,
         repoInfo: undefined,
+        revision: undefined,
       }
     }
 
@@ -152,6 +166,7 @@ export const resolvePackageReadmeSource = defineCachedFunction(
       version,
       markdown: readmeContent,
       repoInfo,
+      revision: publishedRevision(packageData, version),
     }
   },
   {
