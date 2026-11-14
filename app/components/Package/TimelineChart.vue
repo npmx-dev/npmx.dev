@@ -586,7 +586,7 @@ const config = computed<VueUiXyConfig>(() => {
           strokeDasharray: 3,
         },
         dragToZoom: {
-          show: true,
+          show: settings.value.timelineChart.showZoom,
           selection: {
             fill: colors.value.accent,
             fillOpacity: isDarkMode.value ? 0.05 : 0.08,
