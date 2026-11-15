@@ -216,6 +216,7 @@ const entries: Noodle[] = [
     date: '2026-11-29',
     timezone: 'auto',
     tagline: false,
+    posterImage: '/extra/svelte.svg',
     occasion: 'Ten years since Svelte v1 was released on 29 November 2016.',
     prUrl: 'https://github.com/npmx-dev/npmx.dev/pull/3448',
     authors: [OUTSLEPT],
