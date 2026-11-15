@@ -31,7 +31,7 @@ const announcement = computed(() => {
 
 <template>
   <div
-    v-show="expanded"
+    v-if="expanded"
     class="absolute z-50 inset-x-0 top-full mt-2 overflow-hidden bg-bg-elevated border border-border shadow-lg text-start"
     :class="size === 'lg' ? 'rounded-xl' : 'rounded-lg'"
     @mousedown.prevent
