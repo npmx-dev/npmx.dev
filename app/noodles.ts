@@ -9,6 +9,7 @@ const GRAPHIEROS = { name: 'Graphieros', blueskyHandle: 'graphieros.npmx.social'
 const FELIX = { name: 'Felix Schneider', blueskyHandle: 'felixs.dev' }
 const JVIIDE = { name: 'Joachim Viide', blueskyHandle: 'jviide.iki.fi' }
 const MATTEO = { name: 'Matteo Gabriele', blueskyHandle: 'matteogabriele.bsky.social' }
+const OUTSLEPT = { name: 'Eugene', blueskyHandle: 'outslept.bsky.social' }
 
 const entries: Noodle[] = [
   {
@@ -205,6 +206,26 @@ const entries: Noodle[] = [
       {
         label: 'Blender - Wikipedia',
         url: 'https://en.wikipedia.org/wiki/Blender_(software)',
+      },
+    ],
+  },
+  {
+    key: 'svelte',
+    title: '10 Years of Svelte',
+    slug: 'svelte',
+    date: '2026-11-29',
+    timezone: 'auto',
+    tagline: false,
+    occasion: 'Ten years since Svelte v1 was released on 29 November 2016.',
+    authors: [OUTSLEPT],
+    references: [
+      {
+        label: 'Frameworks without the framework - svelte.dev',
+        url: 'https://svelte.dev/blog/frameworks-without-the-framework',
+      },
+      {
+        label: 'Svelte v1.0.0 release',
+        url: 'https://github.com/sveltejs/svelte/releases/tag/v1.0.0',
       },
     ],
   },
