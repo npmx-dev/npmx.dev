@@ -74,6 +74,26 @@ describe('renderEntriesMarkdown', () => {
     )
   })
 
+  it('preserves backticks in examples', () => {
+    const render = (doc: string) =>
+      renderEntriesMarkdown('pkg', [
+        createEntry([
+          {
+            name: 'fn',
+            kind: 'function',
+            jsDoc: { tags: [{ kind: 'example', doc }] },
+            functionDef: { params: [] },
+          },
+        ]),
+      ])
+
+    const bare = 'const marker = "```";'
+    expect(render(bare)).toContain(`**Example**\n\n\`\`\`\`ts\n${bare}\n\`\`\`\``)
+
+    const fenced = '```ts\nconst marker = "```";\n```'
+    expect(render(fenced)).toContain(`**Example**\n\n${fenced}`)
+  })
+
   it('renders class and interface members', () => {
     const markdown = renderEntriesMarkdown('pkg', [
       createEntry([

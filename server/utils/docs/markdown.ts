@@ -25,7 +25,9 @@ import type { MergedSymbol, ProcessedEntry } from './types'
  * Wrap code in a fenced code block.
  */
 function fenceCode(code: string, lang = 'ts'): string {
-  return `\`\`\`${lang}\n${code}\n\`\`\``
+  const longestRun = Math.max(0, ...(code.match(/`{3,}/g) ?? []).map(run => run.length))
+  const fence = '`'.repeat(Math.max(3, longestRun + 1))
+  return `${fence}${lang}\n${code}\n${fence}`
 }
 
 /**
@@ -173,9 +175,10 @@ function renderJsDocTags(tags: JsDocTag[]): string[] {
 
   const renderedExamples = examples.flatMap(example => {
     if (!example.doc) return []
-    const lang = example.doc.match(/```[ \t]*([-\w]+)?/)?.[1] || 'ts'
-    const code = example.doc.replace(/```[ \t]*[-\w]*[ \t]*(?:\r\n|\r|\n)?/g, '').trim()
-    return [fenceCode(code, lang)]
+    const doc = example.doc.trim()
+    // Examples that are already fenced are kept as written; only bare code gets wrapped.
+    if (/^(?:`{3,}|~{3,})/.test(doc)) return [doc]
+    return [fenceCode(doc)]
   })
   if (renderedExamples.length > 0) {
     sections.push(
