@@ -549,7 +549,7 @@ describe('usePackageComparison', () => {
 
       const value = getFacetValues('lastUpdated')[0]
       expect(value?.status).toBe('warning')
-      expect(value?.tooltip).toBe('compare.facets.status.lastUpdated.warning')
+      expect(value?.tooltip).toBe('This version was published over 2 years ago')
     })
 
     it('does not set a tooltip on a fresh publish date', async () => {
@@ -584,7 +584,7 @@ describe('usePackageComparison', () => {
 
       const value = getFacetValues('packageSize')[0]
       expect(value?.status).toBe('warning')
-      expect(value?.tooltip).toBe('compare.facets.status.packageSize.warning')
+      expect(value?.tooltip).toBe('Unpacked size over 5 MB, which may slow down installs')
     })
 
     it('explains the warning on many direct dependencies', async () => {
@@ -604,7 +604,7 @@ describe('usePackageComparison', () => {
 
       const value = getFacetValues('dependencies')[0]
       expect(value?.status).toBe('warning')
-      expect(value?.tooltip).toBe('compare.facets.status.dependencies.warning')
+      expect(value?.tooltip).toBe('More than 10 direct dependencies')
     })
 
     it('explains the bad status on critical vulnerabilities', async () => {
@@ -628,7 +628,7 @@ describe('usePackageComparison', () => {
 
       const value = getFacetValues('vulnerabilities')[0]
       expect(value?.status).toBe('bad')
-      expect(value?.tooltip).toBe('compare.facets.status.vulnerabilities.bad')
+      expect(value?.tooltip).toBe('Critical or high severity vulnerabilities found')
     })
 
     it('explains the bad status on missing types', async () => {
@@ -648,7 +648,7 @@ describe('usePackageComparison', () => {
 
       const value = getFacetValues('types')[0]
       expect(value?.status).toBe('bad')
-      expect(value?.tooltip).toBe('compare.facets.status.types.bad')
+      expect(value?.tooltip).toBe('No type definitions available')
     })
 
     it('explains the bad status on a deprecated version', async () => {
@@ -665,7 +665,7 @@ describe('usePackageComparison', () => {
 
       const value = getFacetValues('deprecated')[0]
       expect(value?.status).toBe('bad')
-      expect(value?.tooltip).toBe('compare.facets.status.deprecated.bad')
+      expect(value?.tooltip).toBe('This version is marked as deprecated')
     })
   })
 
