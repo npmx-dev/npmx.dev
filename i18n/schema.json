@@ -4924,6 +4924,117 @@
               },
               "additionalProperties": false
             },
+            "status": {
+              "type": "object",
+              "properties": {
+                "packageSize": {
+                  "type": "object",
+                  "properties": {
+                    "warning": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "installSize": {
+                  "type": "object",
+                  "properties": {
+                    "warning": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "dependencies": {
+                  "type": "object",
+                  "properties": {
+                    "warning": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "totalDependencies": {
+                  "type": "object",
+                  "properties": {
+                    "warning": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "lastUpdated": {
+                  "type": "object",
+                  "properties": {
+                    "warning": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "deprecated": {
+                  "type": "object",
+                  "properties": {
+                    "good": {
+                      "type": "string"
+                    },
+                    "bad": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "moduleFormat": {
+                  "type": "object",
+                  "properties": {
+                    "good": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "types": {
+                  "type": "object",
+                  "properties": {
+                    "good": {
+                      "type": "string"
+                    },
+                    "info": {
+                      "type": "string"
+                    },
+                    "bad": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "license": {
+                  "type": "object",
+                  "properties": {
+                    "warning": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "vulnerabilities": {
+                  "type": "object",
+                  "properties": {
+                    "good": {
+                      "type": "string"
+                    },
+                    "warning": {
+                      "type": "string"
+                    },
+                    "bad": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
             "values": {
               "type": "object",
               "properties": {
