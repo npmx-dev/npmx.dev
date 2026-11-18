@@ -103,7 +103,9 @@ function parseMarkdown({
   if (!text) return ''
 
   // First strip HTML tags and escape remaining HTML
+  // Badge images without an enclosing link strip down to bare "[]" wrappers
   let html = stripAndEscapeHtml(text)
+  if (/^(?:\[\s*\]\s*)+$/.test(html)) return ''
 
   // Bold: **text** or __text__
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
