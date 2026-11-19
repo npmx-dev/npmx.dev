@@ -127,6 +127,20 @@ describe('useCharts – fetchPackageDownloadEvolution', () => {
     })
   })
 
+  it('never ends a start-only range before its start', async () => {
+    const { fetchPackageDownloadEvolution } = useCharts()
+
+    await fetchPackageDownloadEvolution('vue', null, {
+      granularity: 'day',
+      startDate: '2026-11-18',
+    })
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      '/downloads/range/2026-11-18:2026-11-18/vue',
+      expect.anything(),
+    )
+  })
+
   it('keeps an explicit end date', async () => {
     const { fetchPackageDownloadEvolution } = useCharts()
 
