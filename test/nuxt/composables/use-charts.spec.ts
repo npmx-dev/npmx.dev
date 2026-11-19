@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
+import type { WeeklyDataPoint } from '~/types/chart'
 import { clearClientCaches } from '~/composables/useCharts'
+import { addDays, parseIsoDate } from '~/utils/date'
 
 const mockLikesResponse = [
   { day: '2025-03-01', likes: 5 },
@@ -70,5 +72,74 @@ describe('useCharts – fetchPackageLikesEvolution', () => {
 
     // Should only fetch once thanks to client-side promise caching
     expect(fetchSpy).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('useCharts – fetchPackageDownloadEvolution', () => {
+  let fetchSpy: ReturnType<typeof vi.fn>
+
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-11-19T10:00:00.000Z'))
+
+    // npm has not published 2026-11-18 yet, its range endpoint returns 0 for that day
+    fetchSpy = vi.fn(async (url: string) => {
+      if (url === '/downloads/point/last-day') {
+        return { downloads: 100, start: '2026-11-17', end: '2026-11-17' }
+      }
+      const [start, end] = url.split('/')[3]!.split(':') as [string, string]
+      const downloads = []
+      for (
+        let day = start;
+        day <= end;
+        day = addDays(parseIsoDate(day), 1).toISOString().slice(0, 10)
+      ) {
+        downloads.push({ day, downloads: day === '2026-11-18' ? 0 : 100 })
+      }
+      return { start, end, package: 'vue', downloads }
+    })
+    vi.stubGlobal('$fetch', fetchSpy)
+
+    clearClientCaches()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.unstubAllGlobals()
+  })
+
+  it('ends on the latest day npm has published', async () => {
+    const { fetchPackageDownloadEvolution } = useCharts()
+
+    const result = (await fetchPackageDownloadEvolution('vue', null, {
+      granularity: 'week',
+      weeks: 2,
+    })) as WeeklyDataPoint[]
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      '/downloads/range/2026-11-04:2026-11-17/vue',
+      expect.anything(),
+    )
+    expect(result.at(-1)).toMatchObject({
+      weekStart: '2026-11-11',
+      weekEnd: '2026-11-17',
+      value: 700,
+    })
+  })
+
+  it('keeps an explicit end date', async () => {
+    const { fetchPackageDownloadEvolution } = useCharts()
+
+    await fetchPackageDownloadEvolution('vue', null, {
+      granularity: 'day',
+      startDate: '2026-11-10',
+      endDate: '2026-11-18',
+    })
+
+    expect(fetchSpy).toHaveBeenCalledTimes(1)
+    expect(fetchSpy).toHaveBeenCalledWith(
+      '/downloads/range/2026-11-10:2026-11-18/vue',
+      expect.anything(),
+    )
   })
 })
