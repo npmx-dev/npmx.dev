@@ -284,6 +284,8 @@ export function useCharts() {
     const startDateOnly = toDateOnly(evolutionOptions.startDate)
     if (startDateOnly) {
       const start = parseIsoDate(startDateOnly)
+      // the latest published day must not end the range before its start
+      if (!endDateOnly && end < start && start <= yesterday) return { start, end: start }
       return { start, end }
     }
 
