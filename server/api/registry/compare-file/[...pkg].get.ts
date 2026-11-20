@@ -1,6 +1,12 @@
 import * as v from 'valibot'
 import { PackageFileDiffQuerySchema } from '#shared/schemas/package'
-import { countDiffStats, createDiff, insertSkipBlocks, truncateDiffHunks } from '#shared/utils/diff'
+import {
+  countDiffStats,
+  createDiff,
+  createRawDiff,
+  insertSkipBlocks,
+  truncateDiffHunks,
+} from '#shared/utils/diff'
 import type { DiffHunk, DiffSkipBlock } from '#shared/types/compare'
 
 const CACHE_VERSION = 3
@@ -225,6 +231,11 @@ export default defineCachedEventHandler(
           })
         }
 
+        if (query.format === 'diff') {
+          setResponseHeader(event, 'Content-Type', 'text/plain; charset=utf-8')
+          return createRawDiff(fromContent, toContent, filePath)
+        }
+
         const large = largestSize > LARGE_DIFF_MODE_BYTES
         const effectiveDiffOptions = large
           ? {
@@ -329,6 +340,9 @@ export default defineCachedEventHandler(
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       const query = getQuery(event)
+      const pkgKey = pkg.replace(/\/+$/, '').trim()
+      // The raw diff ignores the display options, so they stay out of its key.
+      if (query.format === 'diff') return `compare-file:v${CACHE_VERSION}:${pkgKey}:raw`
       // Normalize option values to prevent cache pollution from arbitrary floats.
       // These match the parsing logic used in the handler body.
       const merge = query.mergeModifiedLines !== 'false'
@@ -336,7 +350,7 @@ export default defineCachedEventHandler(
       const distance = parseInt(query.maxDiffDistance as string, 10) || 30
       const charEdits = parseInt(query.inlineMaxCharEdits as string, 10) || 2
       const optionsKey = `${merge}:${ratio}:${distance}:${charEdits}`
-      return `compare-file:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}:${optionsKey}`
+      return `compare-file:v${CACHE_VERSION}:${pkgKey}:${optionsKey}`
     },
   },
 )

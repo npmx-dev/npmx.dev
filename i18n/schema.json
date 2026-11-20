@@ -5095,6 +5095,9 @@
         "char_edits": {
           "type": "string"
         },
+        "copy_raw_diff": {
+          "type": "string"
+        },
         "diff_distance": {
           "type": "string"
         },
@@ -5126,6 +5129,9 @@
           "type": "string"
         },
         "view_in_code_browser": {
+          "type": "string"
+        },
+        "view_raw_diff": {
           "type": "string"
         },
         "word_wrap": {
