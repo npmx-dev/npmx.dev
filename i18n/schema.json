@@ -507,6 +507,9 @@
             },
             "stats": {
               "type": "string"
+            },
+            "add_to_collection": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1479,6 +1482,42 @@
         },
         "sign_in_to_create": {
           "type": "string"
+        },
+        "picker": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "packages": {
+              "type": "string"
+            },
+            "none_yet": {
+              "type": "string"
+            },
+            "full": {
+              "type": "string"
+            },
+            "full_reason": {
+              "type": "string"
+            },
+            "save_error": {
+              "type": "string"
+            },
+            "create_error": {
+              "type": "string"
+            },
+            "name_placeholder": {
+              "type": "string"
+            },
+            "create": {
+              "type": "string"
+            },
+            "created": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         },
         "editor": {
           "type": "object",

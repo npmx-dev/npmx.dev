@@ -66,7 +66,7 @@ export type CollectionItemView =
       note?: string
     }
 
-/** One of the viewer's own collections, with what's in it. */
+/** One of the viewer's own collections, with what's in it, for the add-to-collection picker. */
 export type OwnCollection = CollectionSummary & { subjectRefs: string[] }
 
 /** Likes or follows of a collection, counted once per account. */

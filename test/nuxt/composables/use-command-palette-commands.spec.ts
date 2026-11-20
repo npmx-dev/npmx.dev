@@ -236,6 +236,9 @@ describe('useCommandPaletteCommands', () => {
     ])
     expect(flatCommands.value.find(command => command.id === 'package-diff')).toBeTruthy()
     expect(flatCommands.value.find(command => command.id === 'package-download')).toBeTruthy()
+    expect(
+      flatCommands.value.find(command => command.id === 'package-add-to-collection'),
+    ).toBeTruthy()
     expect(flatCommands.value.find(command => command.id === 'package-main')?.to).toBeTruthy()
     expect(flatCommands.value.find(command => command.id === 'package-timeline')?.to).toEqual({
       name: 'timeline',

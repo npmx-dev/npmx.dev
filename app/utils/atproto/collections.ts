@@ -105,6 +105,22 @@ export function fetchOwnCollections() {
   return $fetch<OwnCollection[]>('/api/social/collections/mine')
 }
 
+export function changeCollectionItems(
+  identifier: string,
+  rkey: string,
+  change: { add?: string[]; remove?: string[] },
+  userHandle?: string | null,
+) {
+  return request(
+    () =>
+      $fetch<CollectionWriteResult & { subjectRefs: string[] }>(
+        `${collectionPath(identifier, rkey)}/items`,
+        { method: 'POST', body: change },
+      ),
+    userHandle,
+  )
+}
+
 export function fetchUserCollections(identifier: string, cursor?: string | null, limit = 20) {
   return $fetch<{ cursor?: string; items: CollectionSummary[] }>(
     `/api/social/collections/${encodeURIComponent(identifier)}`,
