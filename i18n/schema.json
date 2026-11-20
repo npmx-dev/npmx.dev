@@ -1675,6 +1675,9 @@
             "contents": {
               "type": "string"
             },
+            "copy_as_markdown": {
+              "type": "string"
+            },
             "default_not_available": {
               "type": "string"
             },

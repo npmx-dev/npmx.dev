@@ -9,3 +9,9 @@ export interface DocsResponse {
   status: DocsStatus
   message?: string
 }
+
+export interface DocsMarkdownResponse {
+  package: string
+  version: string
+  markdown: string
+}
