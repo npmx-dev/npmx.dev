@@ -267,6 +267,15 @@
         },
         "instant_search_advisory": {
           "type": "string"
+        },
+        "suggestions_label": {
+          "type": "string"
+        },
+        "suggestions_search_all": {
+          "type": "string"
+        },
+        "suggestions_count": {
+          "type": "string"
         }
       },
       "additionalProperties": false

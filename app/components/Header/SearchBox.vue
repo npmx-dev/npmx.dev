@@ -19,9 +19,11 @@ const showSearchBar = computed(() => {
 const { model: searchQuery, startSearch } = useGlobalSearch('header')
 const hasSearchQuery = computed(() => searchQuery.value.trim().length > 0)
 
-function handleSubmit() {
-  startSearch()
-}
+const suggest = useSearchSuggestions({
+  id: 'header-search',
+  query: searchQuery,
+  onSearch: startSearch,
+})
 
 function clearSearch() {
   searchQuery.value = ''
@@ -48,7 +50,7 @@ defineExpose({ focus, blur })
 </script>
 <template>
   <search v-if="showSearchBar" :class="'flex-1 sm:max-w-md ' + inputClass">
-    <form method="GET" action="/search" class="relative" @submit.prevent="handleSubmit">
+    <form method="GET" action="/search" class="relative" @submit.prevent="suggest.submit()">
       <label for="header-search" class="sr-only">
         {{ $t('search.label') }}
       </label>
@@ -70,6 +72,7 @@ defineExpose({ focus, blur })
             name="q"
             :placeholder="$t('search.placeholder')"
             no-correct
+            v-bind="suggest.inputProps.value"
             class="w-full min-w-25 ps-7 pe-8"
             @focus="handleFocus"
             @blur="handleBlur"
@@ -88,6 +91,16 @@ defineExpose({ focus, blur })
           </button>
           <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
         </div>
+
+        <SearchSuggestionsDropdown
+          :list-id="suggest.listId"
+          :options="suggest.options.value"
+          :expanded="suggest.expanded.value"
+          :pending="suggest.pending.value"
+          :query="suggest.query.value"
+          v-model:active="suggest.active.value"
+          @select="suggest.choose"
+        />
       </div>
     </form>
   </search>

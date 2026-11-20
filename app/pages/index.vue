@@ -4,9 +4,11 @@ import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 const { model: searchQuery, startSearch } = useGlobalSearch()
 const isSearchFocused = shallowRef(false)
 
-async function search() {
-  startSearch()
-}
+const suggest = useSearchSuggestions({
+  id: 'home-search',
+  query: searchQuery,
+  onSearch: startSearch,
+})
 
 useSeoMeta({
   title: () => $t('seo.home.title'),
@@ -28,14 +30,14 @@ defineOgImage('Splash.takumi', {}, { alt: () => $t('seo.home.description') })
       >
         <LandingIntroHeader />
         <search
-          class="w-full max-w-2xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
+          class="relative z-10 w-full max-w-2xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"
         >
           <form
             method="GET"
             action="/search"
             class="relative grid justify-items-center gap-4"
-            @submit.prevent.trim="search"
+            @submit.prevent="suggest.submit()"
           >
             <label for="home-search" class="sr-only">
               {{ $t('search.label') }}
@@ -65,6 +67,7 @@ defineOgImage('Splash.takumi', {}, { alt: () => $t('seo.home.description') })
                   size="lg"
                   class="w-full ps-8 pe-24"
                   aria-describedby="instant-search-advisory"
+                  v-bind="suggest.inputProps.value"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
                   ariaKeyshortcuts="/"
@@ -81,6 +84,17 @@ defineOgImage('Splash.takumi', {}, { alt: () => $t('seo.home.description') })
                   </span>
                 </ButtonBase>
               </div>
+
+              <SearchSuggestionsDropdown
+                size="lg"
+                :list-id="suggest.listId"
+                :options="suggest.options.value"
+                :expanded="suggest.expanded.value"
+                :pending="suggest.pending.value"
+                :query="suggest.query.value"
+                v-model:active="suggest.active.value"
+                @select="suggest.choose"
+              />
             </div>
 
             <InstantSearch />
