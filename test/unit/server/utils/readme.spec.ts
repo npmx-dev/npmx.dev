@@ -808,6 +808,13 @@ describe('HTML output', () => {
     expect(result.html).not.toContain('rel="bookmark"')
     expect(result.html).not.toContain('target="_self"')
   })
+
+  it('only uses the first word of a fenced code info string as its language', async () => {
+    const markdown = '```ts second-word\nconst value = 1\n```'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.html).toContain('<code class="language-ts">')
+  })
 })
 
 /**
