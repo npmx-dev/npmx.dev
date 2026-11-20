@@ -14,6 +14,28 @@ export const fetchNpmPackage = defineCachedFunction(
   },
 )
 
+/**
+ * Whether a package exists on the registry. Throws on anything other than a 404 so a registry
+ * outage isn't cached as "doesn't exist".
+ */
+export const fetchNpmPackageExists = defineCachedFunction(
+  async (name: string): Promise<boolean> => {
+    try {
+      await $fetch(`${NPM_REGISTRY}/${encodePackageName(name)}`, { method: 'HEAD' })
+      return true
+    } catch (error) {
+      if ((error as { statusCode?: number }).statusCode === 404) return false
+      throw error
+    }
+  },
+  {
+    maxAge: CACHE_MAX_AGE_ONE_HOUR,
+    swr: true,
+    name: 'npm-package-exists',
+    getKey: (name: string) => name,
+  },
+)
+
 /** Registry media type for the abbreviated ("install") packument. */
 const NPM_INSTALL_V1 = 'application/vnd.npm.install-v1+json'
 

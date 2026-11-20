@@ -345,6 +345,46 @@ describe('useCommandPaletteCommands', () => {
     wrapper.unmount()
   })
 
+  it("matches the user's own collections while searching, and only then", async () => {
+    registerEndpoint('/api/social/collections/mine', () => [
+      {
+        uri: 'at://did:plc:alice.bsky.social/dev.npmx.collection/3m5k5baifas2a',
+        cid: 'cid',
+        did: 'did:plc:alice.bsky.social',
+        handle: 'alice.bsky.social',
+        rkey: '3m5k5baifas2a',
+        name: 'Arg parsers',
+        itemCount: 0,
+        createdAt: '2026-01-01T00:00:00.000Z',
+        subjectRefs: [],
+      },
+    ])
+    const { wrapper, groupedCommands } = await captureCommandPalette({
+      atprotoHandle: 'alice.bsky.social',
+      query: 'parsers',
+    })
+    const commandPalette = useCommandPalette()
+    commandPalette.open()
+    commandPalette.query.value = 'parsers'
+
+    await vi.waitFor(() => {
+      const group = groupedCommands.value.find(g => g.id === 'collections')
+      expect(group?.items.map(command => command.to)).toEqual([
+        {
+          name: 'collections-identifier-rkey',
+          params: { identifier: 'alice.bsky.social', rkey: '3m5k5baifas2a' },
+        },
+      ])
+    })
+
+    commandPalette.query.value = ''
+    await vi.waitFor(() => {
+      expect(groupedCommands.value.find(g => g.id === 'collections')).toBeUndefined()
+    })
+
+    wrapper.unmount()
+  })
+
   it('filters only version commands when the query is a valid semver range', async () => {
     const { wrapper, groupedCommands, flatCommands } = await captureCommandPalette({
       route: '/package/vue',
