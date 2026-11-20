@@ -231,7 +231,7 @@
     "upload": {
       "section": "Package.json",
       "label": "Upload package.json",
-      "hint": "Drop a package.json here, or choose a file. Only the dependency fields are read — nothing is uploaded to a server",
+      "hint": "Drop a package.json here, or choose a file. The file itself is never uploaded — only dependency names are sent to npm, dependency names and version ranges are sent to npmx, and GitHub repository owner and name are sent to UNGH to look up stats",
       "clear": "Clear",
       "invalid_package_json": "Invalid package.json"
     },

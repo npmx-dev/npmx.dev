@@ -231,7 +231,7 @@
     "upload": {
       "section": "Package.json",
       "label": "Upload package.json",
-      "hint": "Plaats hier een package.json bestand, of kies een bestand. Alleen de velden met dependencies worden gelezen — er wordt niets naar een server geüpload",
+      "hint": "Plaats hier een package.json bestand, of kies een bestand. Het bestand zelf wordt nooit geüpload — alleen dependencynamen worden naar npm gestuurd, dependencynamen en versie-ranges naar npmx, en de eigenaar en naam van de GitHub-repository naar UNGH om statistieken op te zoeken",
       "clear": "leegmaken",
       "invalid_package_json": "Ongeldige package.json"
     },
