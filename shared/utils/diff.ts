@@ -1,4 +1,4 @@
-import { createTwoFilesPatch } from 'diff'
+import { createTwoFilesPatch, FILE_HEADERS_ONLY } from 'diff'
 import type {
   DiffLine,
   DiffLineSegment,
@@ -390,6 +390,28 @@ export function createDiff(
 
   const files = parseUnifiedDiff(diffText, options)
   return files[0] ?? null
+}
+
+/**
+ * Create a plain unified diff for a single file. `null` content means the file
+ * does not exist in that version, so its side uses `/dev/null`.
+ */
+export function createRawDiff(
+  oldContent: string | null,
+  newContent: string | null,
+  filePath: string,
+): string {
+  if ((oldContent ?? '') === (newContent ?? '')) return ''
+
+  return createTwoFilesPatch(
+    oldContent === null ? '/dev/null' : `a/${filePath}`,
+    newContent === null ? '/dev/null' : `b/${filePath}`,
+    oldContent ?? '',
+    newContent ?? '',
+    undefined,
+    undefined,
+    { context: 3, headerOptions: FILE_HEADERS_ONLY },
+  )
 }
 
 export function countDiffStats(hunks: (DiffHunk | DiffSkipBlock)[]): {
