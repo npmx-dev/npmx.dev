@@ -798,6 +798,12 @@ const showSkeleton = shallowRef(false)
                 :version="resolvedVersion"
                 class="mt-3"
               />
+              <PackageUrlDependencyTree
+                v-if="resolvedVersion"
+                :package-name="pkg.name"
+                :version="resolvedVersion"
+                class="mt-3"
+              />
               <template #fallback />
             </ClientOnly>
           </div>

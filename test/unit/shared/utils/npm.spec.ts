@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vite-plus/test'
-import { normalizeLicense, parseDependencyVersion } from '#shared/utils/npm'
+import { isUrlDependency, normalizeLicense, parseDependencyVersion } from '#shared/utils/npm'
 import type { PackumentLicense } from '#shared/types/npm-registry'
 
 describe('normalizeLicense', () => {
@@ -73,5 +73,38 @@ describe('parseDependencyVersion', () => {
     for (const tag of ['git', 'github', 'gitlab', 'http', 'https', 'file', 'next']) {
       expect(parseDependencyVersion(tag)).toEqual({ name: null, range: tag })
     }
+  })
+})
+
+describe('isUrlDependency', () => {
+  it.each([
+    'git+https://github.com/npm/cli.git',
+    'git+ssh://git@github.com:npm/cli.git#v1.0.27',
+    'git://github.com/npm/cli.git#v1.0.27',
+    'github:npm/cli',
+    'gitlab:user/repo',
+    'bitbucket:user/repo',
+    'gist:11081aaa281',
+    'npm/cli',
+    'npm/cli#semver:^5.0',
+    'https://example.com/pkg.tgz',
+    'http://example.com/pkg.tgz',
+  ])('flags %s', spec => {
+    expect(isUrlDependency(spec)).toBe(true)
+  })
+
+  it.each([
+    '^1.2.3',
+    '1.2.3',
+    '*',
+    'latest',
+    'github',
+    'npm:string-width@^4.2.0',
+    'npm:@scope/pkg@^1.0.0',
+    'file:../local',
+    'link:../local',
+    'workspace:*',
+  ])('does not flag %s', spec => {
+    expect(isUrlDependency(spec)).toBe(false)
   })
 })
