@@ -1,8 +1,14 @@
 {
   "name": "createHighlighter",
-  "isDefault": false,
+  "location": {
+    "filename": "https://esm.sh/@tanstack/highlight@0.0.9/dist/core.d.ts",
+    "line": 82,
+    "col": 0,
+    "byteIndex": 2929
+  },
+  "declarationKind": "export",
   "kind": "function",
-  "functionDef": {
+  "def": {
     "params": [
       {
         "kind": "object",
@@ -18,32 +24,45 @@
         ],
         "optional": false,
         "tsType": {
-          "repr": "",
           "kind": "typeLiteral",
-          "typeLiteral": {
+          "value": {
             "properties": [
               {
                 "name": "fallbackLanguage",
+                "location": {
+                  "filename": "https://esm.sh/@tanstack/highlight@0.0.9/dist/core.d.ts",
+                  "line": 83,
+                  "col": 4,
+                  "byteIndex": 3011
+                },
                 "optional": true,
                 "tsType": {
                   "repr": "string",
                   "kind": "keyword",
-                  "keyword": "string"
+                  "value": "string"
                 }
               },
               {
                 "name": "languages",
-                "optional": false,
+                "location": {
+                  "filename": "https://esm.sh/@tanstack/highlight@0.0.9/dist/core.d.ts",
+                  "line": 84,
+                  "col": 4,
+                  "byteIndex": 3042
+                },
                 "tsType": {
                   "repr": "ReadonlyArray",
                   "kind": "typeRef",
-                  "typeRef": {
+                  "value": {
                     "typeParams": [
                       {
                         "repr": "LanguageDefinition",
                         "kind": "typeRef",
-                        "typeRef": {
-                          "typeName": "LanguageDefinition"
+                        "value": {
+                          "typeName": "LanguageDefinition",
+                          "resolution": {
+                            "kind": "local"
+                          }
                         }
                       }
                     ],
@@ -51,10 +70,7 @@
                   }
                 }
               }
-            ],
-            "methods": [],
-            "callSignatures": [],
-            "indexSignatures": []
+            ]
           }
         }
       }
@@ -62,12 +78,12 @@
     "returnType": {
       "repr": "Highlighter",
       "kind": "typeRef",
-      "typeRef": {
-        "typeName": "Highlighter"
+      "value": {
+        "typeName": "Highlighter",
+        "resolution": {
+          "kind": "local"
+        }
       }
-    },
-    "isAsync": false,
-    "isGenerator": false,
-    "typeParams": []
+    }
   }
 }

@@ -1,98 +1,155 @@
 {
   "name": "ManagerEvents",
+  "location": {
+    "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+    "line": 236,
+    "col": 0,
+    "byteIndex": 5292
+  },
+  "declarationKind": "export",
   "kind": "interface",
-  "interfaceDef": {
-    "extends": [{ "repr": "Events", "kind": "typeRef", "typeRef": { "typeName": "Events" } }],
-    "constructors": [],
-    "methods": [],
+  "def": {
+    "extends": [
+      {
+        "repr": "Events",
+        "kind": "typeRef",
+        "value": {
+          "typeName": "Events",
+          "resolution": {
+            "kind": "local"
+          }
+        }
+      }
+    ],
     "properties": [
       {
         "name": "[ManagerEventName.NodeAdd]",
+        "location": {
+          "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+          "line": 237,
+          "col": 4,
+          "byteIndex": 5344
+        },
         "computed": true,
-        "optional": false,
         "tsType": {
-          "repr": "",
           "kind": "typeLiteral",
-          "typeLiteral": {
+          "value": {
             "properties": [
               {
                 "name": "node",
-                "optional": false,
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 238,
+                  "col": 8,
+                  "byteIndex": 5382
+                },
                 "tsType": {
                   "repr": "Node",
                   "kind": "typeRef",
-                  "typeRef": { "typeName": "Node" }
+                  "value": {
+                    "typeName": "Node",
+                    "resolution": {
+                      "kind": "import",
+                      "specifier": "./node.d.ts",
+                      "name": "Node"
+                    }
+                  }
                 }
               }
-            ],
-            "methods": [],
-            "callSignatures": [],
-            "indexSignatures": []
+            ]
           }
         }
       },
       {
         "name": "[ManagerEventName.NodeRemove]",
+        "location": {
+          "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+          "line": 240,
+          "col": 4,
+          "byteIndex": 5405
+        },
         "computed": true,
-        "optional": false,
         "tsType": {
-          "repr": "",
           "kind": "typeLiteral",
-          "typeLiteral": {
+          "value": {
             "properties": [
               {
                 "name": "node",
-                "optional": false,
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 241,
+                  "col": 8,
+                  "byteIndex": 5446
+                },
                 "tsType": {
                   "repr": "Node",
                   "kind": "typeRef",
-                  "typeRef": { "typeName": "Node" }
+                  "value": {
+                    "typeName": "Node",
+                    "resolution": {
+                      "kind": "import",
+                      "specifier": "./node.d.ts",
+                      "name": "Node"
+                    }
+                  }
                 }
               }
-            ],
-            "methods": [],
-            "callSignatures": [],
-            "indexSignatures": []
+            ]
           }
         }
       },
       {
         "name": "[ManagerEventName.NodeReconnectAttempt]",
+        "location": {
+          "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+          "line": 243,
+          "col": 4,
+          "byteIndex": 5469
+        },
         "computed": true,
-        "optional": false,
         "tsType": {
-          "repr": "",
           "kind": "typeLiteral",
-          "typeLiteral": {
+          "value": {
             "properties": [
               {
                 "name": "node",
-                "optional": false,
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 244,
+                  "col": 8,
+                  "byteIndex": 5520
+                },
                 "tsType": {
                   "repr": "Node",
                   "kind": "typeRef",
-                  "typeRef": { "typeName": "Node" }
+                  "value": {
+                    "typeName": "Node",
+                    "resolution": {
+                      "kind": "import",
+                      "specifier": "./node.d.ts",
+                      "name": "Node"
+                    }
+                  }
                 }
               },
               {
                 "name": "attempt",
-                "optional": false,
+                "location": {
+                  "filename": "https://esm.sh/linkdave@0.0.2/dist/types.d.ts",
+                  "line": 245,
+                  "col": 8,
+                  "byteIndex": 5540
+                },
                 "tsType": {
                   "repr": "number",
                   "kind": "keyword",
-                  "keyword": "number"
+                  "value": "number"
                 }
               }
-            ],
-            "methods": [],
-            "callSignatures": [],
-            "indexSignatures": []
+            ]
           }
         }
       }
-    ],
-    "callSignatures": [],
-    "indexSignatures": [],
-    "typeParams": []
+    ]
   }
 }
