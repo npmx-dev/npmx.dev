@@ -119,7 +119,27 @@ function getShortName(header: string): string {
 
           <!-- Value display -->
           <template v-else>
-            <span class="font-mono text-sm tabular-nums" :class="getStatusClass(value.status)">
+            <TooltipApp v-if="value.tooltip" :text="value.tooltip" position="top">
+              <span
+                class="font-mono text-sm tabular-nums cursor-help"
+                :class="getStatusClass(value.status)"
+              >
+                <!-- Date values use DateTime component for i18n and user settings -->
+                <DateTime
+                  v-if="value.type === 'date'"
+                  :datetime="value.display"
+                  date-style="medium"
+                />
+                <template v-else>
+                  <span dir="auto">{{ value.display }}</span>
+                </template>
+              </span>
+            </TooltipApp>
+            <span
+              v-else
+              class="font-mono text-sm tabular-nums"
+              :class="getStatusClass(value.status)"
+            >
               <!-- Date values use DateTime component for i18n and user settings -->
               <DateTime
                 v-if="value.type === 'date'"

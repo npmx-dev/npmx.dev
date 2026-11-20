@@ -507,6 +507,168 @@ describe('usePackageComparison', () => {
     })
   })
 
+  describe('status tooltips', () => {
+    /**
+     * Stubs $fetch so the packument route returns `fixture` and optional API
+     * routes return the given payloads. Everything else resolves to null.
+     */
+    function stubRegistryFetch(
+      fixture: PackumentFixture,
+      handlers: { analysis?: unknown; vulnerabilities?: unknown } = {},
+    ) {
+      vi.stubGlobal(
+        '$fetch',
+        vi.fn().mockImplementation((url: string, options?: FetchOptions) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('/api/registry/packument/')) {
+            return Promise.resolve(trimmedPackument(fixture, options?.params?.version))
+          }
+          if (fullUrl.startsWith('/api/registry/analysis/')) {
+            return Promise.resolve(handlers.analysis ?? null)
+          }
+          if (fullUrl.startsWith('/api/registry/vulnerabilities/')) {
+            return Promise.resolve(handlers.vulnerabilities ?? null)
+          }
+          return Promise.resolve(null)
+        }),
+      )
+    }
+
+    it('explains the warning on a stale publish date', async () => {
+      stubRegistryFetch({
+        'name': 'stale-pkg',
+        'dist-tags': { latest: '1.0.0' },
+        'time': { '1.0.0': '2020-01-01T00:00:00.000Z' },
+        'versions': { '1.0.0': {} },
+      })
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent(['stale-pkg'])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const value = getFacetValues('lastUpdated')[0]
+      expect(value?.status).toBe('warning')
+      expect(value?.tooltip).toBe('This version was published over 2 years ago')
+    })
+
+    it('does not set a tooltip on a fresh publish date', async () => {
+      stubRegistryFetch({
+        'name': 'fresh-pkg',
+        'dist-tags': { latest: '1.0.0' },
+        'time': { '1.0.0': new Date().toISOString() },
+        'versions': { '1.0.0': {} },
+      })
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent(['fresh-pkg'])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const value = getFacetValues('lastUpdated')[0]
+      expect(value?.status).toBe('neutral')
+      expect(value?.tooltip).toBeUndefined()
+    })
+
+    it('explains the warning on a large package size', async () => {
+      stubRegistryFetch({
+        'name': 'big-pkg',
+        'dist-tags': { latest: '1.0.0' },
+        'versions': { '1.0.0': { dist: { unpackedSize: 6 * 1024 * 1024 } } },
+      })
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent(['big-pkg'])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const value = getFacetValues('packageSize')[0]
+      expect(value?.status).toBe('warning')
+      expect(value?.tooltip).toBe('Unpacked size over 5 MB, which may slow down installs')
+    })
+
+    it('explains the warning on many direct dependencies', async () => {
+      const dependencies = Object.fromEntries(
+        Array.from({ length: 12 }, (_, i) => [`dep-${i}`, '^1.0.0']),
+      )
+      stubRegistryFetch({
+        'name': 'many-deps-pkg',
+        'dist-tags': { latest: '1.0.0' },
+        'versions': { '1.0.0': { dependencies } },
+      })
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent(['many-deps-pkg'])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const value = getFacetValues('dependencies')[0]
+      expect(value?.status).toBe('warning')
+      expect(value?.tooltip).toBe('More than 10 direct dependencies')
+    })
+
+    it('explains the bad status on critical vulnerabilities', async () => {
+      stubRegistryFetch(
+        {
+          'name': 'vuln-pkg',
+          'dist-tags': { latest: '1.0.0' },
+          'versions': { '1.0.0': {} },
+        },
+        {
+          vulnerabilities: {
+            totalCounts: { total: 3, critical: 1, high: 1, moderate: 1, low: 0 },
+          },
+        },
+      )
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent(['vuln-pkg'])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const value = getFacetValues('vulnerabilities')[0]
+      expect(value?.status).toBe('bad')
+      expect(value?.tooltip).toBe('Critical or high severity vulnerabilities found')
+    })
+
+    it('explains the bad status on missing types', async () => {
+      stubRegistryFetch(
+        {
+          'name': 'untyped-pkg',
+          'dist-tags': { latest: '1.0.0' },
+          'versions': { '1.0.0': {} },
+        },
+        { analysis: { moduleFormat: 'esm', types: { kind: 'none' } } },
+      )
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent(['untyped-pkg'])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const value = getFacetValues('types')[0]
+      expect(value?.status).toBe('bad')
+      expect(value?.tooltip).toBe('No type definitions available')
+    })
+
+    it('explains the bad status on a deprecated version', async () => {
+      stubRegistryFetch({
+        'name': 'deprecated-pkg',
+        'dist-tags': { latest: '1.0.0' },
+        'versions': { '1.0.0': { deprecated: 'use something else' } },
+      })
+
+      const { status, getFacetValues } = await usePackageComparisonInComponent(['deprecated-pkg'])
+      await vi.waitFor(() => {
+        expect(status.value).toBe('success')
+      })
+
+      const value = getFacetValues('deprecated')[0]
+      expect(value?.status).toBe('bad')
+      expect(value?.tooltip).toBe('This version is marked as deprecated')
+    })
+  })
+
   describe('createdAt facet', () => {
     it('displays the creation date without status', async () => {
       const createdDate = '2020-01-01T00:00:00.000Z'

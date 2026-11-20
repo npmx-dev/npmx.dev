@@ -1640,6 +1640,43 @@
           "description": "When the package was created"
         }
       },
+      "status": {
+        "packageSize": {
+          "warning": "Unpacked size over 5 MB, which may slow down installs"
+        },
+        "installSize": {
+          "warning": "Install size over 50 MB, which may slow down installs"
+        },
+        "dependencies": {
+          "warning": "More than 10 direct dependencies"
+        },
+        "totalDependencies": {
+          "warning": "More than 50 dependencies including transitives"
+        },
+        "lastUpdated": {
+          "warning": "This version was published over 2 years ago"
+        },
+        "deprecated": {
+          "good": "This version is not deprecated",
+          "bad": "This version is marked as deprecated"
+        },
+        "moduleFormat": {
+          "good": "ESM or dual format, which works with modern tooling"
+        },
+        "types": {
+          "good": "Type definitions are bundled with the package",
+          "info": "Types are provided by a separate {'@'}types package",
+          "bad": "No type definitions available"
+        },
+        "license": {
+          "warning": "No license declared for this package"
+        },
+        "vulnerabilities": {
+          "good": "No known vulnerabilities",
+          "warning": "Vulnerabilities found, but none critical or high severity",
+          "bad": "Critical or high severity vulnerabilities found"
+        }
+      },
       "values": {
         "any": "Any",
         "none": "None",
