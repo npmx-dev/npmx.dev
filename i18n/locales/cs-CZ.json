@@ -1516,7 +1516,6 @@
       "search_label": "Vyhledat balíčky",
       "search_first": "Vyhledat balíček...",
       "search_add": "Přidat další balíček...",
-      "searching": "Vyhledávání...",
       "remove_package": "Odebrat {package}",
       "packages_selected": "Vybrané balíčky: {count}/{max}.",
       "add_hint": "Přidejte alespoň 2 balíčky ke srovnání.",

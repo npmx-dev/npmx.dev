@@ -1251,7 +1251,6 @@
       "search_label": "Pesquisar por pacotes",
       "search_first": "Pesquisar por um pacote...",
       "search_add": "Adicionar outro pacote...",
-      "searching": "Pesquisando...",
       "remove_package": "Remover {package}",
       "packages_selected": "{count}/{max} pacotes selecionados.",
       "add_hint": "Adicione pelo menos 2 pacotes para comparar."
