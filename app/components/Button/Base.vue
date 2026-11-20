@@ -40,7 +40,7 @@ const iconOnly = computed(() => !!props.classicon && !slots.default)
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
 
 defineExpose({
-  focus: () => el.value?.focus(),
+  focus: (options?: FocusOptions) => el.value?.focus(options),
   getBoundingClientRect: () => el.value?.getBoundingClientRect(),
 })
 </script>

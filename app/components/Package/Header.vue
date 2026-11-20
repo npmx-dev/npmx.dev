@@ -340,7 +340,6 @@ useShortcuts({
             :versions="pkg.versions"
             :dist-tags="pkg['dist-tags']"
             :url-pattern="versionUrlPattern"
-            position-class="max-md:inset-is-0 md:inset-ie-0"
           />
         </div>
       </div>
