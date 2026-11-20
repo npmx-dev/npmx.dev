@@ -66,6 +66,7 @@ export const PACKAGE_SUBJECT_REF = (packageName: string) =>
 export const LIKES_SCOPE = `repo:${dev.npmx.feed.like.$nsid}`
 export const PROFILE_SCOPE = `repo:${dev.npmx.actor.profile.$nsid}`
 export const COLLECTIONS_SCOPE = `repo:${dev.npmx.collection.$nsid}`
+export const FOLLOWS_SCOPE = `repo:${dev.npmx.graph.follow.$nsid}`
 export const COLLECTION_SUBJECT_REF = (did: string, rkey: string) =>
   `at://${did}/${dev.npmx.collection.$nsid}/${rkey}`
 // Keep in sync with lexicons/dev/npmx/collection.json
