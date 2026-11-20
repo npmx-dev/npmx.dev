@@ -76,7 +76,7 @@
     "@upstash/redis": "1.38.2",
     "@vercel/speed-insights": "2.0.0",
     "@vite-pwa/assets-generator": "2.0.0",
-    "@vite-pwa/nuxt": "1.1.1",
+    "@vite-pwa/nuxt": "2.0.2",
     "@vueuse/core": "15.0.0",
     "@vueuse/integrations": "15.0.0",
     "@vueuse/nuxt": "15.0.0",
