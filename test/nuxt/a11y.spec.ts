@@ -363,6 +363,7 @@ import FacetScatterChart from '~/components/Compare/FacetScatterChart.vue'
 import PackageTimelineChart from '~/components/Package/TimelineChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import CollectionCard from '~/components/Collection/Card.vue'
+import CollectionCuratedBadge from '~/components/Collection/CuratedBadge.vue'
 import CollectionGrid from '~/components/Collection/Grid.vue'
 import CollectionPicker from '~/components/Collection/Picker.vue'
 import CollectionAddButton from '~/components/Collection/AddButton.vue'
@@ -1340,6 +1341,19 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
+    it('CollectionCard should have no accessibility violations with browse stats', async () => {
+      const component = await mountSuspended(CollectionCard, {
+        props: {
+          collection: {
+            ...summary,
+            stats: { likes: 12, follows: 1, updatedAt: '2026-11-02T00:00:00.000Z' },
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
     it('CollectionGrid should have no accessibility violations', async () => {
       const component = await mountSuspended(CollectionGrid, {
         props: {
@@ -1377,6 +1391,12 @@ describe('component accessibility audits', () => {
 
     it('CollectionAddButton should have no accessibility violations', async () => {
       const component = await mountSuspended(CollectionAddButton, { props: { packages: ['zod'] } })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('CollectionCuratedBadge should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollectionCuratedBadge)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

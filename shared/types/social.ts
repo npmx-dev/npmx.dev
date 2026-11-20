@@ -39,6 +39,16 @@ export type CollectionSummary = {
   createdAt: string
 }
 
+/** Browse's counts and edit time for a collection, from the Jetstream index. */
+export type CollectionStats = {
+  likes: number
+  follows: number
+  /** When the index last saw the record created or edited */
+  updatedAt: string
+}
+
+export type BrowseCollection = CollectionSummary & { stats: CollectionStats }
+
 /** Why an included collection could not be shown */
 export type CollectionUnavailableReason = 'unresolvable' | 'hidden'
 
