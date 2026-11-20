@@ -328,6 +328,9 @@ export default defineNuxtConfig({
   },
 
   fonts: {
+    local: {
+      dirs: ['assets/fonts'],
+    },
     providers: {
       fontshare: false,
     },
@@ -338,13 +341,21 @@ export default defineNuxtConfig({
       {
         name: 'Geist',
         provider: 'local',
-        weights: [400, 500, 600],
         global: true,
       },
       {
         name: 'Geist Mono',
         provider: 'local',
-        weights: [400, 500],
+        global: true,
+      },
+      {
+        name: 'Geist OG',
+        provider: 'none',
+        global: true,
+      },
+      {
+        name: 'Geist Mono OG',
+        provider: 'none',
         global: true,
       },
       {
