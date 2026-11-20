@@ -1,5 +1,41 @@
 import { describe, expect, it } from 'vite-plus/test'
-import { docsRoute } from '~/utils/router'
+import { dependencyVersionRoute, docsRoute, packageRoute } from '~/utils/router'
+
+describe('dependencyVersionRoute', () => {
+  it.each(['^1.0.6', '1.2.3', 'latest'])('links %s to its version page', spec => {
+    expect(dependencyVersionRoute('react-native-svg', spec)).toEqual(
+      packageRoute('react-native-svg', spec),
+    )
+  })
+
+  it('links an npm alias to the version of the real package', () => {
+    expect(dependencyVersionRoute('string-width', 'npm:string-width@^4.2.0')).toEqual(
+      packageRoute('string-width', '^4.2.0'),
+    )
+  })
+
+  it.each([
+    [
+      'github:cwnicoletti/react-native-progress',
+      'https://github.com/cwnicoletti/react-native-progress',
+    ],
+    ['git+https://github.com/npm/cli.git', 'https://github.com/npm/cli'],
+    ['npm/cli', 'https://github.com/npm/cli'],
+    ['gitlab:user/repo', 'https://gitlab.com/user/repo'],
+  ])('links the git dependency %s to its repo', (spec, repoUrl) => {
+    expect(dependencyVersionRoute('pkg', spec)).toBe(repoUrl)
+  })
+
+  it('links a tarball dependency to its URL', () => {
+    expect(dependencyVersionRoute('pkg', 'https://example.com/pkg.tgz')).toBe(
+      'https://example.com/pkg.tgz',
+    )
+  })
+
+  it.each(['file:../local', 'link:../local', 'workspace:*'])('has no link for %s', spec => {
+    expect(dependencyVersionRoute('pkg', spec)).toBeUndefined()
+  })
+})
 
 describe('docsRoute', () => {
   it('emits a scoped name as two path segments (literal slash, not %2F)', () => {
