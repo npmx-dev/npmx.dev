@@ -175,6 +175,14 @@ function matchNpmApi(urlString) {
   const url = new URL(urlString)
   const pathname = decodeURIComponent(url.pathname)
 
+  // Registry-wide downloads point, used for the latest published day
+  if (/^\/downloads\/point\/[^/]+$/.test(pathname)) {
+    const yesterday = new Date()
+    yesterday.setUTCDate(yesterday.getUTCDate() - 1)
+    const day = yesterday.toISOString().slice(0, 10)
+    return json({ downloads: 0, start: day, end: day })
+  }
+
   // Downloads point
   const pointMatch = pathname.match(/^\/downloads\/point\/[^/]+\/(.+)$/)
   if (pointMatch && pointMatch[1]) {
