@@ -139,8 +139,16 @@ describe('repo cache keys', () => {
   })
 
   it('includes the provider when there is no host', () => {
+    params({ provider: 'github', owner: 'group/sub', repo: 'project' })
     getQueryMock.mockReturnValue({})
 
-    expect(repoCacheKey(fakeEvent)).toBe('gitlab:group/sub/project')
+    expect(repoCacheKey(fakeEvent)).toBe('github:group/sub/project')
+  })
+
+  it('ignores an arbitrary host for a provider without self-hosted instances', () => {
+    params({ provider: 'github', owner: 'group/sub', repo: 'project' })
+    getQueryMock.mockReturnValue({ host: 'evil.test' })
+
+    expect(repoCacheKey(fakeEvent)).toBe('github:group/sub/project')
   })
 })
