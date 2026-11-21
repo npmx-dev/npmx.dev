@@ -1423,12 +1423,12 @@
           "description": "Date de création du paquet"
         },
         "stars": {
-          "label": "Étoiles GitHub",
-          "description": "Nombre d’étoiles du dépôt GitHub"
+          "label": "Étoiles",
+          "description": "Nombre d’étoiles du dépôt"
         },
         "issues": {
-          "label": "Issues GitHub",
-          "description": "Nombre d’issues ouvertes sur GitHub"
+          "label": "Issues",
+          "description": "Nombre d’issues ouvertes dans le dépôt"
         }
       },
       "values": {
