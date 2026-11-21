@@ -29,10 +29,11 @@ export default defineCachedEventHandler(
         .page()
 
       return { owner: ref.owner, repo: ref.repo, issues: page.total ?? null }
-    } catch {
+    } catch (error) {
       throw createError({
         statusCode: 502,
         statusMessage: `Failed to fetch issue count from ${ref.provider}`,
+        cause: error,
       })
     }
   },
