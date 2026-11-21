@@ -153,6 +153,7 @@ function handleFileSelect(file: FileChange) {
 
               <NuxtLink
                 :to="packageRoute(dep.name)"
+                prefetch-on="interaction"
                 class="font-mono hover:text-fg transition-colors truncate min-w-0"
               >
                 {{ dep.name }}

@@ -162,7 +162,7 @@ useSeoMeta({
           }}...{{ $t('compare.version_invalid_url_format.to_version') }}</code
         >
       </i18n-t>
-      <NuxtLink :to="packageRoute(packageName)" class="btn">{{
+      <NuxtLink :to="packageRoute(packageName)" prefetch-on="interaction" class="btn">{{
         $t('compare.version_back_to_package')
       }}</NuxtLink>
     </div>
@@ -176,7 +176,7 @@ useSeoMeta({
     <!-- Error state -->
     <div v-else-if="compareStatus === 'error'" class="container py-20 text-center" role="alert">
       <p class="text-fg-muted mb-4">{{ $t('compare.version_error_message') }}</p>
-      <NuxtLink :to="packageRoute(packageName)" class="btn">{{
+      <NuxtLink :to="packageRoute(packageName)" prefetch-on="interaction" class="btn">{{
         $t('compare.version_back_to_package')
       }}</NuxtLink>
     </div>

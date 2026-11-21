@@ -26,6 +26,13 @@ type DailyDataPoint = {
 
 const props = defineProps<{ packageName: string }>()
 const chartRef = useTemplateRef('chartRef')
+const showDataTable = shallowRef(false)
+const chartPanel = useTemplateRef('chartPanel')
+const { height: renderedChartHeight } = useElementSize(chartPanel)
+const lastChartHeight = shallowRef(0)
+watch(renderedChartHeight, height => {
+  if (height > 0) lastChartHeight.value = height
+})
 
 const { locale, localeProperties } = useI18n()
 const isRTL = computed(() => localeProperties.value.dir === 'rtl')
@@ -218,6 +225,40 @@ const heatmap = computed(() => {
 })
 
 const dataset = computed<VueUiHeatmapDatasetItem[]>(() => heatmap.value.dataset)
+
+const tableRows = computed(() => {
+  const yesterday = addDays(toUtcDay(new Date()), -1)
+  const { weekStarts, dataset: rows, reportedDates, anomalousDates } = heatmap.value
+  const maximum = Math.max(0, ...rows.flatMap(row => row.values))
+
+  return weekStarts.flatMap((weekStart, weekIndex) =>
+    WEEK_DAYS.flatMap((_, dayIndex) => {
+      const date = addDays(parseIsoDate(weekStart), dayIndex)
+      if (date > yesterday) return []
+      const key = toIsoDate(date)
+      const rawValue = rows[dayIndex]?.values[weekIndex] ?? 0
+      const value =
+        reportedDates.has(key) && !anomalousDates.has(key) && rawValue > 0 ? rawValue : null
+      return [
+        {
+          date: date.getTime(),
+          value,
+          color:
+            value == null
+              ? colors.value.bg
+              : `color-mix(in srgb, ${accent.value} ${maximum > 0 ? (value / maximum) * 100 : 0}%, ${colors.value.bg})`,
+        },
+      ]
+    }),
+  )
+})
+
+const tableDataset = computed(() => [
+  {
+    name: props.packageName,
+    series: tableRows.value.map(row => row.value),
+  },
+])
 
 function computeMinMax(value: number, maxVal: number, date: string | null) {
   return {
@@ -607,174 +648,208 @@ function getLegendContent(svg: VueUiHeatmapSvgSlotProps['svg']) {
     </div>
     <SkeletonBlock v-else-if="isLoading" class="aspect-[676/172]" />
     <div v-else-if="source.length" class="w-full overflow-visible">
-      <ClientOnly>
-        <div>
-          <VueUiHeatmap ref="chartRef" :dataset="dataset" :config="config" class="[direction:ltr]">
-            <!-- Keyboard navigation hint -->
-            <template #hint="{ isVisible }">
-              <p
-                v-if="isVisible"
-                class="text-accent text-xs -mt-5 text-center px-2"
-                aria-hidden="true"
-              >
-                {{ $t('package.trends.downloads_heatmap.nav_hint') }}
-              </p>
-            </template>
-
-            <template #svg="{ svg }">
-              <template v-for="cell in svg.cells" :key="cell.datapoint.id">
-                <g v-if="isUnrecorded(cell)" pointer-events="none">
-                  <rect
-                    :x="cell.x + 2"
-                    :y="cell.y + 2"
-                    :width="Math.max(0, cell.width - 4)"
-                    :height="Math.max(0, cell.height - 4)"
-                    :fill="colors.bg"
-                  />
-                  <path
-                    :d="getMissingDaySymbol(cell)"
-                    :stroke="isDarkMode ? colors.borderHover : colors.border"
-                    stroke-linecap="round"
-                    :stroke-width="showUnknownDay(cell) ? 1.5 : 2"
-                    fill="none"
-                  />
-                </g>
-              </template>
-
-              <!-- BOTTOM LEGEND -->
-              <template v-for="legend in [getLegendContent(svg)]" :key="'legend'">
-                <!-- Anomalies -->
-                <path v-bind="legend.anomalies.marker" />
-                <text v-bind="legend.anomalies.text">
-                  {{ $t('package.trends.downloads_heatmap.legend.anomalies') }}
-                </text>
-
-                <!-- Max -->
-                <rect v-bind="legend.max.marker" />
-                <text v-bind="legend.max.text">
-                  {{
-                    $t('package.trends.downloads_heatmap.legend.max', {
-                      value: minMax.max.value,
-                      date: minMax.max.date,
-                    })
-                  }}
-                </text>
-
-                <!-- Min -->
-                <rect v-bind="legend.min.marker" />
-                <text v-bind="legend.min.text">
-                  {{
-                    $t('package.trends.downloads_heatmap.legend.min', {
-                      value: minMax.min.value,
-                      date: minMax.min.date,
-                    })
-                  }}
-                </text>
-              </template>
-
-              <!-- Print watermark-->
-              <g
-                v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
-                v-html="
-                  drawSmallNpmxLogoAndTaglineWatermark({
-                    svg: {
-                      ...svg,
-                    },
-                    colors: watermarkColors,
-                    translateFn: $t,
-                  })
-                "
-              />
-            </template>
-
-            <!-- Custom tooltip -->
-            <template #tooltip="{ datapoint, seriesIndex, series }">
-              <div class="px-1 text-start font-mono">
-                <div class="mt-0.5 text-xs text-gray-900 dark:text-gray-100">
-                  {{ getTooltipDate(datapoint, seriesIndex, series) }}
-                </div>
-                <div class="mt-2 flex items-center gap-2">
-                  <span
-                    class="h-3.5 w-3.5 shrink-0 relative"
-                    :style="{
-                      backgroundColor: datapoint.color,
-                      border: `0.5px solid ${adaptColorToBackground(datapoint.color, {
-                        dark: isDarkMode ? '#3A3A3A' : '#6A6A6A',
-                        light: isDarkMode ? '#6A6A6A' : '#CCCCCC',
-                      })}`,
-                    }"
-                  >
-                    <svg
-                      v-if="
-                        !isUnknownTooltipDay(datapoint, seriesIndex, series) && !datapoint.value
-                      "
-                      viewBox="0 0 16 16"
-                      class="absolute top-1/2 inset-is-1/2 -translate-x-1/2 -translate-y-1/2 w-full p-0.25"
-                    >
-                      <path
-                        d="M8 8 1 1M8 8 15 15M1 15 15 1"
-                        :stroke="isDarkMode ? colors.borderHover : colors.border"
-                        stroke-width="2"
-                        fill="none"
-                      />
-                    </svg>
-                  </span>
-                  <span class="text-sm text-gray-700 dark:text-gray-300">
-                    {{
-                      isUnknownTooltipDay(datapoint, seriesIndex, series)
-                        ? '-'
-                        : compactNumberFormatter.format(Number(datapoint.value) || 0)
-                    }}
-                  </span>
-                </div>
-              </div>
-            </template>
-
-            <!-- Chart context menu -->
-            <template #menuIcon="{ isOpen }">
-              <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
-              <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
-            </template>
-            <template #optionCsv>
-              <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
-            </template>
-            <template #custom-menu-before>
-              <ChartCopyPngButton
-                :copied="copiedPng"
-                :copying="isCopyingPng"
-                @click="copyChartPng"
-              />
-            </template>
-            <template #optionFullscreen="{ isFullscreen }">
-              <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
-            </template>
-            <template #optionImg>
-              <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
-            </template>
-            <template #optionSvg>
-              <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
-            </template>
-
-            <template #optionAltCopy>
-              <span
-                class="w-6 h-6"
-                :class="
-                  copied ? 'i-lucide:check text-accent' : 'i-lucide:person-standing text-fg-subtle'
-                "
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
-            </template>
-
-            <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
-              <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
-            </template>
-          </VueUiHeatmap>
-        </div>
-        <template #fallback>
-          <SkeletonBlock class="aspect-[676/172]" />
+      <div class="flex justify-end mb-3">
+        <SettingsToggle v-model="showDataTable" :label="$t('package.trends.table_view')" />
+      </div>
+      <PackageTrendsDataTable
+        v-if="showDataTable"
+        :dataset="tableDataset"
+        :package-names="[packageName]"
+        :dates="tableRows.map(row => row.date)"
+        :metric-label="$t('package.trends.items.downloads')"
+        :date-formatter="tooltipDateFormatter"
+        :max-height="lastChartHeight || 269"
+      >
+        <template #before-value="{ index }">
+          <span
+            class="h-3.5 w-3.5 shrink-0 border border-border inline-flex items-center justify-center"
+            :style="{ backgroundColor: tableRows[index]?.color }"
+            aria-hidden="true"
+          >
+            <span
+              v-if="tableRows[index]?.value == null"
+              class="i-lucide:x h-3 w-3 text-fg-subtle"
+            />
+          </span>
         </template>
-      </ClientOnly>
+      </PackageTrendsDataTable>
+      <div v-else ref="chartPanel">
+        <ClientOnly>
+          <div>
+            <VueUiHeatmap
+              ref="chartRef"
+              :dataset="dataset"
+              :config="config"
+              class="[direction:ltr]"
+            >
+              <!-- Keyboard navigation hint -->
+              <template #hint="{ isVisible }">
+                <p
+                  v-if="isVisible"
+                  class="text-accent text-xs -mt-5 text-center px-2"
+                  aria-hidden="true"
+                >
+                  {{ $t('package.trends.downloads_heatmap.nav_hint') }}
+                </p>
+              </template>
+
+              <template #svg="{ svg }">
+                <template v-for="cell in svg.cells" :key="cell.datapoint.id">
+                  <g v-if="isUnrecorded(cell)" pointer-events="none">
+                    <rect
+                      :x="cell.x + 2"
+                      :y="cell.y + 2"
+                      :width="Math.max(0, cell.width - 4)"
+                      :height="Math.max(0, cell.height - 4)"
+                      :fill="colors.bg"
+                    />
+                    <path
+                      :d="getMissingDaySymbol(cell)"
+                      :stroke="isDarkMode ? colors.borderHover : colors.border"
+                      stroke-linecap="round"
+                      :stroke-width="showUnknownDay(cell) ? 1.5 : 2"
+                      fill="none"
+                    />
+                  </g>
+                </template>
+
+                <!-- BOTTOM LEGEND -->
+                <template v-for="legend in [getLegendContent(svg)]" :key="'legend'">
+                  <!-- Anomalies -->
+                  <path v-bind="legend.anomalies.marker" />
+                  <text v-bind="legend.anomalies.text">
+                    {{ $t('package.trends.downloads_heatmap.legend.anomalies') }}
+                  </text>
+
+                  <!-- Max -->
+                  <rect v-bind="legend.max.marker" />
+                  <text v-bind="legend.max.text">
+                    {{
+                      $t('package.trends.downloads_heatmap.legend.max', {
+                        value: minMax.max.value,
+                        date: minMax.max.date,
+                      })
+                    }}
+                  </text>
+
+                  <!-- Min -->
+                  <rect v-bind="legend.min.marker" />
+                  <text v-bind="legend.min.text">
+                    {{
+                      $t('package.trends.downloads_heatmap.legend.min', {
+                        value: minMax.min.value,
+                        date: minMax.min.date,
+                      })
+                    }}
+                  </text>
+                </template>
+
+                <!-- Print watermark-->
+                <g
+                  v-if="svg.isPrintingSvg || svg.isPrintingImg || isCopyingPng"
+                  v-html="
+                    drawSmallNpmxLogoAndTaglineWatermark({
+                      svg: {
+                        ...svg,
+                      },
+                      colors: watermarkColors,
+                      translateFn: $t,
+                    })
+                  "
+                />
+              </template>
+
+              <!-- Custom tooltip -->
+              <template #tooltip="{ datapoint, seriesIndex, series }">
+                <div class="px-1 text-start font-mono">
+                  <div class="mt-0.5 text-xs text-gray-900 dark:text-gray-100">
+                    {{ getTooltipDate(datapoint, seriesIndex, series) }}
+                  </div>
+                  <div class="mt-2 flex items-center gap-2">
+                    <span
+                      class="h-3.5 w-3.5 shrink-0 relative"
+                      :style="{
+                        backgroundColor: datapoint.color,
+                        border: `0.5px solid ${adaptColorToBackground(datapoint.color, {
+                          dark: isDarkMode ? '#3A3A3A' : '#6A6A6A',
+                          light: isDarkMode ? '#6A6A6A' : '#CCCCCC',
+                        })}`,
+                      }"
+                    >
+                      <svg
+                        v-if="
+                          !isUnknownTooltipDay(datapoint, seriesIndex, series) && !datapoint.value
+                        "
+                        viewBox="0 0 16 16"
+                        class="absolute top-1/2 inset-is-1/2 -translate-x-1/2 -translate-y-1/2 w-full p-0.25"
+                      >
+                        <path
+                          d="M8 8 1 1M8 8 15 15M1 15 15 1"
+                          :stroke="isDarkMode ? colors.borderHover : colors.border"
+                          stroke-width="2"
+                          fill="none"
+                        />
+                      </svg>
+                    </span>
+                    <span class="text-sm text-gray-700 dark:text-gray-300">
+                      {{
+                        isUnknownTooltipDay(datapoint, seriesIndex, series)
+                          ? '-'
+                          : compactNumberFormatter.format(Number(datapoint.value) || 0)
+                      }}
+                    </span>
+                  </div>
+                </div>
+              </template>
+
+              <!-- Chart context menu -->
+              <template #menuIcon="{ isOpen }">
+                <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
+                <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
+              </template>
+              <template #optionCsv>
+                <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
+              </template>
+              <template #custom-menu-before>
+                <ChartCopyPngButton
+                  :copied="copiedPng"
+                  :copying="isCopyingPng"
+                  @click="copyChartPng"
+                />
+              </template>
+              <template #optionFullscreen="{ isFullscreen }">
+                <ChartFullscreenIcon :is-fullscreen="isFullscreen" />
+              </template>
+              <template #optionImg>
+                <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
+              </template>
+              <template #optionSvg>
+                <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
+              </template>
+
+              <template #optionAltCopy>
+                <span
+                  class="w-6 h-6"
+                  :class="
+                    copied
+                      ? 'i-lucide:check text-accent'
+                      : 'i-lucide:person-standing text-fg-subtle'
+                  "
+                  style="pointer-events: none"
+                  aria-hidden="true"
+                />
+              </template>
+
+              <template v-for="slotName in CHART_ANNOTATOR_SLOTS" #[slotName]="slotProps">
+                <ChartAnnotatorIcon :slot-name="slotName" :slot-props="slotProps" />
+              </template>
+            </VueUiHeatmap>
+          </div>
+          <template #fallback>
+            <SkeletonBlock class="aspect-[676/172]" />
+          </template>
+        </ClientOnly>
+      </div>
     </div>
     <p v-else class="py-6 text-sm text-fg-subtle">
       {{ $t('package.trends.no_data') }}

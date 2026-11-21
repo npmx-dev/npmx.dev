@@ -277,8 +277,8 @@ importers:
         specifier: 3.5.42
         version: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
       vue-data-ui:
-        specifier: 3.28.7
-        version: 3.28.7(vue@3.5.42)
+        specifier: 3.29.1
+        version: 3.29.1(vue@3.5.42)
       vue-router:
         specifier: 5.2.0
         version: 5.2.0(@voidzero-dev/vite-plus-core@1.4.0)(@vue/compiler-sfc@3.5.42)(esbuild@0.28.1)(rolldown@1.2.4)(rollup@4.62.2)(vue@3.5.42)(webpack@5.108.4)
@@ -350,8 +350,8 @@ importers:
         specifier: npm:h3@2.0.1-rc.26
         version: h3@2.0.1-rc.26(crossws@0.4.15)
       knip:
-        specifier: 6.44.1
-        version: 6.44.1
+        specifier: 6.45.1
+        version: 6.45.1
       markdown-it-anchor:
         specifier: 10.0.0
         version: 10.0.0(@types/markdown-it@14.1.2)(markdown-it@14.3.0)
@@ -7884,8 +7884,8 @@ packages:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
 
-  knip@6.44.1:
-    resolution: {integrity: sha512-Hbd8nvkIsNgFfXgC7Jsb5LHv7jj6VwA3tmfHd53XPX2z9Vc9RnAZqV0BIiP4OrtYqKwCoLseFHQZerb1bNlbSw==}
+  knip@6.45.1:
+    resolution: {integrity: sha512-zp3zXKy2cZWiIttdlWU5fisKxVQaLSU6471ej0KGz1GdHdaHxpzTAO/LIyFNc3gU3v1W7LJaqvYumoO3l/u+6A==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -10217,8 +10217,8 @@ packages:
   ultramatter@0.0.4:
     resolution: {integrity: sha512-1f/hO3mR+/Hgue4eInOF/Qm/wzDqwhYha4DxM0hre9YIUyso3fE2XtrAU6B4njLqTC8CM49EZaYgsVSa+dXHGw==}
 
-  unbash@6.0.2:
-    resolution: {integrity: sha512-UhcFfg9u8OpFPnUqdXSKgbGHwk2iEHaEePfpHylako6i4rpdmfoOgCVBBlou4WugaFfNunIHby01mKssJzVTCA==}
+  unbash@6.0.4:
+    resolution: {integrity: sha512-t3OptUArewg9OpYGDskTSlxhyLDahfmZ4d36hE44Efb1y3HRLLpzsVqwH+AwBVymP4t7pP71xN+nnduudn2awA==}
     engines: {node: '>=14'}
 
   unbox-primitive@1.1.0:
@@ -10806,8 +10806,8 @@ packages:
   vue-component-type-helpers@3.3.12:
     resolution: {integrity: sha512-HwCqmgTfLFskQc4P5TRnbduCMyPat2Ezu0elLWOGn0dD/6BKHP15B5bxce6aDi+E4kblPtru8amIBQzu0Di3qQ==}
 
-  vue-data-ui@3.28.7:
-    resolution: {integrity: sha512-QZP0SYW/7RoKVdvER1hDcQSnXfkIIpqde3zc6X6m0c8mP0UNS5MwP+/VJtDtsfnijhWz8BTDUZG7ij6Rwx+M+A==}
+  vue-data-ui@3.29.1:
+    resolution: {integrity: sha512-jEYmsZH94Pv6bHWlDf3tgzvJdCAxcNSLuL/4GuwQ5TrXHLmvwXxcID7HYyDbGnQUwXXMIBqrWD96qTZnoc+cbg==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: 3.5.42
@@ -19786,7 +19786,7 @@ snapshots:
 
   klona@2.0.6: {}
 
-  knip@6.44.1:
+  knip@6.45.1:
     dependencies:
       formatly: 0.11.4
       get-tsconfig: 4.14.3
@@ -19797,9 +19797,8 @@ snapshots:
       smol-toml: 1.9.1
       strip-json-comments: 5.0.3
       tinyglobby: 0.2.17
-      unbash: 6.0.2
+      unbash: 6.0.4
       yaml: 2.9.1
-      zod: 4.6.5
 
   knitwork@1.3.0: {}
 
@@ -23175,7 +23174,7 @@ snapshots:
 
   ultramatter@0.0.4: {}
 
-  unbash@6.0.2: {}
+  unbash@6.0.4: {}
 
   unbox-primitive@1.1.0:
     dependencies:
@@ -23846,7 +23845,7 @@ snapshots:
 
   vue-component-type-helpers@3.3.12: {}
 
-  vue-data-ui@3.28.7(vue@3.5.42):
+  vue-data-ui@3.29.1(vue@3.5.42):
     dependencies:
       vue: 3.5.42(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
 

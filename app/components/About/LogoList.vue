@@ -17,7 +17,7 @@ type GroupItem = {
 }
 
 const props = defineProps<{
-  list: (BaseItem | GroupItem)[]
+  list: readonly (BaseItem | GroupItem)[]
 }>()
 </script>
 

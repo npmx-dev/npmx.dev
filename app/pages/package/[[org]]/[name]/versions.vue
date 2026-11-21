@@ -273,6 +273,7 @@ const flatItems = computed<FlatItem[]>(() => {
         <div class="flex items-center gap-2 min-w-0">
           <NuxtLink
             :to="packageRoute(packageName)"
+            prefetch-on="interaction"
             class="text-lg font-medium hover:text-fg-muted transition-colors min-w-0 truncate"
             :title="packageName"
             dir="ltr"

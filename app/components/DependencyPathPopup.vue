@@ -99,6 +99,7 @@ function parsePackageString(pkg: string): { name: string; version: string } {
                   parsePackageString(pathItem).version,
                 )
               "
+              prefetch-on="interaction"
               class="hover:underline"
               :class="idx === path.length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
               @click="closePopup"
