@@ -16,6 +16,7 @@ const {
   default: () => ({ totalMentions: 0, isCapped: false }),
   server: false,
   immediate: false,
+  watch: false,
 })
 
 // Client-only: this decorative stat should never block SSR.
