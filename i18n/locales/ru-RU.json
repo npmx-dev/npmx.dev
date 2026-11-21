@@ -1580,21 +1580,21 @@
           "label": "Уязвимости",
           "description": "Известные уязвимости безопасности"
         },
-        "githubStars": {
-          "label": "Звёзды GitHub",
-          "description": "Количество звёзд у GitHub-репозитория"
-        },
-        "githubForks": {
-          "label": "Форки GitHub",
-          "description": "Количество форков у GitHub-репозитория"
-        },
-        "githubIssues": {
-          "label": "Тикеты GitHub",
-          "description": "Количество тикетов в GitHub-репозитории"
-        },
         "createdAt": {
           "label": "Дата создания",
           "description": "Когда пакет был создан"
+        },
+        "stars": {
+          "label": "Звёзды GitHub",
+          "description": "Количество звёзд у GitHub-репозитория"
+        },
+        "forks": {
+          "label": "Форки GitHub",
+          "description": "Количество форков у GitHub-репозитория"
+        },
+        "issues": {
+          "label": "Тикеты GitHub",
+          "description": "Количество тикетов в GitHub-репозитории"
         }
       },
       "values": {

@@ -100,6 +100,13 @@ const PROVIDERS: readonly ProviderConfig[] = [
   { id: 'gitea', hosts: GITEA_HOSTS, web: gitea, selfHostable: true, baseUrl: instanceUrl },
 ]
 
+/** Every provider npmx knows, for validating a `ProviderId` from a route or query. */
+export const PROVIDER_IDS = PROVIDERS.map(provider => provider.id) as readonly ProviderId[]
+
+export function isProviderId(value: unknown): value is ProviderId {
+  return typeof value === 'string' && (PROVIDER_IDS as readonly string[]).includes(value)
+}
+
 function configFor(provider: ProviderId) {
   return PROVIDERS.find(providerConfig => providerConfig.id === provider)
 }
@@ -112,6 +119,15 @@ function matchesHost(config: ProviderConfig, host: string) {
 /** The instance base URL for a ref, or `undefined` for the forge's own default. */
 export function instanceBaseUrl(ref: RepoRef): string | undefined {
   return configFor(ref.provider)?.baseUrl?.(ref)
+}
+
+/**
+ * The same-origin API path for a repository endpoint. The owner is encoded as one
+ * segment because GitLab subgroups contain a slash.
+ */
+export function repoApiPath(ref: RepoRef, endpoint: string): string {
+  const path = `/api/repo/${ref.provider}/${encodeURIComponent(ref.owner)}/${encodeURIComponent(ref.repo)}/${endpoint}`
+  return ref.host ? `${path}?host=${encodeURIComponent(ref.host)}` : path
 }
 
 /** The `forges/web` entry for a provider, or `undefined` where it has none (radicle). */
