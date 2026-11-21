@@ -74,16 +74,16 @@ function getNumericFacetValue(
       return toFreshnessScore(packageData.metadata?.lastUpdated)
 
     case 'stars':
-      return isFiniteNumber(packageData.metadata?.github?.stars)
-        ? packageData.metadata.github.stars
+      return isFiniteNumber(packageData.metadata?.repo?.stars)
+        ? packageData.metadata.repo.stars
         : null
     case 'forks':
-      return isFiniteNumber(packageData.metadata?.github?.forks)
-        ? packageData.metadata.github.forks
+      return isFiniteNumber(packageData.metadata?.repo?.forks)
+        ? packageData.metadata.repo.forks
         : null
     case 'issues':
-      return isFiniteNumber(packageData.metadata?.github?.issues)
-        ? packageData.metadata.github.issues
+      return isFiniteNumber(packageData.metadata?.repo?.issues)
+        ? packageData.metadata.repo.issues
         : null
 
     default:

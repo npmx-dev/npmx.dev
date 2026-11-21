@@ -49,7 +49,7 @@ export interface PackageComparisonData {
     createdAt?: string
     engines?: { node?: string; npm?: string }
     deprecated?: string
-    github?: {
+    repo?: {
       stars?: number
       forks?: number
       issues?: number
@@ -213,7 +213,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 createdAt: pkg.time?.created,
                 engines: analysis?.engines,
                 deprecated: versionData.deprecated,
-                github: {
+                repo: {
                   stars: repoMeta?.stars,
                   forks: repoMeta?.forks,
                   issues: repoIssues ?? undefined,
@@ -583,7 +583,7 @@ function computeFacetValue(
       }
     }
     case 'stars': {
-      const stars = data.metadata?.github?.stars
+      const stars = data.metadata?.repo?.stars
       if (stars == null) return null
       return {
         raw: stars,
@@ -592,7 +592,7 @@ function computeFacetValue(
       }
     }
     case 'forks': {
-      const forks = data.metadata?.github?.forks
+      const forks = data.metadata?.repo?.forks
       if (forks == null) return null
       return {
         raw: forks,
@@ -601,7 +601,7 @@ function computeFacetValue(
       }
     }
     case 'issues': {
-      const issues = data.metadata?.github?.issues
+      const issues = data.metadata?.repo?.issues
       if (issues == null) return null
       return {
         raw: issues,
