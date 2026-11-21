@@ -195,6 +195,14 @@ function getMockForUrl(url: string): MockResult | null {
       }
       return { data: { downloads, start: startDate, end: endDate, package: packageName } }
     }
+
+    // Registry-wide downloads point, used for the latest published day
+    if (/^\/downloads\/point\/[^/]+$/.test(pathname)) {
+      const yesterday = new Date()
+      yesterday.setUTCDate(yesterday.getUTCDate() - 1)
+      const day = yesterday.toISOString().slice(0, 10)
+      return { data: { downloads: 0, start: day, end: day } }
+    }
   }
 
   // esm.sh is handled specially via $fetch.raw override, not here

@@ -8,7 +8,7 @@ import type {
 } from '~/types/chart'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { splitIsoRangeIntoChunksInclusive, mergeDailyPoints } from '#shared/utils/download-ranges'
-import { fetchNpmDownloadsRange } from '~/utils/npm/api'
+import { fetchNpmDownloadsRange, fetchNpmLatestDownloadsDay } from '~/utils/npm/api'
 import { toValue } from 'vue'
 import { addDays, toIsoDate, parseIsoDate } from '~/utils/date'
 
@@ -25,6 +25,7 @@ function startOfUtcYear(date: Date): Date {
 }
 
 const npmDailyRangeCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null
+const npmLatestDayCache = import.meta.client ? new Map<string, Promise<string>>() : null
 const likesEvolutionCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null
 const contributorsEvolutionCache = import.meta.client
   ? new Map<string, Promise<GitHubContributorStats[]>>()
@@ -34,6 +35,7 @@ const repoMetaCache = import.meta.client ? new Map<string, Promise<RepoRef | nul
 /** Clears client-side promise caches. Exported for use in tests. */
 export function clearClientCaches() {
   npmDailyRangeCache?.clear()
+  npmLatestDayCache?.clear()
   likesEvolutionCache?.clear()
   contributorsEvolutionCache?.clear()
   repoMetaCache?.clear()
@@ -202,6 +204,24 @@ async function fetchDailyRangeCached(packageName: string, startIso: string, endI
   return promise
 }
 
+function fetchLatestDownloadsDayCached() {
+  const cache = npmLatestDayCache
+
+  if (!cache) return fetchNpmLatestDownloadsDay()
+
+  const cacheKey = new Date().toISOString().slice(0, 10)
+  const cachedPromise = cache.get(cacheKey)
+  if (cachedPromise) return cachedPromise
+
+  const promise = fetchNpmLatestDownloadsDay().catch(error => {
+    cache.delete(cacheKey)
+    throw error
+  })
+
+  cache.set(cacheKey, promise)
+  return promise
+}
+
 /**
  * API limit workaround:
  * If the requested range is larger than the API allows (≈18 months),
@@ -248,18 +268,24 @@ export function useCharts() {
   function resolveDateRange(
     evolutionOptions: EvolutionOptions,
     packageCreatedIso: string | null,
+    latestDayIso: string | null = null,
   ): { start: Date; end: Date } {
     const today = new Date()
     const yesterday = new Date(
       Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - 1),
     )
+    // npm may not have published yesterday yet
+    const latestDay = latestDayIso ? parseIsoDate(latestDayIso) : null
+    const defaultEnd = latestDay && latestDay < yesterday ? latestDay : yesterday
 
     const endDateOnly = toDateOnly(evolutionOptions.endDate)
-    const end = endDateOnly ? parseIsoDate(endDateOnly) : yesterday
+    const end = endDateOnly ? parseIsoDate(endDateOnly) : defaultEnd
 
     const startDateOnly = toDateOnly(evolutionOptions.startDate)
     if (startDateOnly) {
       const start = parseIsoDate(startDateOnly)
+      // the latest published day must not end the range before its start
+      if (!endDateOnly && end < start && start <= yesterday) return { start, end: start }
       return { start, end }
     }
 
@@ -284,7 +310,7 @@ export function useCharts() {
     } else if (evolutionOptions.granularity === 'week') {
       const weekCount = evolutionOptions.weeks ?? 52
 
-      // Full rolling weeks ending on `end` (yesterday by default)
+      // Full rolling weeks ending on `end` (the latest published day by default)
       // Range length is exactly weekCount * 7 days (inclusive)
       start = addDays(end, -(weekCount * 7) + 1)
     } else {
@@ -303,12 +329,19 @@ export function useCharts() {
     const resolvedCreatedIso = toValue(createdIso) ?? null
     const resolvedOptions = toValue(evolutionOptions)
 
-    const { start, end } = resolveDateRange(resolvedOptions, resolvedCreatedIso)
+    const nuxtApp = useNuxtApp()
+    const latestDayIso = toDateOnly(resolvedOptions.endDate)
+      ? null
+      : await fetchLatestDownloadsDayCached().catch(() => null)
+
+    const { start, end } = resolveDateRange(resolvedOptions, resolvedCreatedIso, latestDayIso)
 
     const startIso = toIsoDate(start)
     const endIso = toIsoDate(end)
 
-    const sortedDaily = await fetchDailyRangeChunked(resolvedPackageName, startIso, endIso)
+    const sortedDaily = await nuxtApp.runWithContext(() =>
+      fetchDailyRangeChunked(resolvedPackageName, startIso, endIso),
+    )
 
     if (resolvedOptions.granularity === 'day') return buildDailyEvolution(sortedDaily)
     if (resolvedOptions.granularity === 'week')

@@ -264,6 +264,36 @@ describe('useMarkdown', () => {
       expect(processed.value).toBe('A library')
     })
 
+    it('returns empty when a linkless badge strips down to bare brackets', () => {
+      // A badge image without an enclosing link loses its image atom but the
+      // wrapper has no URL to match, leaving a bare "[]" behind
+      const processed = useMarkdown({
+        text: '[![Test Status](https://github.com/user/repo/actions/workflows/test.yml/badge.svg?branch=main)]',
+      })
+      expect(processed.value).toBe('')
+    })
+
+    it('returns empty when linked and linkless badges leave only bare brackets', () => {
+      const processed = useMarkdown({
+        text: '[![Npm Package](https://badgen.net/npm/v/jsdoc-type-pratt-parser)](https://www.npmjs.com/package/jsdoc-type-pratt-parser) [![Test Status](https://github.com/jsdoc-type-pratt-parser/jsdoc-type-pratt-parser/actions/workflows/test.yml/badge.svg?branch=main)]',
+      })
+      expect(processed.value).toBe('')
+    })
+
+    it('returns empty for a literal empty bracket pair', () => {
+      expect(useMarkdown({ text: '[]' }).value).toBe('')
+      expect(useMarkdown({ text: '  []  ' }).value).toBe('')
+    })
+
+    it('returns empty when multiple linkless badges strip down to bare brackets', () => {
+      expect(useMarkdown({ text: '[![a](https://x.svg)] [![b](https://y.svg)]' }).value).toBe('')
+      expect(useMarkdown({ text: '[![a](https://x.svg)]\n[![b](https://y.svg)]' }).value).toBe('')
+    })
+
+    it('preserves brackets that are part of the text', () => {
+      expect(useMarkdown({ text: 'returns [] when empty' }).value).toBe('returns [] when empty')
+    })
+
     it('strips reference-style linked image badges (regression #2767)', () => {
       const processed = useMarkdown({
         text: '[![npm version][npm-v-src]][npm-v-href] [![npm downloads][npm-d-src]][npm-d-href] A library',
