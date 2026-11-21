@@ -1,6 +1,6 @@
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
-import { PACKAGE_SUBJECT_REF } from '#shared/utils/constants'
+import { packageSubjectRef } from '#shared/utils/constants'
 import { getTopLikedRank } from '#server/utils/likes-leaderboard'
 
 /**
@@ -27,7 +27,7 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
     const likesUtil = new PackageLikesUtils()
     const [likes, topLikedRank] = await Promise.all([
       likesUtil.getLikes(packageName, oAuthSession?.did.toString()),
-      getTopLikedRank(event, PACKAGE_SUBJECT_REF(packageName)),
+      getTopLikedRank(event, packageSubjectRef(packageName)),
     ])
 
     return {

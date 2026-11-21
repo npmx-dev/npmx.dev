@@ -4,7 +4,7 @@ import type { ConstellationLike } from '#server/utils/atproto/utils/likes'
 import type { CacheAdapter } from '#server/utils/cache/shared'
 
 vi.stubGlobal('CACHE_MAX_AGE_ONE_MINUTE', 60)
-vi.stubGlobal('PACKAGE_SUBJECT_REF', (pkg: string) => `https://npmx.dev/package/${pkg}`)
+vi.stubGlobal('packageSubjectRef', (pkg: string) => `https://npmx.dev/package/${pkg}`)
 vi.stubGlobal('$fetch', vi.fn())
 vi.stubGlobal('Constellation', vi.fn())
 vi.stubGlobal('getCacheAdapter', vi.fn())

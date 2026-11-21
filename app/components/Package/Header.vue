@@ -250,6 +250,7 @@ useShortcuts({
       <!-- Package metrics -->
       <div class="flex gap-2 flex-wrap items-stretch">
         <PackageLikes :packageName />
+        <PackageSocialMentions :packageName />
 
         <LinkBase
           variant="button-secondary"

@@ -555,6 +555,9 @@
       "top_rank_label": "#{rank}",
       "top_rank_link_label": "View likes leaderboard. This package is ranked #{rank}."
     },
+    "social_mentions": {
+      "label": "{count} mention | {count} mentions"
+    },
     "docs": {
       "contents": "Contents",
       "default_not_available": "Docs are not available for this version.",

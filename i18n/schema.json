@@ -1669,6 +1669,15 @@
           },
           "additionalProperties": false
         },
+        "social_mentions": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "docs": {
           "type": "object",
           "properties": {
