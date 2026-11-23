@@ -512,6 +512,8 @@
         "frozen": "{size} total unpacked size before the next version was released"
       },
       "main_information": "Main Information",
+      "version_unavailable": "No version or tag “{version}” found for {package}.",
+      "view_latest": "View latest stats",
       "trends": "Trends",
       "version_distribution": "Version Distribution",
       "daily_downloads_heatmap": "Daily downloads heatmap"
