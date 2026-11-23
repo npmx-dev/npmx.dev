@@ -1540,6 +1540,12 @@
             "main_information": {
               "type": "string"
             },
+            "version_unavailable": {
+              "type": "string"
+            },
+            "view_latest": {
+              "type": "string"
+            },
             "trends": {
               "type": "string"
             },
