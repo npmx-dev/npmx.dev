@@ -7,11 +7,11 @@
  * @module server/utils/docs/client
  */
 
-import { doc, type DocNode } from '@deno/doc'
-import type { DenoDocNode, DenoDocResult, DocEntry } from '#shared/types/deno-doc'
+import { doc, type Document } from '@deno/doc'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { encodePackageName } from '#shared/utils/npm'
 import { isBuiltin } from 'node:module'
+import type { DocEntry } from './types'
 
 // =============================================================================
 // Configuration
@@ -27,19 +27,19 @@ const IS_SOURCE_MAP = /\.(?:js|mjs|cjs|d\.[mc]?ts)\.map(?:[?#].*)?$/
 // =============================================================================
 
 /**
- * Get documentation nodes for a package using @deno/doc WASM.
+ * Get documented symbols for each entry point of a package using @deno/doc WASM.
  */
-export async function getDocNodes(packageName: string, version: string): Promise<DenoDocResult> {
+export async function getDocEntries(packageName: string, version: string): Promise<DocEntry[]> {
   const entryPoints = await resolveEntryPoints(packageName, version)
 
   if (entryPoints.length === 0) {
-    return { version: 1, entries: [] }
+    return []
   }
 
   const entries: (DocEntry | null)[] = await mapWithConcurrency(
     entryPoints,
     async ({ entryPoint, typesUrl }): Promise<DocEntry | null> => {
-      let result: Record<string, DocNode[]>
+      let result: Record<string, Document>
       try {
         result = await doc([typesUrl], {
           load: createLoader(),
@@ -49,24 +49,18 @@ export async function getDocNodes(packageName: string, version: string): Promise
         return null
       }
 
-      const nodes: DenoDocNode[] = []
-      for (const docNodes of Object.values(result)) {
-        nodes.push(...(docNodes as DenoDocNode[]))
-      }
+      const symbols = Object.values(result).flatMap(document => document.symbols)
 
-      if (nodes.length === 0) {
+      if (symbols.length === 0) {
         return null
       }
 
-      return { entryPoint, nodes }
+      return { entryPoint, symbols }
     },
     10,
   )
 
-  return {
-    version: 1,
-    entries: entries.filter((entry): entry is DocEntry => entry !== null),
-  }
+  return entries.filter((entry): entry is DocEntry => entry !== null)
 }
 
 // =============================================================================

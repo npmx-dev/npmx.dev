@@ -9,11 +9,30 @@
  */
 
 import type { DocsGenerationResult } from '#shared/types/deno-doc'
-import { getDocNodes } from './client'
-import { buildSymbolLookup, flattenNamespaces, mergeOverloads } from './processing'
+import { getDocEntries } from './client'
+import {
+  buildSymbolLookup,
+  findUnrecognizedShapes,
+  flattenSymbols,
+  mergeOverloads,
+} from './processing'
 import { renderEntries, renderEntriesToc } from './render'
 import { computeEntryPrefixes } from './text'
 import type { ProcessedEntry } from './types'
+
+let hasReportedUnrecognizedShapes = false
+
+/**
+ * The WASM output changes for every package at once, so one report per process is enough.
+ */
+function reportUnrecognizedShapes(packageName: string, version: string, shapes: string[]) {
+  if (hasReportedUnrecognizedShapes) return
+  hasReportedUnrecognizedShapes = true
+  console.error(
+    `[docs] Unrecognized @deno/doc shape in ${packageName}@${version} (${shapes.slice(0, 5).join(', ')}). ` +
+      'Docs are not generated until the WASM output is supported again. Further occurrences are not logged.',
+  )
+}
 
 /**
  * Generate API documentation for an npm package.
@@ -23,7 +42,8 @@ import type { ProcessedEntry } from './types'
  *
  * @param packageName - The npm package name (e.g., "react", "@types/lodash")
  * @param version - The package version (e.g., "19.2.3")
- * @returns Generated documentation or null if no types are available
+ * @returns Generated documentation or null if no types are available or the `@deno/doc`
+ *   output isn't recognized
  *
  * @example
  * ```ts
@@ -37,21 +57,26 @@ export async function generateDocsWithDeno(
   packageName: string,
   version: string,
 ): Promise<DocsGenerationResult | null> {
-  const result = await getDocNodes(packageName, version)
+  const docEntries = await getDocEntries(packageName, version)
 
-  if (result.entries.length === 0) {
+  if (docEntries.length === 0) {
     return null
   }
 
-  const entries = result.entries
-    .map(entry => {
-      const flattenedNodes = flattenNamespaces(entry.nodes)
-      return {
-        entryPoint: entry.entryPoint,
-        nodes: flattenedNodes,
-        symbols: mergeOverloads(flattenedNodes),
-      }
-    })
+  const flattened = docEntries.map(entry => ({
+    entryPoint: entry.entryPoint,
+    nodes: flattenSymbols(entry.symbols),
+  }))
+
+  // Rendering such nodes would produce plausible but wrong output, so produce no docs instead.
+  const unrecognized = flattened.flatMap(entry => findUnrecognizedShapes(entry.nodes))
+  if (unrecognized.length > 0) {
+    reportUnrecognizedShapes(packageName, version, unrecognized)
+    return null
+  }
+
+  const entries = flattened
+    .map(({ entryPoint, nodes }) => ({ entryPoint, nodes, symbols: mergeOverloads(nodes) }))
     .filter(entry => entry.symbols.length > 0)
 
   if (entries.length === 0) {
