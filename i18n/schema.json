@@ -5905,20 +5905,8 @@
         "copy_as_markdown": {
           "type": "string"
         },
-        "ungh": {
-          "type": "object",
-          "properties": {
-            "rate_limit": {
-              "type": "string"
-            },
-            "hint": {
-              "type": "string"
-            },
-            "install": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
+        "rate_limit": {
+          "type": "string"
         }
       },
       "additionalProperties": false

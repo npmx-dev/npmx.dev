@@ -3,6 +3,7 @@ import { fetchNpmPackage } from '#server/utils/npm'
 import { getHomepageMetadata } from '#server/utils/npm-homepage'
 import { NPM_API } from '#shared/utils/constants'
 import { createLikesLeaderboardEntry } from '~~/test/fixtures/likes-leaderboard'
+import { forgesProxyRepo } from '~~/test/fixtures/forges-proxy'
 import {
   enrichLikesLeaderboardEntries,
   extractPackageNameFromSubjectRef,
@@ -190,17 +191,14 @@ describe('enrichLikesLeaderboardEntries', () => {
         })
       }
 
-      if (url.startsWith('https://ungh.cc/repos/')) {
+      const proxied = forgesProxyRepo(url)
+      if (proxied) {
         const starsMap: Record<string, number> = {
-          'https://ungh.cc/repos/vuejs/core': 208000,
-          'https://ungh.cc/repos/nuxt/nuxt': 59000,
+          'vuejs/core': 208000,
+          'nuxt/nuxt': 59000,
         }
 
-        return cachedResult({
-          repo: {
-            stars: starsMap[url] ?? 0,
-          },
-        })
+        return cachedResult({ stars: starsMap[proxied] ?? 0 })
       }
 
       throw new Error(`Unexpected URL: ${url}`)
@@ -265,13 +263,9 @@ describe('enrichLikesLeaderboardEntries', () => {
     expect(fetchNpmPackageMock).toHaveBeenCalledTimes(4)
     expect(getHomepageMetadataMock).toHaveBeenCalledWith(event, 'https://vuejs.org')
     expect(cachedFetchMock).toHaveBeenCalledWith(
-      'https://ungh.cc/repos/vuejs/core',
-      expect.objectContaining({
-        headers: expect.objectContaining({
-          'User-Agent': 'npmx',
-        }),
-      }),
-      10800,
+      expect.stringContaining('/github/github.com/repos.get?args='),
+      expect.anything(),
+      600,
     )
   })
 })

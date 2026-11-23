@@ -7,6 +7,7 @@ import type {
 } from 'forges'
 import type { ForgeWeb } from 'forges/web'
 import {
+  FORGES_PROXY_URL,
   instanceBaseUrl,
   providerWeb,
   type ProviderId,
@@ -73,6 +74,11 @@ export interface ForgeBridgeOptions {
   token?: string
   /** Request timeout in milliseconds. Defaults to 15000. */
   timeout?: number
+  /**
+   * Read through npmx's forges-proxy instead of the forge, for forges it serves
+   * (GitHub): its token keeps npmx under GitHub's anonymous rate limit.
+   */
+  viaProxy?: boolean
 }
 
 /**
@@ -87,11 +93,29 @@ export async function createForgeProvider(
   if (!factory) {
     return undefined
   }
+  if (options.viaProxy && !options.token && PROXIED_PROVIDERS.has(ref.provider)) {
+    return proxiedProvider(ref, options)
+  }
   return factory({
     fetch: options.fetch,
     timeout: options.timeout ?? 15_000,
     baseUrl: instanceBaseUrl(ref),
     ...(options.token ? { auth: { type: 'token' as const, token: options.token } } : {}),
+  })
+}
+
+const PROXIED_PROVIDERS: ReadonlySet<ProviderId> = new Set(['github'])
+
+/** The proxy's provider for `ref`'s forge. Builds it without a request to the proxy. */
+async function proxiedProvider(ref: RepoRef, options: ForgeBridgeOptions): Promise<ForgeProvider> {
+  const { proxyProvider } = await import('@forges-proxy/client')
+  const { forge, instance } = toForgeRepoRef(ref)
+  return proxyProvider({
+    url: FORGES_PROXY_URL,
+    forge,
+    instance,
+    fetch: options.fetch,
+    timeout: options.timeout ?? 15_000,
   })
 }
 

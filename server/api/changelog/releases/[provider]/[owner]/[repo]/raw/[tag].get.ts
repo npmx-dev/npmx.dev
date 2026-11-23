@@ -1,7 +1,6 @@
 import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
 import * as v from 'valibot'
 import { ERROR_THROW_INCOMPLETE_PARAM } from '~~/shared/utils/constants'
-import { GithubReleaseCollectionSchama } from '~~/shared/schemas/changelog/release'
 import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 import { validateHostWithValibot } from '~~/server/utils/changelog/validateHost'
 
@@ -30,11 +29,6 @@ export default defineCachedEventHandler(
     setHeader(event, 'content-type', 'text/markdown')
 
     try {
-      // GitHub is read directly (with an ungh fallback) to stay clear of rate
-      // limits; TODO(serhalp): use `forges` once it can read GitHub through ungh.
-      if (provider === 'github') {
-        return getMarkdownFromGithub(owner, repo, tag)
-      }
       // No disconnect signal: a cached handler cannot tell a client leaving from
       // an SWR revalidation, and aborting would kill the refresh for everyone.
       return await getMarkdownViaForges(provider, owner, repo, tag, host || undefined)
@@ -64,46 +58,6 @@ export default defineCachedEventHandler(
   },
 )
 
-async function getMarkdownFromGithub(owner: string, repo: string, tag: string) {
-  // ungh cannot read a release by tag, so read it through `forges` and fall back
-  // to the ungh releases list when GitHub refuses (most likely rate-limited).
-  // https://github.com/unjs/ungh/pull/162
-  const ref: RepoRef = { provider: 'github', owner, repo }
-
-  try {
-    const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_MS })
-    if (forgeProvider?.can('releases.getByTag')) {
-      const release = await forgeProvider.releases.getByTag(toForgeRepoRef(ref), tag)
-      if (typeof release.body === 'string') {
-        return release.body
-      }
-    }
-  } catch {
-    // fall back to ungh below
-  }
-
-  const responseUngh = await $fetch(`https://ungh.cc/repos/${owner}/${repo}/releases`, {
-    headers: {
-      'Accept': '*/*',
-      'User-Agent': 'npmx.dev',
-    },
-    timeout: TIMEOUT_MS,
-  })
-
-  const { releases } = v.parse(GithubReleaseCollectionSchama, responseUngh)
-
-  for (const release of releases) {
-    if (release.tag == tag) {
-      return release.markdown
-    }
-  }
-
-  throw createError({
-    status: 404,
-    statusMessage: ERROR_CHANGELOG_NOT_FOUND,
-  })
-}
-
 /** Release markdown for every provider `forges` covers. */
 async function getMarkdownViaForges(
   provider: ProviderId,
@@ -113,7 +67,7 @@ async function getMarkdownViaForges(
   host?: string,
 ) {
   const ref: RepoRef = { provider, owner, repo, host }
-  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_MS })
+  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_MS, viaProxy: true })
   if (!forgeProvider?.can('releases.getByTag')) {
     throw createError({
       status: 404,

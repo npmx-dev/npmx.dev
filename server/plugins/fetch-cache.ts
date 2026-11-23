@@ -29,7 +29,9 @@ function simpleHash(str: string): string {
 function generateFetchCacheKey(url: string | URL, method: string = 'GET', body?: unknown): string {
   const urlObj = typeof url === 'string' ? new URL(url) : url
   const bodyHash = body ? simpleHash(JSON.stringify(body)) : ''
-  const searchHash = urlObj.search ? simpleHash(urlObj.search) : ''
+  // Always a final segment, so no key is a prefix of another: the fs driver stores keys as paths,
+  // and `/` (or `/repos/a/b`) would otherwise be a file where `/x` (or `/repos/a/b/releases`) needs a directory.
+  const searchHash = urlObj.search ? simpleHash(urlObj.search) : '_'
 
   const parts = [
     FETCH_CACHE_VERSION,

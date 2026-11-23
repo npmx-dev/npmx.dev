@@ -1954,10 +1954,6 @@
     },
     "version_unavailable": "Omlouváme se, požadovaná verze není k dispozici.",
     "copy_as_markdown": "Zkopírovat seznam změn v Markdownu",
-    "ungh": {
-      "rate_limit": "Omlouváme se, byl dosažen limit GitHubu, zkuste to prosím za chvíli znovu",
-      "hint": "Instalací GitHub aplikace UNGH můžete pomoci zvýšit kvótu limitu požadavků",
-      "install": "Nainstalovat GitHub aplikaci UNGH"
-    }
+    "rate_limit": "Omlouváme se, byl dosažen limit GitHubu, zkuste to prosím za chvíli znovu"
   }
 }

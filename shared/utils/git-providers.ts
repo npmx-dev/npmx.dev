@@ -242,12 +242,15 @@ export function parseRepositoryInfo(
   }
 }
 
+/** The forges-proxy npmx reads GitHub through (`createForgeProvider`'s `viaProxy`). */
+export const FORGES_PROXY_URL = 'https://forges-proxy-server-demo.netlify.app'
+
 /**
  * API origins used by each provider for client-side repo metadata fetches.
  * Self-hosted providers are excluded because their origins can be anything.
  */
 export const GIT_PROVIDER_API_ORIGINS = {
-  github: 'https://ungh.cc', // via UNGH proxy to avoid rate limits
+  github: FORGES_PROXY_URL, // via forges-proxy to avoid rate limits
   bitbucket: 'https://api.bitbucket.org',
   codeberg: 'https://codeberg.org',
   gitee: 'https://gitee.com',

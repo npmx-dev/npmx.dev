@@ -11,15 +11,8 @@ const { pkgName, changelogLink, viewOnGit, error } = defineProps<{
 
 <template>
   <div class="w-full flex items-center flex-col gap-2 mt-4">
-    <template v-if="isUnghRateLimitError(error)">
-      <p>{{ $t('changelog.ungh.rate_limit') }}</p>
-      <p>{{ $t('changelog.ungh.hint') }}</p>
-      <LinkBase
-        variant="button-secondary"
-        to="https://github.com/apps/ungh-app"
-        classicon="i-simple-icons:github"
-        >{{ $t('changelog.ungh.install') }}</LinkBase
-      >
+    <template v-if="isGithubRateLimitError(error)">
+      <p>{{ $t('changelog.rate_limit') }}</p>
     </template>
     <template v-else>
       <p>{{ $t('changelog.error.p1', { package: pkgName }) }}</p>

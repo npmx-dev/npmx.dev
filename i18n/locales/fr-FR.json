@@ -1753,8 +1753,6 @@
       "p2": "Veuillez réessayer plus tard ou {viewon}"
     },
     "version_unavailable": "La version demandée n'est pas disponible.",
-    "ungh": {
-      "rate_limit": "Désolé, la limite de requêtes à l'API GitHub a été atteinte, réessayez plus tard"
-    }
+    "rate_limit": "Désolé, la limite de requêtes à l'API GitHub a été atteinte, réessayez plus tard"
   }
 }

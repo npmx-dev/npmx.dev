@@ -1839,8 +1839,6 @@
       "p2": "Inténtalo de nuevo más tarde o {viewon}"
     },
     "version_unavailable": "La versión solicitada no está disponible.",
-    "ungh": {
-      "rate_limit": "Lo sentimos, se alcanzó el límite de tasa de GitHub, inténtalo de nuevo en un momento"
-    }
+    "rate_limit": "Lo sentimos, se alcanzó el límite de tasa de GitHub, inténtalo de nuevo en un momento"
   }
 }

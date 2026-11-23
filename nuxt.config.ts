@@ -481,6 +481,9 @@ export default defineNuxtConfig({
         'fast-npm-meta',
         '@floating-ui/vue',
         'algoliasearch/lite',
+        // Imported on first use, so Vite would otherwise find them mid-session and reload.
+        '@forges-proxy/client',
+        'forges/github',
       ],
     },
   },

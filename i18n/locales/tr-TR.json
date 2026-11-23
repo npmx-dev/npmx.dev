@@ -1712,8 +1712,6 @@
       "p2": "Lütfen daha sonra tekrar deneyin veya {viewon}"
     },
     "version_unavailable": "İstenen sürüm mevcut değil.",
-    "ungh": {
-      "rate_limit": "Üzgünüz, GitHub'ın istek limiti aşıldı, bir süre sonra tekrar deneyin"
-    }
+    "rate_limit": "Üzgünüz, GitHub'ın istek limiti aşıldı, bir süre sonra tekrar deneyin"
   }
 }

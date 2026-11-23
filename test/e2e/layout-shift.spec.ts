@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from './test-utils'
+import { FORGES_PROXY_URL } from '../../shared/utils/git-providers'
 
 const PAGES = [
   '/',
@@ -213,8 +214,7 @@ test.describe('Layout shift after client-side navigation', () => {
             ) {
               return route.fallback()
             }
-            const delay =
-              new URL(request.url()).hostname === 'ungh.cc' ? DATA_DELAY * 2 : DATA_DELAY
+            const delay = request.url().startsWith(FORGES_PROXY_URL) ? DATA_DELAY * 2 : DATA_DELAY
             const response = new Promise(resolve => setTimeout(resolve, delay)).then(() =>
               route.fallback(),
             )

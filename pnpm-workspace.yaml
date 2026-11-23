@@ -45,7 +45,6 @@ strictPeerDependencies: true
 
 minimumReleaseAgeExclude:
   - '@iconify-json/simple-icons@1.2.93'
-  - forges@0.3.2
   - 'nuxt@4.7.0'
   - '@nuxt/kit@4.7.0'
   - '@nuxt/nitro-server@4.7.0'
@@ -61,6 +60,8 @@ minimumReleaseAgeExclude:
   - '@nuxt/fonts@1.2.1'
   - fontaine@1.1.0
   - fontless@1.4.0
+  - forges@0.4.1
+  - '@forges-proxy/client@0.1.0-alpha.3'
 
 minimumReleaseAgeExcludePrune: true
 

@@ -462,23 +462,24 @@ function matchGravatarApi(_urlString) {
   return { status: 404, contentType: 'text/plain', body: 'Not found' }
 }
 
+const FORGES_PROXY_URL = 'https://forges-proxy-server-demo.netlify.app'
+
 /**
+ * forges-proxy, which npmx reads GitHub through: mock repo metadata for `repos.get`.
  * @param {string} urlString
  * @returns {MockResponse | null}
  */
-function matchUnghApi(urlString) {
+function matchForgesProxy(urlString) {
   const url = new URL(urlString)
 
-  const repoMatch = url.pathname.match(/^\/repos\/([^/]+)\/([^/]+)$/)
-  if (repoMatch && repoMatch[1] && repoMatch[2]) {
+  if (url.pathname === '/github/github.com/repos.get') {
+    const [repo] = JSON.parse(url.searchParams.get('args') ?? '[]')
     return json({
-      repo: {
-        description: `${repoMatch[1]}/${repoMatch[2]} - mock repo description`,
-        stars: 1000,
-        forks: 100,
-        watchers: 50,
-        defaultBranch: 'main',
-      },
+      description: `${repo?.owner}/${repo?.name} - mock repo description`,
+      stars: 1000,
+      forks: 100,
+      watchers: 50,
+      defaultBranch: 'main',
     })
   }
 
@@ -678,7 +679,7 @@ const routes = [
   { name: 'Gravatar API', pattern: 'https://www.gravatar.com/**', match: matchGravatarApi },
   { name: 'GitHub API', pattern: 'https://api.github.com/**', match: matchGitHubApi },
   { name: 'Microlink API', pattern: 'https://api.microlink.io/**', match: matchMicrolinkApi },
-  { name: 'UNGH API', pattern: 'https://ungh.cc/**', match: matchUnghApi },
+  { name: 'forges-proxy', pattern: `${FORGES_PROXY_URL}/**`, match: matchForgesProxy },
   {
     name: 'Constellation API',
     pattern: 'https://constellation.microcosm.blue/**',
