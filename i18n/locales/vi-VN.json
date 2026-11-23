@@ -843,8 +843,7 @@
   "badges": {
     "provenance": {
       "verified": "đã xác minh",
-      "verified_title": "Provenance đã xác minh",
-      "verified_via": "Đã xác minh: xuất bản qua {provider}"
+      "verified_title": "Provenance đã xác minh"
     },
     "jsr": {
       "title": "cũng có trên JSR"

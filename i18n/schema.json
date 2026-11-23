@@ -2341,6 +2341,9 @@
               },
               "additionalProperties": false
             },
+            "table_view": {
+              "type": "string"
+            },
             "chart_view_toggle": {
               "type": "string"
             },
@@ -2348,6 +2351,9 @@
               "type": "string"
             },
             "chart_view_split": {
+              "type": "string"
+            },
+            "date": {
               "type": "string"
             },
             "granularity": {
@@ -3588,9 +3594,6 @@
             },
             "verified_title": {
               "type": "string"
-            },
-            "verified_via": {
-              "type": "string"
             }
           },
           "additionalProperties": false
@@ -3602,6 +3605,21 @@
               "type": "string"
             },
             "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "trusted_publishing": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "title_via": {
               "type": "string"
             }
           },

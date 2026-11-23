@@ -215,7 +215,7 @@ const numberFormatter = useNumberFormatter()
                   count: getVulnerableDepInfo(resolveDepName(dep, version))!.counts.total,
                 })
               "
-              classicon="i-lucide:shield-check"
+              classicon="i-lucide:shield-alert"
             />
             <LinkBase
               v-if="getDeprecatedDepInfo(resolveDepName(dep, version))"

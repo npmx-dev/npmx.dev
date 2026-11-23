@@ -732,8 +732,7 @@
   "badges": {
     "provenance": {
       "verified": "ellenőrzött",
-      "verified_title": "Ellenőrzött eredet",
-      "verified_via": "Ellenőrizve: {provider} által közzétéve"
+      "verified_title": "Ellenőrzött eredet"
     },
     "jsr": {
       "title": "a JSR-en is elérhető"

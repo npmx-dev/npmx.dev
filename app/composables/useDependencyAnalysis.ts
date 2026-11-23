@@ -20,6 +20,7 @@ export function useDependencyAnalysis(
     {
       server: false,
       lazy: true,
+      dedupe: 'defer',
     },
   )
 }

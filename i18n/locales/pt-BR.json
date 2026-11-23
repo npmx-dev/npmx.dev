@@ -992,8 +992,7 @@
   "badges": {
     "provenance": {
       "verified": "verificado",
-      "verified_title": "Proveniência verificada",
-      "verified_via": "Verificado: publicado via {provider}"
+      "verified_title": "Proveniência verificada"
     },
     "jsr": {
       "title": "também disponível no JSR"

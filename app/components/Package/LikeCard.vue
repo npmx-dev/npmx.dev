@@ -70,7 +70,7 @@ const likeAction = async () => {
 </script>
 
 <template>
-  <NuxtLink :to="packageRoute(name)">
+  <NuxtLink :to="packageRoute(name)" prefetch-on="interaction">
     <BaseCard class="font-mono flex justify-between min-w-0">
       <span class="truncate min-w-0" :title="name">{{ name }}</span>
       <div class="flex items-center gap-4 justify-between shrink-0">

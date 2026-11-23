@@ -1025,8 +1025,7 @@
   "badges": {
     "provenance": {
       "verified": "doğrulanmış",
-      "verified_title": "Doğrulanmış köken",
-      "verified_via": "Doğrulandı: {provider} aracılığıyla yayınlandı"
+      "verified_title": "Doğrulanmış köken"
     },
     "jsr": {
       "title": "JSR'de de mevcut"

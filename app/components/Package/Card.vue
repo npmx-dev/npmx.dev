@@ -78,11 +78,9 @@ const numberFormatter = useNumberFormatter()
       <span v-html="pkgDescription" />
     </p>
     <div class="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 text-xs text-fg-muted">
-      <ProvenanceBadge
+      <TrustedPublishingBadge
         v-if="result.package.publisher?.trustedPublisher"
         :provider="result.package.publisher.trustedPublisher.id"
-        :package-name="result.package.name"
-        :version="result.package.version"
         :linked="false"
         compact
       />

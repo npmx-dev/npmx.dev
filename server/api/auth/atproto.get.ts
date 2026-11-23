@@ -193,7 +193,7 @@ function decodeOAuthState(event: H3Event, state: string | null): OAuthStateData 
     })
   }
 
-  // The state sting was encoded using encodeOAuthState. No need to protect
+  // The state string was encoded using encodeOAuthState. No need to protect
   // against JSON parsing since the StateStore should ensure it's integrity.
   const decoded = JSON.parse(state) as { data: OAuthStateData; id: string }
   const requestCookieName = `${OAUTH_REQUEST_COOKIE_PREFIX}_${decoded.id}`

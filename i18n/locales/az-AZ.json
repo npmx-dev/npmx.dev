@@ -776,8 +776,7 @@
   "badges": {
     "provenance": {
       "verified": "təsdiqlənmiş",
-      "verified_title": "Təsdiqlənmiş mənşə",
-      "verified_via": "Təsdiqlənmiş: {provider} vasitəsilə dərc edilib"
+      "verified_title": "Təsdiqlənmiş mənşə"
     },
     "jsr": {
       "title": "JSR-də də mövcuddur"
