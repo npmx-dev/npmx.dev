@@ -153,6 +153,7 @@ const quotedPostUri = computed(() => {
       rel="noopener noreferrer"
       class="before:(absolute content-[''] inset-0 hover:border-border-hover border border-border transition-colors duration-200 rounded-lg) block no-underline group"
       :title="$t('blog.atproto.view_on_bluesky')"
+      :aria-label="$t('blog.atproto.view_on_bluesky')"
     >
       <!-- Bluesky icon -->
       <span
