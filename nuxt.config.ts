@@ -345,12 +345,14 @@ export default defineNuxtConfig({
         name: 'Geist',
         provider: 'local',
         weights: ['100 900'],
+        display: 'optional',
         global: true,
       },
       {
         name: 'Geist Mono',
         provider: 'local',
         weights: ['100 900'],
+        display: 'optional',
         global: true,
       },
       {
