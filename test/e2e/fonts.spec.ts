@@ -5,7 +5,7 @@ const FONT_RE = /\/_nuxt\/fonts\/[^/]+\.woff2$/
 
 declare global {
   interface Window {
-    layoutShifts: number[]
+    fontLayoutShifts: number[]
   }
 }
 
@@ -95,10 +95,10 @@ test.describe('Fonts', () => {
       delayedFonts.add(route.request().url())
     })
     await page.addInitScript(() => {
-      window.layoutShifts = []
+      window.fontLayoutShifts = []
       new PerformanceObserver(list => {
         for (const entry of list.getEntries() as (PerformanceEntry & { value: number })[]) {
-          window.layoutShifts.push(entry.value)
+          window.fontLayoutShifts.push(entry.value)
         }
       }).observe({ type: 'layout-shift', buffered: true })
     })
@@ -109,6 +109,6 @@ test.describe('Fonts', () => {
     await page.evaluate(() => new Promise(requestAnimationFrame))
 
     expect(delayedFonts.size).toBe(2)
-    expect(await page.evaluate(() => window.layoutShifts)).toEqual([])
+    expect(await page.evaluate(() => window.fontLayoutShifts)).toEqual([])
   })
 })
