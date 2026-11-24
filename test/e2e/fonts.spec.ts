@@ -57,30 +57,47 @@ test.describe('Fonts', () => {
       const style = getComputedStyle(document.documentElement)
       return ['--font-sans', '--font-mono'].map(name => style.getPropertyValue(name).trim())
     })
-    expect(stacks[0]).toMatch(/^"Geist", "Geist Fallback: /)
-    expect(stacks[1]).toMatch(/^"Geist Mono", "Geist Mono Fallback: /)
+    expect(stacks[0]).toMatch(
+      /^"Geist", "Geist Fallback: Arial", "Geist Fallback: Helvetica Neue", "Geist Fallback: Segoe UI", "Geist Fallback: Roboto", "Geist Fallback: Noto Sans", "Geist Fallback: Liberation Sans", /,
+    )
+    expect(stacks[1]).toMatch(
+      /^"Geist Mono", "Geist Mono Fallback: Courier New", "Geist Mono Fallback: Roboto Mono", "Geist Mono Fallback: Noto Sans Mono", "Geist Mono Fallback: Liberation Mono", /,
+    )
   })
 
   test('renders text in Geist and Geist Mono from the font cache', async ({ browser, baseURL }) => {
     const context = await browser.newContext({ baseURL })
-    const page = await context.newPage()
-    await page.goto('/', { waitUntil: 'networkidle' })
-    await page.goto('/privacy', { waitUntil: 'networkidle' })
-    const faces = await page.evaluate(async () => {
-      await document.fonts.ready
-      return Array.from(document.fonts, face => ({
-        family: face.family.replaceAll('"', ''),
-        weight: face.weight,
-      })).filter(face => face.family === 'Geist' || face.family === 'Geist Mono')
-    })
+    try {
+      const page = await context.newPage()
+      await page.goto('/privacy', { waitUntil: 'networkidle' })
+      await page.goto('/privacy', { waitUntil: 'networkidle' })
+      const faces = await page.evaluate(async () => {
+        await document.fonts.ready
+        return Array.from(document.fonts, face => ({
+          family: face.family.replaceAll('"', ''),
+          weight: face.weight,
+        })).filter(face => face.family === 'Geist' || face.family === 'Geist Mono')
+      })
 
-    expect(faces).toEqual([
-      { family: 'Geist', weight: '100 900' },
-      { family: 'Geist Mono', weight: '100 900' },
-    ])
-    expect(await renderedFonts(page, 'main p')).toEqual(['Geist'])
-    expect(await renderedFonts(page, 'h1')).toEqual(['Geist Mono'])
-    await context.close()
+      expect(faces).toEqual([
+        { family: 'Geist', weight: '100 900' },
+        { family: 'Geist Mono', weight: '100 900' },
+      ])
+      expect(await renderedFonts(page, 'main p')).toEqual(['Geist'])
+      expect(await renderedFonts(page, 'h1')).toEqual(['Geist Mono'])
+    } finally {
+      await context.close()
+    }
+  })
+
+  test('keeps the blog column width without Geist', async ({ page, goto }) => {
+    await page.route(FONT_RE, route => route.abort())
+    await goto('/blog/alpha-release', { waitUntil: 'hydration' })
+
+    const widths = await page
+      .locator('main article.prose, main > div.max-w-prose')
+      .evaluateAll(elements => elements.map(element => getComputedStyle(element).maxWidth))
+    expect(widths).toEqual(['715px', '715px'])
   })
 
   for (const latency of FONT_LATENCIES) {
