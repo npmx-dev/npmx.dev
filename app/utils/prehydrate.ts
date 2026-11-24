@@ -37,6 +37,15 @@ export function initPreferencesOnPrehydrate() {
     const validBackgroundThemes = new Set(['neutral', 'stone', 'zinc', 'slate', 'black'])
     const validForegroundThemes = new Set(['muted', 'standard', 'contrast'])
 
+    const nav = navigator as Navigator & { userAgentData?: { platform?: string } }
+    const applePlatform = /Mac|iPhone|iPad|iPod/i
+    if (
+      applePlatform.test(nav.userAgentData?.platform ?? nav.platform ?? '') ||
+      applePlatform.test(nav.userAgent)
+    ) {
+      document.documentElement.dataset.platform = 'apple'
+    }
+
     // Read settings from localStorage
     const settings = JSON.parse(
       localStorage.getItem('npmx-settings') || '{}',
@@ -99,5 +108,34 @@ export function initPreferencesOnPrehydrate() {
     if (settings.codeLigatures === false) {
       document.documentElement.dataset.codeLigatures = 'false'
     }
+
+    // Runs before NuxtTime's own prehydrate script, which formats each <time> from its data attributes
+    let locale: string | null = null
+    try {
+      if (
+        settings.selectedLocale &&
+        Intl.DateTimeFormat.supportedLocalesOf(settings.selectedLocale).length
+      ) {
+        locale = settings.selectedLocale
+      }
+    } catch {}
+    for (const el of document.querySelectorAll<HTMLElement>('time[data-locale]')) {
+      if (locale) el.dataset.locale = locale
+      if (settings.relativeDates && el.hasAttribute('data-settings-time')) {
+        el.dataset.relative = 'true'
+      }
+    }
   })
+
+  // Client-only renders, such as the ISR SPA fallback, have no prehydrate scripts
+  if (import.meta.client) {
+    const nav = navigator as Navigator & { userAgentData?: { platform?: string } }
+    const applePlatform = /Mac|iPhone|iPad|iPod/i
+    if (
+      applePlatform.test(nav.userAgentData?.platform ?? nav.platform ?? '') ||
+      applePlatform.test(nav.userAgent)
+    ) {
+      document.documentElement.dataset.platform = 'apple'
+    }
+  }
 }

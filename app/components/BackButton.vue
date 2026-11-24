@@ -5,8 +5,8 @@ const canGoBack = useCanGoBack()
 
 <template>
   <button
-    v-if="canGoBack"
     type="button"
+    :class="{ invisible: !canGoBack }"
     class="inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
     @click="router.back()"
   >

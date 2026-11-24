@@ -592,10 +592,14 @@ const showSkeleton = shallowRef(false)
                           vulnTreeStatus === 'pending' ||
                           (installSizeStatus === 'pending' && !vulnTree)
                         "
-                        class="inline-flex items-center gap-1 text-fg-subtle"
+                        class="text-fg-subtle"
+                        >(<span class="relative"
+                          ><span class="invisible">-</span
+                          ><span
+                            class="i-svg-spinners:ring-resize absolute inset-0 m-auto w-3 h-3"
+                            aria-hidden="true" /></span
+                        >)</span
                       >
-                        (<span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />)
-                      </span>
                       <span v-else-if="totalDepsCount !== null"
                         ><span class="text-fg-subtle">(</span
                         >{{ numberFormatter.format(totalDepsCount)
@@ -694,7 +698,7 @@ const showSkeleton = shallowRef(false)
                   <span v-if="hasVulnerabilities" class="text-amber-700 dark:text-amber-500">
                     {{ numberFormatter.format(vulnCount) }}
                   </span>
-                  <span v-else class="inline-flex items-center gap-1 text-fg-muted">
+                  <span v-else class="inline-flex items-center gap-1 align-top text-fg-muted">
                     <span class="i-lucide:check w-3 h-3" aria-hidden="true" />
                     {{ numberFormatter.format(0) }}
                   </span>

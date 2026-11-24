@@ -7,7 +7,6 @@ const isHome = computed(() => route.name === 'index')
 const { t, locale } = useI18n()
 
 const discord = useDiscordLink()
-const { commandPaletteShortcutLabel } = usePlatformModifierKey()
 const modalRef = useTemplateRef('modalRef')
 const showModal = () => modalRef.value?.showModal?.()
 const closeModal = () => modalRef.value?.close?.()
@@ -212,7 +211,10 @@ const footerSections = computed<Array<{ label: string; links: FooterLink[] }>>((
       </p>
       <ul class="mb-6 flex flex-col gap-2">
         <li class="flex gap-2 items-center">
-          <kbd class="kbd">{{ commandPaletteShortcutLabel }}</kbd>
+          <kbd class="kbd">
+            <span data-platform-only="other">{{ $t('shortcuts.ctrl_key') }}+K</span>
+            <span data-platform-only="apple">⌘ K</span>
+          </kbd>
           <span>{{ $t('shortcuts.command_palette') }}</span>
         </li>
         <li class="flex gap-2 items-center">
