@@ -149,12 +149,16 @@ const likeAction = async () => {
             aria-hidden="true"
             class="inline-block w-4 h-4"
           />
-          <span
-            v-if="isLoadingLikeData"
-            class="i-svg-spinners:ring-resize w-3 h-3 my-0.5"
-            aria-hidden="true"
-          />
-          <span v-else>{{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}</span>
+          <span class="relative inline-block min-w-[4ch] text-center">
+            <span :class="{ invisible: isLoadingLikeData }">{{
+              compactNumberFormatter.format(likesData?.totalLikes ?? 0)
+            }}</span>
+            <span
+              v-if="isLoadingLikeData"
+              class="i-svg-spinners:ring-resize absolute inset-0 m-auto w-3 h-3"
+              aria-hidden="true"
+            />
+          </span>
         </ButtonBase>
       </div>
     </TooltipApp>
