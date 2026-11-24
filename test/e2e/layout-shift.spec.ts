@@ -47,8 +47,6 @@ declare global {
 }
 
 async function observeLayoutShifts(page: Page) {
-  // TODO: stop blocking fonts once Geist has metric-matched fallbacks for every weight
-  await page.route(/\.(?:ttf|woff2?)$/, route => route.abort())
   await page.addInitScript(() => {
     window.layoutShifts = []
 
