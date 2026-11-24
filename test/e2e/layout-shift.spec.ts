@@ -11,6 +11,7 @@ const PAGES = [
   '/package/nuxt',
   '/package-code/empathic/v/2.0.0',
   '/search?q=vue',
+  '/blog/alpha-release',
 ] as const
 
 const VIEWPORTS = [

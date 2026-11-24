@@ -108,7 +108,7 @@ const { data: post, status } = useAsyncData(
     )
     return response.posts[0] ?? null
   },
-  { lazy: true, server: false },
+  { lazy: true },
 )
 
 const postUrl = computed(() => {
