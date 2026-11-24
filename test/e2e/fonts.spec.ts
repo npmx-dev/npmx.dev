@@ -15,8 +15,6 @@ const VIEWPORTS = [
 
 const FONT_LATENCIES = [300, 500]
 
-const MAX_LAYOUT_SHIFT = 0.4
-
 const FONT_RE = /\/_nuxt\/fonts\/[^/]+\.woff2$/
 
 declare global {
@@ -63,8 +61,11 @@ test.describe('Fonts', () => {
     expect(stacks[1]).toMatch(/^"Geist Mono", "Geist Mono Fallback: /)
   })
 
-  test('renders text in Geist and Geist Mono', async ({ page, goto }) => {
-    await goto('/privacy', { waitUntil: 'hydration' })
+  test('renders text in Geist and Geist Mono from the font cache', async ({ browser, baseURL }) => {
+    const context = await browser.newContext({ baseURL })
+    const page = await context.newPage()
+    await page.goto('/', { waitUntil: 'networkidle' })
+    await page.goto('/privacy', { waitUntil: 'networkidle' })
     const faces = await page.evaluate(async () => {
       await document.fonts.ready
       return Array.from(document.fonts, face => ({
@@ -79,6 +80,7 @@ test.describe('Fonts', () => {
     ])
     expect(await renderedFonts(page, 'main p')).toEqual(['Geist'])
     expect(await renderedFonts(page, 'h1')).toEqual(['Geist Mono'])
+    await context.close()
   })
 
   for (const latency of FONT_LATENCIES) {
@@ -87,7 +89,7 @@ test.describe('Fonts', () => {
         test.use({ viewport })
 
         for (const path of PAGES) {
-          test(`limits layout shift on ${path}`, async ({ page, goto }) => {
+          test(`does not shift ${path}`, async ({ page, goto }) => {
             const delayedFonts = new Set<string>()
             await page.route(FONT_RE, async route => {
               await new Promise(resolve => setTimeout(resolve, latency))
@@ -109,8 +111,7 @@ test.describe('Fonts', () => {
             await page.evaluate(() => new Promise(requestAnimationFrame))
 
             expect(delayedFonts.size).toBe(2)
-            const shifts = await page.evaluate(() => window.layoutShifts)
-            expect(shifts.reduce((sum, value) => sum + value, 0)).toBeLessThan(MAX_LAYOUT_SHIFT)
+            expect(await page.evaluate(() => window.layoutShifts)).toEqual([])
           })
         }
       })
