@@ -801,7 +801,7 @@ docker run --rm \
   -e NODE_OPTIONS="--max-old-space-size=4096" \
   -v $(pwd):/work \
   -w /work \
-  mcr.microsoft.com/playwright:v1.62.1-noble \
+  mcr.microsoft.com/playwright:v1.64.1-noble \
   sh -c "npm install -g pnpm && pnpm install && pnpm vp run build:test && pnpm vp run test:browser:prebuilt --update-snapshots"
 ```
 
