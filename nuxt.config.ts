@@ -268,8 +268,11 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    // Implied by `staticRoutes`, but a root-level dynamic page means it can never apply.
+    early404: false,
     entryImportMap: false,
     payloadExtraction: 'client',
+    staticRoutes: true,
     typescriptPlugin: true,
     viteEnvironmentApi: !isStorybook,
     typedPages: true,
@@ -472,8 +475,6 @@ export default defineNuxtConfig({
         'fast-npm-meta',
         '@floating-ui/vue',
         'algoliasearch/lite',
-        '@vue/devtools-core',
-        '@vue/devtools-kit',
       ],
     },
   },
