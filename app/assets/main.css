@@ -390,6 +390,12 @@ input[type='search']::-webkit-search-results-decoration {
   display: none;
 }
 
+/* Show platform-specific keyboard labels before hydration */
+:root[data-platform='apple'] [data-platform-only='other'],
+:root:not([data-platform='apple']) [data-platform-only='apple'] {
+  display: none;
+}
+
 /* Locking the scroll whenever any of the modals are open */
 html:has(dialog:modal) {
   overflow: hidden;
