@@ -44,7 +44,6 @@ interface LayoutShiftEntry extends PerformanceEntry {
 declare global {
   interface Window {
     layoutShifts: LayoutShift[]
-    useNuxtApp: () => { $router: { push: (to: string) => Promise<unknown> } }
   }
 }
 
@@ -109,14 +108,13 @@ for (const [platform, userAgent] of Object.entries(PLATFORMS)) {
   })
 }
 
-test.describe('Layout shift on reload after client-side navigation', () => {
+test.describe('Layout shift on reload with history', () => {
   for (const viewport of [{ width: 360, height: 800 }, VIEWPORTS[4]]) {
     test(`${viewport.width}x${viewport.height} /compare`, async ({ page, goto }) => {
       await page.setViewportSize(viewport)
       await observeLayoutShifts(page)
-      await goto('/', { waitUntil: 'hydration' })
-      await page.evaluate(() => window.useNuxtApp().$router.push('/compare'))
-      await page.waitForURL('/compare')
+      await goto('/compare', { waitUntil: 'hydration' })
+      await page.evaluate(() => history.replaceState({ ...history.state, back: '/' }, ''))
       await page.reload()
 
       await expect(page.getByRole('button', { name: 'Back' })).toBeVisible()
