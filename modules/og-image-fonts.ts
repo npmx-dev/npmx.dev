@@ -7,6 +7,9 @@ import { joinURL, withoutTrailingSlash } from 'ufo'
  * Copies the font files emitted by `@nuxt/fonts` into the prerenderer's public directory, so
  * OG images rendered at build time can load them. Nitro only copies public assets into the
  * output after prerendering.
+ *
+ * TODO: remove once nuxt-og-image is on v7, which reads font files through the `fonts:resolved`
+ * hook of `@nuxt/fonts` (https://github.com/nuxt-modules/og-image/pull/698).
  */
 export default defineNuxtModule({
   meta: {
