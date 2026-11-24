@@ -672,7 +672,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
               <LinkBase
                 :to="versionRoute(v.version)"
                 block
-                class="text-xs after:absolute after:inset-0 after:content-['']"
+                class="text-xs min-w-0 after:absolute after:inset-0 after:content-['']"
                 :class="
                   v.deprecated
                     ? 'text-red-800 group-hover/version-row:text-red-700 dark:text-red-400 dark:group-hover/version-row:text-red-300'
@@ -791,7 +791,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
               <LinkBase
                 :to="versionRoute(row.primaryVersion.version)"
                 block
-                class="text-xs after:absolute after:inset-0 after:content-['']"
+                class="text-xs min-w-0 after:absolute after:inset-0 after:content-['']"
                 :class="
                   row.primaryVersion.deprecated
                     ? 'text-red-800 group-hover/version-row:text-red-700 dark:text-red-400 dark:group-hover/version-row:text-red-300'
@@ -878,7 +878,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
                       block
-                      class="text-xs after:absolute after:inset-0 after:content-['']"
+                      class="text-xs min-w-0 after:absolute after:inset-0 after:content-['']"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-800 group-hover/version-row:text-red-700 dark:text-red-400 dark:group-hover/version-row:text-red-300'
@@ -950,7 +950,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
                       block
-                      class="text-xs ms-6 after:absolute after:inset-0 after:content-['']"
+                      class="text-xs ms-6 min-w-0 after:absolute after:inset-0 after:content-['']"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-800 group-hover/version-row:text-red-700 dark:text-red-400 dark:group-hover/version-row:text-red-300'
@@ -1025,7 +1025,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                     <LinkBase
                       :to="versionRoute(v.version)"
                       block
-                      class="text-xs after:absolute after:inset-0 after:content-['']"
+                      class="text-xs min-w-0 after:absolute after:inset-0 after:content-['']"
                       :class="
                         v.deprecated
                           ? 'text-red-800 group-hover/version-row:text-red-700 dark:text-red-400 dark:group-hover/version-row:text-red-300'
