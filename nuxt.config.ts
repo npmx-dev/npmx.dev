@@ -352,16 +352,6 @@ export default defineNuxtConfig({
         global: true,
       },
       {
-        name: 'Geist OG',
-        provider: 'none',
-        global: true,
-      },
-      {
-        name: 'Geist Mono OG',
-        provider: 'none',
-        global: true,
-      },
-      {
         name: 'IBM Plex Sans Arabic',
         weights: ['400', '500', '600'],
         global: true,
