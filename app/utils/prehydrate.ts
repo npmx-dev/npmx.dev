@@ -108,6 +108,23 @@ export function initPreferencesOnPrehydrate() {
     if (settings.codeLigatures === false) {
       document.documentElement.dataset.codeLigatures = 'false'
     }
+
+    // Runs before NuxtTime's own prehydrate script, which formats each <time> from its data attributes
+    let locale: string | null = null
+    try {
+      if (
+        settings.selectedLocale &&
+        Intl.DateTimeFormat.supportedLocalesOf(settings.selectedLocale).length
+      ) {
+        locale = settings.selectedLocale
+      }
+    } catch {}
+    for (const el of document.querySelectorAll<HTMLElement>('time[data-locale]')) {
+      if (locale) el.dataset.locale = locale
+      if (settings.relativeDates && el.hasAttribute('data-settings-time')) {
+        el.dataset.relative = 'true'
+      }
+    }
   })
 
   // Client-only renders, such as the ISR SPA fallback, have no prehydrate scripts

@@ -1,3 +1,25 @@
+<script lang="ts">
+const titleFormatters = new Map<string, Intl.DateTimeFormat>()
+
+function getTitleFormatter(locale: string, timeZone?: 'UTC') {
+  const key = `${locale}|${timeZone}`
+  let formatter = titleFormatters.get(key)
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat(locale, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'short',
+      timeZone,
+    })
+    titleFormatters.set(key, formatter)
+  }
+  return formatter
+}
+</script>
+
 <script setup lang="ts">
 /**
  * DateTime component that wraps NuxtTime with settings-aware relative date support.
@@ -32,55 +54,29 @@ const props = withDefaults(
 const { locale } = useI18n()
 
 const relativeDates = useRelativeDates()
-
-const dateFormatter = new Intl.DateTimeFormat(locale.value, {
-  month: 'short',
-  day: 'numeric',
-  year: 'numeric',
-  hour: 'numeric',
-  minute: '2-digit',
-  timeZoneName: 'short',
-})
+const isMounted = useMounted()
 
 // Compute the title - always show full date for accessibility
 const titleValue = computed(() => {
   if (props.title) return props.title
   const date = typeof props.datetime === 'string' ? new Date(props.datetime) : props.datetime
-  return dateFormatter.format(date)
+  // Formatted in UTC until mounted so the hydrated title matches the server-rendered one
+  return getTitleFormatter(locale.value, isMounted.value ? undefined : 'UTC').format(date)
 })
 </script>
 
 <template>
   <span>
-    <ClientOnly>
-      <NuxtTime
-        v-if="relativeDates"
-        :datetime="datetime"
-        :title="titleValue"
-        relative
-        :locale="locale"
-      />
-      <NuxtTime
-        v-else
-        :datetime="datetime"
-        :title="titleValue"
-        :date-style="dateStyle"
-        :year="year"
-        :month="month"
-        :day="day"
-        :locale="locale"
-      />
-      <template #fallback>
-        <NuxtTime
-          :datetime="datetime"
-          :title="titleValue"
-          :date-style="dateStyle"
-          :year="year"
-          :month="month"
-          :day="day"
-          :locale="locale"
-        />
-      </template>
-    </ClientOnly>
+    <NuxtTime
+      :datetime="datetime"
+      :title="titleValue"
+      :relative="relativeDates"
+      :date-style="relativeDates ? undefined : dateStyle"
+      :year="relativeDates ? undefined : year"
+      :month="relativeDates ? undefined : month"
+      :day="relativeDates ? undefined : day"
+      :locale="locale"
+      data-settings-time
+    />
   </span>
 </template>
