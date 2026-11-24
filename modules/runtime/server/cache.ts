@@ -895,6 +895,8 @@ export default defineNitroPlugin(nitroApp => {
   Object.assign(fetchWrapper, {
     raw: $fetch.raw,
     create: $fetch.create,
+    // SSR requests from `useFetch` go through `native`, and relative paths only resolve there.
+    native: (original$fetch as any).native.bind(original$fetch),
   })
 
   // Replace globalThis.$fetch with our wrapper (must be done AFTER setting .raw/.create)
