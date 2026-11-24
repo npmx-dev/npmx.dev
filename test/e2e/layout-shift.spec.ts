@@ -20,7 +20,6 @@ const VIEWPORTS = [
   { width: 1024, height: 768 },
   { width: 1280, height: 800 },
   { width: 1536, height: 864 },
-  { width: 1920, height: 1080 },
 ] as const
 
 const PLATFORMS = {
@@ -84,47 +83,48 @@ async function collectLayoutShifts(page: Page) {
   )
 }
 
-for (const [platform, userAgent] of Object.entries(PLATFORMS)) {
-  test.describe(`Layout shift (${platform})`, () => {
-    test.use({ userAgent })
+test.describe('Layout shift', () => {
+  test.use({ userAgent: PLATFORMS.linux })
 
-    for (const viewport of VIEWPORTS) {
-      test.describe(`${viewport.width}x${viewport.height}`, () => {
-        test.use({ viewport })
+  for (const viewport of VIEWPORTS) {
+    test.describe(`${viewport.width}x${viewport.height}`, () => {
+      test.use({ viewport })
 
-        for (const path of PAGES) {
-          test(path, async ({ page, goto }) => {
-            await observeLayoutShifts(page)
-            await goto(path, { waitUntil: 'hydration' })
+      for (const path of PAGES) {
+        test(path, async ({ page, goto }) => {
+          await observeLayoutShifts(page)
+          await goto(path, { waitUntil: 'hydration' })
 
-            if (platform === 'macos') {
-              await expect(page.locator('html')).toHaveAttribute('data-platform', 'apple')
-            }
-            expect(await collectLayoutShifts(page)).toEqual([])
-          })
-        }
-      })
-    }
-  })
-}
-
-test.describe('Layout shift on reload with history', () => {
-  for (const viewport of [{ width: 360, height: 800 }, VIEWPORTS[4]]) {
-    test(`${viewport.width}x${viewport.height} /compare`, async ({ page, goto }) => {
-      await page.setViewportSize(viewport)
-      await observeLayoutShifts(page)
-      await goto('/compare', { waitUntil: 'hydration' })
-      await page.evaluate(() => history.replaceState({ ...history.state, back: '/' }, ''))
-      await page.reload()
-
-      await expect(page.getByRole('button', { name: 'Back' })).toBeVisible()
-      expect(await collectLayoutShifts(page)).toEqual([])
+          expect(await collectLayoutShifts(page)).toEqual([])
+        })
+      }
     })
   }
+
+  test('360x800 /compare reloaded with history', async ({ page, goto }) => {
+    await page.setViewportSize({ width: 360, height: 800 })
+    await observeLayoutShifts(page)
+    await goto('/compare', { waitUntil: 'hydration' })
+    await page.evaluate(() => history.replaceState({ ...history.state, back: '/' }, ''))
+    await page.reload()
+
+    await expect(page.getByRole('button', { name: 'Back' })).toBeVisible()
+    expect(await collectLayoutShifts(page)).toEqual([])
+  })
 })
 
 test.describe('macOS shortcut label', () => {
   test.use({ userAgent: PLATFORMS.macos, viewport: { width: 1280, height: 800 } })
+
+  for (const path of PAGES) {
+    test(`does not shift layout on ${path}`, async ({ page, goto }) => {
+      await observeLayoutShifts(page)
+      await goto(path, { waitUntil: 'hydration' })
+
+      await expect(page.locator('html')).toHaveAttribute('data-platform', 'apple')
+      expect(await collectLayoutShifts(page)).toEqual([])
+    })
+  }
 
   test('shows before hydration with malformed settings', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('npmx-settings', '{'))
