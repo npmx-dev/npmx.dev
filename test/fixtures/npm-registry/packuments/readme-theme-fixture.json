@@ -1,0 +1,28 @@
+{
+  "name": "readme-theme-fixture",
+  "description": "Fixture for theme-aware README rendering",
+  "dist-tags": { "latest": "1.0.0" },
+  "versions": {
+    "1.0.0": {
+      "name": "readme-theme-fixture",
+      "version": "1.0.0",
+      "license": "MIT",
+      "dist": {
+        "tarball": "https://registry.npmjs.org/readme-theme-fixture/-/readme-theme-fixture-1.0.0.tgz",
+        "unpackedSize": 512,
+        "fileCount": 1
+      },
+      "dependencies": {},
+      "readmeFilename": "README.md",
+      "readme": "<picture><source srcset=\"https://cdn.jsdelivr.net/npm/readme-theme-fixture@1.0.0/banner-dark.svg\" media=\"(prefers-color-scheme: dark)\"><source srcset=\"https://cdn.jsdelivr.net/npm/readme-theme-fixture@1.0.0/banner-light.svg\" media=\"(prefers-color-scheme: light)\"><img src=\"https://cdn.jsdelivr.net/npm/readme-theme-fixture@1.0.0/banner-light.svg\" alt=\"Theme-aware banner\" width=\"100\" height=\"60\"></picture>"
+    }
+  },
+  "time": {
+    "created": "2026-01-01T00:00:00.000Z",
+    "modified": "2026-01-01T00:00:00.000Z",
+    "1.0.0": "2026-01-01T00:00:00.000Z"
+  },
+  "maintainers": [],
+  "readmeFilename": "README.md",
+  "readme": "<picture><source srcset=\"https://cdn.jsdelivr.net/npm/readme-theme-fixture@1.0.0/banner-dark.svg\" media=\"(prefers-color-scheme: dark)\"><source srcset=\"https://cdn.jsdelivr.net/npm/readme-theme-fixture@1.0.0/banner-light.svg\" media=\"(prefers-color-scheme: light)\"><img src=\"https://cdn.jsdelivr.net/npm/readme-theme-fixture@1.0.0/banner-light.svg\" alt=\"Theme-aware banner\" width=\"100\" height=\"60\"></picture>"
+}
