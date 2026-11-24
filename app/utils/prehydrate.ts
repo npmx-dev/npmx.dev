@@ -37,6 +37,15 @@ export function initPreferencesOnPrehydrate() {
     const validBackgroundThemes = new Set(['neutral', 'stone', 'zinc', 'slate', 'black'])
     const validForegroundThemes = new Set(['muted', 'standard', 'contrast'])
 
+    const nav = navigator as Navigator & { userAgentData?: { platform?: string } }
+    const applePlatform = /Mac|iPhone|iPad|iPod/i
+    if (
+      applePlatform.test(nav.userAgentData?.platform ?? nav.platform ?? '') ||
+      applePlatform.test(nav.userAgent)
+    ) {
+      document.documentElement.dataset.platform = 'apple'
+    }
+
     // Read settings from localStorage
     const settings = JSON.parse(
       localStorage.getItem('npmx-settings') || '{}',
@@ -93,15 +102,6 @@ export function initPreferencesOnPrehydrate() {
     // Keyboard shortcuts (default: true)
     if (settings.keyboardShortcuts === false) {
       document.documentElement.dataset.kbdShortcuts = 'false'
-    }
-
-    const nav = navigator as Navigator & { userAgentData?: { platform?: string } }
-    const applePlatform = /Mac|iPhone|iPad|iPod/i
-    if (
-      applePlatform.test(nav.userAgentData?.platform ?? nav.platform ?? '') ||
-      applePlatform.test(nav.userAgent)
-    ) {
-      document.documentElement.dataset.platform = 'apple'
     }
 
     // Code font ligatures (default: true)

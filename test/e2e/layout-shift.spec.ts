@@ -125,10 +125,18 @@ test.describe('Layout shift on reload after client-side navigation', () => {
   }
 })
 
-test.describe('SPA fallback (macos)', () => {
+test.describe('macOS shortcut label', () => {
   test.use({ userAgent: PLATFORMS.macos, viewport: { width: 1280, height: 800 } })
 
-  test('shows the macOS shortcut label', async ({ page }) => {
+  test('shows before hydration with malformed settings', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('npmx-settings', '{'))
+    await page.route(/\/_nuxt\/.*\.js$/, route => route.abort())
+    await page.goto('/package/nuxt')
+
+    await expect(page.locator('header [data-platform-only="apple"]')).toBeVisible()
+  })
+
+  test('shows in the SPA fallback', async ({ page }) => {
     await page.route('**/package/nuxt', async route => {
       const response = await route.fetch({ url: new URL('/200.html', route.request().url()).href })
       await route.fulfill({ response })
