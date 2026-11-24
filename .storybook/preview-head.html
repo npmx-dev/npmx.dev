@@ -62,6 +62,18 @@
   }
 </style>
 <script>
+  // Nuxt 4.7 reads `window.__NUXT__.config.app` from the generated paths module while the preview
+  // bundle is importing, and the addon only writes that payload when a story renders. The shape
+  // matches `createNuxtPayload()` in @storybook-vue/nuxt, so its `window.__NUXT__ ||=` keeps this value
+  // until a story replaces it with the real runtime config.
+  window.__NUXT__ ??= {
+    config: { app: { baseURL: '/' }, public: {} },
+    data: {},
+    serverRendered: false,
+    state: {},
+  }
+</script>
+<script>
   // related: https://github.com/npmx-dev/npmx.dev/blob/1431d24be555bca5e1ae6264434d49ca15173c43/test/nuxt/setup.ts#L12-L26
   // Stub Nuxt specific globals
   // @nuxtjs/color-mode's plugin.client.js reads window[globalName] at module
