@@ -346,6 +346,14 @@ export default defineNuxtConfig({
         provider: 'local',
         weights: ['100 900'],
         display: 'optional',
+        fallbacks: [
+          'Arial',
+          'Helvetica Neue',
+          'Segoe UI',
+          'Roboto',
+          'Noto Sans',
+          'Liberation Sans',
+        ],
         global: true,
       },
       {
@@ -353,6 +361,7 @@ export default defineNuxtConfig({
         provider: 'local',
         weights: ['100 900'],
         display: 'optional',
+        fallbacks: ['Courier New', 'Roboto Mono', 'Noto Sans Mono', 'Liberation Mono'],
         global: true,
       },
       {
