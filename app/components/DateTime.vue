@@ -68,6 +68,7 @@ const titleValue = computed(() => {
 <template>
   <span>
     <NuxtTime
+      :key="relativeDates ? 'relative' : 'absolute'"
       :datetime="datetime"
       :title="titleValue"
       :relative="relativeDates"
