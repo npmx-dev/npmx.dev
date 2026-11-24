@@ -95,9 +95,30 @@ export function initPreferencesOnPrehydrate() {
       document.documentElement.dataset.kbdShortcuts = 'false'
     }
 
+    const nav = navigator as Navigator & { userAgentData?: { platform?: string } }
+    const applePlatform = /Mac|iPhone|iPad|iPod/i
+    if (
+      applePlatform.test(nav.userAgentData?.platform ?? nav.platform ?? '') ||
+      applePlatform.test(nav.userAgent)
+    ) {
+      document.documentElement.dataset.platform = 'apple'
+    }
+
     // Code font ligatures (default: true)
     if (settings.codeLigatures === false) {
       document.documentElement.dataset.codeLigatures = 'false'
     }
   })
+
+  // Client-only renders, such as the ISR SPA fallback, have no prehydrate scripts
+  if (import.meta.client) {
+    const nav = navigator as Navigator & { userAgentData?: { platform?: string } }
+    const applePlatform = /Mac|iPhone|iPad|iPod/i
+    if (
+      applePlatform.test(nav.userAgentData?.platform ?? nav.platform ?? '') ||
+      applePlatform.test(nav.userAgent)
+    ) {
+      document.documentElement.dataset.platform = 'apple'
+    }
+  }
 }
