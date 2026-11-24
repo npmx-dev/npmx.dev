@@ -348,9 +348,6 @@ importers:
       h3:
         specifier: 1.15.11
         version: 1.15.11
-      h3-next:
-        specifier: npm:h3@2.0.1-rc.26
-        version: h3@2.0.1-rc.26(crossws@0.4.17)
       knip:
         specifier: 6.47.0
         version: 6.47.0
