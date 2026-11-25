@@ -6,6 +6,8 @@ test.describe('cache control', () => {
     '/package-stats/nuxt/v/4.3.1',
     '/package-timeline/nuxt/v/4.3.1',
     '/compare?packages=nuxt,vue',
+    '/package/nuxt/v/4.3.1',
+    '/package/@nuxt/kit/v/4.3.0',
   ]) {
     test(`caches ${path} at the CDN`, async ({ page }) => {
       const response = await page.request.get(path)
@@ -15,10 +17,17 @@ test.describe('cache control', () => {
     })
   }
 
-  test('does not cache error responses at the CDN', async ({ page }) => {
-    const response = await page.request.get('/org/this-org-does-not-exist')
+  for (const path of [
+    '/org/this-org-does-not-exist',
+    '/package/this-package-does-not-exist/v/1.0.0',
+    '/package/nuxt/v/4.3.1/_payload.json',
+    '/package/@nuxt/kit/v/4.3.0/_payload.json',
+  ]) {
+    test(`does not cache the ${path} error at the CDN`, async ({ page }) => {
+      const response = await page.request.get(path)
 
-    expect(response.status()).toBe(404)
-    expect(response.headers()['cache-control']).not.toMatch(/\bs-maxage=/)
-  })
+      expect(response.status()).toBe(404)
+      expect(response.headers()['cache-control']).not.toMatch(/\bs-maxage=/)
+    })
+  }
 })

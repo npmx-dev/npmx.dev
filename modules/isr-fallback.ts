@@ -31,12 +31,8 @@ export default defineNuxtModule({
         for (const path of [
           'package',
           'package/[name]',
-          'package/[name]/v',
-          'package/[name]/v/[version]',
           'package/[org]',
           'package/[org]/[name]',
-          'package/[org]/[name]/v',
-          'package/[org]/[name]/v/[version]',
           '',
         ]) {
           const outputPath = resolve(nitro.options.output.serverDir, '..', path, htmlFallback)

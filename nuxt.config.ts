@@ -277,15 +277,19 @@ export default defineNuxtConfig({
     }),
     // payloads do not depend on the query, including the `_b` build id
     '/package/:name/_payload.json': getISRConfig(300, { fallback: 'json', allowQuery: [] }),
-    '/package/:name/v/:version/_payload.json': getISRConfig(300, {
-      fallback: 'json',
-      allowQuery: [],
-    }),
     '/package/:org/:name/_payload.json': getISRConfig(300, { fallback: 'json', allowQuery: [] }),
-    '/package/:org/:name/v/:version/_payload.json': getISRConfig(300, {
-      fallback: 'json',
-      allowQuery: [],
-    }),
+    // versioned package pages are cached at the cdn
+    '/package/:name/v/:version': {
+      isr: false,
+      headers: { 'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800' },
+    },
+    '/package/:org/:name/v/:version': {
+      isr: false,
+      headers: { 'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800' },
+    },
+    // no payload is rendered for these, so requests get an uncached 404
+    '/package/:name/v/:version/_payload.json': { isr: false },
+    '/package/:org/:name/v/:version/_payload.json': { isr: false },
     // cdn cache
     '/package-timeline/**': {
       headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400' },
