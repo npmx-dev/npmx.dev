@@ -100,4 +100,41 @@ const blueskyPostUri = computed(() => blueskyLink.value?.postUri ?? null)
   text-decoration-color: var(--fg);
   color: var(--fg);
 }
+
+/* Inline code gets the same chip as inline code in READMEs, instead of the
+   typography preset's bold text wrapped in literal backticks */
+:deep(.prose :not(pre) > code) {
+  @apply font-mono;
+  font-size: 0.875em;
+  font-weight: 400;
+  background: var(--bg-muted);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+:deep(.prose :not(pre) > code)::before,
+:deep(.prose :not(pre) > code)::after {
+  content: none;
+}
+
+/* A link that is only a code chip: a dashed border marks it as a link (like in the
+   Nuxt docs), so the underline would just run through the chip */
+:deep(.prose a:not(.not-prose a):not([class*='no-underline']):has(> code:only-child)) {
+  text-decoration: none;
+}
+
+:deep(.prose a > code) {
+  border-style: dashed;
+  border-color: var(--fg-subtle);
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+}
+
+:deep(.prose a:hover > code),
+:deep(.prose a:focus-visible > code) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
 </style>
