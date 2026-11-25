@@ -120,6 +120,13 @@ onMounted(() => {
   if (error.value) refresh()
 })
 
+const embedRoot = useTemplateRef<HTMLElement>('embedRoot')
+const { stop } = useIntersectionObserver(embedRoot, ([entry]) => {
+  if (!entry?.isIntersecting) return
+  stop()
+  refresh()
+})
+
 const postUrl = computed(() => {
   // Prefer the explicit URL prop if provided
   if (props.url) return props.url
@@ -149,13 +156,17 @@ const quotedPostUri = computed(() => {
 
 <template>
   <div
-    v-if="status === 'pending'"
+    v-if="status === 'pending' && !post"
     class="rounded-lg border border-border bg-bg-subtle p-6 text-center text-fg-subtle text-sm"
   >
     <span class="i-svg-spinners:90-ring-with-bg h-5 w-5 inline-block" />
   </div>
 
-  <div class="not-prose relative bg-bg-subtle p-4 sm:p-5 my-4 sm:my-5" v-else-if="post">
+  <div
+    ref="embedRoot"
+    class="not-prose relative bg-bg-subtle p-4 sm:p-5 my-4 sm:my-5"
+    v-else-if="post"
+  >
     <a
       :href="postUrl ?? '#'"
       target="_blank"
