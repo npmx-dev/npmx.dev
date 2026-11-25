@@ -96,7 +96,12 @@ async function resolveAtUri(): Promise<string | null> {
 
 const cacheKey = computed(() => `bsky-post-${props.uri || props.url}`)
 
-const { data: post, status } = useAsyncData(
+const {
+  data: post,
+  status,
+  error,
+  refresh,
+} = useAsyncData(
   cacheKey.value,
   async (): Promise<BlueskyPost | null> => {
     const atUri = await resolveAtUri()
@@ -110,6 +115,10 @@ const { data: post, status } = useAsyncData(
   },
   { lazy: true },
 )
+
+onMounted(() => {
+  if (error.value) refresh()
+})
 
 const postUrl = computed(() => {
   // Prefer the explicit URL prop if provided
