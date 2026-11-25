@@ -151,6 +151,14 @@ async function loadBlogPosts(
   return posts
 }
 
+/**
+ * Resolves a root-relative image URL to its file in `publicDir`, or `null` for external URLs.
+ */
+export function resolvePublicImagePath(publicDir: string, src: string): string | null {
+  if (!src.startsWith('/') || src.startsWith('//')) return null
+  return join(publicDir, decodeURIComponent(new URL(src, 'file:///').pathname))
+}
+
 export default defineNuxtModule({
   meta: {
     name: 'blog',
@@ -192,8 +200,9 @@ export default defineNuxtModule({
             for (const token of state.tokens) {
               for (const child of token.children ?? []) {
                 const src = child.type === 'image' ? child.attrGet('src') : null
-                if (!src?.startsWith('/')) continue
-                const { width, height } = imageMeta(readFileSync(join(publicDir, src)))
+                const path = src && resolvePublicImagePath(publicDir, src)
+                if (!path) continue
+                const { width, height } = imageMeta(readFileSync(path))
                 if (width && height) {
                   child.attrSet('width', String(width))
                   child.attrSet('height', String(height))
