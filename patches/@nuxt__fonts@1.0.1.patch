@@ -1,0 +1,12 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 2beea299fad63ab43954bd8a7e4f53587d7591af..5b9bfe4d7879ae01e8b98eb5b928bbf4f1df7753 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1168,6 +1168,7 @@ const module$1 = defineNuxtModule({
+       isGlobalStylesheet: (id) => globalStylesheets.has(id),
+       fontsToPreload: fontMap,
+       processCSSVariables: options.experimental?.processCSSVariables ?? options.processCSSVariables,
++      fallbacksOnlyFamilies: new Set((options.families || []).map((family) => family.name).filter((name) => getFamilyOverride(options.families, name)?.global)),
+       selectFontsToPreload: resolveFontsToPreload,
+       exposeUsage: devtools?.exposeUsage,
+       async resolveFontFace(fontFamily, fallbackOptions) {

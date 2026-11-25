@@ -1,0 +1,25 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 6ac22216bc4a5cc19d2ccb4f53b5733c86898576..69f8bd996fd574115fa14cbffdac0d7562c88018 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -823,7 +823,7 @@ async function transformCSS(options, code, id, opts = {}) {
+ 			enter(node) {
+ 				if (shouldSkipDeclaration(node.property, options.processCSSVariables, this.atrule?.name)) return;
+ 				const [fontFamily, ...fallbacks] = extractFontFamilies(node);
+-				if (fontFamily && !existingFontFamilies.has(fontFamily)) promises.push(addFontFaceDeclaration(fontFamily, {
++				if (fontFamily && (!existingFontFamilies.has(fontFamily) || options.fallbacksOnlyFamilies?.has(fontFamily))) promises.push(addFontFaceDeclaration(fontFamily, {
+ 					fallbacks,
+ 					generic: extractGeneric(node),
+ 					index: extractEndOfFirstFamily(node) + parentOffset
+diff --git a/dist/utils-Bp2FBU_5.d.mts b/dist/utils-Bp2FBU_5.d.mts
+index d6b21425b92653c5fc855704b644eee30effa1bf..a81899f0c8347c55d3f22d3f9b426101138f70af 100644
+--- a/dist/utils-Bp2FBU_5.d.mts
++++ b/dist/utils-Bp2FBU_5.d.mts
+@@ -338,6 +338,7 @@ interface FontFamilyInjectionPluginOptions extends FontFallbackOptions {
+   }) => Awaitable<undefined | FontFaceResolution>;
+   dev: boolean;
+   processCSSVariables?: boolean | "font-prefixed-only" | (string & {});
++  fallbacksOnlyFamilies?: Set<string>;
+   selectFontsToPreload?: (fontFamily: string, fonts: FontFaceData[]) => FontFaceData[];
+   fontsToPreload: Map<string, Set<string>>;
+   /**
