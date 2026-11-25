@@ -191,7 +191,16 @@ defineOgImage(
     </header>
 
     <!-- Loading state (only on initial load, not when we already have data) -->
-    <LoadingSpinner v-if="isLoadingPackages" :text="$t('common.loading_packages')" />
+    <section v-if="isLoadingPackages">
+      <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+        {{ $t('user.page.packages_title') }}
+      </h2>
+      <div class="flex flex-col sm:flex-row gap-3 mb-6">
+        <SkeletonBlock class="h-10.75 sm:h-10 sm:flex-1 rounded-md" />
+        <SkeletonBlock class="h-10 sm:w-48.5 rounded-md" />
+      </div>
+      <PackageListSkeleton />
+    </section>
 
     <!-- Error state -->
     <div v-else-if="error || status === 'error'" role="alert" class="py-12 text-center">
