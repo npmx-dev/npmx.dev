@@ -99,7 +99,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     // API routes
-    '/api/**': { isr: 300 },
+    '/api/**': { isr: { expiration: 300, allowQuery: [] } },
     '/api/registry/badge/**': {
       isr: {
         expiration: 60 * 60 /* one hour */,
@@ -143,10 +143,19 @@ export default defineNuxtConfig({
       },
     },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/api/registry/package-meta/**': { isr: 300 },
+    '/api/registry/file/**': {
+      isr: { expiration: false, allowQuery: [] },
+      cache: { maxAge: 365 * 24 * 60 * 60 },
+    },
+    '/api/registry/provenance/**': {
+      isr: { expiration: false, allowQuery: [] },
+      cache: { maxAge: 365 * 24 * 60 * 60 },
+    },
+    '/api/registry/files/**': {
+      isr: { expiration: false, allowQuery: [] },
+      cache: { maxAge: 365 * 24 * 60 * 60 },
+    },
+    '/api/registry/package-meta/**': { isr: { expiration: 300, allowQuery: [] } },
     '/api/registry/install-size/**': {
       isr: {
         expiration: 300,
@@ -181,14 +190,17 @@ export default defineNuxtConfig({
         allowQuery: ['version'],
       },
     },
-    '/:pkg/.well-known/skills/**': { isr: 3600 },
-    '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
-    '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
-    '/opensearch.xml': { isr: true },
+    '/:pkg/.well-known/skills/**': { isr: { expiration: 3600, allowQuery: [] } },
+    '/:scope/:pkg/.well-known/skills/**': { isr: { expiration: 3600, allowQuery: [] } },
+    '/_avatar/**': {
+      isr: { expiration: 3600, allowQuery: [] },
+      proxy: 'https://www.gravatar.com/avatar/**',
+    },
+    '/opensearch.xml': { isr: { expiration: false, allowQuery: [] } },
     '/oauth-client-metadata.json': { prerender: true },
     '/.well-known/jwks.json': { prerender: true },
     '/.well-known/site.standard.publication': { prerender: true },
-    '/api/leaderboard/likes': { isr: 900 },
+    '/api/leaderboard/likes': { isr: { expiration: 900, allowQuery: [] } },
     '/api/embed/downloads.svg': {
       isr: {
         expiration: 60 * 60 /* one hour */,
@@ -240,7 +252,7 @@ export default defineNuxtConfig({
       },
     },
     // pages
-    '/leaderboard/likes': getISRConfig(900),
+    '/leaderboard/likes': getISRConfig(900, { allowQuery: [] }),
     '/package/**': getISRConfig(300, {
       fallback: 'html',
       passQuery: true,
@@ -268,7 +280,7 @@ export default defineNuxtConfig({
     '/settings': { prerender: true },
     '/translation-status': { prerender: true },
     '/recharging': { prerender: true },
-    '/pds': { isr: 86400 }, // revalidate daily
+    '/pds': { isr: { expiration: 86400, allowQuery: [] } }, // revalidate daily
     '/blog/**': { prerender: true },
     '/blog/rss.xml': {
       prerender: true,

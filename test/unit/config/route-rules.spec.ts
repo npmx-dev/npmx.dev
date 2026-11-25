@@ -103,6 +103,8 @@ for (const { rule, query } of Object.values(QUERY_HANDLERS)) {
   queryByRule[rule] = new Set([...(queryByRule[rule] ?? []), ...query])
 }
 
+const UNCHECKED_ISR_ROUTES = new Set(['/api/registry/docs/**'])
+
 function listFiles(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap(entry =>
     entry.isDirectory() ? listFiles(join(dir, entry.name)) : [join(dir, entry.name)],
@@ -118,6 +120,18 @@ describe('route rules', () => {
       .sort()
 
     expect(handlers).toEqual(Object.keys(QUERY_HANDLERS).sort())
+  })
+
+  it('limits the isr cache key of every cached route to the query params it reads', () => {
+    const unbounded = Object.entries(routeRules)
+      .filter(
+        ([route, { isr }]) =>
+          isr !== undefined && isr !== false && !UNCHECKED_ISR_ROUTES.has(route),
+      )
+      .filter(([, { isr }]) => typeof isr !== 'object' || !Array.isArray(isr.allowQuery))
+      .map(([route]) => route)
+
+    expect(unbounded).toEqual([])
   })
 
   it.each(Object.entries(queryByRule))(
