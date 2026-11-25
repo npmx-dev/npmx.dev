@@ -22,10 +22,10 @@ import { isBuiltin } from 'node:module'
 // Configuration
 // =============================================================================
 
-export const DEFAULT_MAX_ENTRY_POINTS = 100
-export const DEFAULT_MAX_MODULE_FETCHES = 500
-export const DEFAULT_TIME_BUDGET_MS = 10_000
-export const DEFAULT_FETCH_TIMEOUT_MS = 5_000
+const DEFAULT_MAX_ENTRY_POINTS = 100
+const DEFAULT_MAX_MODULE_FETCHES = 500
+const DEFAULT_TIME_BUDGET_MS = 10_000
+const DEFAULT_FETCH_TIMEOUT_MS = 5_000
 
 const HEAD_CONCURRENCY = 6
 const ENTRY_POINT_CONCURRENCY = 4
