@@ -52,16 +52,18 @@ interface LayoutShiftEntry extends PerformanceEntry {
 declare global {
   interface Window {
     layoutShifts: LayoutShift[]
+    layoutShiftsSince: number
   }
 }
 
 async function observeLayoutShifts(page: Page) {
   await page.addInitScript(() => {
     window.layoutShifts = []
+    window.layoutShiftsSince = 0
 
     new PerformanceObserver(list => {
       for (const entry of list.getEntries() as LayoutShiftEntry[]) {
-        if (entry.hadRecentInput) continue
+        if (entry.hadRecentInput || entry.startTime < window.layoutShiftsSince) continue
         window.layoutShifts.push({
           value: entry.value,
           sources: entry.sources.map(({ node, previousRect: prev, currentRect: curr }) => ({
@@ -138,6 +140,91 @@ test.describe('Layout shift', () => {
         )
       expect(unsized).toEqual([])
       expect(await collectLayoutShifts(page)).toEqual([])
+    })
+  }
+})
+
+interface Navigation {
+  from: string
+  to: string
+  loading: string
+}
+
+const NAVIGATIONS: Navigation[] = [
+  { from: '/package/nuxt', to: '/package/@nuxt/kit', loading: 'main > article[aria-busy="true"]' },
+  { from: '/package/@nuxt/kit', to: '/org/nuxt', loading: 'main [aria-busy="true"]' },
+  { from: '/package/vue', to: '/package-code/vue/v/3.5.27', loading: 'text=Loading file tree' },
+  {
+    from: '/package/ufo',
+    to: '/package-docs/ufo/v/1.6.3',
+    loading: 'main .animate-skeleton-pulse',
+  },
+]
+
+const DATA_DELAY = 500
+
+test.describe('Layout shift after client-side navigation', () => {
+  test.use({ userAgent: PLATFORMS.linux })
+
+  for (const viewport of [VIEWPORTS[0], VIEWPORTS[4]]) {
+    test.describe(`${viewport.width}x${viewport.height}`, () => {
+      test.use({ viewport })
+
+      for (const { from, to, loading } of NAVIGATIONS) {
+        test(`${from} → ${to}`, async ({ page, goto }) => {
+          await observeLayoutShifts(page)
+          await goto(from, { waitUntil: 'hydration' })
+          await page.waitForLoadState('networkidle')
+
+          const delayed = new Set<Promise<void>>()
+          await page.route(/\/_payload\.json/, route =>
+            route.fulfill({ contentType: 'application/json', body: '[{}]' }),
+          )
+          await page.route('**/*', async route => {
+            const request = route.request()
+            if (
+              !['fetch', 'xhr'].includes(request.resourceType()) ||
+              request.url().includes('/_payload.json')
+            ) {
+              return route.fallback()
+            }
+            const delay =
+              new URL(request.url()).hostname === 'ungh.cc' ? DATA_DELAY * 2 : DATA_DELAY
+            const response = new Promise(resolve => setTimeout(resolve, delay)).then(() =>
+              route.fallback(),
+            )
+            delayed.add(response)
+            await response
+            delayed.delete(response)
+          })
+
+          await page.evaluate(
+            href =>
+              new Promise<void>(resolve => {
+                const main = document.querySelector('main')!
+                const check = () => {
+                  if (main.isConnected) return requestAnimationFrame(check)
+                  requestAnimationFrame(() => {
+                    window.layoutShifts = []
+                    window.layoutShiftsSince = performance.now()
+                    resolve()
+                  })
+                }
+                requestAnimationFrame(check)
+                document.querySelector<HTMLElement>(`a[href="${href}"]`)!.click()
+              }),
+            to,
+          )
+          await expect(page.locator(loading).first()).toBeVisible()
+
+          while (delayed.size) {
+            await Promise.all(delayed)
+            await page.waitForTimeout(100)
+          }
+          await expect(page.locator(loading)).toHaveCount(0)
+          expect(await collectLayoutShifts(page)).toEqual([])
+        })
+      }
     })
   }
 })
