@@ -158,21 +158,38 @@ export default defineNuxtConfig({
     '/api/registry/package-meta/**': { isr: { expiration: 300, allowQuery: [] } },
     '/api/registry/install-size/**': {
       isr: {
-        expiration: 300,
+        expiration: 60 * 60 /* one hour */,
         passQuery: true,
         allowQuery: ['frozen-history'],
       },
     },
     '/api/registry/license-change/**': {
       isr: {
-        expiration: 300,
+        expiration: 60 * 60 /* one hour */,
         passQuery: true,
         allowQuery: ['version'],
       },
     },
+    '/api/registry/analysis/**': getISRConfig(60 * 60 * 24 /* one day */, { allowQuery: [] }),
+    '/api/registry/vulnerabilities/**': getISRConfig(60 * 60 /* one hour */, { allowQuery: [] }),
+    '/api/registry/readme/**': getISRConfig(60 * 60 /* one hour */, { allowQuery: [] }),
+    '/api/registry/org/**': getISRConfig(60 * 60 /* one hour */, { allowQuery: [] }),
+    '/api/registry/compare/**': { isr: { expiration: false, allowQuery: [] } },
+    '/api/changelog/info/**': getISRConfig(60 * 60 * 2 /* 2 hours */, { allowQuery: [] }),
+    '/api/jsr/**': getISRConfig(60 * 60 /* one hour */, { allowQuery: [] }),
+    '/api/github/issues/**': getISRConfig(60 * 60 /* one hour */, { allowQuery: [] }),
+    '/api/github/contributors-evolution/**': getISRConfig(60 * 60 * 24 /* one day */, {
+      allowQuery: [],
+    }),
+    '/api/gravatar/**': getISRConfig(60 * 60 * 24 /* one day */, { allowQuery: [] }),
+    '/api/contributors': getISRConfig(60 * 60 /* one hour */, { allowQuery: [] }),
+    '/api/repo-stats': getISRConfig(60 * 60 /* one hour */, { allowQuery: [] }),
+    '/api/atproto/pds-graphs': getISRConfig(60 * 60 /* one hour */, { allowQuery: [] }),
+    '/api/atproto/pds-users': getISRConfig(60 * 60 /* one hour */, { allowQuery: [] }),
+    '/api/atproto/tangled-stats/**': getISRConfig(60 * 10 /* ten minutes */, { allowQuery: [] }),
     '/api/registry/compare-file/**': {
       isr: {
-        expiration: 300,
+        expiration: false,
         passQuery: true,
         allowQuery: [
           'mergeModifiedLines',
