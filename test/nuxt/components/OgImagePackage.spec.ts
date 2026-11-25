@@ -190,4 +190,23 @@ describe('OgImagePackage', () => {
 
     expect(component.text()).toContain('test/repo')
   })
+
+  it('bounds the function-tree docs fetch with a timeout and degrades when it rejects', async () => {
+    setupMocks({ packageName: 'test-package' })
+    const fetchSpy = vi.spyOn(globalThis, '$fetch').mockImplementation(((url: string) => {
+      if (typeof url === 'string' && url.includes('/api/registry/docs/')) {
+        return Promise.reject(new Error('timeout'))
+      }
+      return Promise.resolve({ totalLikes: 0, userHasLiked: false })
+    }) as never)
+
+    const component = await mountSuspended(OgImagePackage, {
+      props: { ...baseProps, variant: 'function-tree' },
+    })
+
+    expect(fetchSpy).toHaveBeenCalledWith('/api/registry/docs/test-package/v/1.0.0', {
+      timeout: 3000,
+    })
+    expect(component.text()).toContain('test-package')
+  })
 })
