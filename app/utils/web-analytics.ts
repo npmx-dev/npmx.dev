@@ -57,6 +57,18 @@ function pathnameOf(url: string): string {
 }
 
 /**
+ * Reads the stored sampling decision, treating a throwing `getItem` as no stored value, since a
+ * throw from `beforeSend` would take the analytics script down.
+ */
+function readStoredSample(storage: Pick<Storage, 'getItem'> | null): string | null {
+  try {
+    return storage?.getItem(SAMPLE_STORAGE_KEY) ?? null
+  } catch {
+    return null
+  }
+}
+
+/**
  * Builds the `beforeSend` function passed to Vercel Web Analytics. It returns `null` for events
  * that should not be reported: anything from an automated browser, repeat views of the page that
  * is already open (query and hash only changes), views inside the package source viewer below the
@@ -77,7 +89,7 @@ export function createWebAnalyticsFilter(options: WebAnalyticsFilterOptions = {}
     if (sampleRate <= 0) return false
     if (sessionSampled !== undefined) return sessionSampled
 
-    const stored = storage?.getItem(SAMPLE_STORAGE_KEY)
+    const stored = readStoredSample(storage)
     if (stored === '1') sessionSampled = true
     else if (stored === '0') sessionSampled = false
     else {

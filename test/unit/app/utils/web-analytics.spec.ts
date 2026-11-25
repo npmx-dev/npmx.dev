@@ -147,4 +147,15 @@ describe('createWebAnalyticsFilter', () => {
     expect(filter(pageview('/package/nuxt'))).not.toBeNull()
     expect(filter(pageview('/package/vue'))).not.toBeNull()
   })
+
+  it('keeps sampling when sessionStorage cannot be read', () => {
+    const storage = createStorage()
+    storage.getItem.mockImplementation(() => {
+      throw new Error('SecurityError')
+    })
+    const filter = createWebAnalyticsFilter({ sampleRate: 0.5, storage, random: () => 0.1 })
+
+    expect(filter(pageview('/package/nuxt'))).not.toBeNull()
+    expect(filter(pageview('/package/vue'))).not.toBeNull()
+  })
 })
