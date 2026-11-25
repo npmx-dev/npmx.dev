@@ -13,7 +13,7 @@ tags: ['OpenSource', 'Release']
 excerpt: 'npmx 0.11 is out! This past month, npmx continued improving towards a beta milestone, focusing on performance, accessibility, and stability'
 date: '2026-05-13'
 slug: 'release/crystal-chronicle'
-image: 'https://npmx.dev/blog/og/release-crystal-chronicle.png'
+image: 'https://npmx.dev/blog/assets/release/crystal-chronicle/og.png'
 description: 'npmx 0.11 is out! This past month, npmx continued improving towards a beta milestone, focusing on performance, accessibility, and stability'
 draft: false
 ---
@@ -24,7 +24,7 @@ Hard to believe we started [npmx](https://npmx.dev) 100 days ago, and now more t
 
 Over the past months, we all felt empowered by seeing npmx take off and the reaction from the ecosystem. It makes a huge difference in our lives as maintainers to use tools we can fix and extend. We have a new shared commons where we can share ideas and implement features to improve how we work. Not only for ourselves, but for everyone else, too.
 
-![npmx alpha](/blog/og/release-crystal-chronicle.png)
+![npmx alpha](/blog/assets/release/crystal-chronicle/og.png)
 
 We had many conversations, encouraged by npmx’s success, about what else we could do for the web. Some of these ideas are shaping into new sister projects, explorations that may eventually return as npmx features. It’s a great time to get involved. Let’s keep building together.
 
@@ -85,7 +85,7 @@ The community has always been a key part of npmx. And we’re incredibly excited
 
 Speaking about the development of npmx, we can’t skip plans and the future. And to bring a number of major ideas closer, we met in Edinburgh. Because even though you like building ideas together, sometimes you need to sit across from each other and throw out lots of ideas and problems related to the product. We discussed projects, lexicons, ideas, tasks, and much more, and simply had a great time.
 
-![A collage of photos of the team during meetings in Edinburgh](/blog/team-edinburgh.jpg)
+![A collage of photos of the team during meetings in Edinburgh](/blog/assets/release/crystal-chronicle/team-edinburgh.jpg)
 
 We spoke about organising in-person meetups, to share ideas over pizza and drinks. We actually did a social before CityJS London in April, it was great fun to get together as a community, even if it was only a few of us due to the very last minute organising. If all goes well, we may have meetups in London, Berlin, and Paris in the next months. Join the community if you'd like to participate, help or organise other events.
 

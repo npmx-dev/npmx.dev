@@ -13,7 +13,7 @@ tags: ['OpenSource', 'Release']
 excerpt: 'npmx 0.16 is out! This period was especially full of good news. And it’s particularly great that, amid the constant search for vulnerabilities and risks, we’ve started celebrating more and taking joy in what we do - and what our favorite maintainers and authors do.'
 date: '2026-07-03'
 slug: 'release/rainbow-comet'
-image: 'https://npmx.dev/blog/og/release-rainbow-comet.png'
+image: 'https://npmx.dev/blog/assets/release/rainbow-comet/og.png'
 description: 'npmx 0.16 is out! This period was especially full of good news. And it’s particularly great that, amid the constant search for vulnerabilities and risks, we’ve started celebrating more and taking joy in what we do - and what our favorite maintainers and authors do.'
 draft: false
 ---
@@ -24,7 +24,7 @@ Every time we’re working on a release, we think, “Wow, the community has mad
 
 This period was especially full of good news. And it’s particularly great that, amid the constant search for vulnerabilities and risks, we’ve started celebrating more and taking joy in what we do - and what our favorite maintainers and authors do. But first things first.
 
-![npmx rainbow comet](/blog/og/release-rainbow-comet.png)
+![npmx rainbow comet](/blog/assets/release/rainbow-comet/og.png)
 
 ## What’s new?
 
@@ -32,7 +32,7 @@ This period was especially full of good news. And it’s particularly great that
 
 We’d like to start with one of the nicest pieces of news - we’ve welcomed a new sponsor. It’s doubly exciting because it’s a tool we genuinely love and use ourselves. Thank you to **[CodeRabbit](https://coderabbit.link/npmx)** for supporting us with **$1,000 per month** and for the collaboration.
 
-![CodeRabbit x npmx](/blog/coderabbit-x-npmx.png)
+![CodeRabbit x npmx](/blog/assets/release/rainbow-comet/coderabbit-x-npmx.png)
 
 ### Changelog
 
@@ -47,7 +47,7 @@ Speaking of changes, it’s hard to miss change analysis in packages. And to vie
 
 One of the key metrics when choosing a dependency is statistics. To make that part of your experience more convenient, we added a stats page for every package. All information in one place - and there will be even more soon.
 
-![The Stats tab for the nuxt package](/blog/stats-tab.png)
+![The Stats tab for the nuxt package](/blog/assets/release/rainbow-comet/stats-tab.png)
 
 ### Timeline
 
@@ -71,13 +71,13 @@ And of course, wherever there are results, a bit of competition and play appears
 
 This period also brought wonderful events not only related to us, but across the whole ecosystem. And we were happy to celebrate them through noodles. And to make noodles an even more important part of our home, we added a noodles page with an archive of all dishes.
 
-![Noodles - nodejs anniversary, pride month, and tetris](/blog/noodles-rainbow-comet.png)
+![Noodles - nodejs anniversary, pride month, and tetris](/blog/assets/release/rainbow-comet/noodles.png)
 
 ### New languages
 
 Our home has grown not only with new sections and pages, but also with new languages. Thank you so much for your contribution to localising the project and for making search accessible to more of us. Now you can use npmx in Dutch, Romanian, and Portuguese as well.
 
-![Languages flags - Dutch, Romanian, and Portuguese](/blog/languages-rainbow-comet.png)
+![Languages flags - Dutch, Romanian, and Portuguese](/blog/assets/release/rainbow-comet/languages.png)
 
 ## **State of npmx**
 

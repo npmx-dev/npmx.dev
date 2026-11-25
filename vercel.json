@@ -101,6 +101,116 @@
         }
       ],
       "destination": "https://main.npmx.dev/translation-status"
+    },
+    {
+      "source": "/blog/og/release-0_8.png",
+      "destination": "/blog/assets/release/0.8/og.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/og/release-crystal-chronicle.png",
+      "destination": "/blog/assets/release/crystal-chronicle/og.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/team-edinburgh.jpg",
+      "destination": "/blog/assets/release/crystal-chronicle/team-edinburgh.jpg",
+      "permanent": true
+    },
+    {
+      "source": "/blog/og/release-rainbow-comet.png",
+      "destination": "/blog/assets/release/rainbow-comet/og.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/coderabbit-x-npmx.png",
+      "destination": "/blog/assets/release/rainbow-comet/coderabbit-x-npmx.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/stats-tab.png",
+      "destination": "/blog/assets/release/rainbow-comet/stats-tab.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/languages-rainbow-comet.png",
+      "destination": "/blog/assets/release/rainbow-comet/languages.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/noodles-rainbow-comet.png",
+      "destination": "/blog/assets/release/rainbow-comet/noodles.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/og/release-photon-genesis.png",
+      "destination": "/blog/assets/release/photon-genesis/og.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/contrast-photon-genesis.png",
+      "destination": "/blog/assets/release/photon-genesis/contrast.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/install-block-photon-genesis.png",
+      "destination": "/blog/assets/release/photon-genesis/install-block.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/provenance-photon-genesis.png",
+      "destination": "/blog/assets/release/photon-genesis/provenance.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/tools-photon-genesis.png",
+      "destination": "/blog/assets/release/photon-genesis/tools.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/ttfb-photon-genesis.png",
+      "destination": "/blog/assets/release/photon-genesis/ttfb.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/version-distribution-photon-genesis.png",
+      "destination": "/blog/assets/release/photon-genesis/version-distribution.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/command-palette-fallback.png",
+      "destination": "/blog/assets/release/0.8/cmd-palette-search-fallback.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/command-palette-versions.png",
+      "destination": "/blog/assets/release/0.8/cmd-palette-semver.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/release/0.8/cmd-palette-demo-cover.png",
+      "destination": "/blog/assets/release/0.8/cmd-palette-demo-cover.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/release/0.8/cmd-palette-demo.mp4",
+      "destination": "/blog/assets/release/0.8/cmd-palette-demo.mp4",
+      "permanent": true
+    },
+    {
+      "source": "/blog/release/0.8/cmd-palette-search-fallback.png",
+      "destination": "/blog/assets/release/0.8/cmd-palette-search-fallback.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/release/0.8/cmd-palette-semver.png",
+      "destination": "/blog/assets/release/0.8/cmd-palette-semver.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/release/0.8/quadrant-graph-example.png",
+      "destination": "/blog/assets/release/0.8/quadrant-graph-example.png",
+      "permanent": true
     }
   ]
 }
