@@ -76,5 +76,6 @@ export async function generateDocsWithDeno(
   return {
     html: await renderEntries(processed),
     toc: renderEntriesToc(processed),
+    ...(result.truncated ? { truncated: true, truncationReason: result.truncationReason } : {}),
   }
 }

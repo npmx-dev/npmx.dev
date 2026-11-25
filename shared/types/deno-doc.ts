@@ -153,13 +153,19 @@ export interface DocEntry {
   nodes: DenoDocNode[]
 }
 
+export type DocsTruncationReason = 'entry-limit' | 'fetch-limit' | 'timeout' | 'upstream-error'
+
 export interface DenoDocResult {
   version: number
   entries: DocEntry[]
+  truncated?: boolean
+  truncationReason?: DocsTruncationReason
 }
 
 /** Result of documentation generation */
 export interface DocsGenerationResult {
   html: string
   toc: string | null
+  truncated?: boolean
+  truncationReason?: DocsTruncationReason
 }
