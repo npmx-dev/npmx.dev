@@ -149,6 +149,20 @@ test.describe('Layout shift', () => {
             .map(el => el.getAttribute('src') ?? el.getAttribute('poster')),
         )
       expect(unsized).toEqual([])
+
+      const aspectRatios = await page.locator('article video[poster]').evaluateAll(videos =>
+        Promise.all(
+          (videos as HTMLVideoElement[]).map(async video => {
+            const poster = new Image()
+            poster.src = video.poster
+            await poster.decode()
+            return [video.width / video.height, poster.naturalWidth / poster.naturalHeight] as const
+          }),
+        ),
+      )
+      for (const [video, poster] of aspectRatios) {
+        expect(poster).toBeCloseTo(video, 2)
+      }
       expect(await collectLayoutShifts(page)).toEqual([])
     })
   }
