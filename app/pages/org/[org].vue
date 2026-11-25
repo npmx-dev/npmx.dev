@@ -373,7 +373,17 @@ defineOgImage(
         </div>
         <SkeletonBlock class="h-11.5 rounded-lg" />
       </div>
-      <PackageListSkeleton />
+      <PackageList
+        v-if="viewMode === 'table'"
+        :results="[]"
+        view-mode="table"
+        :columns="viewColumns"
+        :filters="filters"
+        :page-size="pageSize"
+        is-loading
+        selectable
+      />
+      <PackageListSkeleton v-else />
     </section>
 
     <!-- Error state -->

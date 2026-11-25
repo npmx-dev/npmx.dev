@@ -157,6 +157,7 @@ defineExpose({
         :columns="columns"
         v-model:sort-option="sortOption"
         :is-loading="isLoading"
+        :skeleton-rows="pageSize"
         @click-keyword="emit('clickKeyword', $event)"
       />
     </template>
