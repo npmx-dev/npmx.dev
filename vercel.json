@@ -1,6 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "trailingSlash": false,
+  "routes": [
+    {
+      "src": "^/api/registry/(?:docs|file|files)/.*$",
+      "missing": [{ "type": "header", "key": "sec-fetch-site" }],
+      "mitigate": { "action": "challenge" },
+      "continue": true
+    }
+  ],
   "redirects": [
     {
       "source": "/(.*)",
