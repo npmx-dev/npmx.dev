@@ -1,11 +1,9 @@
+import { validPackageParams } from '#server/utils/package-params'
+
 export default defineEventHandler(async event => {
-  const packageName = getRouterParam(event, 'pkg')
-  if (!packageName) {
-    throw createError({
-      status: 400,
-      message: 'package name not provided',
-    })
-  }
+  const { packageName } = validPackageParams(event, {
+    packageName: getRouterParam(event, 'pkg'),
+  })
 
   const likesUtil = new PackageLikesUtils()
   return await likesUtil.getLikesEvolution(packageName)

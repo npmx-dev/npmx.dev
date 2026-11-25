@@ -37,7 +37,7 @@ function makePackument(opts: {
   } as Packument
 }
 
-const fakeEvent = {} as H3Event
+const fakeEvent = { node: { res: { setHeader: () => {} } } } as unknown as H3Event
 
 afterAll(() => {
   vi.unstubAllGlobals()
@@ -57,10 +57,10 @@ describe('timeline API', () => {
     })
   })
 
-  it('throws 400 for invalid URI encoding', async () => {
+  it('throws 404 for invalid URI encoding', async () => {
     routerParam = '%E0%A4%A'
     await expect(handler(fakeEvent)).rejects.toMatchObject({
-      statusCode: 400,
+      statusCode: 404,
     })
   })
 

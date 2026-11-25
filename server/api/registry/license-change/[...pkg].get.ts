@@ -1,4 +1,5 @@
 import { normalizeLicense } from '#shared/utils/npm'
+import { validPackageParams } from '#server/utils/package-params'
 
 interface LicenseChangeRecord {
   from: string
@@ -8,15 +9,11 @@ interface LicenseChangeRecord {
 export default defineCachedEventHandler(
   async event => {
     // 1. Extract the package name from the catch-all parameter
-    const packageName = getRouterParam(event, 'pkg')
-    if (!packageName) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Package name is required',
-      })
-    }
     const query = getQuery(event)
-    const version = query.version || 'latest'
+    const { packageName, version = 'latest' } = validPackageParams(event, {
+      packageName: getRouterParam(event, 'pkg'),
+      version: typeof query.version === 'string' && query.version ? query.version : null,
+    })
 
     try {
       // 2. Fetch the "Packument" on the server

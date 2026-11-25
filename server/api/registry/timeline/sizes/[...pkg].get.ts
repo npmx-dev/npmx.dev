@@ -1,5 +1,6 @@
 import { getVersions } from 'fast-npm-meta'
 import { compare } from 'verkit'
+import { validPackageParams } from '#server/utils/package-params'
 import {
   parseTimelineSort,
   parseStableOnly,
@@ -46,17 +47,9 @@ export interface TimelineSizeResponse {
  */
 export default defineCachedEventHandler(
   async event => {
-    const pkgParam = getRouterParam(event, 'pkg')
-    if (!pkgParam) {
-      throw createError({ statusCode: 404, message: 'Package name is required' })
-    }
-
-    let packageName: string
-    try {
-      packageName = decodeURIComponent(pkgParam)
-    } catch {
-      throw createError({ statusCode: 400, message: 'Invalid package name encoding' })
-    }
+    const { packageName } = validPackageParams(event, {
+      packageName: getRouterParam(event, 'pkg'),
+    })
 
     const query = getQuery(event)
     const offset = Math.max(0, Number(query.offset) || 0)

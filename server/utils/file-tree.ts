@@ -1,6 +1,9 @@
 import { getLatestVersion } from 'fast-npm-meta'
+import * as v from 'valibot'
+import { VersionSchema } from '#shared/schemas/package'
 import { flattenFileTree } from '#server/utils/import-resolver'
 import type { ExtendedPackageJson, TypesPackageInfo } from '#shared/utils/package-analysis'
+import { assertValidPackageName } from '#shared/utils/npm'
 
 /**
  * Fetch the file tree from jsDelivr API.
@@ -11,6 +14,10 @@ export async function fetchFileTree(
   version: string,
   signal?: AbortSignal,
 ): Promise<JsDelivrPackageResponse> {
+  assertValidPackageName(packageName)
+  if (!v.is(VersionSchema, version)) {
+    throw createError({ statusCode: 404, message: 'Invalid version' })
+  }
   const url = `https://data.jsdelivr.com/v1/packages/npm/${packageName}@${version}`
   const response = await fetch(url, { signal })
 

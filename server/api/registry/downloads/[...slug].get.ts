@@ -1,5 +1,6 @@
 import * as v from 'valibot'
 import { hash } from 'ohash'
+import { validPackageParams } from '#server/utils/package-params'
 import { fetchNpmVersionDownloadsFromApi } from '#server/utils/npm-website-versions'
 
 /**
@@ -105,7 +106,7 @@ export default defineCachedEventHandler(
 
     const segments = pkgParamSegments.slice(0, -1)
 
-    const { rawPackageName } = parsePackageParams(segments)
+    const { rawPackageName, rawVersion } = parsePackageParams(segments)
 
     if (!rawPackageName) {
       throw createError({
@@ -114,6 +115,11 @@ export default defineCachedEventHandler(
       })
     }
 
+    const { packageName } = validPackageParams(event, {
+      packageName: rawPackageName,
+      version: rawVersion,
+    })
+
     try {
       const query = getQuery(event)
       const parsed = v.parse(QuerySchema, query)
@@ -121,7 +127,7 @@ export default defineCachedEventHandler(
       const filterThreshold = parsed.filterThreshold ?? 1
       const filterOldVersionsBool = parsed.filterOldVersions === 'true'
 
-      const url = `https://api.npmjs.org/versions/${rawPackageName}/last-week`
+      const url = `https://api.npmjs.org/versions/${packageName}/last-week`
       const npmResponse = await fetch(url)
 
       if (!npmResponse.ok) {

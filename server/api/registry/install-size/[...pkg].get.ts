@@ -1,6 +1,5 @@
-import * as v from 'valibot'
-import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_CALC_INSTALL_SIZE_FAILED } from '#shared/utils/constants'
+import { validPackageParams } from '#server/utils/package-params'
 
 /**
  * GET /api/registry/install-size/:name or /api/registry/install-size/:name/v/:version
@@ -17,8 +16,8 @@ export default defineCachedEventHandler(
     const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
 
     try {
-      const { packageName, version: requestedVersion } = v.parse(PackageRouteParamsSchema, {
-        packageName: decodeURIComponent(rawPackageName),
+      const { packageName, version: requestedVersion } = validPackageParams(event, {
+        packageName: rawPackageName,
         version: rawVersion,
       })
 

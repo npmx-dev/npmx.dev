@@ -18,6 +18,16 @@ afterAll(() => {
 })
 
 describe('fetchNpmVersionDownloadsFromApi', () => {
+  it('refuses a name no package can have without a request', async () => {
+    const fetchMock = vi.fn()
+    vi.stubGlobal('fetch', fetchMock)
+
+    await expect(fetchNpmVersionDownloadsFromApi('foo bar')).rejects.toMatchObject({
+      statusCode: 404,
+    })
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
   it('encodes scoped package names in npm API request URL', async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,

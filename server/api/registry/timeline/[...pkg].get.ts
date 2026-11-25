@@ -1,6 +1,7 @@
 import { compare, tryParse } from 'verkit'
 import { normalizeLicense } from '#shared/utils/npm'
 import { hasBuiltInTypes } from '~~/shared/utils/package-analysis'
+import { validPackageParams } from '#server/utils/package-params'
 
 const DEFAULT_LIMIT = 25
 
@@ -66,24 +67,16 @@ export interface SubEvent {
  */
 export default defineCachedEventHandler(
   async event => {
-    const pkgParam = getRouterParam(event, 'pkg')
-    if (!pkgParam) {
-      throw createError({ statusCode: 404, message: 'Package name is required' })
-    }
-
-    let packageName: string
-    try {
-      packageName = decodeURIComponent(pkgParam)
-    } catch {
-      throw createError({ statusCode: 400, message: 'Invalid package name encoding' })
-    }
-
     const query = getQuery(event)
     let offset = Math.max(0, Number(query.offset) || 0)
     const limit = Math.max(1, Math.min(100, Number(query.limit) || DEFAULT_LIMIT))
     const sort = parseTimelineSort(query.sort)
     const stableOnly = parseStableOnly(query['stable-only'])
     const around = typeof query.around === 'string' ? query.around : undefined
+
+    const { packageName } = validPackageParams(event, {
+      packageName: getRouterParam(event, 'pkg'),
+    })
 
     try {
       const packument = await fetchNpmPackage(packageName)

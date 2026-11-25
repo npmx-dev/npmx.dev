@@ -10,11 +10,40 @@ vi.stubGlobal('CACHE_MAX_AGE_FIVE_MINUTES', 300)
 vi.stubGlobal('CACHE_MAX_AGE_ONE_DAY', 86400)
 vi.stubGlobal('fetchLatestVersion', vi.fn())
 
-const { fetchNpmPackageAbbreviated, fetchNpmPackageVersionLibc } = await import('#server/utils/npm')
+const {
+  fetchNpmPackage,
+  fetchNpmPackageAbbreviated,
+  fetchNpmPackageVersionLibc,
+  fetchNpmPackageVersionsMeta,
+} = await import('#server/utils/npm')
+
+describe('fetchNpmPackage', () => {
+  beforeEach(() => {
+    $fetchMock.mockReset()
+  })
+
+  it('refuses a name no package can have without a request', async () => {
+    await expect(fetchNpmPackage('foo bar')).rejects.toMatchObject({ statusCode: 404 })
+    expect($fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('requests the full packument for a legacy name', async () => {
+    $fetchMock.mockResolvedValue({ name: 'JSONStream' })
+
+    await fetchNpmPackage('JSONStream')
+
+    expect($fetchMock).toHaveBeenCalledWith('https://registry.npmjs.org/JSONStream')
+  })
+})
 
 describe('fetchNpmPackageAbbreviated', () => {
   beforeEach(() => {
     $fetchMock.mockReset()
+  })
+
+  it('refuses a name no package can have without a request', async () => {
+    await expect(fetchNpmPackageAbbreviated('.env')).rejects.toMatchObject({ statusCode: 404 })
+    expect($fetchMock).not.toHaveBeenCalled()
   })
 
   it('requests the abbreviated ("install") metadata', async () => {
@@ -51,5 +80,18 @@ describe('fetchNpmPackageVersionLibc', () => {
     $fetchMock.mockResolvedValue({})
 
     expect(await fetchNpmPackageVersionLibc('pkg', '1.0.0')).toBeUndefined()
+  })
+
+  it('refuses a version that cannot exist without a request', async () => {
+    await expect(fetchNpmPackageVersionLibc('pkg', '../secrets')).rejects.toMatchObject({
+      statusCode: 404,
+    })
+    expect($fetchMock).not.toHaveBeenCalled()
+  })
+})
+
+describe('fetchNpmPackageVersionsMeta', () => {
+  it('refuses a name no package can have without a request', async () => {
+    await expect(fetchNpmPackageVersionsMeta('foo bar')).rejects.toMatchObject({ statusCode: 404 })
   })
 })

@@ -1,6 +1,5 @@
-import * as v from 'valibot'
-import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
+import { validPackageParams } from '#server/utils/package-params'
 
 /**
  * GET /api/registry/vulnerabilities/:name or /api/registry/vulnerabilities/:name/v/:version
@@ -14,8 +13,8 @@ export default defineCachedEventHandler(
     const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
 
     try {
-      const { packageName, version: requestedVersion } = v.parse(PackageRouteParamsSchema, {
-        packageName: decodeURIComponent(rawPackageName),
+      const { packageName, version: requestedVersion } = validPackageParams(event, {
+        packageName: rawPackageName,
         version: rawVersion,
       })
 

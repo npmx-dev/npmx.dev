@@ -1,4 +1,5 @@
 import { normalizeLicense } from '#shared/utils/npm'
+import { validPackageParams } from '#server/utils/package-params'
 
 /**
  * Returns lightweight package metadata for search results.
@@ -13,12 +14,9 @@ import { normalizeLicense } from '#shared/utils/npm'
  */
 export default defineCachedEventHandler(
   async event => {
-    const pkgParam = getRouterParam(event, 'pkg')
-    if (!pkgParam) {
-      throw createError({ statusCode: 404, message: 'Package name is required' })
-    }
-
-    const packageName = decodeURIComponent(pkgParam)
+    const { packageName } = validPackageParams(event, {
+      packageName: getRouterParam(event, 'pkg'),
+    })
     const encodedName = encodePackageName(packageName)
 
     try {

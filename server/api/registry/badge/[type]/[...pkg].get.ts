@@ -2,10 +2,10 @@ import * as v from 'valibot'
 import { createCanvas, type SKRSContext2D } from '@napi-rs/canvas'
 import { hash } from 'ohash'
 import { createError, getRouterParam, getQuery, setHeader } from 'h3'
-import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
 import { fetchNpmPackage } from '#server/utils/npm'
-import { assertValidPackageName, normalizeLicense } from '#shared/utils/npm'
+import { validPackageParams } from '#server/utils/package-params'
+import { normalizeLicense } from '#shared/utils/npm'
 import { fetchPackageWithTypesAndFiles } from '#server/utils/file-tree'
 import { handleApiError } from '#server/utils/error-handler'
 import { isExcludedByLastKnownAffectedRange } from '#server/utils/osv'
@@ -731,7 +731,7 @@ export default defineCachedEventHandler(
     const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
 
     try {
-      const { packageName, version: requestedVersion } = v.parse(PackageRouteParamsSchema, {
+      const { packageName, version: requestedVersion } = validPackageParams(event, {
         packageName: rawPackageName,
         version: rawVersion,
       })
@@ -748,8 +748,6 @@ export default defineCachedEventHandler(
       const badgeTypeResult = v.safeParse(BadgeTypeSchema, typeParam)
       const strategyKey = badgeTypeResult.success ? badgeTypeResult.output : 'version'
       const strategy = badgeStrategies[strategyKey as keyof typeof badgeStrategies]
-
-      assertValidPackageName(packageName)
 
       const pkgData = await fetchNpmPackage(packageName)
       const strategyResult = await strategy(pkgData, requestedVersion)

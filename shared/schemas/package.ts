@@ -29,7 +29,7 @@ export const VersionSchema = v.pipe(
  *
  * Allows standard subdirectories and extensions but prevents directory traversal
  */
-const FilePathSchema = v.pipe(
+export const FilePathSchema = v.pipe(
   v.string(),
   v.nonEmpty('File path is required'),
   v.check(input => !input.includes('..'), 'Invalid path: directory traversal not allowed'),

@@ -195,6 +195,29 @@ describe('resolvePackageReadmeSource', () => {
     expect(fetchNpmPackageMock).toHaveBeenCalledWith('some-pkg')
   })
 
+  it('decodes a percent-encoded scoped name and version', async () => {
+    fetchNpmPackageMock.mockResolvedValue({
+      readme: 'latest readme',
+      readmeFilename: 'README.md',
+      versions: { '1.0.0+build.1': { readme: '# Built', readmeFilename: 'README.md' } },
+    })
+    parseRepositoryInfoMock.mockReturnValue(undefined)
+
+    const result = await resolvePackageReadmeSource('@scope%2Fpkg/v/1.0.0%2Bbuild.1')
+
+    expect(result).toMatchObject({
+      packageName: '@scope/pkg',
+      version: '1.0.0+build.1',
+      markdown: '# Built',
+    })
+    expect(fetchNpmPackageMock).toHaveBeenCalledWith('@scope/pkg')
+  })
+
+  it('leaves malformed encoding for the schema to reject', async () => {
+    await expect(resolvePackageReadmeSource('%E0%A4%A')).rejects.toThrow('Invalid package name')
+    expect(fetchNpmPackageMock).not.toHaveBeenCalled()
+  })
+
   it('returns markdown from version when packagePath includes version', async () => {
     const markdown = '# Version readme'
     fetchNpmPackageMock.mockResolvedValue({

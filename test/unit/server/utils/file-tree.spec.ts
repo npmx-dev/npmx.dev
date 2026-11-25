@@ -156,6 +156,19 @@ describe('fetchFileTree', () => {
       vi.unstubAllGlobals()
     }
   })
+
+  it('refuses coordinates that cannot exist without a request', async () => {
+    mockCreateError()
+    const fetchMock = mockFetchOk({})
+
+    try {
+      await expect(fetchFileTree('foo bar', '1.0.0')).rejects.toMatchObject({ statusCode: 404 })
+      await expect(fetchFileTree('pkg', '1.0.0 beta')).rejects.toMatchObject({ statusCode: 404 })
+      expect(fetchMock).not.toHaveBeenCalled()
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
 })
 
 describe('getPackageFileTree', () => {

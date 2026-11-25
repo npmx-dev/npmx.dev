@@ -1,8 +1,8 @@
 import type { H3Event } from 'h3'
 import * as v from 'valibot'
-import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { SkillNameSchema } from '#shared/schemas/skills'
 import { CACHE_MAX_AGE_ONE_HOUR, CACHE_MAX_AGE_ONE_YEAR } from '#shared/utils/constants'
+import { validPackageParams } from '#server/utils/package-params'
 
 /**
  * Serves /.well-known/skills endpoints for `npx skills add` CLI.
@@ -13,20 +13,17 @@ export default defineCachedEventHandler(
     const match = url.pathname.match(/^\/(.+?)\/\.well-known\/skills\/(.*)$/)!
     const [, pkgPath, skillsPath] = match
 
-    const validated = v.parse(PackageRouteParamsSchema, {
-      packageName: pkgPath,
-      version: undefined,
-    })
-    const packument = await fetchNpmPackageAbbreviated(validated.packageName)
+    const { packageName } = validPackageParams(event, { packageName: pkgPath })
+    const packument = await fetchNpmPackageAbbreviated(packageName)
     const version = packument['dist-tags']?.latest
     if (!version) throw createError({ statusCode: 404, message: 'No latest version found' })
 
     if (skillsPath === 'index.json' || skillsPath === '') {
-      const fileTree = await getPackageFileTree(validated.packageName, version)
+      const fileTree = await getPackageFileTree(packageName, version)
       const skillDirs = findSkillDirs(fileTree.tree)
       const skills = skillDirs.length
         ? await fetchSkillsListForWellKnown(
-            validated.packageName,
+            packageName,
             version,
             skillDirs.map(s => s.name),
           )
@@ -40,7 +37,7 @@ export default defineCachedEventHandler(
     const fileName = rest.join('/')
     if (fileName === 'SKILL.md' || fileName === '') {
       const content = await fetchSkillFile(
-        validated.packageName,
+        packageName,
         version,
         `skills/${v.parse(SkillNameSchema, skillName)}/SKILL.md`,
       )

@@ -24,7 +24,7 @@ vi.stubGlobal('parsePackageParams', parsePackageParams)
 
 const handler = (await import('#server/api/registry/badge/[type]/[...pkg].get')).default
 
-const fakeEvent = {} as H3Event
+const fakeEvent = { node: { res: { setHeader: () => {} } } } as unknown as H3Event
 
 afterAll(() => {
   vi.unstubAllGlobals()
