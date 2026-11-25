@@ -377,4 +377,71 @@ describe('PackageLikes', () => {
       expect(wrapper?.text()).toContain('20')
     })
   })
+
+  it('keeps multiple mounted controls for the same package in sync across toggles', async () => {
+    document.cookie = `${SESSION_HINT_COOKIE}=${SESSION_HINT_VALUE}; Path=/`
+    initSessionHintMigration()
+    authSessionHandler = () => createAtprotoUser('tester.test')
+
+    registerEndpoint('/api/social/likes/unstorage', () => ({
+      totalLikes: 5,
+      topLikedRank: null,
+    }))
+    registerEndpoint('/api/social/like-status/unstorage', () => ({
+      userHasLiked: false,
+      totalLikes: 5,
+    }))
+    registerEndpoint('/api/social/like', {
+      method: 'POST',
+      handler: () => ({
+        totalLikes: 6,
+        userHasLiked: true,
+        topLikedRank: null,
+      }),
+    })
+    registerEndpoint('/api/social/like', {
+      method: 'DELETE',
+      handler: () => ({
+        totalLikes: 5,
+        userHasLiked: false,
+        topLikedRank: null,
+      }),
+    })
+
+    wrapper = await mountSuspended(Likes, {
+      props: { packageName: 'unstorage' },
+      attachTo: document.body,
+    })
+    const secondWrapper = await mountSuspended(Likes, {
+      props: { packageName: 'unstorage' },
+      attachTo: document.body,
+    })
+
+    try {
+      await vi.waitFor(() => {
+        expect(wrapper?.text()).toContain('5')
+        expect(secondWrapper.text()).toContain('5')
+      })
+
+      await wrapper.get('button').trigger('click')
+
+      await vi.waitFor(() => {
+        expect(wrapper?.text()).toContain('6')
+        expect(wrapper?.get('button').attributes('aria-pressed')).toBe('true')
+        expect(secondWrapper.text()).toContain('6')
+        expect(secondWrapper.get('button').attributes('aria-pressed')).toBe('true')
+      })
+
+      await secondWrapper.get('button').trigger('click')
+
+      await vi.waitFor(() => {
+        expect(wrapper?.text()).toContain('5')
+        expect(wrapper?.get('button').attributes('aria-pressed')).toBe('false')
+        expect(secondWrapper.text()).toContain('5')
+        expect(secondWrapper.get('button').attributes('aria-pressed')).toBe('false')
+      })
+    } finally {
+      secondWrapper.unmount()
+    }
+  })
 })

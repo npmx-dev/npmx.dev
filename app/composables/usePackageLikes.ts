@@ -40,11 +40,11 @@ export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
     watch: false,
   })
 
-  const localMutation = shallowRef<{ totalLikes: number; userHasLiked: boolean } | null>(null)
+  const optimisticLike = shallowRef<{ totalLikes: number; userHasLiked: boolean } | null>(null)
   const isLikeActionPending = shallowRef(false)
 
   watch(pkgName, () => {
-    localMutation.value = null
+    optimisticLike.value = null
     isLikeActionPending.value = false
     clearUserLikeStatus()
     if (canFetchUserStatus()) {
@@ -56,7 +56,7 @@ export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
     () => user.value?.did ?? null,
     (did, prevDid) => {
       if (did === prevDid) return
-      localMutation.value = null
+      optimisticLike.value = null
       isLikeActionPending.value = false
       if (did) {
         if (userLikeStatus.value === 'idle' || prevDid !== null) {
@@ -77,10 +77,10 @@ export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
 
   const likesData = computed<PackageLikes>(() => {
     const topLikedRank = publicLikes.value?.topLikedRank ?? null
-    if (localMutation.value) {
+    if (optimisticLike.value) {
       return {
-        totalLikes: localMutation.value.totalLikes,
-        userHasLiked: localMutation.value.userHasLiked,
+        totalLikes: optimisticLike.value.totalLikes,
+        userHasLiked: optimisticLike.value.userHasLiked,
         topLikedRank,
       }
     }
@@ -104,12 +104,11 @@ export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
     const targetDid = user.value?.did ?? null
     const currentlyLiked = likesData.value.userHasLiked
     const currentLikes = likesData.value.totalLikes
-    const previousMutation = localMutation.value
     const nextLiked = !currentlyLiked
 
     options?.onOptimisticToggle?.(nextLiked)
 
-    localMutation.value = {
+    optimisticLike.value = {
       totalLikes: currentlyLiked ? Math.max(currentLikes - 1, 0) : currentLikes + 1,
       userHasLiked: nextLiked,
     }
@@ -120,20 +119,15 @@ export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
       const result = await togglePackageLike(targetPackage, currentlyLiked, user.value?.handle)
       if (pkgName.value !== targetPackage || (user.value?.did ?? null) !== targetDid) return
       if (result.success) {
-        localMutation.value = {
-          totalLikes: result.data.totalLikes,
-          userHasLiked: result.data.userHasLiked,
-        }
         userLikeData.value = {
           userHasLiked: result.data.userHasLiked,
           totalLikes: result.data.totalLikes,
         }
-      } else {
-        localMutation.value = previousMutation
       }
+      optimisticLike.value = null
     } catch {
       if (pkgName.value === targetPackage && (user.value?.did ?? null) === targetDid) {
-        localMutation.value = previousMutation
+        optimisticLike.value = null
       }
     } finally {
       if (pkgName.value === targetPackage && (user.value?.did ?? null) === targetDid) {
