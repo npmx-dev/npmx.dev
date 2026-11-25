@@ -25,9 +25,10 @@ export default defineNuxtModule({
   },
   setup(_, nuxt) {
     const resolver = createResolver(import.meta.url)
+    const disableResolver = !nuxt.options.dev
 
     nuxt.hook('modules:done', () => {
-      if (nuxt.options.routeRules) {
+      if (disableResolver && nuxt.options.routeRules) {
         for (const route of DISABLED_OG_RESOLVER_ROUTES) {
           delete nuxt.options.routeRules[route]
         }
@@ -47,7 +48,7 @@ export default defineNuxtModule({
 
       // Remove the unused /_og/r resolver handlers so they cannot be used as an
       // unsigned same-origin SSR proxy.
-      if (nitroConfig.handlers) {
+      if (disableResolver && nitroConfig.handlers) {
         nitroConfig.handlers = nitroConfig.handlers.filter(
           h => !h?.route || !DISABLED_OG_RESOLVER_ROUTES.has(h.route),
         )

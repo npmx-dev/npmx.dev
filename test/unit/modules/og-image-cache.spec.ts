@@ -132,10 +132,10 @@ describe('addOgImageEdgeRules', () => {
   })
 })
 
-function setupOgImageCacheModule(routeRules: Record<string, unknown> = {}) {
+function setupOgImageCacheModule(routeRules: Record<string, unknown> = {}, dev = false) {
   const hooks = new Map<string, (arg?: unknown) => void>()
   const nuxt = {
-    options: { routeRules },
+    options: { routeRules, dev },
     hook: (name: string, callback: (arg?: unknown) => void) => {
       hooks.set(name, callback)
     },
@@ -148,6 +148,19 @@ function setupOgImageCacheModule(routeRules: Record<string, unknown> = {}) {
 }
 
 describe('og-image-cache module setup', () => {
+  it('keeps the resolver handlers and route rules in dev', () => {
+    const { hooks, nuxt } = setupOgImageCacheModule(
+      { '/_og/r/**': { headers: { 'cache-control': 'public, max-age=86400' } } },
+      true,
+    )
+    hooks.get('modules:done')!()
+    expect(nuxt.options.routeRules).toHaveProperty('/_og/r/**')
+
+    const nitroConfig = { handlers: [{ route: '/_og/r/**', handler: 'resolve' }] }
+    hooks.get('nitro:config')!(nitroConfig)
+    expect(nitroConfig.handlers).toEqual([{ route: '/_og/r/**', handler: 'resolve' }])
+  })
+
   it('removes resolver route rules, strips resolver handlers, prepends errorHandler, and drops blanket /_og/d cache-control', () => {
     const { hooks, nuxt } = setupOgImageCacheModule({
       '/_og/r/**': { headers: { 'cache-control': 'public, max-age=86400' } },
