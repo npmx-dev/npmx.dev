@@ -117,6 +117,7 @@ const CANDIDATE_VERSIONS = [
   'latest...next',
   'canary!',
   "rc~(1)*'",
+  `1.0.0+${'a'.repeat(125)}...2.0.0+${'b'.repeat(125)}`,
   '1.0.0 beta',
   '1.0.0%20beta',
   '1.0.0;rm',
@@ -210,7 +211,7 @@ describe('package name and version edge rules', () => {
   it('is never stricter than the version schema, ranges included', () => {
     const tooStrict = CANDIDATE_VERSIONS.filter(version => {
       const decoded = decodeURIComponent(version)
-      if (decoded.length > 256) return false
+      if (decoded.split('...').some(endpoint => endpoint.length > 256)) return false
       if (resolveRequest(routes(), `/diff/vue/v/${version}`)?.kind !== 'status') return false
       return v.is(VersionSchema, decoded)
     })

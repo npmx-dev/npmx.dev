@@ -58,13 +58,17 @@ const INVALID_LEADING_CHAR = [
 const INVALID_SCOPED_LEADING_CHAR = String.raw`(?:%2[Ee]|\.)[^/]*`
 
 /** A version segment that neither a version nor a dist-tag can be. */
-const INVALID_VERSION = [
+const INVALID_VERSION_CHARS = [
   String.raw`[^/]*[^/${VERSION_CHARS}][^/]*`,
   // Percent-encoded space or control character.
   String.raw`[^/]*%(?:0[0-9A-Fa-f]|1[0-9A-Fa-f]|20|7[Ff])[^/]*`,
-  // Long enough that it cannot be a version, even with build metadata. Unescaped only.
-  String.raw`[^/%]{257,}`,
 ]
+
+/** Longer than any version, even with build metadata. Unescaped segments only. */
+const VERSION_TOO_LONG = String.raw`[^/%]{257,}`
+
+/** Longer than a `from...to` range of two versions within that limit. */
+const RANGE_TOO_LONG = String.raw`[^/%]{516,}`
 
 /**
  * Path prefixes whose next segment is the package name, or the scope of a scoped name.
@@ -107,6 +111,9 @@ const PACKAGE_PREFIXES = [
 /** Package-scoped paths whose version follows a `/v/` segment. */
 const VERSION_PREFIXES = PACKAGE_PREFIXES.filter(prefix => !prefix.startsWith('api/registry/org'))
 
+/** Package-scoped paths whose version segment is a `from...to` range. */
+const RANGE_PREFIXES = new Set(['diff', 'api/registry/compare', 'api/registry/compare-file'])
+
 /**
  * Routes that return a CDN-cacheable 404 for junk package URLs before any function runs.
  * A name rule only matches what `validate-npm-package-name` rejects, or a name over 214
@@ -115,9 +122,11 @@ const VERSION_PREFIXES = PACKAGE_PREFIXES.filter(prefix => !prefix.startsWith('a
 export function invalidPackageRoutes(): VercelRoute[] {
   const name = alternation([...INVALID_CHARS, TOO_LONG, ...INVALID_LEADING_CHAR])
   const scopedName = alternation([...INVALID_CHARS, TOO_LONG, INVALID_SCOPED_LEADING_CHAR])
-  const version = alternation(INVALID_VERSION)
+  const version = alternation([...INVALID_VERSION_CHARS, VERSION_TOO_LONG])
+  const range = alternation([...INVALID_VERSION_CHARS, RANGE_TOO_LONG])
+  const rangePrefixes = `(?:${[...RANGE_PREFIXES].join('|')})`
   const prefixes = `(?:${PACKAGE_PREFIXES.join('|')})`
-  const versionPrefixes = `(?:${VERSION_PREFIXES.join('|')})`
+  const versionPrefixes = `(?:${VERSION_PREFIXES.filter(prefix => !RANGE_PREFIXES.has(prefix)).join('|')})`
   const route = (src: string): VercelRoute => ({ src, ...NOT_FOUND })
 
   return [
@@ -131,6 +140,7 @@ export function invalidPackageRoutes(): VercelRoute[] {
     route(`^/${prefixes}/(?:.*/)?%2[Ee]%2[Ee](?:/|$)`),
     // Junk in a version, which follows the package name and a `/v/`.
     route(`^/${versionPrefixes}/(?:@[^/]+/[^/]+|[^/]+)/v/${version}`),
+    route(`^/${rangePrefixes}/(?:@[^/]+/[^/]+|[^/]+)/v/${range}`),
     // `/:pkg/.well-known/skills` has no fixed prefix: the first segment is the name.
     route(`^/${name}/\\.well-known/skills(?:/|$)`),
     route(`^/@[^/]*/${scopedName}/\\.well-known/skills(?:/|$)`),

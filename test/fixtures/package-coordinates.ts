@@ -80,6 +80,8 @@ const RANGE_URLS = [
   '/diff/vue/v/latest...next',
   '/api/registry/compare/vue/v/1.0.0...2.0.0',
   '/api/registry/compare-file/vue/v/1.0.0...2.0.0/dist/index.js',
+  `/diff/vue/v/1.0.0+${'a'.repeat(125)}...2.0.0+${'b'.repeat(125)}`,
+  `/api/registry/compare/vue/v/${'1'.repeat(256)}...${'2'.repeat(256)}`,
 ]
 
 /** Lengths at the limit, and escapes that make the raw segment longer than the coordinate. */
@@ -122,6 +124,7 @@ export const INVALID_URLS = [
   `/package/@scope%2F.hidden`,
   `/package/foo/v/1.0.0%20beta`,
   `/package/foo/v/${'1'.repeat(300)}`,
+  `/diff/vue/v/${'1'.repeat(257)}...${'2'.repeat(259)}`,
   `/package/foo/v/1.0.0;rm -rf`,
   `/api/registry/packument/@scope`,
   `/api/registry/badge/version/foo%20bar`,
