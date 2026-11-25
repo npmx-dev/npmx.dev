@@ -19,6 +19,15 @@ import { compare, isGreaterOrEqual, isLess } from 'verkit'
 /** Maximum concurrent requests for fetching vulnerability details */
 const OSV_DETAIL_CONCURRENCY = 25
 
+/** OSV rejects querybatch requests with more than 1000 queries */
+const OSV_BATCH_MAX_QUERIES = 1000
+
+/** Maximum concurrent querybatch requests */
+const OSV_BATCH_CONCURRENCY = 3
+
+/** Bound on paginated querybatch requests per chunk */
+const OSV_BATCH_MAX_PAGES = 5
+
 /** Package info needed for OSV queries */
 interface PackageQueryInfo {
   name: string
@@ -28,50 +37,97 @@ interface PackageQueryInfo {
 }
 
 /**
- * Query OSV batch API to find which packages have vulnerabilities.
- * Returns indices of packages that have vulnerabilities (for follow-up detailed queries).
+ * Query a single OSV batch chunk, following per-query pagination tokens.
+ * Returns indices within the chunk that have vulnerabilities.
  * @see https://google.github.io/osv.dev/post-v1-querybatch/
  */
-async function queryOsvBatch(
+async function queryOsvBatchChunk(
   packages: PackageQueryInfo[],
 ): Promise<{ vulnerableIndices: number[]; failed: boolean }> {
-  if (packages.length === 0) return { vulnerableIndices: [], failed: false }
+  const vulnerableIndices = new Set<number>()
 
   try {
-    const response = await $fetch<OsvBatchResponse>('https://api.osv.dev/v1/querybatch', {
-      method: 'POST',
-      body: {
-        queries: packages.map(pkg => ({
-          package: { name: pkg.name, ecosystem: 'npm' },
-          version: pkg.version,
-        })),
-      },
-    })
+    let pending = packages.map((_, index) => ({
+      index,
+      pageToken: undefined as string | undefined,
+    }))
 
-    // Find indices of packages that have vulnerabilities
-    const vulnerableIndices: number[] = []
-    for (let i = 0; i < response.results.length; i++) {
-      const result = response.results[i]
-      if (result?.vulns && result.vulns.length > 0) {
-        vulnerableIndices.push(i)
-      }
-      // Warn if pagination token present (>1000 vulns for single query or >3000 total)
-      // This is extremely unlikely for npm packages but log for visibility
-      if (result?.next_page_token) {
+    for (let page = 0; pending.length > 0; page++) {
+      if (page >= OSV_BATCH_MAX_PAGES) {
         // oxlint-disable-next-line no-console -- warn about paginated results
         console.warn(
-          `[dep-analysis] OSV batch result has pagination token for package index ${i} ` +
-            `(${packages[i]?.name}@${packages[i]?.version}) - some vulnerabilities may be missing`,
+          `[dep-analysis] OSV batch results still paginated after ${OSV_BATCH_MAX_PAGES} pages ` +
+            `for ${pending.length} queries - some vulnerabilities may be missing`,
         )
+        break
       }
+
+      const response = await $fetch<OsvBatchResponse>('https://api.osv.dev/v1/querybatch', {
+        method: 'POST',
+        body: {
+          queries: pending.map(({ index, pageToken }) => {
+            const pkg = packages[index]!
+            return {
+              package: { name: pkg.name, ecosystem: 'npm' },
+              version: pkg.version,
+              ...(pageToken ? { page_token: pageToken } : {}),
+            }
+          }),
+        },
+      })
+
+      const next: typeof pending = []
+      for (const [queryIndex, entry] of pending.entries()) {
+        const result = response.results[queryIndex]
+        if (result?.vulns && result.vulns.length > 0) {
+          vulnerableIndices.add(entry.index)
+        }
+        if (result?.next_page_token) {
+          next.push({ index: entry.index, pageToken: result.next_page_token })
+        }
+      }
+      pending = next
     }
 
-    return { vulnerableIndices, failed: false }
+    return { vulnerableIndices: [...vulnerableIndices].sort((a, b) => a - b), failed: false }
   } catch (error) {
     // oxlint-disable-next-line no-console -- log OSV API failures for debugging
     console.warn(`[dep-analysis] OSV batch query failed:`, error)
     return { vulnerableIndices: [], failed: true }
   }
+}
+
+/**
+ * Query OSV batch API to find which packages have vulnerabilities.
+ * Returns indices of packages that have vulnerabilities (for follow-up detailed queries),
+ * plus the number of packages whose batch query failed.
+ */
+async function queryOsvBatch(
+  packages: PackageQueryInfo[],
+): Promise<{ vulnerableIndices: number[]; failedPackages: number }> {
+  if (packages.length === 0) return { vulnerableIndices: [], failedPackages: 0 }
+
+  const chunks: PackageQueryInfo[][] = []
+  for (let offset = 0; offset < packages.length; offset += OSV_BATCH_MAX_QUERIES) {
+    chunks.push(packages.slice(offset, offset + OSV_BATCH_MAX_QUERIES))
+  }
+
+  const chunkResults = await mapWithConcurrency(chunks, queryOsvBatchChunk, OSV_BATCH_CONCURRENCY)
+
+  const vulnerableIndices: number[] = []
+  let failedPackages = 0
+
+  for (const [chunkIndex, result] of chunkResults.entries()) {
+    const chunk = chunks[chunkIndex]!
+    if (result.failed) {
+      failedPackages += chunk.length
+      continue
+    }
+    const offset = chunkIndex * OSV_BATCH_MAX_QUERIES
+    vulnerableIndices.push(...result.vulnerableIndices.map(index => offset + index))
+  }
+
+  return { vulnerableIndices, failedPackages }
 }
 
 /**
@@ -261,13 +317,13 @@ export const analyzeDependencyTree = defineCachedFunction(
       })
 
     // Step 1: Use batch API to find which packages have vulnerabilities
-    // This is much faster than individual queries - one request for all packages
-    const { vulnerableIndices, failed: batchFailed } = await queryOsvBatch(packages)
+    // This is much faster than individual queries - a request per 1000 packages
+    const { vulnerableIndices, failedPackages } = await queryOsvBatch(packages)
 
     let vulnerablePackages: PackageVulnerabilityInfo[] = []
-    let failedQueries = batchFailed ? packages.length : 0
+    let failedQueries = failedPackages
 
-    if (!batchFailed && vulnerableIndices.length > 0) {
+    if (vulnerableIndices.length > 0) {
       // Step 2: Fetch full vulnerability details only for packages with vulns
       // This is typically a small fraction of total packages
       const detailResults = await mapWithConcurrency(
@@ -306,7 +362,7 @@ export const analyzeDependencyTree = defineCachedFunction(
     }
 
     // Log if batch query failed entirely
-    if (batchFailed) {
+    if (packages.length > 0 && failedPackages === packages.length) {
       // oxlint-disable-next-line no-console -- critical error logging
       console.error(
         `[dep-analysis] Critical: OSV batch query failed for ${name}@${version} (${packages.length} packages)`,
@@ -387,8 +443,8 @@ export async function analyzeDirectDependencyHealth(
     return { vulnerable, deprecated }
   }
 
-  const { vulnerableIndices, failed: batchFailed } = await queryOsvBatch(packages)
-  if (batchFailed || vulnerableIndices.length === 0) {
+  const { vulnerableIndices } = await queryOsvBatch(packages)
+  if (vulnerableIndices.length === 0) {
     return { vulnerable, deprecated }
   }
 
