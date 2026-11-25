@@ -5,6 +5,8 @@ import { provider } from 'std-env'
 // Storage key for fetch cache - must match shared/utils/fetch-cache-config.ts
 const FETCH_CACHE_STORAGE_BASE = 'fetch-cache'
 
+const MB = 1024 * 1024
+
 export default defineNuxtModule({
   meta: {
     name: 'vercel-cache',
@@ -36,6 +38,13 @@ export default defineNuxtModule({
         nitroConfig.storage[FETCH_CACHE_STORAGE_BASE] = {
           ...nitroConfig.storage[FETCH_CACHE_STORAGE_BASE],
           driver: 'vercel-runtime-cache',
+        }
+      } else {
+        // function filesystems are read-only
+        nitroConfig.storage[FETCH_CACHE_STORAGE_BASE] = {
+          driver: 'lru-cache',
+          max: 5_000,
+          maxSize: 32 * MB,
         }
       }
 
