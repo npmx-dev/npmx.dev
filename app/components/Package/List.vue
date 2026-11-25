@@ -164,7 +164,11 @@ defineExpose({
     </template>
 
     <!-- Card View with Infinite Scroll -->
-    <template v-else-if="paginationMode === 'infinite' && (hasMore || results.length > SSR_COUNT)">
+    <template
+      v-else-if="
+        paginationMode === 'infinite' && (hasMore || results.length > Math.min(SSR_COUNT, pageSize))
+      "
+    >
       <!-- SSR: Render static list for first page, replaced by virtual list on client -->
       <ClientOnly>
         <WindowVirtualizer
