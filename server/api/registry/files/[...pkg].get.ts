@@ -23,7 +23,7 @@ export default defineCachedEventHandler(
       })
 
       const jsDelivrData = await fetchFileTree(packageName, version)
-      const tree = convertToFileTree(jsDelivrData.files)
+      const tree = withoutFileHashes(convertToFileTree(jsDelivrData.files))
 
       return {
         package: packageName,
@@ -44,7 +44,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `files:v2:${pkg.replace(/\/+$/, '').trim()}`
+      return `files:v3:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )

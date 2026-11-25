@@ -69,6 +69,16 @@ export function convertToFileTree(
 }
 
 /**
+ * Remove file hashes from a tree. The code browser does not use them and they do not compress.
+ */
+export function withoutFileHashes(tree: PackageFileTree[]): PackageFileTree[] {
+  return tree.map(node => {
+    const { hash: _, children, ...rest } = node
+    return children ? { ...rest, children: withoutFileHashes(children) } : rest
+  })
+}
+
+/**
  * Fetch and convert file tree for a package version.
  * Returns the full response including tree and metadata.
  */
