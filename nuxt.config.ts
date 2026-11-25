@@ -142,7 +142,13 @@ export default defineNuxtConfig({
         allowQuery: ['host'],
       },
     },
-    '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/api/registry/docs/**': {
+      isr: {
+        expiration: false,
+        allowQuery: [],
+        exposeErrBody: true,
+      },
+    },
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
