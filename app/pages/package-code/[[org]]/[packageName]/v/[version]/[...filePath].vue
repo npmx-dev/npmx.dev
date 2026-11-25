@@ -66,7 +66,7 @@ function getCodeUrl(args: {
 }
 
 // Fetch package data for version list
-const packageRequest = usePackage(packageName, null, { lazy: false })
+const packageRequest = usePackage(packageName, null, { lazy: false, server: false })
 const { data: pkg } = packageRequest
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
@@ -114,6 +114,7 @@ const treeRequest = useFetch<PackageFileTreeResponse>(
   () => `/api/registry/files/${packageName.value}/v/${version.value}`,
   {
     immediate: !!version.value,
+    server: false,
   },
 )
 const { data: fileTree, status: treeStatus } = treeRequest
@@ -350,6 +351,14 @@ useSeoMeta({
   ogDescription: () => `Browse source code for ${packageName.value}@${version.value}`,
   twitterDescription: () => `Browse source code for ${packageName.value}@${version.value}`,
 })
+
+if (import.meta.server) {
+  defineOgImage(
+    'Package.takumi',
+    { name: () => packageName.value, version: () => version.value, variant: 'download-chart' },
+    { alt: () => `npm package ${packageName.value} download chart and stats` },
+  )
+}
 
 useCommandPaletteContextCommands(
   computed((): CommandPaletteContextCommandInput[] => {

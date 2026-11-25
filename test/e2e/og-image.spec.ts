@@ -8,7 +8,7 @@ import { expect, test } from './test-utils'
  * Each entry tests a different visual edge case to catch layout/overflow regressions:
  * - Home page (Splash.takumi)
  * - Static pages (Page.takumi)
- * - Packages (Package.takumi with the download-chart variant)
+ * - Packages (Package.takumi with the download-chart variant, also on code and docs pages)
  */
 const TEST_CASES = [
   // Default OG image template
@@ -32,10 +32,25 @@ const TEST_CASES = [
 
   // Compare OG image template
   { path: '/compare?packages=vue,react,svelte', label: 'compare' },
+
+  // Client-only pages, server-rendered for link preview bots
+  {
+    path: '/package-code/vue/v/3.5.27',
+    label: 'code page',
+    userAgent: 'Slackbot-LinkExpanding 1.0',
+  },
+  {
+    path: '/package-docs/ufo/v/1.6.3',
+    label: 'docs page',
+    userAgent: 'Slackbot-LinkExpanding 1.0',
+  },
 ] as const
 
-for (const { path, label } of TEST_CASES) {
+for (const testCase of TEST_CASES) {
+  const { path, label } = testCase
   test.describe(`${label} (${path})`, () => {
+    if ('userAgent' in testCase) test.use({ userAgent: testCase.userAgent })
+
     test(`og image snapshot`, async ({ page, goto, baseURL }) => {
       await goto(path, { waitUntil: 'domcontentloaded' })
 

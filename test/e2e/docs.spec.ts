@@ -106,6 +106,18 @@ test.describe('API Documentation Pages', () => {
       expect(response.headers()['x-robots-tag']).toBe('noindex')
       expect(await response.text()).toContain('data-ssr="false"')
     })
+
+    test(`${path} renders meta tags for link preview bots`, async ({ page }) => {
+      const response = await page.request.get(path, {
+        headers: { 'user-agent': 'Slackbot-LinkExpanding 1.0' },
+      })
+      const html = await response.text()
+
+      expect(html).toContain('<title>ufo@1.6.3 docs - npmx</title>')
+      expect(html).toMatch(/<meta property="og:image" content="[^"]+\/_og\//)
+      expect(html).not.toContain('__NUXT_DATA__')
+      expect(html).not.toContain('<footer')
+    })
   }
 })
 

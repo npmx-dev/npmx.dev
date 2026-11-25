@@ -3,11 +3,12 @@ import { join, resolve } from 'node:path'
 import { defineNuxtModule } from 'nuxt/kit'
 import { defu } from 'defu'
 import { provider } from 'std-env'
+import { UNFURL_USER_AGENT_PATTERN } from '#shared/utils/unfurl'
 
 /** Prerendered client-only shell, served on Vercel for every client-only route. */
 export const SPA_SHELL = '/_spa.html'
 
-/** Route rule patterns rendered client-side only. */
+/** Route rule patterns rendered client-side only, except for link preview bots. */
 export const CLIENT_ONLY_ROUTES = [
   '/package-code/**',
   '/package/code/:name/v/**',
@@ -18,10 +19,13 @@ export const CLIENT_ONLY_ROUTES = [
   '/package/docs/:org/:name/v/**',
 ]
 
+const SSR_FUNCTION = '/__fallback'
+
 interface VercelRoute {
   src?: string
   dest?: string
   handle?: string
+  has?: Array<{ type: string; key: string; value?: string }>
 }
 
 export default defineNuxtModule({
@@ -73,10 +77,20 @@ export function addSpaShellRoutes(outputDir: string, shell: string, routes: stri
   if (index === -1) {
     throw new Error('[spa-shells] could not find the filesystem handler')
   }
+  if (!config.routes.some(route => route.dest === SSR_FUNCTION)) {
+    throw new Error(`[spa-shells] could not find the route to ${SSR_FUNCTION}`)
+  }
   config.routes.splice(
     index + 1,
     0,
-    ...routes.map(route => ({ src: routeToVercelSrc(route), dest: shell })),
+    ...routes.flatMap(route => [
+      {
+        src: routeToVercelSrc(route),
+        dest: SSR_FUNCTION,
+        has: [{ type: 'header', key: 'user-agent', value: UNFURL_USER_AGENT_PATTERN }],
+      },
+      { src: routeToVercelSrc(route), dest: shell },
+    ]),
   )
   writeFileSync(configPath, JSON.stringify(config, null, 2))
 }

@@ -14,7 +14,7 @@ const { t } = useI18n()
 
 const { packageName, requestedVersion } = usePackageRoute()
 
-const { data: pkg } = usePackage(packageName)
+const { data: pkg } = usePackage(packageName, null, { server: false })
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
 
@@ -121,6 +121,18 @@ useSeoMeta({
   ogDescription: () => pkg.value?.license ?? '',
   twitterDescription: () => pkg.value?.license ?? '',
 })
+
+if (import.meta.server) {
+  defineOgImage(
+    'Package.takumi',
+    {
+      name: () => packageName.value,
+      version: () => requestedVersion.value,
+      variant: 'download-chart',
+    },
+    { alt: () => `npm package ${packageName.value} download chart and stats` },
+  )
+}
 
 const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),

@@ -1,7 +1,7 @@
 export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
-  { lazy = true }: { lazy?: boolean } = {},
+  { lazy = true, server = true }: { lazy?: boolean; server?: boolean } = {},
 ) {
   const asyncData = useAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
@@ -18,7 +18,7 @@ export function usePackage(
       // response is always considered fresh from the client's perspective.
       return { ...pkg, isStale: false }
     },
-    { lazy },
+    { lazy, server },
   )
 
   return asyncData
