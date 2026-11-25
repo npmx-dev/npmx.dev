@@ -77,6 +77,15 @@ test.describe('API Documentation Pages', () => {
     await expect(page).toHaveURL(/\/package-docs\/ufo\/v\//)
   })
 
+  test('docs page without version keeps the symbol hash when redirecting', async ({
+    page,
+    goto,
+  }) => {
+    await goto('/package-docs/ufo#variable-stubConstant', { waitUntil: 'networkidle' })
+
+    await expect(page).toHaveURL(/\/package-docs\/ufo\/v\/[^#]+#variable-stubConstant$/)
+  })
+
   test('docs page handles package gracefully when types unavailable', async ({ page, goto }) => {
     // Use a simple JS package - the page should load without crashing
     // regardless of whether it has types or shows an error state

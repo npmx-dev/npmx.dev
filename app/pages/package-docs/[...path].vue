@@ -24,7 +24,7 @@ watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      router.replace(docsRoute(name, latest))
+      router.replace({ path: router.resolve(docsRoute(name, latest)).path, hash: route.hash })
     }
   },
   { immediate: true },
