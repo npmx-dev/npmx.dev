@@ -390,9 +390,11 @@ export default defineNuxtConfig({
     enabled: !isStorybook,
     cacheMaxAgeSeconds: 60 * 60 * 24, // 1 day, download counts change daily
     security: {
-      // Signing and strict mode only activate when a secret is present (CI builds without one).
-      strict: !!process.env.NUXT_APP_SECRET,
+      // Static OG image prerendering requires non-strict mode.
+      // Runtime URL signing activates whenever NUXT_APP_SECRET is present.
+      strict: false,
       secret: process.env.NUXT_APP_SECRET ? undefined : false,
+      maxQueryParamSize: 2048,
       // HMAC signing is sufficient; origin pinning blocks localhost e2e runs
       // and adds no meaningful security on top of signed URLs.
       restrictRuntimeImagesToOrigin: false,

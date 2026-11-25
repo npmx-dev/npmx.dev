@@ -88,6 +88,15 @@ useSeoMeta({
   ogDescription: () => $t('settings.meta_description'),
   twitterDescription: () => $t('settings.meta_description'),
 })
+
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => $t('settings.title'),
+    description: () => $t('settings.meta_description'),
+  },
+  { alt: () => `${$t('settings.title')} - npmx` },
+)
 </script>
 
 <template>

@@ -14,6 +14,7 @@ Allow: /privacy$
 Allow: /translation-status$
 Allow: /recharging$
 Allow: /_og/d/*
+Allow: /_og/s/*
 Allow: /opensearch.xml$
 
 Disallow: /
