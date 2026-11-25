@@ -2,11 +2,20 @@ import type { H3Event } from 'h3'
 import { createError, setHeader } from 'h3'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { INVALID_PACKAGE_PARAM_CACHE_CONTROL } from '#server/utils/package-params'
+import { parsePackageParams } from '#server/utils/parse-package-params'
 import { VALID_NAMES, VALID_VERSIONS } from '../../../../fixtures/package-coordinates'
+
+const { getVersionsMock, resolvePackageReadmeSourceMock } = vi.hoisted(() => ({
+  getVersionsMock: vi.fn(),
+  resolvePackageReadmeSourceMock: vi.fn(),
+}))
+vi.mock('fast-npm-meta', () => ({ getVersions: getVersionsMock }))
+vi.mock('#server/utils/readme-loaders', () => ({
+  resolvePackageReadmeSource: resolvePackageReadmeSourceMock,
+}))
 
 const fetchNpmPackageMock = vi.fn()
 const fetchNpmPackageAbbreviatedMock = vi.fn()
-const getVersionsMock = vi.fn()
 const getLikesEvolutionMock = vi.fn()
 const $fetchMock = vi.fn()
 
@@ -17,8 +26,9 @@ type FakeEvent = H3Event & { url: string; headers: Record<string, string> }
 
 vi.stubGlobal('fetchNpmPackage', fetchNpmPackageMock)
 vi.stubGlobal('fetchNpmPackageAbbreviated', fetchNpmPackageAbbreviatedMock)
-vi.stubGlobal('getVersions', getVersionsMock)
 vi.stubGlobal('$fetch', $fetchMock)
+vi.stubGlobal('parsePackageParams', parsePackageParams)
+vi.stubGlobal('createError', createError)
 vi.stubGlobal('setHeader', setHeader)
 vi.stubGlobal('defineCachedEventHandler', (fn: Function) => fn)
 vi.stubGlobal('defineEventHandler', (fn: Function) => fn)
@@ -51,6 +61,10 @@ const timeline = (await import('#server/api/registry/timeline/[...pkg].get')).de
 const packageMeta = (await import('#server/api/registry/package-meta/[...pkg].get')).default
 const licenseChange = (await import('#server/api/registry/license-change/[...pkg].get')).default
 const likesEvolution = (await import('#server/api/social/likes-evolution/[...pkg].get')).default
+const timelineSizes = (await import('#server/api/registry/timeline/sizes/[...pkg].get')).default
+const readme = (await import('#server/api/registry/readme/[...pkg].get')).default
+const readmeMarkdown = (await import('#server/api/registry/readme/markdown/[...pkg].get')).default
+const downloads = (await import('#server/api/registry/downloads/[...slug].get')).default
 const wellKnownSkills = (await import('#server/routes/[pkg]/.well-known/skills/[...skills]'))
   .default
 
@@ -99,6 +113,21 @@ const handlers = () => [
     name: 'likes-evolution',
     run: (event: H3Event) => likesEvolution(event),
     upstream: getLikesEvolutionMock,
+  },
+  {
+    name: 'timeline/sizes',
+    run: (event: H3Event) => timelineSizes(event),
+    upstream: getVersionsMock,
+  },
+  {
+    name: 'readme',
+    run: (event: H3Event) => readme(event),
+    upstream: resolvePackageReadmeSourceMock,
+  },
+  {
+    name: 'readme/markdown',
+    run: (event: H3Event) => readmeMarkdown(event),
+    upstream: resolvePackageReadmeSourceMock,
   },
 ]
 
@@ -167,6 +196,34 @@ describe('package routes reject impossible coordinates before fetching', () => {
     await packument(makeEvent())
 
     expect(fetchNpmPackageMock).toHaveBeenCalledWith('a'.repeat(240))
+  })
+
+  it('the version downloads route keeps an encoded scoped name encoded upstream', async () => {
+    const fetchSpy = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(new Response(null, { status: 404 }))
+    routerParams = { slug: '@nuxt%2Fkit/versions' }
+
+    try {
+      await expect(downloads(makeEvent())).rejects.toMatchObject({ statusCode: 404 })
+      expect(fetchSpy).toHaveBeenCalledWith('https://api.npmjs.org/versions/@nuxt%2Fkit/last-week')
+    } finally {
+      fetchSpy.mockRestore()
+    }
+  })
+
+  it('the version downloads route rejects a junk name without a request', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch')
+    routerParams = { slug: 'foo%20bar/versions' }
+    const event = makeEvent()
+
+    try {
+      await expect(downloads(event)).rejects.toMatchObject({ statusCode: 404 })
+      expect(fetchSpy).not.toHaveBeenCalled()
+      expect(event.headers['Cache-Control']).toBe(INVALID_PACKAGE_PARAM_CACHE_CONTROL)
+    } finally {
+      fetchSpy.mockRestore()
+    }
   })
 
   it('the well-known skills route rejects a junk name without a registry request', async () => {

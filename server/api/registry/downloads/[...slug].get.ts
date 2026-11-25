@@ -106,7 +106,7 @@ export default defineCachedEventHandler(
 
     const segments = pkgParamSegments.slice(0, -1)
 
-    const { rawPackageName, rawVersion } = parsePackageParams(segments)
+    const { rawPackageName } = parsePackageParams(segments)
 
     if (!rawPackageName) {
       throw createError({
@@ -115,10 +115,7 @@ export default defineCachedEventHandler(
       })
     }
 
-    const { packageName } = validPackageParams(event, {
-      packageName: rawPackageName,
-      version: rawVersion,
-    })
+    validPackageParams(event, { packageName: rawPackageName })
 
     try {
       const query = getQuery(event)
@@ -127,7 +124,7 @@ export default defineCachedEventHandler(
       const filterThreshold = parsed.filterThreshold ?? 1
       const filterOldVersionsBool = parsed.filterOldVersions === 'true'
 
-      const url = `https://api.npmjs.org/versions/${packageName}/last-week`
+      const url = `https://api.npmjs.org/versions/${rawPackageName}/last-week`
       const npmResponse = await fetch(url)
 
       if (!npmResponse.ok) {
