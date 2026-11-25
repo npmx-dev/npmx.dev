@@ -16,8 +16,8 @@ interface VercelRoute {
  */
 const SEGMENT_CHARS = String.raw`A-Za-z0-9._~!'()*@%+-`
 
-/** Characters that can appear in a version segment (the `[\w.+-]` our own schema allows). */
-const VERSION_CHARS = String.raw`A-Za-z0-9_.+%-`
+/** Characters that can appear in a version segment: what `VersionSchema` allows, plus `%`. */
+const VERSION_CHARS = String.raw`A-Za-z0-9_.+!~*'()%-`
 
 const NOT_FOUND = {
   status: 404,

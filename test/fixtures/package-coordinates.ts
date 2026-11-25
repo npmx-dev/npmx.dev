@@ -34,7 +34,14 @@ export const VALID_NAMES = [
 ]
 
 /** Versions, prereleases, build metadata and dist-tags. */
-export const VALID_VERSIONS = ['1.0.0', '1.0.0-beta.1+sha.abc', '0.0.1', 'latest', 'next']
+export const VALID_VERSIONS = [
+  '1.0.0',
+  '1.0.0-beta.1+sha.abc',
+  '0.0.1',
+  'latest',
+  'next',
+  'canary!',
+]
 
 /** URLs for valid names, one per shape they are addressed by. */
 const NAME_URLS = VALID_NAMES.flatMap(name => {
@@ -82,7 +89,16 @@ const LENGTH_URLS = [
   `/package/vue/v/1.0.0-${'%61'.repeat(90)}`,
 ]
 
-export const VALID_URLS = [...NAME_URLS, ...FILE_PATH_URLS, ...RANGE_URLS, ...LENGTH_URLS]
+/** A dist-tag can contain any character `encodeURIComponent` leaves alone. */
+const TAG_URLS = ['/package/vue/v/canary!', `/package/vue/v/rc~(1)*'`]
+
+export const VALID_URLS = [
+  ...NAME_URLS,
+  ...FILE_PATH_URLS,
+  ...RANGE_URLS,
+  ...LENGTH_URLS,
+  ...TAG_URLS,
+]
 
 /** Coordinates no package can have, one per URL shape. */
 export const INVALID_URLS = [

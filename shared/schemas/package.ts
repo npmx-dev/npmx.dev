@@ -17,12 +17,13 @@ export const PackageNameSchema = v.pipe(
 
 /**
  * Enforces a SemVer-like pattern to prevent directory traversal or complex injection attacks
- * includes: alphanumeric, dots, underscores, dashes, and plus signs (for build metadata)
+ * includes: alphanumeric, dots, underscores, dashes, plus signs (for build metadata), and the
+ * other characters npm allows in a dist-tag (`!~*'()`)
  */
 export const VersionSchema = v.pipe(
   v.string(),
   v.nonEmpty('Version is required'),
-  v.regex(/^[\w.+-]+$/, 'Invalid version format'),
+  v.regex(/^[\w.+!~*'()-]+$/, 'Invalid version format'),
 )
 
 /**

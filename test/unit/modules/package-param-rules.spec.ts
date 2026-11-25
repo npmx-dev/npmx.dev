@@ -115,6 +115,8 @@ const CANDIDATE_VERSIONS = [
   '1.0.0...2.0.0',
   '1.0.0-beta.1+sha.abc...2.0.0',
   'latest...next',
+  'canary!',
+  "rc~(1)*'",
   '1.0.0 beta',
   '1.0.0%20beta',
   '1.0.0;rm',
