@@ -25,6 +25,16 @@ describe('isPackageFileView', () => {
     expect(isPackageFileView('/package-code/nuxt/v/4.2.0/src/v/')).toBe(true)
   })
 
+  it('handles percent-encoded segments', () => {
+    expect(isPackageFileView('/package-code/%40nuxt/kit/v/1.0.0')).toBe(false)
+    expect(isPackageFileView('/package-code/%40nuxt/kit/v/1.0.0/src/index.ts')).toBe(true)
+    expect(isPackageFileView('/package-code/nuxt/v/1.0.0/src/my%20file.ts')).toBe(true)
+  })
+
+  it('does not throw on malformed percent-encoding', () => {
+    expect(isPackageFileView('/package-code/nuxt/v/1.0.0/%E0%A4%A')).toBe(true)
+  })
+
   it('handles the legacy /package/code path and unrelated routes', () => {
     expect(isPackageFileView('/package/code/nuxt/v/4.2.0/package.json')).toBe(true)
     expect(isPackageFileView('/package/nuxt/v/4.2.0')).toBe(false)

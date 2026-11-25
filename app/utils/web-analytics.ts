@@ -22,13 +22,25 @@ export interface WebAnalyticsFilterOptions {
 }
 
 /**
+ * Decodes a path segment, returning it unchanged when the encoding is malformed, since a throw from
+ * `beforeSend` would take the analytics script down.
+ */
+function decodeSegment(segment: string): string {
+  try {
+    return decodeURIComponent(segment)
+  } catch {
+    return segment
+  }
+}
+
+/**
  * Whether the path points at a file or folder inside a package's source tree rather than at the
  * package itself, e.g. `/package-code/nuxt/v/4.2.0/package.json` versus `/package-code/nuxt/v/4.2.0`.
  */
 export function isPackageFileView(pathname: string): boolean {
   for (const prefix of PACKAGE_CODE_PREFIXES) {
     if (!pathname.startsWith(prefix)) continue
-    const segments = pathname.slice(prefix.length).split('/')
+    const segments = pathname.slice(prefix.length).split('/').map(decodeSegment)
     const versionIndex = segments[0]?.startsWith('@') ? 2 : 1
     if (segments[versionIndex] !== 'v') return false
     return segments.slice(versionIndex + 2).some(Boolean)
