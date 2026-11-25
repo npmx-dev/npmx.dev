@@ -214,6 +214,34 @@ describe('useAtproto', () => {
     second.wrapper.unmount()
   })
 
+  it('does not clear a hint cookie set while a migration check is in flight', async () => {
+    let resolveSession!: (value: null) => void
+    sessionGetHandler = () =>
+      new Promise(resolve => {
+        resolveSession = resolve
+      })
+
+    localStorage.clear()
+    localStorage.setItem('npmx-settings', JSON.stringify({ relativeDates: false }))
+    expect(initSessionHintMigration()).toBe(true)
+
+    const { wrapper, state } = await mountAtproto()
+
+    await vi.waitFor(() => {
+      expect(resolveSession).toBeTypeOf('function')
+    })
+
+    document.cookie = `${SESSION_HINT_COOKIE}=${SESSION_HINT_VALUE}; Path=/`
+    resolveSession(null)
+
+    await vi.waitFor(() => {
+      expect(state.pending.value).toBe(false)
+      expect(localStorage.getItem('npmx-auth-hint-migrated')).toBe('1')
+    })
+    expect(hasSessionHintCookie()).toBe(true)
+    wrapper.unmount()
+  })
+
   it('clears the hint cookie and user state on logout', async () => {
     const deleteSpy = vi.fn(() => 'Session cleared')
     sessionGetHandler = () => mockUser

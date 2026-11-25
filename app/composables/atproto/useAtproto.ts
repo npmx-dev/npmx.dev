@@ -6,7 +6,8 @@ import {
 } from '~/utils/atproto/session-hint'
 
 export const useAtproto = createSharedComposable(function useAtproto() {
-  const shouldFetch = import.meta.client && (hasSessionHintCookie() || needsSessionHintMigration())
+  const hadHint = import.meta.client && hasSessionHintCookie()
+  const shouldFetch = hadHint || (import.meta.client && needsSessionHintMigration())
 
   const {
     data: user,
@@ -19,14 +20,14 @@ export const useAtproto = createSharedComposable(function useAtproto() {
       if (needsSessionHintMigration()) {
         markSessionHintMigrated()
       }
-      if (!data && hasSessionHintCookie()) {
+      if (!data && hadHint) {
         clearClientSessionHintCookie()
       }
       return data
     },
     onResponseError({ response }) {
       if (response.status === 401) {
-        if (hasSessionHintCookie()) {
+        if (hadHint) {
           clearClientSessionHintCookie()
         }
         markSessionHintMigrated()
