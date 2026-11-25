@@ -164,7 +164,7 @@ defineExpose({
     </template>
 
     <!-- Card View with Infinite Scroll -->
-    <template v-else-if="paginationMode === 'infinite'">
+    <template v-else-if="paginationMode === 'infinite' && (hasMore || results.length > SSR_COUNT)">
       <!-- SSR: Render static list for first page, replaced by virtual list on client -->
       <ClientOnly>
         <WindowVirtualizer
@@ -222,11 +222,11 @@ defineExpose({
       </ClientOnly>
     </template>
 
-    <!-- Card View with Pagination -->
+    <!-- Card View with Pagination, or a complete list short enough to render in full -->
     <template v-else>
       <!-- Loading state when fetching page data -->
       <div
-        v-if="isLoading && displayedResults.length === 0"
+        v-if="isLoading && displayedResults.length === 0 && results.length > 0"
         class="py-12 flex items-center justify-center"
       >
         <div class="flex items-center gap-3 text-fg-muted font-mono text-sm">
