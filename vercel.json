@@ -7,6 +7,26 @@
       "missing": [{ "type": "header", "key": "sec-fetch-site" }],
       "mitigate": { "action": "challenge" },
       "continue": true
+    },
+    {
+      "src": "^/(?:(?:package|package-code|package-docs|package-changelog|package-timeline|package-stats|code|docs|changelog|diff|org|profile)(?:/.*)?|compare|search|~.*)$",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": "Mozilla/5\\.0 \\((?:Windows|Macintosh|X11|Linux|iPhone|iPad|Android).*"
+        }
+      ],
+      "missing": [
+        { "type": "header", "key": "sec-fetch-site" },
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(?:[Bb]ot|BOT|[Cc]rawl|[Ss]pider|[Pp]review|Slurp|facebookexternalhit|Mediapartners|ia_archiver|embedly|Google|compatible;).*"
+        }
+      ],
+      "mitigate": { "action": "challenge" },
+      "continue": true
     }
   ],
   "redirects": [
