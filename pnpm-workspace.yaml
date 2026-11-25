@@ -54,6 +54,7 @@ minimumReleaseAgeExclude:
   - '@nuxt/vite-builder@4.7.0'
   - '@nuxt/vite-server@4.7.0'
   - nitropack@2.14.0
+  - nuxt-og-image@7.2.0
   - '@nuxt/devtools@4.2.0'
   - vue@3.5.46
   - vue-data-ui@3.29.1
@@ -62,14 +63,15 @@ minimumReleaseAgeExcludePrune: true
 
 overrides:
   '@types/node': 24.13.3
-  nuxt-og-image: ^6.7.5
-  sharp: 0.35.3
+  nuxt-og-image: ^7.2.0
+  sharp: 0.35.5
   vue: 3.5.46
   typescript: npm:typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2
   vue-router: 5.2.0
   markdown-exit: 1.1.0-beta.2
   oxc-parser: 0.144.0
   '@nuxtjs/i18n>@nuxt/kit': '4.7.0'
+  'docus>@takumi-rs/core': 2.19.0
   vite@*: catalog:vite-plus
   vitest@*: catalog:vite-plus
 
