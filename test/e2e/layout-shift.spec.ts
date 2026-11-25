@@ -11,6 +11,14 @@ const PAGES = [
   '/package/nuxt',
   '/package-code/empathic/v/2.0.0',
   '/search?q=vue',
+  '/blog/alpha-release',
+] as const
+
+const BLOG_POSTS_WITH_MEDIA = [
+  '/blog/release/0.8',
+  '/blog/release/rainbow-comet',
+  '/blog/release/crystal-chronicle',
+  '/blog/release/photon-genesis',
 ] as const
 
 const VIEWPORTS = [
@@ -109,6 +117,28 @@ test.describe('Layout shift', () => {
     await expect(page.getByRole('button', { name: 'Back' })).toBeVisible()
     expect(await collectLayoutShifts(page)).toEqual([])
   })
+
+  for (const path of BLOG_POSTS_WITH_MEDIA) {
+    test(`1280x800 ${path} with slow images`, async ({ page, goto }) => {
+      await page.setViewportSize({ width: 1280, height: 800 })
+      await page.route(/\/blog\/.+\.(?:png|jpe?g)$/, async route => {
+        await new Promise(resolve => setTimeout(resolve, 300))
+        await route.fallback()
+      })
+      await observeLayoutShifts(page)
+      await goto(path, { waitUntil: 'hydration' })
+
+      const unsized = await page
+        .locator('article :is(img, video):not(.not-prose *)')
+        .evaluateAll(media =>
+          media
+            .filter(el => !el.hasAttribute('width') || !el.hasAttribute('height'))
+            .map(el => el.getAttribute('src') ?? el.getAttribute('poster')),
+        )
+      expect(unsized).toEqual([])
+      expect(await collectLayoutShifts(page)).toEqual([])
+    })
+  }
 })
 
 test.describe('macOS shortcut label', () => {
