@@ -103,7 +103,10 @@ useCommandPaletteContextCommands(
           announce($t('command_palette.announcements.copied_to_clipboard'))
         },
       },
-      {
+    ]
+
+    if (props.resolvedVersion) {
+      commands.push({
         id: 'package-copy-version',
         group: 'package',
         label: $t('package.copy_version'),
@@ -113,8 +116,8 @@ useCommandPaletteContextCommands(
           copyPkgVersion()
           announce($t('command_palette.announcements.copied_to_clipboard'))
         },
-      },
-    ]
+      })
+    }
 
     if (fundingUrl.value) {
       commands.push({
