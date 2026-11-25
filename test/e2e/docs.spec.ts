@@ -94,6 +94,19 @@ test.describe('API Documentation Pages', () => {
     // One of these should be visible
     await expect(errorState.or(docsContent)).toBeVisible()
   })
+
+  for (const path of [
+    '/package-docs/ufo/v/1.6.3',
+    '/docs/ufo/v/1.6.3',
+    '/package/docs/ufo/v/1.6.3',
+  ]) {
+    test(`${path} is a client-only shell that is not indexed`, async ({ page }) => {
+      const response = await page.request.get(path)
+
+      expect(response.headers()['x-robots-tag']).toBe('noindex')
+      expect(await response.text()).toContain('data-ssr="false"')
+    })
+  }
 })
 
 test.describe('Version Selector', () => {

@@ -23,6 +23,12 @@ describe('CLIENT_ONLY_ROUTES', () => {
     '/package-code/@nuxt/kit/v/4.2.0/dist/index.mjs',
     '/package/code/vue/v/3.5.13/package.json',
     '/package/code/@nuxt/kit/v/4.2.0',
+    '/package-docs/ufo/v/1.6.3',
+    '/package-docs/@nuxt/kit',
+    '/docs/ufo',
+    '/docs/ufo/v/1.6.3',
+    '/package/docs/ufo/v/1.6.3',
+    '/package/docs/@nuxt/kit/v/4.2.0',
   ])('renders %s client-side', path => {
     expect(isClientOnly(path)).toBe(true)
   })
@@ -30,9 +36,13 @@ describe('CLIENT_ONLY_ROUTES', () => {
   it.each([
     '/package/code',
     '/package/code/v/1.0.0',
+    '/package/docs',
+    '/package/docs/v/1.0.0',
     '/package/vue/v/3.5.13',
     '/package/@nuxt/kit',
     '/package-codex/vue/v/1.0.0',
+    '/docs',
+    '/docsearch',
   ])('server-renders %s', path => {
     expect(isClientOnly(path)).toBe(false)
   })

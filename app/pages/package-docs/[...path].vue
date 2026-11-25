@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
-import { setResponseHeader } from 'h3'
 
 definePageMeta({
   name: 'docs',
@@ -15,27 +14,11 @@ const { t } = useI18n()
 
 const { packageName, requestedVersion } = usePackageRoute()
 
-// Validate package name on server-side for early error detection
-if (import.meta.server && packageName.value) {
-  assertValidPackageName(packageName.value)
-}
-
 const { data: pkg } = usePackage(packageName)
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
 
 const latestVersion = computed(() => pkg.value?.['dist-tags']?.latest ?? null)
-
-if (import.meta.server && !requestedVersion.value && packageName.value) {
-  const app = useNuxtApp()
-  const version = await fetchLatestVersion(packageName.value)
-  if (version) {
-    setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
-    app.runWithContext(() =>
-      navigateTo(docsRoute(packageName.value, version), { redirectCode: 302 }),
-    )
-  }
-}
 
 watch(
   [requestedVersion, latestVersion, packageName],
@@ -138,16 +121,6 @@ useSeoMeta({
   ogDescription: () => pkg.value?.license ?? '',
   twitterDescription: () => pkg.value?.license ?? '',
 })
-
-defineOgImage(
-  'Package.takumi',
-  {
-    name: () => packageName.value,
-    version: () => resolvedVersion.value,
-    variant: 'function-tree',
-  },
-  { alt: () => `API documentation for ${packageName.value}` },
-)
 
 const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),

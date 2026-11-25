@@ -12,6 +12,10 @@ export const CLIENT_ONLY_ROUTES = [
   '/package-code/**',
   '/package/code/:name/v/**',
   '/package/code/:org/:name/v/**',
+  '/package-docs/**',
+  '/docs/:path/**',
+  '/package/docs/:name/v/**',
+  '/package/docs/:org/:name/v/**',
 ]
 
 interface VercelRoute {
