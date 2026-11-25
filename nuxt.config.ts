@@ -286,6 +286,22 @@ export default defineNuxtConfig({
       fallback: 'json',
       allowQuery: [],
     }),
+    // cdn cache
+    '/package-timeline/**': {
+      headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400' },
+    },
+    '/package-stats/**': {
+      headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400' },
+    },
+    '/org/**': {
+      headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400' },
+    },
+    '/compare': {
+      headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400' },
+    },
+    '/diff/**': {
+      headers: { 'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800' },
+    },
     // static pages
     '/': { prerender: true },
     '/200.html': { prerender: true },
