@@ -1,6 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
+import { SESSION_HINT_COOKIE, SESSION_HINT_VALUE } from '#shared/utils/constants'
 import Likes from '~/components/Package/Likes.vue'
 
 function createAtprotoUser(handle: string) {
@@ -20,11 +21,13 @@ describe('PackageLikes', () => {
 
   beforeEach(() => {
     clearNuxtData()
+    document.cookie = `${SESSION_HINT_COOKIE}=; Path=/; Max-Age=0`
     authSessionHandler = () => null
   })
 
   afterEach(() => {
     wrapper?.unmount()
+    document.cookie = `${SESSION_HINT_COOKIE}=; Path=/; Max-Age=0`
   })
 
   it('renders the top liked badge with rank and leaderboard link', async () => {
@@ -76,6 +79,7 @@ describe('PackageLikes', () => {
   it('keeps the top liked badge when a like response omits the rank', async () => {
     let authSessionRequests = 0
     let likeRequests = 0
+    document.cookie = `${SESSION_HINT_COOKIE}=${SESSION_HINT_VALUE}; Path=/`
     authSessionHandler = () => {
       authSessionRequests++
       return createAtprotoUser('tester.test')

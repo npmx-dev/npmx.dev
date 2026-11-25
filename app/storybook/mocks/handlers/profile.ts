@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import type { NPMXProfile, PackageLikes } from '#shared/types/social'
+import { SESSION_HINT_COOKIE, SESSION_HINT_VALUE } from '#shared/utils/constants'
 
 export const mockProfileHandle = 'mock-steward'
 
@@ -55,6 +56,12 @@ export const mockPackageLikesHandler = http.get('/api/social/likes/:pkg', ({ par
 })
 
 export function mockAuthSessionHandler(handle: string | null = null) {
+  if (typeof document !== 'undefined') {
+    document.cookie = handle
+      ? `${SESSION_HINT_COOKIE}=${SESSION_HINT_VALUE}; Path=/`
+      : `${SESSION_HINT_COOKIE}=; Path=/; Max-Age=0`
+  }
+
   return http.get('/api/auth/session', () =>
     HttpResponse.json(handle ? createMockAuthSession(handle) : null),
   )
