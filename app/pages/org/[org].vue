@@ -285,10 +285,13 @@ defineOgImage(
           <p v-if="status === 'success'" class="text-fg-muted text-sm mt-1">
             {{ $t('org.public_packages', { count: $n(packageCount) }, packageCount) }}
           </p>
+          <p v-else-if="status === 'pending'" class="mt-1">
+            <SkeletonInline class="block! h-5 w-36" />
+          </p>
         </div>
 
         <!-- Link to npmjs.com org page + vanity downloads -->
-        <div class="ms-auto text-end">
+        <div class="ms-auto min-w-44 text-end">
           <nav aria-label="External links">
             <a
               :href="`https://www.npmjs.com/org/${orgName}`"
@@ -305,10 +308,13 @@ defineOgImage(
             class="text-fg-subtle text-xs mt-1 flex items-center gap-1.5 justify-end cursor-help"
             :title="$t('common.vanity_downloads_hint', { count: filteredCount }, filteredCount)"
           >
-            <span class="i-lucide:chart-line w-3.5 h-3.5" aria-hidden="true" />
-            <span class="font-mono"
-              >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
-            >
+            <SkeletonInline v-if="status === 'pending'" class="h-4 w-32" />
+            <template v-else>
+              <span class="i-lucide:chart-line w-3.5 h-3.5" aria-hidden="true" />
+              <span class="font-mono"
+                >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
+              >
+            </template>
           </p>
         </div>
       </div>
