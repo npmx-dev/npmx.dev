@@ -122,6 +122,15 @@ test.describe('Layout shift', () => {
     expect(await collectLayoutShifts(page)).toEqual([])
   })
 
+  test('1280x800 /~qwerzl with a short package list', async ({ page, goto }) => {
+    await page.setViewportSize({ width: 1280, height: 800 })
+    await observeLayoutShifts(page)
+    await goto('/~qwerzl', { waitUntil: 'hydration' })
+
+    await expect(page.getByText('End of results')).toBeInViewport()
+    expect(await collectLayoutShifts(page)).toEqual([])
+  })
+
   for (const path of BLOG_POSTS_WITH_MEDIA) {
     test(`1280x800 ${path} with slow images`, async ({ page, goto }) => {
       await page.setViewportSize({ width: 1280, height: 800 })
