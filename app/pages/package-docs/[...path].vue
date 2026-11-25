@@ -113,13 +113,20 @@ const pageTitle = computed(() => {
   })
 })
 
+const pageDescription = computed(() => {
+  const name = resolvedVersion.value
+    ? `${packageName.value}@${resolvedVersion.value}`
+    : packageName.value
+  return `API documentation for ${name}`
+})
+
 useSeoMeta({
   title: () => pageTitle.value,
   ogTitle: () => t('package.docs.og_title', { name: packageName.value }),
   twitterTitle: () => pageTitle.value,
-  description: () => pkg.value?.license ?? '',
-  ogDescription: () => pkg.value?.license ?? '',
-  twitterDescription: () => pkg.value?.license ?? '',
+  description: () => pageDescription.value,
+  ogDescription: () => pageDescription.value,
+  twitterDescription: () => pageDescription.value,
 })
 
 if (import.meta.server) {

@@ -123,6 +123,9 @@ test.describe('API Documentation Pages', () => {
       const html = await response.text()
 
       expect(html).toContain('<title>ufo@1.6.3 docs - npmx</title>')
+      expect(html).toContain(
+        '<meta property="og:description" content="API documentation for ufo@1.6.3">',
+      )
       expect(html).toMatch(/<meta property="og:image" content="[^"]+\/_og\//)
       expect(html).not.toContain('__NUXT_DATA__')
       expect(html).not.toContain('<footer')
