@@ -147,6 +147,32 @@ export default defineNuxtConfig({
     '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/package-meta/**': { isr: 300 },
+    '/api/registry/install-size/**': {
+      isr: {
+        expiration: 300,
+        passQuery: true,
+        allowQuery: ['frozen-history'],
+      },
+    },
+    '/api/registry/license-change/**': {
+      isr: {
+        expiration: 300,
+        passQuery: true,
+        allowQuery: ['version'],
+      },
+    },
+    '/api/registry/compare-file/**': {
+      isr: {
+        expiration: 300,
+        passQuery: true,
+        allowQuery: [
+          'mergeModifiedLines',
+          'maxChangeRatio',
+          'maxDiffDistance',
+          'inlineMaxCharEdits',
+        ],
+      },
+    },
     '/api/registry/packument/**': {
       isr: {
         expiration: 300,
@@ -180,6 +206,10 @@ export default defineNuxtConfig({
           'locale',
           'accent',
           'yLabel',
+          'width',
+          'height',
+          'weeks',
+          'months',
         ],
       },
     },
