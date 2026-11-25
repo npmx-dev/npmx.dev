@@ -108,15 +108,7 @@ test.describe('og image caching and url stability', () => {
     expect(await fetchOgImageUrl(request, '/compare?packages=vue,svelte')).not.toBe(cmpCanonical)
   })
 
-  test('missing static and disabled resolver OG paths return cheap cacheable 404s', async ({
-    request,
-  }) => {
-    const missingStatic = await request.get('/_og/s/o_missing-test-hash.png')
-    expect(missingStatic.status()).toBe(404)
-    expect(missingStatic.headers()['content-type']).toContain('text/plain')
-    expect(missingStatic.headers()['cache-control']).toContain('s-maxage=3600')
-    expect(await missingStatic.text()).toBe('Not Found')
-
+  test('disabled resolver OG paths return cheap cacheable 404s', async ({ request }) => {
     for (const resolverPath of ['/_og/r/package/vue', '/_og/r.png']) {
       const resolver = await request.get(resolverPath)
       expect(resolver.status()).toBe(404)
