@@ -38,20 +38,19 @@ interface PackageQueryInfo {
 
 /**
  * Query a single OSV batch chunk, following per-query pagination tokens.
- * Returns indices within the chunk that have vulnerabilities.
+ * Returns indices within the chunk that have vulnerabilities, plus the number of
+ * queries left without a result because a request failed.
  * @see https://google.github.io/osv.dev/post-v1-querybatch/
  */
 async function queryOsvBatchChunk(
   packages: PackageQueryInfo[],
-): Promise<{ vulnerableIndices: number[]; failed: boolean }> {
+): Promise<{ vulnerableIndices: number[]; failedQueries: number }> {
   const vulnerableIndices = new Set<number>()
+  let pending: Array<{ index: number; pageToken?: string }> = packages.map((_, index) => ({
+    index,
+  }))
 
   try {
-    let pending = packages.map((_, index) => ({
-      index,
-      pageToken: undefined as string | undefined,
-    }))
-
     for (let page = 0; pending.length > 0; page++) {
       if (page >= OSV_BATCH_MAX_PAGES) {
         // oxlint-disable-next-line no-console -- warn about paginated results
@@ -89,11 +88,14 @@ async function queryOsvBatchChunk(
       pending = next
     }
 
-    return { vulnerableIndices: [...vulnerableIndices].sort((a, b) => a - b), failed: false }
+    return { vulnerableIndices: [...vulnerableIndices].sort((a, b) => a - b), failedQueries: 0 }
   } catch (error) {
     // oxlint-disable-next-line no-console -- log OSV API failures for debugging
     console.warn(`[dep-analysis] OSV batch query failed:`, error)
-    return { vulnerableIndices: [], failed: true }
+    return {
+      vulnerableIndices: [...vulnerableIndices].sort((a, b) => a - b),
+      failedQueries: pending.filter(({ index }) => !vulnerableIndices.has(index)).length,
+    }
   }
 }
 
@@ -118,11 +120,7 @@ async function queryOsvBatch(
   let failedPackages = 0
 
   for (const [chunkIndex, result] of chunkResults.entries()) {
-    const chunk = chunks[chunkIndex]!
-    if (result.failed) {
-      failedPackages += chunk.length
-      continue
-    }
+    failedPackages += result.failedQueries
     const offset = chunkIndex * OSV_BATCH_MAX_QUERIES
     vulnerableIndices.push(...result.vulnerableIndices.map(index => offset + index))
   }

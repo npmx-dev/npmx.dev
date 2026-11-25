@@ -1210,6 +1210,42 @@ describe('dependency-analysis', () => {
       expect(result.vulnerablePackages.map(pkg => pkg.name)).toEqual(['pkg-1003'])
     })
 
+    it('keeps indices found before a continuation request fails', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      vi.mocked(resolveDependencyTree).mockResolvedValue(resolvedPackages(['a', 'b']))
+      const calls: OsvBatchQuery[][] = []
+      $fetchMock.mockImplementation(async (url: string, request?: { body?: unknown }) => {
+        if (url === 'https://api.osv.dev/v1/query') {
+          return {
+            vulns: [
+              {
+                id: 'GHSA-a',
+                summary: 'A vulnerability',
+                database_specific: { severity: 'MEDIUM' },
+              },
+            ],
+          }
+        }
+        calls.push(batchQueries(request))
+        if (calls.length === 1) {
+          return {
+            results: [
+              { vulns: [{ id: 'GHSA-a', modified: '2024-01-01' }] },
+              { vulns: [], next_page_token: 'page-2' },
+            ],
+          }
+        }
+        throw new Error('OSV batch chunk failed')
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(calls).toHaveLength(2)
+      expect(result.failedQueries).toBe(1)
+      expect(result.vulnerablePackages.map(pkg => pkg.name)).toEqual(['a'])
+    })
+
     it('follows per-query pagination tokens across several pages', async () => {
       vi.mocked(resolveDependencyTree).mockResolvedValue(resolvedPackages(['a', 'b']))
       const calls = mockPaginatedOsv([
