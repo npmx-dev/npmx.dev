@@ -194,6 +194,12 @@ const stickyStyle = computed(() => {
           <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-5/6 max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-3/4 max-w-2xl rounded" />
+          <template v-for="n in 3" :key="n">
+            <SkeletonBlock class="h-6 w-48 mt-6 rounded" />
+            <SkeletonBlock class="h-24 w-full max-w-2xl rounded-lg" />
+            <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
+            <SkeletonBlock class="h-4 w-2/3 max-w-2xl rounded" />
+          </template>
         </div>
 
         <div v-else-if="showEmptyState" class="container mx-auto py-6 sm:py-8 lg:py-12">
