@@ -86,7 +86,9 @@ const CANDIDATE_NAMES = [
   "it's-a-name",
   'foo(bar)',
   'http',
+  'a'.repeat(214),
   'a'.repeat(215),
+  '%61'.repeat(80),
   // Valid: a leading `-` or `_` is only checked on the whole name.
   '@scope/pkg',
   '@scope/-x',
@@ -117,8 +119,8 @@ const CANDIDATE_VERSIONS = [
   '1.0.0%20beta',
   '1.0.0;rm',
   "1.0.0'",
-  '%2E%2E',
   'a'.repeat(300),
+  `1.0.0-${'%61'.repeat(90)}`,
 ]
 
 /** Walks the routes the way Vercel does: first match that does not `continue` wins. */
@@ -205,9 +207,10 @@ describe('package name and version edge rules', () => {
 
   it('is never stricter than the version schema, ranges included', () => {
     const tooStrict = CANDIDATE_VERSIONS.filter(version => {
-      if (version.length > 256) return false
+      const decoded = decodeURIComponent(version)
+      if (decoded.length > 256) return false
       if (resolveRequest(routes(), `/diff/vue/v/${version}`)?.kind !== 'status') return false
-      return v.is(VersionSchema, version)
+      return v.is(VersionSchema, decoded)
     })
 
     expect(tooStrict).toEqual([])

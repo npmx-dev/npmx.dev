@@ -75,11 +75,19 @@ const RANGE_URLS = [
   '/api/registry/compare-file/vue/v/1.0.0...2.0.0/dist/index.js',
 ]
 
-export const VALID_URLS = [...NAME_URLS, ...FILE_PATH_URLS, ...RANGE_URLS]
+/** Lengths at the limit, and escapes that make the raw segment longer than the coordinate. */
+const LENGTH_URLS = [
+  `/package/${'a'.repeat(214)}`,
+  `/package/${'%61'.repeat(80)}`,
+  `/package/vue/v/1.0.0-${'%61'.repeat(90)}`,
+]
+
+export const VALID_URLS = [...NAME_URLS, ...FILE_PATH_URLS, ...RANGE_URLS, ...LENGTH_URLS]
 
 /** Coordinates no package can have, one per URL shape. */
 export const INVALID_URLS = [
   `/package/${'a'.repeat(240)}`,
+  `/package/${'a'.repeat(215)}`,
   `/api/registry/packument/${'a'.repeat(240)}`,
   `/package/foo%20bar`,
   `/package/foo bar`,

@@ -35,10 +35,11 @@ const INVALID_CHARS = [
 ]
 
 /**
- * Longer than npm's 214-character limit, with room for an encoded `%2F` scope separator.
- * `validate-npm-package-name` only warns about these names, so the shared schema accepts them.
+ * Longer than npm's 214-character limit. Only unescaped segments are measured, since a
+ * percent escape makes the raw length longer than the name. `validate-npm-package-name` only
+ * warns about these names, so the shared schema accepts them.
  */
-const TOO_LONG = String.raw`[^/]{217,}`
+const TOO_LONG = String.raw`[^/%]{215,}`
 
 /**
  * `validate-npm-package-name` rejects a name that begins with a period or an underscore, and
@@ -61,8 +62,8 @@ const INVALID_VERSION = [
   String.raw`[^/]*[^/${VERSION_CHARS}][^/]*`,
   // Percent-encoded space or control character.
   String.raw`[^/]*%(?:0[0-9A-Fa-f]|1[0-9A-Fa-f]|20|7[Ff])[^/]*`,
-  // Long enough that it cannot be a version, even with build metadata.
-  String.raw`[^/]{257,}`,
+  // Long enough that it cannot be a version, even with build metadata. Unescaped only.
+  String.raw`[^/%]{257,}`,
 ]
 
 /**
