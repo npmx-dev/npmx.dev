@@ -1,10 +1,11 @@
-import Profile from './index.vue'
 import type { Meta, StoryObj } from '@storybook-vue/nuxt'
+import Profile from './index.vue'
 import { expect, userEvent } from 'storybook/test'
 import { pageDecorator } from '../../../../.storybook/decorators'
 import {
   mockAuthSessionHandler,
   mockPackageLikesHandler,
+  mockPackageLikeStatusHandler,
   mockProfile,
   mockProfileHandle,
   mockProfileHandler,
@@ -25,6 +26,7 @@ const meta = {
       mockProfileHandler(),
       mockProfileLikesHandler(),
       mockPackageLikesHandler,
+      mockPackageLikeStatusHandler,
       mockAuthSessionHandler(),
       mockUpdateProfileHandler,
     )
