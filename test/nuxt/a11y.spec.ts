@@ -279,6 +279,7 @@ import {
   PackageKeywords,
   PackageList,
   PackageListControls,
+  PackageListSkeleton,
   PackageListToolbar,
   PackageMaintainers,
   PackageInstallDownloadTarball,
@@ -2052,6 +2053,14 @@ describe('component accessibility audits', () => {
           },
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageListSkeleton', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageListSkeleton)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

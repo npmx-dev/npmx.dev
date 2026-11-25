@@ -358,7 +358,23 @@ defineOgImage(
     </ClientOnly>
 
     <!-- Loading state -->
-    <LoadingSpinner v-if="status === 'pending'" :text="$t('common.loading_packages')" />
+    <section v-if="status === 'pending'" :aria-label="$t('org.page.packages_title')">
+      <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+        {{ $t('org.page.packages_title') }}
+      </h2>
+      <div class="space-y-3 mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+          <SkeletonBlock class="h-5 w-24 rounded" />
+          <div class="flex-1" />
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <SkeletonBlock class="h-10 w-58 sm:w-51 rounded-md" />
+            <SkeletonBlock class="h-10 w-20.5 rounded-md" />
+          </div>
+        </div>
+        <SkeletonBlock class="h-11.5 rounded-lg" />
+      </div>
+      <PackageListSkeleton />
+    </section>
 
     <!-- Error state -->
     <div v-else-if="status === 'error'" role="alert" class="py-12 text-center">
