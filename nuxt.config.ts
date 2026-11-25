@@ -228,9 +228,6 @@ export default defineNuxtConfig({
       allowQuery: [],
     }),
     // infinite cache (versioned - doesn't change)
-    '/package-code/**': {
-      headers: { 'Cache-Control': 'public, s-maxage=31536000, stale-while-revalidate=31536000' },
-    },
     '/package-docs/**': {
       headers: { 'Cache-Control': 'public, s-maxage=31536000, stale-while-revalidate=31536000' },
     },

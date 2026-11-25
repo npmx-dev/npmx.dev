@@ -25,4 +25,16 @@ test.describe('Package Code Viewer', () => {
       directoryListing.locator('a[href="/package-code/empathic/v/2.0.0/package.json"]'),
     ).toBeVisible()
   })
+
+  for (const path of [
+    '/package-code/empathic/v/2.0.0/package.json',
+    '/package/code/empathic/v/2.0.0/package.json',
+  ]) {
+    test(`${path} is a client-only shell that is not indexed`, async ({ page }) => {
+      const response = await page.request.get(path)
+
+      expect(response.headers()['x-robots-tag']).toBe('noindex')
+      expect(await response.text()).toContain('data-ssr="false"')
+    })
+  }
 })

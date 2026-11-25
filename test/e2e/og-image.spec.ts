@@ -8,7 +8,7 @@ import { expect, test } from './test-utils'
  * Each entry tests a different visual edge case to catch layout/overflow regressions:
  * - Home page (Splash.takumi)
  * - Static pages (Page.takumi)
- * - Packages (Package.takumi with download-chart, code-tree, function-tree variants)
+ * - Packages (Package.takumi with download-chart and function-tree variants)
  */
 const TEST_CASES = [
   // Default OG image template
@@ -32,10 +32,6 @@ const TEST_CASES = [
 
   // Compare OG image template
   { path: '/compare?packages=vue,react,svelte', label: 'compare' },
-
-  // Package code-tree variant (file tree decoration)
-  { path: '/package-code/vue/v/3.5.27', label: 'code-tree variant' },
-  { path: '/package-code/takumi-js/v/1.8.7', label: 'code-tree variant with nested dist tree' },
 
   // Package function-tree variant (API symbols decoration)
   { path: '/package-docs/ufo/v/1.6.3', label: 'function-tree variant' },
