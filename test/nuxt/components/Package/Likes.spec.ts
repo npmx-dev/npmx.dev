@@ -444,4 +444,97 @@ describe('PackageLikes', () => {
       secondWrapper.unmount()
     }
   })
+
+  it('ignores a stale mutation completion after switching away and back to the same package', async () => {
+    document.cookie = `${SESSION_HINT_COOKIE}=${SESSION_HINT_VALUE}; Path=/`
+    initSessionHintMigration()
+    authSessionHandler = () => createAtprotoUser('tester.test')
+
+    const resolvers: Array<() => void> = []
+    let postRequests = 0
+
+    registerEndpoint('/api/social/likes/pkg-a', () => ({
+      totalLikes: 10,
+      topLikedRank: null,
+    }))
+    registerEndpoint('/api/social/like-status/pkg-a', () => ({
+      userHasLiked: false,
+      totalLikes: 10,
+    }))
+    registerEndpoint('/api/social/likes/pkg-b', () => ({
+      totalLikes: 20,
+      topLikedRank: null,
+    }))
+    registerEndpoint('/api/social/like-status/pkg-b', () => ({
+      userHasLiked: false,
+      totalLikes: 20,
+    }))
+    registerEndpoint('/api/social/like', {
+      method: 'POST',
+      handler: async () => {
+        const callNumber = ++postRequests
+        await new Promise<void>(resolve => {
+          resolvers.push(resolve)
+        })
+        return {
+          totalLikes: callNumber === 1 ? 99 : 11,
+          userHasLiked: true,
+          topLikedRank: null,
+        }
+      },
+    })
+
+    wrapper = await mountSuspended(Likes, {
+      props: { packageName: 'pkg-a' },
+      attachTo: document.body,
+    })
+
+    try {
+      await vi.waitFor(() => {
+        expect(wrapper?.text()).toContain('10')
+        expect(wrapper?.get('button').attributes('aria-pressed')).toBe('false')
+      })
+
+      await wrapper.get('button').trigger('click')
+      await vi.waitFor(() => {
+        expect(postRequests).toBe(1)
+      })
+
+      await wrapper.setProps({ packageName: 'pkg-b' })
+      await vi.waitFor(() => {
+        expect(wrapper?.text()).toContain('20')
+      })
+
+      await wrapper.setProps({ packageName: 'pkg-a' })
+      await vi.waitFor(() => {
+        expect(wrapper?.text()).toContain('10')
+        expect(wrapper?.get('button').attributes('aria-pressed')).toBe('false')
+      })
+
+      await wrapper.get('button').trigger('click')
+      await vi.waitFor(() => {
+        expect(postRequests).toBe(2)
+        expect(wrapper?.text()).toContain('11')
+      })
+
+      resolvers[0]!()
+      await new Promise(resolve => setTimeout(resolve, 20))
+
+      expect(wrapper.text()).toContain('11')
+      expect(wrapper.text()).not.toContain('99')
+
+      await wrapper.get('button').trigger('click')
+      expect(postRequests).toBe(2)
+
+      resolvers[1]!()
+      await vi.waitFor(() => {
+        expect(wrapper?.text()).toContain('11')
+        expect(wrapper?.get('button').attributes('aria-pressed')).toBe('true')
+      })
+    } finally {
+      for (const resolve of resolvers) {
+        resolve()
+      }
+    }
+  })
 })

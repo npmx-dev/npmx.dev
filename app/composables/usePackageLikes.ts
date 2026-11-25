@@ -42,8 +42,10 @@ export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
 
   const optimisticLike = shallowRef<{ totalLikes: number; userHasLiked: boolean } | null>(null)
   const isLikeActionPending = shallowRef(false)
+  let mutationGeneration = 0
 
   watch(pkgName, () => {
+    mutationGeneration++
     optimisticLike.value = null
     isLikeActionPending.value = false
     clearUserLikeStatus()
@@ -56,6 +58,7 @@ export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
     () => user.value?.did ?? null,
     (did, prevDid) => {
       if (did === prevDid) return
+      mutationGeneration++
       optimisticLike.value = null
       isLikeActionPending.value = false
       if (did) {
@@ -100,8 +103,8 @@ export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
 
     if (isLikeActionPending.value || isLoading.value) return
 
+    const generation = ++mutationGeneration
     const targetPackage = pkgName.value
-    const targetDid = user.value?.did ?? null
     const currentlyLiked = likesData.value.userHasLiked
     const currentLikes = likesData.value.totalLikes
     const nextLiked = !currentlyLiked
@@ -117,7 +120,7 @@ export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
 
     try {
       const result = await togglePackageLike(targetPackage, currentlyLiked, user.value?.handle)
-      if (pkgName.value !== targetPackage || (user.value?.did ?? null) !== targetDid) return
+      if (generation !== mutationGeneration) return
       if (result.success) {
         userLikeData.value = {
           userHasLiked: result.data.userHasLiked,
@@ -126,11 +129,11 @@ export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
       }
       optimisticLike.value = null
     } catch {
-      if (pkgName.value === targetPackage && (user.value?.did ?? null) === targetDid) {
+      if (generation === mutationGeneration) {
         optimisticLike.value = null
       }
     } finally {
-      if (pkgName.value === targetPackage && (user.value?.did ?? null) === targetDid) {
+      if (generation === mutationGeneration) {
         isLikeActionPending.value = false
       }
     }
