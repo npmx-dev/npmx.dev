@@ -24,9 +24,7 @@ export const VALID_NAMES = [
   '@types/node',
   '@nuxt/kit',
   LONG_SCOPED_NAME,
-  // Accepted by `validate-npm-package-name` even though a naive rule would reject them:
-  // only the whole name is checked for a leading `-` or `_`, and only its name part for a
-  // leading period.
+  // A leading `-` or `_` is only checked on the whole name, a leading period on the name part.
   '@scope/-x',
   '@scope/_x',
   '@_scope/pkg',
@@ -52,6 +50,7 @@ const NAME_URLS = VALID_NAMES.flatMap(name => {
     `/api/registry/timeline/${name}`,
     `/api/registry/package-meta/${name}`,
     `/api/registry/readme/${name}/v/${VALID_VERSIONS[1]}`,
+    `/api/registry/readme/markdown/${name}/v/${VALID_VERSIONS[1]}`,
     `/api/registry/timeline/sizes/${name}`,
     `/api/social/likes-evolution/${name}`,
     `/api/changelog/info/${name}/v/latest`,
@@ -105,6 +104,8 @@ export const INVALID_URLS = [
   `/api/registry/timeline/foo%0Abar`,
   `/api/registry/package-meta/.hidden`,
   `/api/registry/readme/foo%09bar`,
+  `/api/registry/readme/markdown/.hidden`,
+  `/api/registry/timeline/sizes/foo%20bar`,
   `/api/social/likes-evolution/_private`,
   `/skills/foo%20bar/v/1.0.0`,
   `/foo%20bar/.well-known/skills/index.json`,

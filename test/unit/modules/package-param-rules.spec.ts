@@ -55,10 +55,7 @@ type Resolution =
   | { kind: 'function'; dest: string; index: number }
   | { kind: 'status'; status: number; headers: Record<string, string>; index: number }
 
-/**
- * Names covering every error and every warning `validate-npm-package-name` reports, so the
- * edge rules can be checked against the library's actual verdict rather than intuition.
- */
+/** Names covering every error and warning `validate-npm-package-name` reports. */
 const CANDIDATE_NAMES = [
   // Errors: a leading period, hyphen or underscore, spaces, the exclusion list, and any
   // character that is not URL-safe.
@@ -90,8 +87,7 @@ const CANDIDATE_NAMES = [
   'foo(bar)',
   'http',
   'a'.repeat(215),
-  // Only the whole name is checked for a leading `-` or `_`, and only the name part of a
-  // scoped package for a leading period.
+  // Valid: a leading `-` or `_` is only checked on the whole name.
   '@scope/pkg',
   '@scope/-x',
   '@scope/_x',
@@ -108,7 +104,7 @@ const CANDIDATE_NAMES = [
   '@scope%2F-x',
 ]
 
-/** Versions and ranges, with and without the one the diff page produces. */
+/** Versions, dist-tags and `from...to` ranges. */
 const CANDIDATE_VERSIONS = [
   '1.0.0',
   '1.0.0-beta.1+sha.abc',
@@ -198,9 +194,10 @@ describe('package name and version edge rules', () => {
 
   it('is never stricter than the package name schema', () => {
     const tooStrict = CANDIDATE_NAMES.filter(name => {
-      if (name.length > 214) return false
+      const decoded = decodeURIComponent(name)
+      if (decoded.length > 214) return false
       if (resolveRequest(routes(), `/package/${name}`)?.kind !== 'status') return false
-      return validatePackageName(name).validForOldPackages
+      return validatePackageName(decoded).validForOldPackages
     })
 
     expect(tooStrict).toEqual([])

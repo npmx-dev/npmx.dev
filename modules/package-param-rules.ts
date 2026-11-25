@@ -11,10 +11,8 @@ interface VercelRoute {
 }
 
 /**
- * Characters that can appear in the package-name part of a URL segment. A superset of what
- * `validate-npm-package-name` accepts (`A-Za-z0-9-_.!~*'()`), plus the scope marker and
- * percent escapes for encoded names, so a rule here can never reject a name the shared
- * schema accepts.
+ * Characters allowed in the name part of a URL segment: everything `validate-npm-package-name`
+ * accepts (`A-Za-z0-9-_.!~*'()`), plus `@` and percent escapes.
  */
 const SEGMENT_CHARS = String.raw`A-Za-z0-9._~!'()*@%+-`
 
@@ -37,9 +35,8 @@ const INVALID_CHARS = [
 ]
 
 /**
- * Longer than npm's 214-character limit, plus room for the two-character `%2F` separator of
- * an encoded scoped name. The only rule here the shared schema does not share, since
- * `validate-npm-package-name` only warns about those names.
+ * Longer than npm's 214-character limit, with room for an encoded `%2F` scope separator.
+ * `validate-npm-package-name` only warns about these names, so the shared schema accepts them.
  */
 const TOO_LONG = String.raw`[^/]{217,}`
 
@@ -98,7 +95,9 @@ const PACKAGE_PREFIXES = [
   'api/registry/packument',
   'api/registry/provenance',
   'api/registry/readme',
+  'api/registry/readme/markdown',
   'api/registry/timeline',
+  'api/registry/timeline/sizes',
   'api/registry/vulnerabilities',
   'api/social/likes',
   'api/social/likes-evolution',
@@ -108,9 +107,9 @@ const PACKAGE_PREFIXES = [
 const VERSION_PREFIXES = PACKAGE_PREFIXES.filter(prefix => !prefix.startsWith('api/registry/org'))
 
 /**
- * Routes answering junk package URLs with a CDN-cacheable 404, before any function
- * (and so any upstream request or ISR write) runs. Deliberately conservative: a name
- * only has to be implausible, never provably absent from the registry.
+ * Routes that return a CDN-cacheable 404 for junk package URLs before any function runs.
+ * A name rule only matches what `validate-npm-package-name` rejects, or a name over 214
+ * characters.
  */
 export function invalidPackageRoutes(): VercelRoute[] {
   const name = alternation([...INVALID_CHARS, TOO_LONG, ...INVALID_LEADING_CHAR])
@@ -126,9 +125,7 @@ export function invalidPackageRoutes(): VercelRoute[] {
     route(`^/${prefixes}/@[^/]*/${scopedName}`),
     // A scope with no name after it (an encoded slash means the name is there).
     route(`^/${prefixes}/@[^/%]*/?$`),
-    // A whole `..` segment in any later position, including file paths, where the file path
-    // schema rejects it. `..` is the one thing rejected here that the name and version schemas
-    // accept: it is a path segment, not a coordinate.
+    // A whole `..` segment in any position, which the file path schema rejects.
     route(`^/${prefixes}/(?:.*/)?\\.\\.(?:/|$)`),
     route(`^/${prefixes}/(?:.*/)?%2[Ee]%2[Ee](?:/|$)`),
     // Junk in a version, which follows the package name and a `/v/`.
