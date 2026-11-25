@@ -43,7 +43,7 @@ Things moved fast. Within 24 hours, 49 pull requests had been opened. Two weeks 
 _one every 20 minutes_, around the clock. With
 [over 105 contributors](https://github.com/npmx-dev/npmx.dev/graphs/contributors) and 1500 stars in just 16 days, npmx became one of the most active early open-source projects we've seen.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=npmx-dev/npmx.dev&type=date&legend=top-left)](https://www.star-history.com/#npmx-dev/npmx.dev&type=date&legend=top-left)
+<a href="https://www.star-history.com/#npmx-dev/npmx.dev&type=date&legend=top-left"><img src="https://api.star-history.com/svg?repos=npmx-dev/npmx.dev&type=date&legend=top-left" width="800" height="533" alt="Star History Chart" /></a>
 
 We don't think this happened by accident. From the start, npmx prioritized accessibility, internationalization, and working in the open. This attracted people who care about those things &ndash; and who are good at collaborating because of it. The result is a genuinely diverse, global community that's a joy to be part of.
 
