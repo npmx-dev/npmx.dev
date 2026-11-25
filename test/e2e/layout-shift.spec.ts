@@ -16,6 +16,7 @@ const PAGES = [
 ] as const
 
 const BLOG_POSTS_WITH_MEDIA = [
+  '/blog/alpha-release',
   '/blog/release/0.8',
   '/blog/release/rainbow-comet',
   '/blog/release/crystal-chronicle',
