@@ -16,7 +16,8 @@ import {
 import { isProduction } from '../config/env'
 import { BLUESKY_API } from '../shared/utils/constants'
 import { glob, mkdir, writeFile } from 'node:fs/promises'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
+import { imageMeta } from 'image-meta'
 import crypto from 'node:crypto'
 
 /**
@@ -158,6 +159,7 @@ export default defineNuxtModule({
     const nuxt = useNuxt()
     const resolver = createResolver(import.meta.url)
     const blogDir = resolver.resolve('../app/pages/blog')
+    const publicDir = resolver.resolve('../public')
     const blogImagesDir = resolver.resolve('../public/blog/avatar')
     // oxlint-disable-next-line eslint/no-underscore-dangle
     const resolveAvatars = !nuxt.options._prepare
@@ -186,6 +188,19 @@ export default defineNuxtModule({
             }),
           )
           md.use(MarkdownItAnchor as any)
+          md.core.ruler.push('image_dimensions', state => {
+            for (const token of state.tokens) {
+              for (const child of token.children ?? []) {
+                const src = child.type === 'image' ? child.attrGet('src') : null
+                if (!src?.startsWith('/')) continue
+                const { width, height } = imageMeta(readFileSync(join(publicDir, src)))
+                if (width && height) {
+                  child.attrSet('width', String(width))
+                  child.attrSet('height', String(height))
+                }
+              }
+            }
+          })
         },
       }),
     )

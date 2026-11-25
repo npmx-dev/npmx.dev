@@ -348,6 +348,9 @@ importers:
       h3:
         specifier: 1.15.11
         version: 1.15.11
+      image-meta:
+        specifier: 0.3.1
+        version: 0.3.1
       knip:
         specifier: 6.47.0
         version: 6.47.0
