@@ -169,15 +169,21 @@ const stickyStyle = computed(() => {
     <div class="flex" dir="ltr">
       <!-- Sidebar TOC -->
       <aside
-        v-if="docsData?.toc && !showEmptyState"
+        v-if="showLoading || (docsData?.toc && !showEmptyState)"
         class="hidden lg:block w-64 xl:w-72 shrink-0 border-ie border-border"
       >
         <div class="docs-sidebar sticky overflow-y-auto p-4">
           <h2 class="text-xs font-semibold text-fg-subtle uppercase tracking-wider mb-4">
             {{ $t('package.docs.contents') }}
           </h2>
+          <div v-if="showLoading" class="space-y-3">
+            <SkeletonBlock class="h-4 w-24 rounded" />
+            <SkeletonBlock class="h-3 w-32 rounded ms-3" />
+            <SkeletonBlock class="h-3 w-28 rounded ms-3" />
+            <SkeletonBlock class="h-3 w-36 rounded ms-3" />
+          </div>
           <!-- eslint-disable vue/no-v-html -->
-          <div class="toc-content" v-html="docsData.toc" />
+          <div v-else class="toc-content" v-html="docsData?.toc" />
         </div>
       </aside>
 
