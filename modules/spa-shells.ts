@@ -17,6 +17,8 @@ export const CLIENT_ONLY_ROUTES = [
   '/docs/:path/**',
   '/package/docs/:name/v/**',
   '/package/docs/:org/:name/v/**',
+  '/package-changelog/**',
+  '/changelog/:name/**',
 ]
 
 const SSR_FUNCTION = '/__fallback'

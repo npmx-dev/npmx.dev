@@ -10,6 +10,7 @@ const PAGES = [
   '/search',
   '/package/nuxt',
   '/package-code/empathic/v/2.0.0',
+  '/package-changelog/nuxt',
   '/search?q=vue',
   '/blog/alpha-release',
 ] as const

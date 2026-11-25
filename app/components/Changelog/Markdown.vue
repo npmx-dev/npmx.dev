@@ -11,10 +11,11 @@ const route = useRoute()
 const url = computed(() => `/api/changelog/md/${info.provider}/${info.repo}/${info.path}` as const)
 const host = computed(() => info.host)
 
-const { data, error, pending } = useLazyFetch(url, {
+const { data, error, pending, status } = useLazyFetch(url, {
   query: {
     host,
   },
+  server: false,
 })
 
 if (import.meta.client) {
@@ -72,7 +73,7 @@ const {
 </script>
 
 <template>
-  <ChangelogSkeleton v-if="pending" />
+  <ChangelogSkeleton v-if="pending || status === 'idle'" />
   <template v-else-if="typeof data == 'object' && data?.html">
     <Teleport v-if="data.html && !!tpTarget" :to="tpTarget">
       <ButtonCopyMd

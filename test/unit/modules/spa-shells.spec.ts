@@ -30,6 +30,14 @@ describe('CLIENT_ONLY_ROUTES', () => {
     '/docs/ufo/v/1.6.3',
     '/package/docs/ufo/v/1.6.3',
     '/package/docs/@nuxt/kit/v/4.2.0',
+    '/package-changelog/nuxt',
+    '/package-changelog/nuxt/v/4.3.1',
+    '/package-changelog/@nuxt/kit',
+    '/package-changelog/@nuxt/kit/v/4.2.0',
+    '/changelog/nuxt',
+    '/changelog/nuxt/v/4.3.1',
+    '/changelog/@nuxt/kit',
+    '/changelog/@nuxt/kit/v/4.2.0',
   ])('renders %s client-side', path => {
     expect(isClientOnly(path)).toBe(true)
   })
@@ -44,6 +52,9 @@ describe('CLIENT_ONLY_ROUTES', () => {
     '/package-codex/vue/v/1.0.0',
     '/docs',
     '/docsearch',
+    '/changelog',
+    '/changelogs',
+    '/package-changelogx/nuxt',
   ])('server-renders %s', path => {
     expect(isClientOnly(path)).toBe(false)
   })
