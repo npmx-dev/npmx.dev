@@ -1,3 +1,4 @@
+import type { APIRequestContext } from '@playwright/test'
 import { expect, test } from './test-utils'
 
 // TODO(serhalp): The nuxt@3.20.2 fixture has no stars. Update fixture to have stars coverage here.
@@ -69,3 +70,59 @@ for (const { path, label } of TEST_CASES) {
     })
   })
 }
+
+async function fetchOgImageUrl(request: APIRequestContext, path: string) {
+  const response = await request.get(path)
+  expect(response.status()).toBe(200)
+  const html = await response.text()
+  const tag = html.match(/<meta\s[^>]*property="og:image"[^>]*>/)?.[0]
+  expect(tag).toBeTruthy()
+  const content = tag!.match(/\bcontent="([^"]+)"/)?.[1]
+  expect(content).toBeTruthy()
+  return content!.replaceAll('&amp;', '&')
+}
+
+test.describe('og image caching and url stability', () => {
+  for (const path of ['/', '/accessibility', '/blog', '/settings']) {
+    test(`${path} emits a prerendered static OG image`, async ({ request }) => {
+      const ogUrl = await fetchOgImageUrl(request, path)
+      const pathname = new URL(ogUrl).pathname
+      expect(pathname).toMatch(/^\/_og\/s\/.+\.png$/)
+
+      const imageResponse = await request.get(pathname)
+      expect(imageResponse.status()).toBe(200)
+      expect(imageResponse.headers()['content-type']).toContain('image/png')
+    })
+  }
+
+  test('irrelevant page queries do not vary package or compare OG URLs', async ({ request }) => {
+    const pkgCanonical = await fetchOgImageUrl(request, '/package/vue')
+    expect(await fetchOgImageUrl(request, '/package/vue?activeTab=readme&utm_source=bsky')).toBe(
+      pkgCanonical,
+    )
+
+    const cmpCanonical = await fetchOgImageUrl(request, '/compare?packages=vue,react')
+    expect(await fetchOgImageUrl(request, '/compare?packages=react,vue&utm_source=bsky')).toBe(
+      cmpCanonical,
+    )
+    expect(await fetchOgImageUrl(request, '/compare?packages=vue,svelte')).not.toBe(cmpCanonical)
+  })
+
+  test('missing static and disabled resolver OG paths return cheap cacheable 404s', async ({
+    request,
+  }) => {
+    const missingStatic = await request.get('/_og/s/o_missing-test-hash.png')
+    expect(missingStatic.status()).toBe(404)
+    expect(missingStatic.headers()['content-type']).toContain('text/plain')
+    expect(missingStatic.headers()['cache-control']).toContain('s-maxage=3600')
+    expect(await missingStatic.text()).toBe('Not Found')
+
+    for (const resolverPath of ['/_og/r/package/vue', '/_og/r.png']) {
+      const resolver = await request.get(resolverPath)
+      expect(resolver.status()).toBe(404)
+      expect(resolver.headers()['content-type']).toContain('text/plain')
+      expect(resolver.headers()['cache-control']).toContain('s-maxage=300')
+      expect(await resolver.text()).toBe('Not Found')
+    }
+  })
+})
