@@ -272,7 +272,7 @@ useShortcuts({
       class="w-full container flex flex-col md:flex-row-reverse items-baseline justify-between gap-x-2 gap-y-1 flex-wrap"
     >
       <div
-        class="flex items-center max-md:justify-between max-md:w-full max-md:flex-row-reverse gap-2"
+        class="flex items-center max-md:justify-between max-md:w-full max-md:flex-row-reverse md:grow md:justify-end gap-2"
       >
         <ButtonBase
           variant="secondary"
