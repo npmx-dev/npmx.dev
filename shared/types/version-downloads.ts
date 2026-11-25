@@ -53,8 +53,6 @@ export interface VersionDistributionResponse {
   totalDownloads: number
   /** Grouped version data */
   groups: VersionGroupDownloads[]
-  /** ISO 8601 timestamp when data was fetched */
-  timestamp: string
   /** List of version strings published within the last year (only present when filterOldVersions=true) */
   recentVersions?: string[]
 }
