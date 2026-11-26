@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import { computed, defineComponent, h, ref, watchEffect, type Ref } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import { mockNuxtImport, mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
+import { SESSION_HINT_COOKIE, SESSION_HINT_VALUE } from '#shared/utils/constants'
 import { downloadPackageTarball } from '~/utils/package-download'
 import type {
   CommandPaletteCommand,
@@ -64,6 +65,9 @@ async function captureCommandPalette(options?: {
     connected: !!options?.npmUser,
     npmUser: options?.npmUser ?? null,
   }
+  document.cookie = options?.atprotoHandle
+    ? `${SESSION_HINT_COOKIE}=${SESSION_HINT_VALUE}; Path=/`
+    : `${SESSION_HINT_COOKIE}=; Path=/; Max-Age=0`
   authSessionHandler = () =>
     options?.atprotoHandle ? createAtprotoUser(options.atprotoHandle) : null
 
@@ -126,6 +130,7 @@ afterEach(() => {
     npmUser: null,
   }
   clearNuxtData()
+  document.cookie = `${SESSION_HINT_COOKIE}=; Path=/; Max-Age=0`
   authSessionHandler = () => null
   vi.clearAllMocks()
 })
