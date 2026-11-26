@@ -1,5 +1,5 @@
+import type { NPMXProfile, PackageLikeStatus, PublicPackageLikes } from '#shared/types/social'
 import { http, HttpResponse } from 'msw'
-import type { NPMXProfile, PackageLikes } from '#shared/types/social'
 import { SESSION_HINT_COOKIE, SESSION_HINT_VALUE } from '#shared/utils/constants'
 
 export const mockProfileHandle = 'mock-steward'
@@ -46,10 +46,17 @@ export const mockPackageLikesHandler = http.get('/api/social/likes/:pkg', ({ par
     nuxt: 128,
     vitest: 96,
   }
-  const response: PackageLikes = {
+  const response: PublicPackageLikes = {
     totalLikes: packageLikesByName[pkg] ?? 12,
-    userHasLiked: false,
     topLikedRank: null,
+  }
+
+  return HttpResponse.json(response)
+})
+
+export const mockPackageLikeStatusHandler = http.get('/api/social/like-status/:pkg', () => {
+  const response: PackageLikeStatus = {
+    userHasLiked: false,
   }
 
   return HttpResponse.json(response)

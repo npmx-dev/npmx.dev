@@ -1,9 +1,4 @@
 <script lang="ts" setup>
-import type { PackageLikes } from '#shared/types/social'
-import { useModal } from '~/composables/useModal'
-import { useAtproto } from '~/composables/atproto/useAtproto'
-import { togglePackageLike } from '~/utils/atproto/likes'
-
 const props = defineProps<{
   packageName: string
 }>()
@@ -22,38 +17,25 @@ onUnmounted(() => {
   }
 })
 
+const compactNumberFormatter = useCompactNumberFormatter()
+
+const {
+  likesData,
+  isLoading: isLoadingLikeData,
+  toggleLike,
+} = usePackageLikes(() => props.packageName)
+
 const heartAnimStyle = computed(() => {
   if (likeAnimKey.value === 0 || prefersReducedMotion.value) return {}
   return {
-    animation: likesData.value?.userHasLiked
+    animation: likesData.value.userHasLiked
       ? 'heart-spring 0.55s cubic-bezier(0.34,1.56,0.64,1) forwards'
       : 'heart-unlike 0.3s ease forwards',
   }
 })
 
-//atproto
-// TODO: Maybe set this where it's not loaded here every load?
-const { user } = useAtproto()
-
-const authModal = useModal('auth-modal')
-const compactNumberFormatter = useCompactNumberFormatter()
-
-const { data: likesData, status: likeStatus } = useFetch<PackageLikes>(
-  () => `/api/social/likes/${props.packageName}`,
-  {
-    default: () => ({
-      totalLikes: 0,
-      userHasLiked: false,
-      topLikedRank: null,
-    }),
-    server: false,
-  },
-)
-const isLoadingLikeData = computed(
-  () => likeStatus.value === 'pending' || likeStatus.value === 'idle',
-)
-const isPackageLiked = computed(() => likesData.value?.userHasLiked ?? false)
-const topLikedRank = computed(() => likesData.value?.topLikedRank ?? null)
+const isPackageLiked = computed(() => likesData.value.userHasLiked)
+const topLikedRank = computed(() => likesData.value.topLikedRank)
 const likeButtonLabel = computed(() =>
   isPackageLiked.value ? $t('package.likes.unlike') : $t('package.likes.like'),
 )
@@ -66,62 +48,25 @@ const topLikedBadgeLabel = computed(() =>
     : $t('package.likes.top_rank_link_label', { rank: topLikedRank.value }),
 )
 
-const isLikeActionPending = shallowRef(false)
-
 const likeAction = async () => {
-  if (user.value?.handle == null) {
-    authModal.open()
-    return
-  }
+  await toggleLike({
+    onOptimisticToggle(nextLiked) {
+      likeAnimKey.value++
 
-  if (isLikeActionPending.value) return
-
-  const currentlyLiked = likesData.value?.userHasLiked ?? false
-  const currentLikes = likesData.value?.totalLikes ?? 0
-  const previousLikesState: PackageLikes = {
-    totalLikes: currentLikes,
-    userHasLiked: currentlyLiked,
-    topLikedRank: topLikedRank.value,
-  }
-
-  likeAnimKey.value++
-
-  if (!currentlyLiked && !prefersReducedMotion.value) {
-    if (likeFloatTimer !== null) {
-      clearTimeout(likeFloatTimer)
-      likeFloatTimer = null
-    }
-    likeFloatKey.value++
-    showLikeFloat.value = true
-    likeFloatTimer = setTimeout(() => {
-      showLikeFloat.value = false
-      likeFloatTimer = null
-    }, 850)
-  }
-
-  // Optimistic update
-  likesData.value = {
-    ...previousLikesState,
-    totalLikes: currentlyLiked ? currentLikes - 1 : currentLikes + 1,
-    userHasLiked: !currentlyLiked,
-  }
-
-  isLikeActionPending.value = true
-
-  try {
-    const result = await togglePackageLike(props.packageName, currentlyLiked, user.value?.handle)
-    likesData.value = result.success
-      ? {
-          ...previousLikesState,
-          ...result.data,
-          topLikedRank: result.data.topLikedRank ?? previousLikesState.topLikedRank,
+      if (nextLiked && !prefersReducedMotion.value) {
+        if (likeFloatTimer !== null) {
+          clearTimeout(likeFloatTimer)
+          likeFloatTimer = null
         }
-      : previousLikesState
-  } catch {
-    likesData.value = previousLikesState
-  } finally {
-    isLikeActionPending.value = false
-  }
+        likeFloatKey.value++
+        showLikeFloat.value = true
+        likeFloatTimer = setTimeout(() => {
+          showLikeFloat.value = false
+          likeFloatTimer = null
+        }, 850)
+      }
+    },
+  })
 }
 </script>
 
