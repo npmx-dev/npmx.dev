@@ -186,6 +186,30 @@ describe('getLanguageFromPath', () => {
     expect(getLanguageFromPath('notes.mdx')).toBe('markdown')
     expect(getLanguageFromPath('weird.unknownext')).toBe('text')
   })
+
+  it('maps native and build sources that CDNs serve as octet-stream', () => {
+    expect(
+      getLanguageFromPath('android/src/rn86/java/com/unistyles/NativePlatform+extraWindows.kt'),
+    ).toBe('kotlin')
+    expect(getLanguageFromPath('scripts/settings.kts')).toBe('kotlin')
+    expect(getLanguageFromPath('android/build.gradle')).toBe('groovy')
+    expect(getLanguageFromPath('android/build.gradle.kts')).toBe('kotlin')
+    expect(getLanguageFromPath('src/Hello.java')).toBe('java')
+    expect(getLanguageFromPath('src/util.groovy')).toBe('groovy')
+    expect(getLanguageFromPath('ios/App.swift')).toBe('swift')
+    expect(getLanguageFromPath('ios/Foo.m')).toBe('objective-c')
+    expect(getLanguageFromPath('ios/Foo.mm')).toBe('objective-cpp')
+    expect(getLanguageFromPath('include/foo.h')).toBe('c')
+    expect(getLanguageFromPath('src/foo.c')).toBe('c')
+    expect(getLanguageFromPath('src/foo.cpp')).toBe('cpp')
+    expect(getLanguageFromPath('src/foo.cc')).toBe('cpp')
+    expect(getLanguageFromPath('src/foo.cxx')).toBe('cpp')
+    expect(getLanguageFromPath('include/foo.hpp')).toBe('cpp')
+    expect(getLanguageFromPath('include/foo.hh')).toBe('cpp')
+    expect(getLanguageFromPath('gradle.properties')).toBe('properties')
+    expect(getLanguageFromPath('cmake/toolchain.cmake')).toBe('cmake')
+    expect(getLanguageFromPath('native/CMakeLists.txt')).toBe('cmake')
+  })
 })
 
 describe('highlightCode', () => {

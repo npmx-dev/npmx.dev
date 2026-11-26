@@ -72,6 +72,18 @@ export async function getShikiHighlighter(): Promise<HighlighterCore> {
       import('@shikijs/langs/python'),
       import('@shikijs/langs/rust'),
       import('@shikijs/langs/go'),
+
+      // JVM, native, and build sources
+      import('@shikijs/langs/kotlin'),
+      import('@shikijs/langs/groovy'),
+      import('@shikijs/langs/java'),
+      import('@shikijs/langs/swift'),
+      import('@shikijs/langs/c'),
+      import('@shikijs/langs/cpp'),
+      import('@shikijs/langs/objective-c'),
+      import('@shikijs/langs/objective-cpp'),
+      import('@shikijs/langs/cmake'),
+      import('@shikijs/langs/properties'),
     ],
     langAlias: {
       gjs: 'glimmer-js',
