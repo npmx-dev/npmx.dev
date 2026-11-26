@@ -22,6 +22,22 @@ const defaultOptions: ParseOptions = {
   inlineMaxCharEdits: 2,
 }
 
+/**
+ * Read diff options from a request query. The change ratio is rounded to whole percent so that
+ * every value that shares a cache key produces the same diff.
+ */
+export function parseDiffOptionsQuery(query: Record<string, unknown>): ParseOptions {
+  const ratio = parseFloat(query.maxChangeRatio as string) || defaultOptions.maxChangeRatio
+  return {
+    mergeModifiedLines: query.mergeModifiedLines !== 'false',
+    maxChangeRatio: Math.round(ratio * 100) / 100,
+    maxDiffDistance:
+      parseInt(query.maxDiffDistance as string, 10) || defaultOptions.maxDiffDistance,
+    inlineMaxCharEdits:
+      parseInt(query.inlineMaxCharEdits as string, 10) || defaultOptions.inlineMaxCharEdits,
+  }
+}
+
 interface RawChange {
   type: 'insert' | 'delete' | 'normal'
   content: string

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vite-plus/test'
-import { truncateDiffHunks } from '#shared/utils/diff'
+import { createDiff, parseDiffOptionsQuery, truncateDiffHunks } from '#shared/utils/diff'
 import type { DiffHunk, DiffSkipBlock } from '#shared/types/compare'
 
 function createHunk(lineCount: number): DiffHunk {
@@ -64,5 +64,25 @@ describe('truncateDiffHunks', () => {
 
     expect(result.truncated).toBe(true)
     expect(result.hunks).toEqual([hunk])
+  })
+})
+
+describe('parseDiffOptionsQuery', () => {
+  it('diffs with the same options for every query that shares a rounded change ratio', () => {
+    const oldContent = `${'a'.repeat(125)}\n`
+    const newContent = `${'b'.repeat(113)}${'a'.repeat(12)}\n`
+    const render = (query: Record<string, string>) =>
+      createDiff(oldContent, newContent, 'file.txt', parseDiffOptionsQuery(query))
+
+    expect(render({ maxChangeRatio: '0.454' })).toEqual(render({}))
+  })
+
+  it('uses the defaults for missing or invalid values', () => {
+    expect(parseDiffOptionsQuery({ maxDiffDistance: 'x' })).toEqual({
+      mergeModifiedLines: true,
+      maxChangeRatio: 0.45,
+      maxDiffDistance: 30,
+      inlineMaxCharEdits: 2,
+    })
   })
 })
