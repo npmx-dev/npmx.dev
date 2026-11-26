@@ -56,6 +56,21 @@ describe('createWebAnalyticsFilter', () => {
     )
   })
 
+  it('reads the pathname of absolute URLs on any host', () => {
+    const filter = createWebAnalyticsFilter({ sampleRate: 1 })
+
+    expect(filter(pageview('https://canary.npmx.dev/package/nuxt'))).not.toBeNull()
+    expect(filter(pageview('https://canary.npmx.dev/package/nuxt#readme'))).toBeNull()
+    expect(
+      filter(
+        pageview(
+          'https://npmx-git-preview-branch.vercel.app/package-code/nuxt/v/4.2.0/src/index.ts',
+        ),
+      ),
+    ).toBeNull()
+    expect(filter(pageview('http://127.0.0.1:3000/package/vue'))).not.toBeNull()
+  })
+
   it('drops views that only change the query or hash', () => {
     const filter = createWebAnalyticsFilter({ sampleRate: 1 })
 
