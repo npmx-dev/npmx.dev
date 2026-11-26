@@ -67,6 +67,7 @@ export const LIKES_SCOPE = `repo:${dev.npmx.feed.like.$nsid}`
 export const PROFILE_SCOPE = `repo:${dev.npmx.actor.profile.$nsid}`
 export const NPMX_DEV_DID = 'did:plc:u5zp7npt5kpueado77kuihyz'
 export const TID_CLOCK_ID = 3
+export const TYPEAHEAD_API = 'https://typeahead.waow.tech'
 
 // Discord
 export const DISCORD_COMMUNITY_URL = 'https://chat.npmx.dev'

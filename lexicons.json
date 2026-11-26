@@ -3,6 +3,7 @@
   "lexicons": [
     "app.bsky.actor.getProfiles",
     "app.bsky.actor.profile",
+    "app.bsky.actor.searchActorsTypeahead",
     "app.bsky.embed.external",
     "app.bsky.embed.images",
     "app.bsky.feed.defs",
@@ -20,7 +21,7 @@
   "resolutions": {
     "app.bsky.actor.defs": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.actor.defs",
-      "cid": "bafyreigwqwhe2jxohagozazfbrf6dxgzphvkg3d3lg7uxdvepsimqyclka"
+      "cid": "bafyreices7ludt4jdwqlbapygpzswneg527rtn4dfyj6ryhgkttuglwnwq"
     },
     "app.bsky.actor.getProfiles": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.actor.getProfiles",
@@ -29,6 +30,10 @@
     "app.bsky.actor.profile": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.actor.profile",
       "cid": "bafyreia6umzg3a6d7mjbow4p57tviey45muohklhgsvjoamcctoiusr4pe"
+    },
+    "app.bsky.actor.searchActorsTypeahead": {
+      "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.actor.searchActorsTypeahead",
+      "cid": "bafyreigydtxvpnrndvk7iws4uypd6adqzohcdafeuqajiqmmbcqq5vatmu"
     },
     "app.bsky.actor.status": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.actor.status",
@@ -100,11 +105,11 @@
     },
     "app.bsky.richtext.facet": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.richtext.facet",
-      "cid": "bafyreidg56eo7zynf6ihz4xb627vwoqf5idnevkmwp7sxc4tijg6xngbu4"
+      "cid": "bafyreiavcjtlty3qjbyianmsfltqzhqjk6ra3xc4zw6piztulvzq5p6r5a"
     },
     "com.atproto.identity.resolveHandle": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.identity.resolveHandle",
-      "cid": "bafyreigckmqtt3jrtzd7tvigjatnz6ajqyafs26h5pwcudwag2anedxnmu"
+      "cid": "bafyreiexl52xzhuxbi6qagfrzu4u4bid7dnh44xkil6phtmkyyhjk65f5q"
     },
     "com.atproto.label.defs": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.label.defs",
