@@ -8,7 +8,7 @@ import { expect, test } from './test-utils'
  * Each entry tests a different visual edge case to catch layout/overflow regressions:
  * - Home page (Splash.takumi)
  * - Static pages (Page.takumi)
- * - Packages (Package.takumi with the download-chart variant, also on code and docs pages)
+ * - Packages (Package.takumi with the download-chart variant, also on code, docs and changelog pages)
  */
 const TEST_CASES = [
   // Default OG image template
@@ -42,6 +42,11 @@ const TEST_CASES = [
   {
     path: '/package-docs/ufo/v/1.6.3',
     label: 'docs page',
+    userAgent: 'Slackbot-LinkExpanding 1.0',
+  },
+  {
+    path: '/package-changelog/vue/v/3.5.27',
+    label: 'changelog page',
     userAgent: 'Slackbot-LinkExpanding 1.0',
   },
 ] as const

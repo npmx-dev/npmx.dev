@@ -17,6 +17,8 @@ export const CLIENT_ONLY_ROUTES = [
   '/docs/:path/**',
   '/package/docs/:name/v/**',
   '/package/docs/:org/:name/v/**',
+  '/package-changelog/**',
+  '/changelog/:name/**',
 ]
 
 const SSR_FUNCTION = '/__fallback'
@@ -34,11 +36,19 @@ export default defineNuxtModule({
   },
   setup(_, nuxt) {
     const routeRules = (nuxt.options.routeRules ??= {})
-    const clientOnly = { ssr: false, headers: { 'X-Robots-Tag': 'noindex' } }
-    routeRules[SPA_SHELL] = defu(routeRules[SPA_SHELL], { ...clientOnly, prerender: true })
+    const noindex = { headers: { 'X-Robots-Tag': 'noindex' } }
+    routeRules[SPA_SHELL] = defu(routeRules[SPA_SHELL], { ...noindex, ssr: false, prerender: true })
     for (const route of CLIENT_ONLY_ROUTES) {
-      routeRules[route] = defu(routeRules[route], clientOnly)
+      routeRules[route] = defu(routeRules[route], noindex)
     }
+
+    // Apply `ssr: false` after `routes.mjs` is generated so Nuxt keeps these pages
+    // in the server bundle for runtime unfurl SSR (`server/middleware/unfurl-ssr.ts`).
+    nuxt.hook('nitro:build:before', nitro => {
+      for (const route of CLIENT_ONLY_ROUTES) {
+        nitro.options.routeRules[route] = defu(nitro.options.routeRules[route], { ssr: false })
+      }
+    })
 
     if (provider !== 'vercel') {
       return

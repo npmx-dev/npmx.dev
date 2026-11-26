@@ -79,7 +79,8 @@ if (import.meta.client) {
   watch(
     () => docsData.value?.html,
     html => {
-      if (html && route.hash) {
+      // Wait for the version redirect to land: navigating to the hash first would cancel it.
+      if (html && route.hash && requestedVersion.value) {
         navigateTo(route.hash, { replace: true })
       }
     },
