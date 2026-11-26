@@ -4,6 +4,8 @@ authors:
     blueskyHandle: felixs.dev
   - name: Matias Capeletto
     blueskyHandle: patak.cat
+  - name: Eugene
+    blueskyHandle: outslept.bsky.social
 title: 'npmx prism forge'
 tags: ['OpenSource', 'Release']
 excerpt: 'npmx 0.25 is out, with a Svelte birthday noodle, one client for every forge, version comparisons, a timeline with real history, more accessible charts, faster pages, and blog feeds.'
@@ -22,7 +24,7 @@ npmx is about people. We have lived by this since npmx's inception in January 20
 
 ## Svelte turns 10
 
-Let's start with the fun part: we want to celebrate Svelte's 10<sup>th</sup> birthday on 29 November, which is exactly 10 years after its very first major release. And what better way is there to mark the anniversary of such a beloved framework than a dedicated noodle on npmx, made by Eugene, collaborating with [Alex](https://bsky.app/profile/alexdln.com) and others, as his (surprisingly) very first npmx contribution 🎊
+Let's start with the fun part: we want to celebrate Svelte's 10<sup>th</sup> birthday on 29 November, which is exactly 10 years after its very first major release. And what better way is there to mark the anniversary of such a beloved framework than a dedicated noodle on npmx, made by [Eugene](https://bsky.app/profile/outslept.bsky.social), collaborating with [Alex](https://bsky.app/profile/alexdln.com) and others, as his (surprisingly) very first npmx contribution 🎊
 
 ![The npmx logo drawn in Svelte orange with the Svelte logo's curves, above the search box](/blog/assets/release/prism-forge/svelte-noodle.png)
 
@@ -81,7 +83,7 @@ One of the longest-requested features, open since back in March, was the ability
   uri="at://did:plc:64htzccuyxwagilntdxo2ity/app.bsky.feed.post/3n2756bvu6c2k"
 />
 
-Another small feature that goes hand in hand with differences between versions of a package is a convenient link in trust downgrade warnings to the file diff between the trusted and the downgraded version. This was also Ssam's very first npmx PR 🎉
+Another small feature that goes hand in hand with differences between versions of a package is a convenient link in trust downgrade warnings to the file diff between the trusted and the downgraded version. This was also [Ssam](https://github.com/drawliin)'s very first npmx PR 🎉
 
 ![A trust downgrade warning on reselect 5.1.1 with a link to the file changes](/blog/assets/release/prism-forge/trust-downgrade.png)
 
@@ -99,7 +101,7 @@ When [Nicolò](https://bsky.app/profile/nicr.dev) and the Babel team halved the 
 
 ![The @babel/core install size timeline with frozen history on, dropping from about 12 MB to 6 MB at 8.0.6](/blog/assets/release/prism-forge/frozen-history.png)
 
-Another timeline improvement comes from Anthony: when he opened the timeline for `nuxt@3.0.0`, it only listed the latest versions, and "load more" couldn't get anywhere near `3.0.0`. A timeline that stays safe in the harbor of the latest releases is not what timelines are built for, so Anthony made it open right around the version you selected, with "load more" in both directions.
+Another timeline improvement comes from [Anthony](https://bsky.app/profile/antfu.me): when he opened the timeline for `nuxt@3.0.0`, it only listed the latest versions, and "load more" couldn't get anywhere near `3.0.0`. A timeline that stays safe in the harbor of the latest releases is not what timelines are built for, so Anthony made it open right around the version you selected, with "load more" in both directions.
 
 ![The nuxt timeline opened at 3.0.0, showing versions from 2.17.2 to 3.5.3 around it and a button to load newer versions](/blog/assets/release/prism-forge/timeline-pagination.png)
 
@@ -108,7 +110,7 @@ Another timeline improvement comes from Anthony: when he opened the timeline for
   uri="at://did:plc:5wdnwfs45bghuedlj3rdmani/app.bsky.feed.post/3n2adpp5rws2l"
 />
 
-While browsing the timeline, Felix noticed that it used a fingerprint icon for provenance, but the rest of npmx showed provenance with the same shield icon as trusted publishing. With some help from Philippe, provenance now gets the fingerprint everywhere and trusted publishing keeps the shield, so you can tell the two apart at a glance, wherever you look.
+While browsing the timeline, [Felix](https://bsky.app/profile/felixs.dev) noticed that it used a fingerprint icon for provenance, but the rest of npmx showed provenance with the same shield icon as trusted publishing. With some help from [Philippe](https://bsky.app/profile/philippeserhal.com), provenance now gets the fingerprint everywhere and trusted publishing keeps the shield, so you can tell the two apart at a glance, wherever you look.
 
 <details>
 <summary>PRs</summary>
@@ -137,7 +139,7 @@ Accessibility got some love as well. Until now, every chart came with a hidden d
 
 ## Faster, and nothing jumps
 
-Under the hood, Daniel kept squeezing out milliseconds. The first page load now comes with all its data inlined, so there's no extra request and no second render on the server, using a Nuxt feature that was [built because of what npmx needed](https://github.com/nuxt/nuxt/pull/34410). On top of that, code, docs, and changelog pages are now served as a tiny static shell: a code page for `next` went from 2.2 MB of HTML to just 9.4 KB ⚡
+Under the hood, [Daniel](https://bsky.app/profile/danielroe.dev) kept squeezing out milliseconds. The first page load now comes with all its data inlined, so there's no extra request and no second render on the server, using a Nuxt feature that was [built because of what npmx needed](https://github.com/nuxt/nuxt/pull/34410). On top of that, code, docs, and changelog pages are now served as a tiny static shell: a code page for `next` went from 2.2 MB of HTML to just 9.4 KB ⚡
 
 <details>
 <summary>PRs</summary>
@@ -156,7 +158,7 @@ Under the hood, Daniel kept squeezing out milliseconds. The first page load now 
 
 </details>
 
-And nothing jumps anymore: Daniel fixed a bunch of small layout shifts, for example the like button pushing the tabs down while loading, and added a test so they stay fixed. The last one was a font flicker that Aurora spotted right after watching Daniel's npmx talk at JSConf MX, because it never happens on Aurora's own Next.js sites. One PR later, the fonts are cached properly, and it was Aurora's very first npmx contribution 🎉
+And nothing jumps anymore: Daniel fixed a bunch of small layout shifts, for example the like button pushing the tabs down while loading, and added a test so they stay fixed. The last one was a font flicker that [Aurora](https://bsky.app/profile/aurorascharff.no) spotted right after watching Daniel's npmx talk at JSConf MX, because it never happens on Aurora's own Next.js sites. One PR later, the fonts are cached properly, and it was Aurora's very first npmx contribution 🎉
 
 <BlueskyPostEmbed
   url="https://bsky.app/profile/aurorascharff.no/post/3myzuaup4l22r"
@@ -207,7 +209,7 @@ Besides all of that, we also fixed and improved a lot of smaller things:
 
 ## The people
 
-A lot of what you just read landed during one weekend at the end of October, when Felix and Roman spontaneously turned it into a little npmx hackathon: more than 20 PRs merged in two days, 12 of them from community contributors, and a much tidier issue tracker afterwards. None of it was planned, it just kinda happened, and we might do it more often 🙌
+A lot of what you just read landed during one weekend at the end of October, when [Felix](https://bsky.app/profile/felixs.dev) and [Roman](https://bsky.app/profile/rman.dev) spontaneously turned it into a little npmx hackathon: more than 20 PRs merged in two days, 12 of them from community contributors, and a much tidier issue tracker afterwards. None of it was planned, it just kinda happened, and we might do it more often 🙌
 
 <BlueskyPostEmbed
   url="https://bsky.app/profile/felixs.dev/post/3mzbkh3usuk2h"
@@ -227,7 +229,7 @@ We also care a lot about how we talk to each other in PRs, which is why npmx fol
 
 ## Events
 
-Since the last post, we got to meet many of you in person again. Daniel gave a talk about open source and npmx at JSConf MX, and in Brighton, our stickers made their way to the async meetup and to FFConf the day after:
+Since the last post, we got to meet many of you in person again. [Daniel](https://bsky.app/profile/danielroe.dev) gave a talk about open source and npmx at JSConf MX, and in Brighton, our stickers made their way to the async meetup and to FFConf the day after:
 
 <BlueskyPostEmbed
   url="https://bsky.app/profile/willow.sh/post/3n26u6qmf7s2h"
@@ -244,7 +246,7 @@ And [Kevin Powell](https://bsky.app/profile/kevinpowell.co) chatted with Daniel 
 
 ## What's next
 
-There's already a lot cooking for the next releases, for example, Philippe is experimenting with package collections built on ATproto. And who knows, maybe his Halloween noodle finally gets approved next year 🎃
+There's already a lot cooking for the next releases, for example, [Philippe](https://bsky.app/profile/philippeserhal.com) is experimenting with package collections built on ATproto. And who knows, maybe his Halloween noodle finally gets approved next year 🎃
 
 <BlueskyPostEmbed
   url="https://bsky.app/profile/philippeserhal.com/post/3mz7novwqnk2g"
