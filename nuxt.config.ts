@@ -227,13 +227,6 @@ export default defineNuxtConfig({
       fallback: 'json',
       allowQuery: [],
     }),
-    // infinite cache (versioned - doesn't change)
-    '/package-code/**': {
-      headers: { 'Cache-Control': 'public, s-maxage=31536000, stale-while-revalidate=31536000' },
-    },
-    '/package-docs/**': {
-      headers: { 'Cache-Control': 'public, s-maxage=31536000, stale-while-revalidate=31536000' },
-    },
     // static pages
     '/': { prerender: true },
     '/200.html': { prerender: true },

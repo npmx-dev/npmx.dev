@@ -8,7 +8,7 @@ import { expect, test } from './test-utils'
  * Each entry tests a different visual edge case to catch layout/overflow regressions:
  * - Home page (Splash.takumi)
  * - Static pages (Page.takumi)
- * - Packages (Package.takumi with download-chart, code-tree, function-tree variants)
+ * - Packages (Package.takumi with the download-chart variant, also on code and docs pages)
  */
 const TEST_CASES = [
   // Default OG image template
@@ -33,16 +33,24 @@ const TEST_CASES = [
   // Compare OG image template
   { path: '/compare?packages=vue,react,svelte', label: 'compare' },
 
-  // Package code-tree variant (file tree decoration)
-  { path: '/package-code/vue/v/3.5.27', label: 'code-tree variant' },
-  { path: '/package-code/takumi-js/v/1.8.7', label: 'code-tree variant with nested dist tree' },
-
-  // Package function-tree variant (API symbols decoration)
-  { path: '/package-docs/ufo/v/1.6.3', label: 'function-tree variant' },
+  // Client-only pages, server-rendered for link preview bots
+  {
+    path: '/package-code/vue/v/3.5.27',
+    label: 'code page',
+    userAgent: 'Slackbot-LinkExpanding 1.0',
+  },
+  {
+    path: '/package-docs/ufo/v/1.6.3',
+    label: 'docs page',
+    userAgent: 'Slackbot-LinkExpanding 1.0',
+  },
 ] as const
 
-for (const { path, label } of TEST_CASES) {
+for (const testCase of TEST_CASES) {
+  const { path, label } = testCase
   test.describe(`${label} (${path})`, () => {
+    if ('userAgent' in testCase) test.use({ userAgent: testCase.userAgent })
+
     test(`og image snapshot`, async ({ page, goto, baseURL }) => {
       await goto(path, { waitUntil: 'domcontentloaded' })
 

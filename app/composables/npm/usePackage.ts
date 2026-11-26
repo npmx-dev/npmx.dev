@@ -1,8 +1,9 @@
 export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
+  { lazy = true, server = true }: { lazy?: boolean; server?: boolean } = {},
 ) {
-  const asyncData = useLazyAsyncData(
+  const asyncData = useAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
     async (_nuxtApp, { signal }) => {
       const encodedName = encodePackageName(toValue(name))
@@ -17,6 +18,7 @@ export function usePackage(
       // response is always considered fresh from the client's perspective.
       return { ...pkg, isStale: false }
     },
+    { lazy, server },
   )
 
   return asyncData

@@ -1,6 +1,11 @@
 import { describe, expect, it, vi } from 'vite-plus/test'
 import type { JsDelivrFileNode, PackageFileTree } from '#shared/types'
-import { convertToFileTree, fetchFileTree, getPackageFileTree } from '#server/utils/file-tree'
+import {
+  convertToFileTree,
+  fetchFileTree,
+  getPackageFileTree,
+  withoutFileHashes,
+} from '#server/utils/file-tree'
 
 const getChildren = (node?: PackageFileTree): PackageFileTree[] => node?.children ?? []
 
@@ -112,6 +117,30 @@ describe('convertToFileTree', () => {
     expect(tree[0]?.type).toBe('directory')
     expect(tree[0]?.size).toBe(0)
     expect(tree[0]?.children).toEqual([])
+  })
+})
+
+describe('withoutFileHashes', () => {
+  it('removes hashes at every depth and keeps everything else', () => {
+    const tree = convertToFileTree([
+      { type: 'file', name: 'index.js', hash: 'a', size: 1 },
+      {
+        type: 'directory',
+        name: 'dist',
+        files: [{ type: 'file', name: 'index.mjs', hash: 'b', size: 2 }],
+      },
+    ])
+
+    expect(withoutFileHashes(tree)).toEqual([
+      {
+        name: 'dist',
+        path: 'dist',
+        type: 'directory',
+        size: 2,
+        children: [{ name: 'index.mjs', path: 'dist/index.mjs', type: 'file', size: 2 }],
+      },
+      { name: 'index.js', path: 'index.js', type: 'file', size: 1 },
+    ])
   })
 })
 

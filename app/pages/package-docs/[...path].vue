@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
-import { setResponseHeader } from 'h3'
 
 definePageMeta({
   name: 'docs',
@@ -15,33 +14,17 @@ const { t } = useI18n()
 
 const { packageName, requestedVersion } = usePackageRoute()
 
-// Validate package name on server-side for early error detection
-if (import.meta.server && packageName.value) {
-  assertValidPackageName(packageName.value)
-}
-
-const { data: pkg } = usePackage(packageName)
+const { data: pkg } = usePackage(packageName, null, { server: false })
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
 
 const latestVersion = computed(() => pkg.value?.['dist-tags']?.latest ?? null)
 
-if (import.meta.server && !requestedVersion.value && packageName.value) {
-  const app = useNuxtApp()
-  const version = await fetchLatestVersion(packageName.value)
-  if (version) {
-    setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
-    app.runWithContext(() =>
-      navigateTo(docsRoute(packageName.value, version), { redirectCode: 302 }),
-    )
-  }
-}
-
 watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      router.replace(docsRoute(name, latest))
+      router.replace({ path: router.resolve(docsRoute(name, latest)).path, hash: route.hash })
     }
   },
   { immediate: true },
@@ -130,24 +113,33 @@ const pageTitle = computed(() => {
   })
 })
 
+const pageDescription = computed(() => {
+  const name = resolvedVersion.value
+    ? `${packageName.value}@${resolvedVersion.value}`
+    : packageName.value
+  return `API documentation for ${name}`
+})
+
 useSeoMeta({
   title: () => pageTitle.value,
   ogTitle: () => t('package.docs.og_title', { name: packageName.value }),
   twitterTitle: () => pageTitle.value,
-  description: () => pkg.value?.license ?? '',
-  ogDescription: () => pkg.value?.license ?? '',
-  twitterDescription: () => pkg.value?.license ?? '',
+  description: () => pageDescription.value,
+  ogDescription: () => pageDescription.value,
+  twitterDescription: () => pageDescription.value,
 })
 
-defineOgImage(
-  'Package.takumi',
-  {
-    name: () => packageName.value,
-    version: () => resolvedVersion.value,
-    variant: 'function-tree',
-  },
-  { alt: () => `API documentation for ${packageName.value}` },
-)
+if (import.meta.server) {
+  defineOgImage(
+    'Package.takumi',
+    {
+      name: () => packageName.value,
+      version: () => requestedVersion.value,
+      variant: 'download-chart',
+    },
+    { alt: () => `npm package ${packageName.value} download chart and stats` },
+  )
+}
 
 const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),
