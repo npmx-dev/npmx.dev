@@ -3,6 +3,7 @@ import type { ResolvedPackageVersion } from 'fast-npm-meta'
 export function useResolvedVersion(
   packageName: MaybeRefOrGetter<string>,
   requestedVersion: MaybeRefOrGetter<string | null>,
+  { server = true }: { server?: boolean } = {},
 ) {
   return useAsyncData(
     () => `resolved-version:${toValue(packageName)}:${toValue(requestedVersion) ?? 'latest'}`,
@@ -15,6 +16,6 @@ export function useResolvedVersion(
       const data = await $fetch<ResolvedPackageVersion>(url)
       return data.version
     },
-    { default: () => undefined },
+    { default: () => undefined, server },
   )
 }

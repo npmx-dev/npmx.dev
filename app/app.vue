@@ -11,6 +11,7 @@ const { locale, locales } = useI18n()
 initPreferencesOnPrehydrate()
 
 const isHomepage = computed(() => route.name === 'index')
+const isUnfurl = import.meta.server && !!useRequestEvent()?.context.unfurl
 const showKbdHints = shallowRef(false)
 
 const localeMap = locales.value.reduce(
@@ -148,7 +149,7 @@ if (!isBlogPostRoute.value) {
       $t('common.skip_link')
     }}</LinkBase>
 
-    <AppHeader :show-logo="!isHomepage" />
+    <AppHeader v-if="!isUnfurl" :show-logo="!isHomepage" />
 
     <NuxtRouteAnnouncer v-slot="{ message }">
       {{ route.name === 'search' ? `${$t('search.title_packages')} - npmx` : message }}
@@ -160,11 +161,13 @@ if (!isBlogPostRoute.value) {
       <NuxtPage />
     </div>
 
-    <CommandPalette />
+    <template v-if="!isUnfurl">
+      <CommandPalette />
 
-    <AppFooter />
+      <AppFooter />
 
-    <ScrollToTop />
+      <ScrollToTop />
+    </template>
   </div>
 </template>
 

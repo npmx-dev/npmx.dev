@@ -14,10 +14,12 @@ const {
   data: releases,
   error,
   pending,
+  status,
 } = useLazyFetch<ReleaseData[]>(url, {
   query: {
     host: computed(() => info.host),
   },
+  server: false,
 })
 
 const route = useRoute()
@@ -86,7 +88,7 @@ prefetchComponents('ChangelogCard')
 </script>
 
 <template>
-  <ChangelogSkeleton v-if="pending" />
+  <ChangelogSkeleton v-if="pending || status === 'idle'" />
   <div class="flex flex-col gap-2 py-3" v-else-if="releases">
     <ChangelogCard
       v-for="release of releases"

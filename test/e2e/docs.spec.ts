@@ -77,6 +77,15 @@ test.describe('API Documentation Pages', () => {
     await expect(page).toHaveURL(/\/package-docs\/ufo\/v\//)
   })
 
+  test('docs page without version keeps the symbol hash when redirecting', async ({
+    page,
+    goto,
+  }) => {
+    await goto('/package-docs/ufo#variable-stubConstant', { waitUntil: 'networkidle' })
+
+    await expect(page).toHaveURL(/\/package-docs\/ufo\/v\/[^#]+#variable-stubConstant$/)
+  })
+
   test('docs page handles package gracefully when types unavailable', async ({ page, goto }) => {
     // Use a simple JS package - the page should load without crashing
     // regardless of whether it has types or shows an error state
@@ -94,6 +103,34 @@ test.describe('API Documentation Pages', () => {
     // One of these should be visible
     await expect(errorState.or(docsContent)).toBeVisible()
   })
+
+  for (const path of [
+    '/package-docs/ufo/v/1.6.3',
+    '/docs/ufo/v/1.6.3',
+    '/package/docs/ufo/v/1.6.3',
+  ]) {
+    test(`${path} is a client-only shell that is not indexed`, async ({ page }) => {
+      const response = await page.request.get(path)
+
+      expect(response.headers()['x-robots-tag']).toBe('noindex')
+      expect(await response.text()).toContain('data-ssr="false"')
+    })
+
+    test(`${path} renders meta tags for link preview bots`, async ({ page }) => {
+      const response = await page.request.get(path, {
+        headers: { 'user-agent': 'Slackbot-LinkExpanding 1.0' },
+      })
+      const html = await response.text()
+
+      expect(html).toContain('<title>ufo@1.6.3 docs - npmx</title>')
+      expect(html).toContain(
+        '<meta property="og:description" content="API documentation for ufo@1.6.3">',
+      )
+      expect(html).toMatch(/<meta property="og:image" content="[^"]+\/_og\//)
+      expect(html).not.toContain('__NUXT_DATA__')
+      expect(html).not.toContain('<footer')
+    })
+  }
 })
 
 test.describe('Version Selector', () => {

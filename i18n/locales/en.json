@@ -1956,6 +1956,8 @@
   },
   "alt_logo_kawaii": "A cute, rounded, and colorful version of the npmx logo.",
   "changelog": {
+    "page_title": "Changelog - {name} - npmx",
+    "meta_description": "Changelog for {name}",
     "pre_release": "Pre-release",
     "draft": "Draft",
     "no_logs": "Sorry, this package does not publish changelogs or its changelog format is not supported.",

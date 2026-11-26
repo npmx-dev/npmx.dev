@@ -25,7 +25,9 @@ const parsedRoute = computed(() => {
 const packageName = computed(() => parsedRoute.value.packageName)
 const requestedVersion = computed(() => parsedRoute.value.version)
 
-if (import.meta.server) {
+const nuxtApp = useNuxtApp()
+
+if (import.meta.server && packageName.value) {
   assertValidPackageName(packageName.value)
 }
 
@@ -33,9 +35,14 @@ const {
   data: version,
   pending: resolvingPending,
   error: resolvingError,
-} = await useResolvedVersion(packageName, requestedVersion)
+} = await useResolvedVersion(packageName, requestedVersion, { server: false })
 
-const { data: pkg } = usePackage(packageName, () => version.value ?? requestedVersion.value ?? null)
+const packageRequest = usePackage(
+  packageName,
+  () => version.value ?? requestedVersion.value ?? null,
+  { lazy: false, server: false },
+)
+const { data: pkg } = packageRequest
 
 const versionUrlPattern = computed(() => {
   return `/package-changelog/${packageName.value}/v/{version}`
@@ -52,8 +59,17 @@ const latestVersion = computed(() => {
 const {
   data: changelog,
   error: changelogError,
-  pending: changelogPending,
-} = usePackageChangelog(packageName, version)
+  status: changelogStatus,
+} = usePackageChangelog(() => (resolvingError.value ? '' : packageName.value), version, {
+  server: false,
+})
+
+const showChangelogLoading = computed(
+  () =>
+    !changelog.value &&
+    !changelogError.value &&
+    (changelogStatus.value === 'pending' || changelogStatus.value === 'idle'),
+)
 
 const providerIcon = useProviderIcon(() => changelog.value?.provider)
 const viewOnProvider = useViewOnGitProvider(() => changelog.value?.provider)
@@ -104,17 +120,47 @@ useCommandPalettePackageContext(commandPalettePackageContext, {
 })
 useCommandPalettePackageCommands(commandPalettePackageContext)
 
-// og image
-defineOgImage(
-  'Page.takumi',
-  {
-    title: () => `${packageName.value ?? 'Package'} - Changelogs`,
-  },
-  { alt: () => `npm package ${packageName.value} changelogs` },
+const { t } = useI18n()
+
+const pagePackageLabel = computed(() =>
+  requestedVersion.value ? `${packageName.value}@${requestedVersion.value}` : packageName.value,
 )
+const pageTitle = computed(() => t('changelog.page_title', { name: pagePackageLabel.value }))
+const pageDescription = computed(() =>
+  t('changelog.meta_description', { name: pagePackageLabel.value }),
+)
+
+useSeoMeta({
+  title: () => pageTitle.value,
+  ogTitle: () => pageTitle.value,
+  twitterTitle: () => pageTitle.value,
+  description: () => pageDescription.value,
+  ogDescription: () => pageDescription.value,
+  twitterDescription: () => pageDescription.value,
+})
+
+if (import.meta.server) {
+  defineOgImage(
+    'Package.takumi',
+    {
+      name: () => packageName.value,
+      version: () => requestedVersion.value,
+      variant: 'download-chart',
+    },
+    { alt: () => `npm package ${packageName.value} download chart and stats` },
+  )
+}
+
+if (nuxtApp.isHydrating && !resolvingError.value) {
+  await packageRequest
+}
 </script>
 <template>
-  <main class="flex-1 flex flex-col" :style="stickyStyle" v-if="!resolvingError">
+  <main
+    class="flex-1 flex flex-col min-h-[calc(100dvh-3.5rem)]"
+    :style="stickyStyle"
+    v-if="!resolvingError"
+  >
     <PackageHeader
       page="changelog"
       :versionUrlPattern
@@ -142,10 +188,7 @@ defineOgImage(
           <!-- Placeholder for toc & copy md -->
         </div>
       </div>
-      <section
-        v-if="changelogPending && !changelog && !changelogError"
-        class="flex flex-col gap-2 py-3"
-      >
+      <section v-if="showChangelogLoading" class="flex flex-col gap-2 py-3">
         <ChangelogSkeleton />
       </section>
 
@@ -180,7 +223,7 @@ defineOgImage(
       </LazyChangelogMarkdown>
 
       <!-- error handling -->
-      <template v-else-if="!changelogPending">
+      <template v-else-if="!showChangelogLoading">
         <div v-if="isUnghRateLimitError(changelogError)" class="items-center flex flex-col">
           <p class="mt-5">{{ $t('changelog.ungh.rate_limit') }}</p>
           <p>{{ $t('changelog.ungh.hint') }}</p>
