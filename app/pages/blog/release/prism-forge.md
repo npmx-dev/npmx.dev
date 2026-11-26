@@ -2,6 +2,8 @@
 authors:
   - name: Felix Schneider
     blueskyHandle: felixs.dev
+  - name: Matias Capeletto
+    blueskyHandle: patak.cat
 title: 'npmx prism forge'
 tags: ['OpenSource', 'Release']
 excerpt: 'npmx 0.25 is out, with a Svelte birthday noodle, one client for every forge, version comparisons, a timeline with real history, more accessible charts, faster pages, and blog feeds.'
@@ -20,7 +22,7 @@ npmx is about people. We have lived by this since npmx's inception in January 20
 
 ## Svelte turns 10
 
-Let's start with the fun part: we want to celebrate Svelte's 10<sup>th</sup> birthday on 29 November, which is exactly 10 years after its very first major release. And what better way is there to mark the anniversary of such a beloved framework than a dedicated noodle on npmx, made by Eugene as his (surprisingly) very first npmx contribution 🎊
+Let's start with the fun part: we want to celebrate Svelte's 10<sup>th</sup> birthday on 29 November, which is exactly 10 years after its very first major release. And what better way is there to mark the anniversary of such a beloved framework than a dedicated noodle on npmx, made by Eugene, collaborating with [Alex](https://bsky.app/profile/alexdln.com) and others, as his (surprisingly) very first npmx contribution 🎊
 
 ![The npmx logo drawn in Svelte orange with the Svelte logo's curves, above the search box](/blog/assets/release/prism-forge/svelte-noodle.png)
 
@@ -48,9 +50,9 @@ True to the closing words of Rich's lovely [look back on ten years of Svelte](ht
 
 ## Every forge, one client
 
-Most public repositories of npm packages live on GitHub, which is why npmx has introduced a lot of quality-of-life features over the past months, like changelogs, repo metadata, releases, Markdown links, and much more. We quickly realized that npmx should be forge-agnostic, so we ported many features to other platforms like GitLab, Tangled, Codeberg, and so on. As a lot of this hand-written code lived in the npmx repository itself, we noticed that it had become quite a mess to introduce new features for all platforms and keep each one up to date.
+Most public repositories of npm packages live on GitHub, which is why npmx has introduced a lot of quality-of-life features over the past months, like changelogs, repo metadata, releases, Markdown links, and much more. We quickly realized that npmx should be forge-agnostic, so we ported many features to other platforms like GitLab, tangled, Codeberg, and so on. As a lot of this hand-written code lived in the npmx repository itself, we noticed that it had become quite a mess to introduce new features for all platforms and keep each one up to date.
 
-So [Daniel](https://bsky.app/profile/danielroe.dev), [Felix](https://bsky.app/profile/felixs.dev), and [Philippe](https://bsky.app/profile/philippeserhal.com) started working on [`forges`](https://forges.link): a dedicated npm package to interact with the most popular forges out there. At the time of writing, it supports 16 forges, from Tangled and Pushin.eu to GitCafe. Shoutout to [Anthony](https://bsky.app/profile/antfu.me) for the amazing logo design and to [oritwoen](https://bsky.app/profile/oritwoen.dev), who quickly became one of our most active contributors and added the GitBucket and GitCafe providers. This package opens up a lot of amazing possibilities to build new tools, and Philippe took on the incredible task of refactoring the whole npmx codebase to use this one package, which removed over 1,000 lines of code while keeping every forge npmx already supported, and even fixed a few of them along the way 🤯
+So [Daniel](https://bsky.app/profile/danielroe.dev), [Felix](https://bsky.app/profile/felixs.dev), and [Philippe](https://bsky.app/profile/philippeserhal.com) started working on [`forges`](https://forges.link): a dedicated npm package to interact with the most popular forges out there. At the time of writing, it supports 16 forges, from [tangled](https://tangled.org/) and [Pushin.eu](https://pushin.eu/) to [GitCafe](https://git.cafe/). Shoutout to [Anthony](https://bsky.app/profile/antfu.me) for the amazing logo design and to [oritwoen](https://bsky.app/profile/oritwoen.dev), who quickly became one of our most active contributors and added the GitBucket and GitCafe providers. This package opens up a lot of amazing possibilities to build new tools, and Philippe took on the incredible task of refactoring the whole npmx codebase to use this one package, which removed over 1,000 lines of code while keeping every forge npmx already supported, and even fixed a few of them along the way 🤯
 
 ![The forges.link capability matrix showing which operations each of the 16 forges supports](/blog/assets/release/prism-forge/forges.png)
 
