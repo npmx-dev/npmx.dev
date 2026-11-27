@@ -24,7 +24,7 @@ export default defineConfig({
         '**/OgImage/*.takumi.vue',
       ],
       include: [
-        /\.(vue|mdx|html)($|\?)/,
+        /\.(vue|md|mdx|html)($|\?)/,
         // git provider icons composable
         '**/composables/useProviderIcon.ts',
         // Shared chart annotator icon classes
