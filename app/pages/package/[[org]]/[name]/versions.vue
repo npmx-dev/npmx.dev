@@ -521,15 +521,14 @@ const flatItems = computed<FlatItem[]>(() => {
           class="flex-1 min-w-0 self-start border-y sm:border border-border sm:rounded-lg sm:overflow-hidden"
         >
           <ClientOnly>
-            <WindowVirtualizer :data="flatItems">
-              <template #default="{ item, index }">
+            <WindowVirtualizer :data="flatItems" :item-size="41" class="-mb-px">
+              <template #default="{ item }">
                 <div :key="item.key">
                   <!-- ── Group header ── -->
                   <button
                     v-if="item.type === 'header'"
                     type="button"
-                    class="flex items-center gap-3 px-4 py-2.5 w-full text-start hover:bg-bg-subtle transition-colors"
-                    :class="index < flatItems.length - 1 ? 'border-b border-border' : ''"
+                    class="flex items-center gap-3 px-4 py-2.5 w-full text-start border-b border-border hover:bg-bg-subtle transition-colors"
                     :aria-expanded="expandedGroups.has(item.groupKey)"
                     @click="toggleGroup(item.groupKey)"
                   >
@@ -603,11 +602,7 @@ const flatItems = computed<FlatItem[]>(() => {
                   </button>
 
                   <!-- ── Version row ── -->
-                  <div
-                    v-else
-                    class="transition-colors"
-                    :class="index < flatItems.length - 1 ? 'border-b border-border' : ''"
-                  >
+                  <div v-else class="border-b border-border transition-colors">
                     <div
                       class="flex items-center gap-3 px-4 ps-11 py-2.5 group relative hover:bg-bg-subtle"
                     >
@@ -714,12 +709,12 @@ const flatItems = computed<FlatItem[]>(() => {
 
             <!-- SSR fallback: static list of first group headers -->
             <template #fallback>
-              <div>
+              <div class="-mb-px">
                 <button
                   v-for="item in versionGroups.slice(0, SSR_COUNT)"
                   :key="item.groupKey"
                   type="button"
-                  class="flex items-center gap-3 px-4 py-2.5 w-full text-start border-b border-border last:border-b-0"
+                  class="flex items-center gap-3 px-4 py-2.5 w-full text-start border-b border-border"
                   :aria-expanded="false"
                 >
                   <span class="w-4 h-4 flex items-center justify-center text-fg-subtle shrink-0">
