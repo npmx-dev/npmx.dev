@@ -32,6 +32,7 @@ const FIXTURE_PATHS = {
   githubContributors: 'github:contributors.json',
   githubContributorsStats: 'github:contributors-stats.json',
   jsdelivr: 'jsdelivr',
+  unghReleases: 'ungh:releases',
 } as const
 
 type FixtureType = keyof typeof FIXTURE_PATHS
@@ -483,6 +484,47 @@ async function handleGitHubApi(
   return null
 }
 
+async function handleNpmVersionDownloads(
+  url: string,
+  storage: ReturnType<typeof useStorage>,
+): Promise<MockResult | null> {
+  const urlObj = URL.parse(url)
+  if (urlObj?.host !== 'api.npmjs.org') return null
+
+  const packageName = decodeURIComponent(urlObj.pathname).match(
+    /^\/versions\/(.+)\/last-week$/,
+  )?.[1]
+  if (!packageName) return null
+
+  const packument = await storage.getItem<{ versions: Record<string, unknown> }>(
+    getFixturePath('packument', packageName),
+  )
+  if (!packument) return null
+
+  const downloads = Object.fromEntries(
+    Object.keys(packument.versions).map((version, index) => [version, 100_000 >> index]),
+  )
+  return { data: { package: packageName, downloads } }
+}
+
+async function handleUnghReleases(
+  url: string,
+  storage: ReturnType<typeof useStorage>,
+): Promise<MockResult | null> {
+  const urlObj = URL.parse(url)
+  if (urlObj?.host !== 'ungh.cc') return null
+
+  const match = urlObj.pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/releases(\/latest)?$/)
+  if (!match) return null
+
+  const fixture = await storage.getItem<{ releases: unknown[] }>(
+    `${FIXTURE_PATHS.unghReleases}:${match[1]}:${match[2]}.json`,
+  )
+  if (!fixture) return null
+
+  return { data: match[3] ? { release: fixture.releases[0] } : fixture }
+}
+
 interface FixtureMatchWithVersion extends FixtureMatch {
   version?: string // 'latest', a semver version, or undefined for full packument
 }
@@ -583,9 +625,12 @@ async function handleJsdelivrDataApi(
 
   const parsed = parsePackageSpec(packageMatch[1])
 
-  // Try per-package fixture first
-  const fixturePath = getFixturePath('jsdelivr', parsed.name)
-  const fixture = await storage.getItem<unknown>(fixturePath)
+  const fixture =
+    (parsed.version &&
+      (await storage.getItem<unknown>(
+        getFixturePath('jsdelivr', `${parsed.name}@${parsed.version}`),
+      ))) ||
+    (await storage.getItem<unknown>(getFixturePath('jsdelivr', parsed.name)))
   if (fixture) {
     return { data: fixture }
   }
@@ -613,6 +658,18 @@ async function fetchFromFixtures<T>(
   url: string,
   storage: ReturnType<typeof useStorage>,
 ): Promise<CachedFetchResult<T>> {
+  const npmVersionDownloadsResult = await handleNpmVersionDownloads(url, storage)
+  if (npmVersionDownloadsResult) {
+    if (VERBOSE) process.stdout.write(`[test-fixtures] npm version downloads: ${url}\n`)
+    return { data: npmVersionDownloadsResult.data as T, isStale: false, cachedAt: Date.now() }
+  }
+
+  const unghReleasesResult = await handleUnghReleases(url, storage)
+  if (unghReleasesResult) {
+    if (VERBOSE) process.stdout.write(`[test-fixtures] UNGH releases: ${url}\n`)
+    return { data: unghReleasesResult.data as T, isStale: false, cachedAt: Date.now() }
+  }
+
   // Check for mock responses (OSV, JSR)
   const mockResult = getMockForUrl(url)
   if (mockResult) {

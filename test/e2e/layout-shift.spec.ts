@@ -15,6 +15,15 @@ const PAGES = [
   '/blog/alpha-release',
 ] as const
 
+const PACKAGE_TABS = [
+  '/package/nuxt/versions',
+  '/package-docs/ufo/v/1.6.3',
+  '/package-changelog/nuxt/v/4.3.1',
+  '/package-timeline/nuxt/v/4.3.1',
+  '/package-stats/nuxt/v/4.3.1',
+  '/diff/vue/v/3.5.26...3.5.27',
+] as const
+
 const BLOG_POSTS_WITH_MEDIA = [
   '/blog/alpha-release',
   '/blog/release/0.8',
@@ -32,6 +41,8 @@ const VIEWPORTS = [
   { width: 1280, height: 800 },
   { width: 1536, height: 864 },
 ] as const
+
+const PACKAGE_TAB_VIEWPORTS = new Set<(typeof VIEWPORTS)[number]>([VIEWPORTS[0], VIEWPORTS[4]])
 
 const PLATFORMS = {
   linux:
@@ -101,12 +112,14 @@ test.describe('Layout shift', () => {
     test.describe(`${viewport.width}x${viewport.height}`, () => {
       test.use({ viewport })
 
-      for (const path of PAGES) {
+      const paths = PACKAGE_TAB_VIEWPORTS.has(viewport) ? [...PAGES, ...PACKAGE_TABS] : PAGES
+      for (const path of paths) {
         test(path, async ({ page, goto }) => {
           await observeLayoutShifts(page)
           await goto(path, { waitUntil: 'hydration' })
 
           expect(await collectLayoutShifts(page)).toEqual([])
+          expect(await page.evaluate(() => scrollY)).toBe(0)
         })
       }
     })

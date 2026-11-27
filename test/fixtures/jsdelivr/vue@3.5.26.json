@@ -1,0 +1,258 @@
+{
+  "type": "npm",
+  "name": "vue",
+  "version": "3.5.26",
+  "default": "/dist/vue.global.min.js",
+  "files": [
+    {
+      "type": "directory",
+      "name": "dist",
+      "files": [
+        {
+          "type": "file",
+          "name": "vue.cjs.js",
+          "hash": "MwRpDGhrrWhu7k/RGdbBuxXNB0DLje0m7lahaL+uai4=",
+          "size": 2296
+        },
+        {
+          "type": "file",
+          "name": "vue.cjs.prod.js",
+          "hash": "ZZjCuZtylHVZceS5DD54Dag5P2Aq+D3xTF3wpxoblfM=",
+          "size": 1774
+        },
+        {
+          "type": "file",
+          "name": "vue.d.mts",
+          "hash": "wBkVkr6Ot5BvmaxLh5jYClhblAAeoaX1DWzlsNE6XGI=",
+          "size": 299
+        },
+        {
+          "type": "file",
+          "name": "vue.d.ts",
+          "hash": "wBkVkr6Ot5BvmaxLh5jYClhblAAeoaX1DWzlsNE6XGI=",
+          "size": 299
+        },
+        {
+          "type": "file",
+          "name": "vue.esm-browser.js",
+          "hash": "75FuLhUTPk19sncwNIrm0BGEL0/Qw298+/v01fPWYoI=",
+          "size": 542872
+        },
+        {
+          "type": "file",
+          "name": "vue.esm-browser.prod.js",
+          "hash": "T1TVu9SFEoLArPLKKEp6gsj/eScmHl5TkUebxGK6ldk=",
+          "size": 166282
+        },
+        {
+          "type": "file",
+          "name": "vue.esm-bundler.js",
+          "hash": "QFrBYanzt1wFPBNfRVln5qO5zNAVaCPUZt8U+m/6gRY=",
+          "size": 2188
+        },
+        {
+          "type": "file",
+          "name": "vue.global.js",
+          "hash": "dHYH2V57cDwK3e0XZP5fbuf0ICZ5c/3mHgqGG6hC6fY=",
+          "size": 574486
+        },
+        {
+          "type": "file",
+          "name": "vue.global.prod.js",
+          "hash": "tAgDTQf3yKkfEX+epicjVa5F9Vy9oaStBwStjXA5gJU=",
+          "size": 161444
+        },
+        {
+          "type": "file",
+          "name": "vue.runtime.esm-browser.js",
+          "hash": "tXuiecMKQkSFn04DVYAiDPNflU3ix4Ahbq9HcWl1mwQ=",
+          "size": 373935
+        },
+        {
+          "type": "file",
+          "name": "vue.runtime.esm-browser.prod.js",
+          "hash": "iUXCilDOHCgHHeKSwc1mBxL50K+TelmsKiM/7psTAnQ=",
+          "size": 105242
+        },
+        {
+          "type": "file",
+          "name": "vue.runtime.esm-bundler.js",
+          "hash": "Q7FJdkc2pzCAjUtXa5aDTZR4lh2ldXYli4kxOiiPb88=",
+          "size": 580
+        },
+        {
+          "type": "file",
+          "name": "vue.runtime.global.js",
+          "hash": "ACJTQ1OdFsfXxEZxD6iy/LHxY2IvxgLLdEmyvCTCAow=",
+          "size": 399461
+        },
+        {
+          "type": "file",
+          "name": "vue.runtime.global.prod.js",
+          "hash": "eIEJvuexqnkEiAtZF/1YEnDf4XjhHft35vNdzL9J5A4=",
+          "size": 103186
+        }
+      ]
+    },
+    {
+      "type": "directory",
+      "name": "compiler-sfc",
+      "files": [
+        {
+          "type": "file",
+          "name": "index.browser.js",
+          "hash": "vKxYudqTucILq0Z1HcNs4ez24gmyZhaB621OFnUMnGw=",
+          "size": 46
+        },
+        {
+          "type": "file",
+          "name": "index.browser.mjs",
+          "hash": "P+7CEsCuuR5abmLKr58SiVRZAhD4wwKRDqN3wIj2tho=",
+          "size": 34
+        },
+        {
+          "type": "file",
+          "name": "index.d.mts",
+          "hash": "P+7CEsCuuR5abmLKr58SiVRZAhD4wwKRDqN3wIj2tho=",
+          "size": 34
+        },
+        {
+          "type": "file",
+          "name": "index.d.ts",
+          "hash": "P+7CEsCuuR5abmLKr58SiVRZAhD4wwKRDqN3wIj2tho=",
+          "size": 34
+        },
+        {
+          "type": "file",
+          "name": "index.js",
+          "hash": "oiJsPu24J86Q+r0YQTyLbUAIqZJp9AP4bxYLczxUaXA=",
+          "size": 75
+        },
+        {
+          "type": "file",
+          "name": "index.mjs",
+          "hash": "zEcxISpVQrCZcvX1uAByr6A4eUEkK9JdXTpG2LuSDjg=",
+          "size": 61
+        },
+        {
+          "type": "file",
+          "name": "package.json",
+          "hash": "qDsWZ8wfqnNKzp1I1o9e5GZuigkWDfwmq0ue3GCoDA8=",
+          "size": 50
+        },
+        {
+          "type": "file",
+          "name": "register-ts.js",
+          "hash": "QkRyfJQu+K/vopaeqeQXnYhf+1PZH5YoEvyxikBabsk=",
+          "size": 111
+        }
+      ]
+    },
+    {
+      "type": "directory",
+      "name": "jsx-runtime",
+      "files": [
+        {
+          "type": "file",
+          "name": "index.d.ts",
+          "hash": "MY0ZEYv2v40IhEHJSJkPU8r8ee1YG3jz1BoPej9fFFw=",
+          "size": 848
+        },
+        {
+          "type": "file",
+          "name": "index.js",
+          "hash": "7PyafRHlPLlB9VPK4NsP/r/Yf5eKxqdkocPbtCGouI8=",
+          "size": 303
+        },
+        {
+          "type": "file",
+          "name": "index.mjs",
+          "hash": "gVyN3tATf8FbqLWNzm1xLRbtPXNwHNHiomtW5IMvGaY=",
+          "size": 265
+        },
+        {
+          "type": "file",
+          "name": "package.json",
+          "hash": "h7UgBMQCDJWur6qiP24hdlIZVHgo4snzqUzZUw3UthQ=",
+          "size": 75
+        }
+      ]
+    },
+    {
+      "type": "directory",
+      "name": "server-renderer",
+      "files": [
+        {
+          "type": "file",
+          "name": "index.d.mts",
+          "hash": "3fT8EanRVfHVgISDitDrZA04trdyT6wUoeeC76qilmw=",
+          "size": 37
+        },
+        {
+          "type": "file",
+          "name": "index.d.ts",
+          "hash": "3fT8EanRVfHVgISDitDrZA04trdyT6wUoeeC76qilmw=",
+          "size": 37
+        },
+        {
+          "type": "file",
+          "name": "index.js",
+          "hash": "Dnc1vk5lOZ0g2eplhAoM0O73+TX9GyJObEW1dr4SrBM=",
+          "size": 49
+        },
+        {
+          "type": "file",
+          "name": "index.mjs",
+          "hash": "3fT8EanRVfHVgISDitDrZA04trdyT6wUoeeC76qilmw=",
+          "size": 37
+        },
+        {
+          "type": "file",
+          "name": "package.json",
+          "hash": "qDsWZ8wfqnNKzp1I1o9e5GZuigkWDfwmq0ue3GCoDA8=",
+          "size": 50
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": "index.js",
+      "hash": "pSh/YFa8XCxWnTGAY+4EP1Wg0yP6cmL2RFbVj9V0+Sg=",
+      "size": 171
+    },
+    {
+      "type": "file",
+      "name": "index.mjs",
+      "hash": "vi81WQvuReaYUNDY1I8LjI9cDvDs+KcmWrEvt63WWE0=",
+      "size": 27
+    },
+    {
+      "type": "file",
+      "name": "jsx.d.ts",
+      "hash": "ijXsGcbGmcmP0W/ICuaWTYATnFqOYuxKXGCQLB2jKFw=",
+      "size": 741
+    },
+    {
+      "type": "file",
+      "name": "LICENSE",
+      "hash": "G7hcybE7ge9ByBxRhmFy/DReBQPIZyamdVt5ZZC3AXU=",
+      "size": 1091
+    },
+    {
+      "type": "file",
+      "name": "package.json",
+      "hash": "sIAll/2sxkHwoIqMcYjsUNw73MemO4YXL7IQL6SaSQ4=",
+      "size": 2810
+    },
+    {
+      "type": "file",
+      "name": "README.md",
+      "hash": "wSxqjXHTxJpu8n1LvXDja6Ki0ntKLJuhnqHA5cj2C68=",
+      "size": 3758
+    }
+  ],
+  "links": {
+    "stats": "https://data.jsdelivr.com/v1/stats/packages/npm/vue@3.5.26",
+    "entrypoints": "https://data.jsdelivr.com/v1/packages/npm/vue@3.5.26/entrypoints"
+  }
+}
