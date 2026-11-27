@@ -214,38 +214,38 @@ useShortcuts({
 <template>
   <!-- Package header -->
   <header class="bg-bg pt-5 pb-1 w-full container">
-    <!-- Package name and version -->
+    <!-- Keep name and version before the copy buttons for native text selection. -->
     <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
       <h1
-        class="flex flex-row items-start min-w-0 font-mono text-lg sm:text-3xl font-medium break-words"
+        class="min-w-0 font-mono text-lg sm:text-3xl font-medium break-words"
         :title="pkg?.name"
         dir="ltr"
       >
         <CopyToClipboardButton
+          inline
           :copied="copiedPkgName"
           :copy-text="$t('package.copy_name')"
           @click="copyPkgName()"
         >
-          <LinkBase v-if="orgName" :to="{ name: 'org', params: { org: orgName } }">
-            @{{ orgName }}
-          </LinkBase>
-          <span v-if="orgName">/</span>
-          <span :class="{ 'text-fg-muted': !requestedVersion }">
-            {{ orgName ? pkg?.name.replace(`@${orgName}/`, '') : pkg?.name }}
-          </span>
+          <LinkBase v-if="orgName" :to="{ name: 'org', params: { org: orgName } }"
+            >@{{ orgName }}</LinkBase
+          ><span v-if="orgName">/</span
+          ><span :class="{ 'text-fg-muted': !requestedVersion }">
+            {{ orgName ? pkg?.name.replace(`@${orgName}/`, '') : pkg?.name }}</span
+          ><template v-if="requestedVersion && resolvedVersion"
+            ><span class="text-fg-subtle">@</span
+            ><CopyToClipboardButton
+              inline
+              :copied="copiedPkgVersion"
+              :copy-text="$t('package.copy_version')"
+              :title="resolvedVersion"
+              @click="copyPkgVersion()"
+              class="text-fg-subtle"
+            >
+              {{ resolvedVersion }}
+            </CopyToClipboardButton>
+          </template>
         </CopyToClipboardButton>
-        <template v-if="requestedVersion && resolvedVersion">
-          <span class="text-fg-subtle">@</span>
-          <CopyToClipboardButton
-            :copied="copiedPkgVersion"
-            :copy-text="$t('package.copy_version')"
-            :title="resolvedVersion"
-            @click="copyPkgVersion()"
-            class="text-fg-subtle"
-          >
-            {{ resolvedVersion }}
-          </CopyToClipboardButton>
-        </template>
       </h1>
       <!-- Package metrics -->
       <div class="flex gap-2 flex-wrap items-stretch">
