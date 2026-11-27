@@ -63,6 +63,13 @@ const packages = computed(() => results.value?.objects ?? [])
 
 const packageCount = computed(() => packages.value.length)
 
+const isLoadingPackages = computed(
+  () =>
+    (status.value === 'idle' || status.value === 'pending') &&
+    packages.value.length === 0 &&
+    !error.value,
+)
+
 // Apply client-side filter and sort
 const filteredAndSortedPackages = computed(() => {
   let pkgs = [...packages.value]
@@ -148,10 +155,13 @@ defineOgImage(
           <p v-if="results?.total" class="text-fg-muted text-sm mt-1">
             {{ $t('org.public_packages', { count: $n(results.total) }, results.total) }}
           </p>
+          <p v-else-if="isLoadingPackages" class="mt-1">
+            <SkeletonInline class="block! h-5 w-36" />
+          </p>
         </div>
 
         <!-- Link to npmjs.com profile + vanity downloads -->
-        <div class="ms-auto text-end">
+        <div class="ms-auto min-w-44 text-end">
           <nav aria-label="External links">
             <a
               :href="`https://www.npmjs.com/~${username}`"
@@ -168,20 +178,29 @@ defineOgImage(
             class="text-fg-subtle text-xs mt-1 flex items-center gap-1.5 justify-end cursor-help"
             :title="$t('common.vanity_downloads_hint', { count: filteredCount }, filteredCount)"
           >
-            <span class="i-lucide:chart-line w-3.5 h-3.5" aria-hidden="true" />
-            <span class="font-mono"
-              >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
-            >
+            <SkeletonInline v-if="isLoadingPackages" class="h-4 w-32" />
+            <template v-else>
+              <span class="i-lucide:chart-line w-3.5 h-3.5" aria-hidden="true" />
+              <span class="font-mono"
+                >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
+              >
+            </template>
           </p>
         </div>
       </div>
     </header>
 
     <!-- Loading state (only on initial load, not when we already have data) -->
-    <LoadingSpinner
-      v-if="(status === 'idle' || status === 'pending') && packages.length === 0 && !error"
-      :text="$t('common.loading_packages')"
-    />
+    <section v-if="isLoadingPackages">
+      <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+        {{ $t('user.page.packages_title') }}
+      </h2>
+      <div class="flex flex-col sm:flex-row gap-3 mb-6">
+        <SkeletonBlock class="h-10.75 sm:h-10 sm:flex-1 rounded-md" />
+        <SkeletonBlock class="h-10 sm:w-48.5 rounded-md" />
+      </div>
+      <PackageListSkeleton />
+    </section>
 
     <!-- Error state -->
     <div v-else-if="error || status === 'error'" role="alert" class="py-12 text-center">

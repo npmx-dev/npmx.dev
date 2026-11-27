@@ -16,6 +16,7 @@ const PAGES = [
 ] as const
 
 const BLOG_POSTS_WITH_MEDIA = [
+  '/blog/alpha-release',
   '/blog/release/0.8',
   '/blog/release/rainbow-comet',
   '/blog/release/crystal-chronicle',
@@ -53,16 +54,18 @@ interface LayoutShiftEntry extends PerformanceEntry {
 declare global {
   interface Window {
     layoutShifts: LayoutShift[]
+    layoutShiftsSince: number
   }
 }
 
 async function observeLayoutShifts(page: Page) {
   await page.addInitScript(() => {
     window.layoutShifts = []
+    window.layoutShiftsSince = 0
 
     new PerformanceObserver(list => {
       for (const entry of list.getEntries() as LayoutShiftEntry[]) {
-        if (entry.hadRecentInput) continue
+        if (entry.hadRecentInput || entry.startTime < window.layoutShiftsSince) continue
         window.layoutShifts.push({
           value: entry.value,
           sources: entry.sources.map(({ node, previousRect: prev, currentRect: curr }) => ({
@@ -120,6 +123,15 @@ test.describe('Layout shift', () => {
     expect(await collectLayoutShifts(page)).toEqual([])
   })
 
+  test('1280x800 /~qwerzl with a short package list', async ({ page, goto }) => {
+    await page.setViewportSize({ width: 1280, height: 800 })
+    await observeLayoutShifts(page)
+    await goto('/~qwerzl', { waitUntil: 'hydration' })
+
+    await expect(page.getByText('End of results')).toBeInViewport()
+    expect(await collectLayoutShifts(page)).toEqual([])
+  })
+
   for (const path of BLOG_POSTS_WITH_MEDIA) {
     test(`1280x800 ${path} with slow images`, async ({ page, goto }) => {
       await page.setViewportSize({ width: 1280, height: 800 })
@@ -138,7 +150,106 @@ test.describe('Layout shift', () => {
             .map(el => el.getAttribute('src') ?? el.getAttribute('poster')),
         )
       expect(unsized).toEqual([])
+
+      const aspectRatios = await page.locator('article video[poster]').evaluateAll(videos =>
+        Promise.all(
+          (videos as HTMLVideoElement[]).map(async video => {
+            const poster = new Image()
+            poster.src = video.poster
+            await poster.decode()
+            return [video.width / video.height, poster.naturalWidth / poster.naturalHeight] as const
+          }),
+        ),
+      )
+      for (const [video, poster] of aspectRatios) {
+        expect(poster).toBeCloseTo(video, 2)
+      }
       expect(await collectLayoutShifts(page)).toEqual([])
+    })
+  }
+})
+
+interface Navigation {
+  from: string
+  to: string
+  loading: string
+}
+
+const NAVIGATIONS: Navigation[] = [
+  { from: '/package/nuxt', to: '/package/@nuxt/kit', loading: 'main > article[aria-busy="true"]' },
+  { from: '/package/@nuxt/kit', to: '/org/nuxt', loading: 'main [aria-busy="true"]' },
+  { from: '/package/vue', to: '/package-code/vue/v/3.5.27', loading: 'text=Loading file tree' },
+  {
+    from: '/package/ufo',
+    to: '/package-docs/ufo/v/1.6.3',
+    loading: 'main .animate-skeleton-pulse',
+  },
+]
+
+const DATA_DELAY = 500
+
+test.describe('Layout shift after client-side navigation', () => {
+  test.use({ userAgent: PLATFORMS.linux })
+
+  for (const viewport of [VIEWPORTS[0], VIEWPORTS[4]]) {
+    test.describe(`${viewport.width}x${viewport.height}`, () => {
+      test.use({ viewport })
+
+      for (const { from, to, loading } of NAVIGATIONS) {
+        test(`${from} → ${to}`, async ({ page, goto }) => {
+          await observeLayoutShifts(page)
+          await goto(from, { waitUntil: 'hydration' })
+          await page.waitForLoadState('networkidle')
+
+          const delayed = new Set<Promise<void>>()
+          await page.route(/\/_payload\.json/, route =>
+            route.fulfill({ contentType: 'application/json', body: '[{}]' }),
+          )
+          await page.route('**/*', async route => {
+            const request = route.request()
+            if (
+              !['fetch', 'xhr'].includes(request.resourceType()) ||
+              request.url().includes('/_payload.json')
+            ) {
+              return route.fallback()
+            }
+            const delay =
+              new URL(request.url()).hostname === 'ungh.cc' ? DATA_DELAY * 2 : DATA_DELAY
+            const response = new Promise(resolve => setTimeout(resolve, delay)).then(() =>
+              route.fallback(),
+            )
+            delayed.add(response)
+            await response
+            delayed.delete(response)
+          })
+
+          await page.evaluate(
+            href =>
+              new Promise<void>(resolve => {
+                const main = document.querySelector('main')!
+                const check = () => {
+                  if (main.isConnected) return requestAnimationFrame(check)
+                  requestAnimationFrame(() => {
+                    window.layoutShifts = []
+                    window.layoutShiftsSince = performance.now()
+                    resolve()
+                  })
+                }
+                requestAnimationFrame(check)
+                document.querySelector<HTMLElement>(`a[href="${href}"]`)!.click()
+              }),
+            to,
+          )
+          await expect(page.locator(loading).first()).toBeVisible()
+
+          while (delayed.size) {
+            await Promise.all(delayed)
+            await page.waitForTimeout(100)
+          }
+          await expect(page.locator(loading)).toHaveCount(0)
+          expect(await collectLayoutShifts(page)).toEqual([])
+        })
+      }
     })
   }
 })

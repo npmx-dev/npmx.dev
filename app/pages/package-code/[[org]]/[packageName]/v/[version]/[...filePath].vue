@@ -454,7 +454,10 @@ useCommandPaletteContextCommands(
     </div>
 
     <!-- Loading state -->
-    <div v-else-if="treeStatus === 'pending'" class="container py-20 text-center">
+    <div
+      v-else-if="treeStatus === 'pending'"
+      class="container py-20 text-center md:min-h-[calc(100vh-10.5rem)]"
+    >
       <div class="i-svg-spinners:ring-resize w-8 h-8 mx-auto text-fg-muted" />
       <p class="mt-4 text-fg-muted">{{ $t('code.loading_tree') }}</p>
     </div>
