@@ -44,6 +44,9 @@ const config: KnipConfig = {
       project: ['**/*.{ts,vue,cjs,mjs,css}'],
       ignoreDependencies: ['@nuxtjs/mdc'],
     },
+    'tui': {
+      project: ['src/**/*.ts!'],
+    },
   },
 }
 
