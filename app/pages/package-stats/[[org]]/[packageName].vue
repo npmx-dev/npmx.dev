@@ -106,7 +106,7 @@ useSeoMeta({
       >
         <div v-for="row in facetRows" :key="row.id" class="py-1">
           <dt class="text-sm text-fg-muted lowercase">{{ row.label }}</dt>
-          <dd class="text-sm font-mono mt-1">
+          <dd class="text-sm font-mono mt-1 min-h-5">
             <span
               v-if="
                 row.loading || status === 'pending' || (status === 'idle' && row.value === null)
