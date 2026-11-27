@@ -8,4 +8,5 @@ export interface DocsResponse {
   breadcrumbs?: string | null
   status: DocsStatus
   message?: string
+  truncated?: boolean
 }

@@ -56,28 +56,37 @@ const docsUrl = computed(() => {
 
 const shouldFetch = computed(() => !!docsUrl.value)
 
-const { data: docsData, status: docsStatus } = useLazyFetch<DocsResponse>(
-  () => docsUrl.value ?? '',
-  {
-    watch: [docsUrl],
-    immediate: shouldFetch.value,
-    server: false,
-    default: () => ({
-      package: packageName.value,
-      version: resolvedVersion.value ?? '',
-      html: '',
-      toc: null,
-      status: 'missing' as const,
-      message: t('package.docs.default_not_available'),
-    }),
-  },
+const {
+  data: docsData,
+  status: docsStatus,
+  error: docsError,
+} = useLazyFetch<DocsResponse>(() => docsUrl.value ?? '', {
+  watch: [docsUrl],
+  immediate: shouldFetch.value,
+  server: false,
+  default: () => ({
+    package: packageName.value,
+    version: resolvedVersion.value ?? '',
+    html: '',
+    toc: null,
+    status: 'missing' as const,
+    message: t('package.docs.default_not_available'),
+  }),
+})
+
+const resolvedDocs = computed(() =>
+  resolveDocsResponse(docsData.value, docsError.value, {
+    packageName: packageName.value,
+    version: resolvedVersion.value ?? '',
+    fallbackMessage: t('package.docs.not_available_detail'),
+  }),
 )
 
 // The docs HTML is only fetched client-side, so on a direct load the router's scroll behavior runs
 // before the hash target exists. Navigate to the hash again once the content has rendered.
 if (import.meta.client) {
   watch(
-    () => docsData.value?.html,
+    () => resolvedDocs.value?.html,
     html => {
       // Wait for the version redirect to land: navigating to the hash first would cancel it.
       if (html && route.hash && requestedVersion.value) {
@@ -145,7 +154,7 @@ if (import.meta.server) {
 const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),
 )
-const showEmptyState = computed(() => docsData.value?.status !== 'ok')
+const showEmptyState = computed(() => resolvedDocs.value?.status !== 'ok')
 
 const packageHeaderHeight = usePackageHeaderHeight()
 const stickyStyle = computed(() => {
@@ -169,7 +178,7 @@ const stickyStyle = computed(() => {
     <div class="flex" dir="ltr">
       <!-- Sidebar TOC -->
       <aside
-        v-if="docsData?.toc && !showEmptyState"
+        v-if="resolvedDocs?.toc && !showEmptyState"
         class="hidden lg:block w-64 xl:w-72 shrink-0 border-ie border-border"
       >
         <div class="docs-sidebar sticky overflow-y-auto p-4">
@@ -177,7 +186,7 @@ const stickyStyle = computed(() => {
             {{ $t('package.docs.contents') }}
           </h2>
           <!-- eslint-disable vue/no-v-html -->
-          <div class="toc-content" v-html="docsData.toc" />
+          <div class="toc-content" v-html="resolvedDocs.toc" />
         </div>
       </aside>
 
@@ -194,7 +203,7 @@ const stickyStyle = computed(() => {
           <div class="max-w-xl rounded-lg border border-border bg-bg-muted p-6">
             <h2 class="font-mono text-lg mb-2">{{ $t('package.docs.not_available') }}</h2>
             <p class="text-fg-subtle text-sm">
-              {{ docsData?.message ?? $t('package.docs.not_available_detail') }}
+              {{ resolvedDocs?.message ?? $t('package.docs.not_available_detail') }}
             </p>
             <div class="flex gap-4 mt-4">
               <NuxtLink
@@ -211,7 +220,7 @@ const stickyStyle = computed(() => {
 
         <div v-else class="container mx-auto py-6 sm:py-8 lg:py-12">
           <!-- eslint-disable vue/no-v-html -->
-          <div class="docs-content" v-html="docsData?.html" />
+          <div class="docs-content" v-html="resolvedDocs?.html" />
         </div>
       </main>
     </div>
