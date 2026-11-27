@@ -21,6 +21,7 @@ const BLOG_POSTS_WITH_MEDIA = [
   '/blog/release/rainbow-comet',
   '/blog/release/crystal-chronicle',
   '/blog/release/photon-genesis',
+  '/blog/release/prism-forge',
 ] as const
 
 const VIEWPORTS = [

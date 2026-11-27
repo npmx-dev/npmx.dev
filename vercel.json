@@ -101,6 +101,26 @@
         }
       ],
       "destination": "https://main.npmx.dev/translation-status"
+    },
+    {
+      "source": "/blog/og/release-0_8.png",
+      "destination": "/blog/assets/release/0.8/og.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/og/release-crystal-chronicle.png",
+      "destination": "/blog/assets/release/crystal-chronicle/og.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/og/release-rainbow-comet.png",
+      "destination": "/blog/assets/release/rainbow-comet/og.png",
+      "permanent": true
+    },
+    {
+      "source": "/blog/og/release-photon-genesis.png",
+      "destination": "/blog/assets/release/photon-genesis/og.png",
+      "permanent": true
     }
   ]
 }
