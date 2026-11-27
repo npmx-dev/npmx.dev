@@ -139,7 +139,7 @@ Accessibility got some love as well. Until now, every chart came with a hidden d
 
 ## Faster, and nothing jumps
 
-Under the hood, [Daniel](https://bsky.app/profile/danielroe.dev) kept squeezing out milliseconds. The first page load now comes with all its data inlined, so there's no extra request and no second render on the server, using a Nuxt feature that was [built because of what npmx needed](https://github.com/nuxt/nuxt/pull/34410). On top of that, code, docs, and changelog pages are now served as a tiny static shell: a code page for `next` went from 2.2 MB of HTML to just 9.4 KB ⚡
+Under the hood, [Daniel](https://bsky.app/profile/danielroe.dev) kept squeezing out milliseconds. The first page load now comes with all its data inlined, so there's no extra request and no second render on the server, using a Nuxt feature that was [built because of what npmx needed](https://github.com/nuxt/nuxt/pull/34410). On top of that, code, docs, and changelog pages are now served as a tiny static shell: a code page for `next` went from 2.2 MB of HTML to just 9.4 KB. And if you're not logged in, npmx no longer checks your session and likes on every page view, which saves more than 9 million requests a week ⚡
 
 <details>
 <summary>PRs</summary>
@@ -155,10 +155,12 @@ Under the hood, [Daniel](https://bsky.app/profile/danielroe.dev) kept squeezing 
 - Prefetch payload routes on interaction only ([#3444](https://github.com/npmx-dev/npmx.dev/pull/3444))
 - Serve code and docs pages from static client-only shell ([#3479](https://github.com/npmx-dev/npmx.dev/pull/3479))
 - Serve changelogs from a static client-only shell ([#3480](https://github.com/npmx-dev/npmx.dev/pull/3480))
+- Skip `/api/auth/session` for anonymous visitors ([#3472](https://github.com/npmx-dev/npmx.dev/pull/3472))
+- Cache public like counts + skip per-user status for anonymous visitors ([#3474](https://github.com/npmx-dev/npmx.dev/pull/3474))
 
 </details>
 
-And nothing jumps anymore: Daniel fixed a bunch of small layout shifts, for example the like button pushing the tabs down while loading, and added a test so they stay fixed. The last one was a font flicker that [Aurora](https://bsky.app/profile/aurorascharff.no) spotted right after watching Daniel's npmx talk at JSConf MX, because it never happens on Aurora's own Next.js sites. One PR later, the fonts are cached properly, and it was Aurora's very first npmx contribution 🎉
+And nothing jumps anymore: Daniel fixed a bunch of small layout shifts, both on page load and when navigating between pages, for example the like button pushing the tabs down while loading, and added tests so they stay fixed. The last one was a font flicker that [Aurora](https://bsky.app/profile/aurorascharff.no) spotted right after watching Daniel's npmx talk at JSConf MX, because it never happens on Aurora's own Next.js sites. One PR later, the fonts are cached properly, and it was Aurora's very first npmx contribution 🎉
 
 <BlueskyPostEmbed
   url="https://bsky.app/profile/aurorascharff.no/post/3myzuaup4l22r"
@@ -172,6 +174,9 @@ And nothing jumps anymore: Daniel fixed a bunch of small layout shifts, for exam
 - Fix some layout shifts + add cls regression test ([#3464](https://github.com/npmx-dev/npmx.dev/pull/3464))
 - Cache fonts and prevent font swap layout shift ([#3375](https://github.com/npmx-dev/npmx.dev/pull/3375))
 - Prevent blog embeds + images from causing layout shift ([#3467](https://github.com/npmx-dev/npmx.dev/pull/3467))
+- Fix some client-side nav layout shift ([#3469](https://github.com/npmx-dev/npmx.dev/pull/3469))
+- Prevent some layout shift on blog pages ([#3484](https://github.com/npmx-dev/npmx.dev/pull/3484))
+- Prevent layout shift on short package lists + blog media ([#3485](https://github.com/npmx-dev/npmx.dev/pull/3485))
 
 </details>
 
