@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VueUiXy, type VueUiXyConfig, type VueUiXySvgSlotProps } from 'vue-data-ui/vue-ui-xy'
 import { useTooltipPosition } from 'vue-data-ui/composables'
-import { useDebounceFn, useElementSize, useTimeoutFn } from '@vueuse/core'
+import { useDebounceFn, useElementSize, useMediaQuery, useTimeoutFn } from '@vueuse/core'
 import { useColors } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
 import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
@@ -123,8 +123,6 @@ function resetZoomTracking() {
   isZoomed.value = false
 }
 
-const { width } = useElementSize(rootEl)
-
 const compactNumberFormatter = useCompactNumberFormatter()
 
 onMounted(async () => {
@@ -174,8 +172,7 @@ const watermarkColors = computed(() => ({
   fgSubtle: colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK,
 }))
 
-const mobileBreakpointWidth = 640
-const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
+const isMobile = useMediaQuery('(max-width: 639.9px)')
 
 const DEFAULT_GRANULARITY: ChartTimeGranularity = 'weekly'
 
@@ -1317,11 +1314,7 @@ function drawSvgPrintLegend(svg: Record<string, any>) {
 const showCorrectionControls = shallowRef(false)
 const isResizing = shallowRef(false)
 
-const chartHeight = computed(() => {
-  if (isMobile.value) {
-    return 950
-  }
-
+const desktopChartHeight = computed(() => {
   const additionalHeight = isMultiPackageMode.value ? MULTI_PACKAGE_MODE_TOP_PADDING : 0
 
   if (props.hideControls) {
@@ -1329,6 +1322,13 @@ const chartHeight = computed(() => {
   }
   return 600 + additionalHeight
 })
+
+const chartHeight = computed(() => (isMobile.value ? 950 : desktopChartHeight.value))
+
+const isChartLoading = computed(() => !isMounted.value || pending.value)
+const chartSkeletonStyle = computed(() => ({
+  '--trends-chart-aspect': `1000 / ${desktopChartHeight.value}`,
+}))
 
 const { start } = useTimeoutFn(
   () => {
@@ -1917,7 +1917,11 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
       {{ $t('package.trends.title') }} — {{ activeMetricDef?.label }}
     </h2>
 
-    <div v-if="chartData.dataset" class="flex justify-end mb-3">
+    <div
+      v-if="chartData.dataset || isChartLoading"
+      class="flex justify-end mb-3"
+      :class="{ invisible: !chartData.dataset }"
+    >
       <SettingsToggle v-model="showDataTable" :label="$t('package.trends.table_view')" />
     </div>
 
@@ -1933,10 +1937,16 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
         :max-height="lastChartHeight || chartHeight"
         :estimated-last-value="hasEstimatedTableEndpoint"
       />
-      <div v-else-if="chartData.dataset" ref="chartPanel">
+      <div v-else-if="chartData.dataset || isChartLoading" ref="chartPanel">
         <ClientOnly>
+          <div v-if="!chartData.dataset" class="pt-14 pb-20">
+            <SkeletonBlock
+              class="[aspect-ratio:var(--trends-chart-aspect)] max-sm:aspect-[1000/950]"
+              :style="chartSkeletonStyle"
+            />
+          </div>
           <div
-            v-if="isSparklineLayout"
+            v-else-if="isSparklineLayout"
             id="split-chart-layout-panel"
             :role="isMultiPackageMode ? 'tabpanel' : undefined"
             :aria-labelledby="isMultiPackageMode ? 'split-chart-layout-tab' : undefined"
@@ -2230,13 +2240,18 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
           </div>
 
           <template #fallback>
-            <div class="min-h-[260px]" />
+            <div class="pt-14 pb-20">
+              <SkeletonBlock
+                class="[aspect-ratio:var(--trends-chart-aspect)] max-sm:aspect-[1000/950]"
+                :style="chartSkeletonStyle"
+              />
+            </div>
           </template>
         </ClientOnly>
       </div>
 
       <div
-        v-if="!chartData.dataset && !activeMetricState.pending"
+        v-if="!chartData.dataset && !isChartLoading"
         class="min-h-[260px] flex items-center justify-center text-fg-subtle font-mono text-sm"
       >
         {{ $t('package.trends.no_data') }}
@@ -2253,7 +2268,11 @@ const copyEmbedUrl = () => copyEmbed(embedUrl.value)
     </div>
 
     <!-- Chart embedding -->
-    <div v-if="isDownloadsMetric && !!chartData.dataset && !hideControls" class="mt-4">
+    <div
+      v-if="isDownloadsMetric && (!!chartData.dataset || isChartLoading) && !hideControls"
+      class="mt-4"
+      :class="{ invisible: !chartData.dataset }"
+    >
       <div class="flex flex-col gap-2">
         <button
           type="button"
