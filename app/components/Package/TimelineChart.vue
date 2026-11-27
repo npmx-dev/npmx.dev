@@ -33,7 +33,7 @@ import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWate
 import { useColors } from '~/composables/useColors'
 import { downloadFileLink } from '~/utils/download'
 import { useCopyChartPng } from '~/composables/useCopyChartPng'
-import { useElementSize, useTimeoutFn } from '@vueuse/core'
+import { useMediaQuery, useTimeoutFn } from '@vueuse/core'
 import TimelineChartDepSizeTooltip from './TimelineChartDepSizeTooltip.vue'
 import TimelineChartXyTooltip from './TimelineChartXyTooltip.vue'
 import TimelineChartXySvgSlot from './TimelineChartXySvgSlot.vue'
@@ -323,7 +323,6 @@ const { copiedPng, isCopyingPng, copyChartPng } = useCopyChartPng(chartRef)
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
-const { width } = useElementSize(rootEl)
 
 const compactNumberFormatter = useCompactNumberFormatter()
 const bytesFormatter = useBytesFormatter()
@@ -361,8 +360,7 @@ const watermarkColors = computed(() => ({
   fgSubtle: colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK,
 }))
 
-const mobileBreakpointWidth = 640
-const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
+const isMobile = useMediaQuery('(max-width: 639.9px)')
 
 const commonScaleSteps = computed(() => {
   if (activeTab.value === 'totalSize') {
@@ -886,7 +884,7 @@ const timelineMetricTabs = computed(() => [
 <template>
   <div
     style="width: 100%"
-    class="font-mono border-b border-border"
+    class="relative font-mono border-b border-border"
     :class="{ loading: shouldPauseChartAnimations || loading }"
     id="timeline-chart"
   >
@@ -1161,15 +1159,25 @@ const timelineMetricTabs = computed(() => [
 
       <template #fallback>
         <SkeletonBlock
-          class="flex place-items-center justify-center"
-          :class="[activeTab === 'dependencySize' ? 'aspect-[1152/466.4]' : 'aspect-[1152/254.59]']"
+          class="relative"
+          :class="[
+            activeTab === 'dependencySize'
+              ? 'aspect-[1152/466.4]'
+              : 'box-content h-[1.8rem] max-sm:h-[1.4rem] pb-[20%]',
+          ]"
         >
-          <span class="i-lucide:chart-line w-10 h-10 text-fg-muted" aria-hidden="true" />
+          <span
+            class="absolute inset-0 m-auto i-lucide:chart-line w-10 h-10 text-fg-muted"
+            aria-hidden="true"
+          />
         </SkeletonBlock>
       </template>
 
       <!-- Sizes loading indicator -->
-      <div v-if="loading" class="h-0.5 rounded-full bg-bg-muted overflow-hidden">
+      <div
+        v-if="loading"
+        class="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-bg-muted overflow-hidden"
+      >
         <div class="h-full w-1/3 bg-accent rounded-full animate-indeterminate" />
       </div>
     </ClientOnly>
