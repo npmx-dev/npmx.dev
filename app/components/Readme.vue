@@ -61,7 +61,7 @@ function handleClick(event: MouseEvent) {
 
 <template>
   <article
-    class="readme max-w-[70ch] lg:max-w-none px-1"
+    class="readme max-w-[48.125rem] lg:max-w-none px-1"
     dir="auto"
     v-html="html"
     :style="{

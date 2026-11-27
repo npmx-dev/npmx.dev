@@ -25,4 +25,30 @@ test.describe('Package Code Viewer', () => {
       directoryListing.locator('a[href="/package-code/empathic/v/2.0.0/package.json"]'),
     ).toBeVisible()
   })
+
+  for (const path of [
+    '/package-code/empathic/v/2.0.0/package.json',
+    '/package/code/empathic/v/2.0.0/package.json',
+  ]) {
+    test(`${path} is a client-only shell that is not indexed`, async ({ page }) => {
+      const response = await page.request.get(path)
+
+      expect(response.headers()['x-robots-tag']).toBe('noindex')
+      expect(await response.text()).toContain('data-ssr="false"')
+    })
+
+    test(`${path} renders meta tags for link preview bots`, async ({ page }) => {
+      const response = await page.request.get(path, {
+        headers: { 'user-agent': 'Slackbot-LinkExpanding 1.0' },
+      })
+      const html = await response.text()
+
+      expect(response.headers()['x-robots-tag']).toBe('noindex')
+      expect(html).toContain('<title>package.json - empathic@2.0.0 - npmx</title>')
+      expect(html).toMatch(/<meta property="og:image" content="[^"]+\/_og\//)
+      expect(html).not.toContain('__NUXT_DATA__')
+      expect(html).not.toContain('code-page-container')
+      expect(html).not.toContain('<footer')
+    })
+  }
 })

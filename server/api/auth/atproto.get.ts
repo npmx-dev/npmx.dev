@@ -3,7 +3,7 @@ import { OAuthCallbackError } from '@atproto/oauth-client-node'
 import { createError, getQuery, sendRedirect, setCookie, getCookie, deleteCookie } from 'h3'
 import type { H3Event } from 'h3'
 import { SLINGSHOT_HOST } from '#shared/utils/constants'
-import { useServerSession } from '#server/utils/server-session'
+import { setSessionHintCookie, useServerSession } from '#server/utils/server-session'
 import { handleApiError } from '#server/utils/error-handler'
 import type { DidString } from '@atproto/lex'
 import { Client, isAtUriString, isTypedBlobRef } from '@atproto/lex'
@@ -28,7 +28,6 @@ export default defineEventHandler(async event => {
   }
 
   const query = getQuery(event)
-  const session = await useServerSession(event)
 
   if (query.handle) {
     // Initiate auth flow
@@ -86,10 +85,12 @@ export default defineEventHandler(async event => {
         const profile = await getMiniProfile(result.session)
         const npmxProfile = await getNpmxProfile(profile.handle, result.session)
 
+        const session = await useServerSession(event)
         await session.update({
           public: profile,
           profile: npmxProfile,
         })
+        setSessionHintCookie(event)
         return sendRedirect(event, state.redirectPath)
       } catch (error) {
         // If we are unable to cleanly handle the callback, meaning that the

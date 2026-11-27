@@ -8,7 +8,15 @@ const props = defineProps<{
 
 const displayVersion = computed(() => props.pkg?.requestedVersion ?? null)
 const { repositoryUrl } = useRepositoryUrl(displayVersion)
-const { meta: repoMeta, repoRef, stars, forks, forksLink, repoLink } = useRepoMeta(repositoryUrl)
+const {
+  meta: repoMeta,
+  repoRef,
+  stars,
+  forks,
+  forksLink,
+  repoLink,
+  pending: repoMetaPending,
+} = useRepoMeta(repositoryUrl)
 const compactNumberFormatter = useCompactNumberFormatter()
 
 const homepageUrl = computed(() => {
@@ -145,13 +153,25 @@ useCommandPaletteContextCommands(
     </li>
     <li v-if="repositoryUrl && repoMeta && repoLink">
       <LinkBase :to="repoLink" classicon="i-lucide:star">
-        {{ compactNumberFormatter.format(stars) }}
+        <span class="min-w-[5ch]">{{ compactNumberFormatter.format(stars) }}</span>
       </LinkBase>
     </li>
-    <li v-if="forks && forksLink">
+    <li v-else-if="repoRef && repoMetaPending">
+      <span class="inline-flex items-center gap-x-1 font-mono">
+        <span class="i-lucide:star size-[1em]" aria-hidden="true" />
+        <SkeletonInline class="h-4 w-[5ch]" />
+      </span>
+    </li>
+    <li v-if="repoMeta && forks && forksLink">
       <LinkBase :to="forksLink" classicon="i-lucide:git-fork">
-        {{ compactNumberFormatter.format(forks) }}
+        <span class="min-w-[5ch]">{{ compactNumberFormatter.format(forks) }}</span>
       </LinkBase>
+    </li>
+    <li v-else-if="repoRef && repoMetaPending">
+      <span class="inline-flex items-center gap-x-1 font-mono">
+        <span class="i-lucide:git-fork size-[1em]" aria-hidden="true" />
+        <SkeletonInline class="h-4 w-[5ch]" />
+      </span>
     </li>
     <li class="basis-full sm:hidden" />
     <li v-if="homepageUrl">

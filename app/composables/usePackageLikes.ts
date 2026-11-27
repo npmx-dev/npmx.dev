@@ -1,0 +1,147 @@
+import type { MaybeRefOrGetter } from 'vue'
+import type { PackageLikes, PackageLikeStatus, PublicPackageLikes } from '#shared/types/social'
+import { useAtproto } from '~/composables/atproto/useAtproto'
+import { useModal } from '~/composables/useModal'
+import { togglePackageLike } from '~/utils/atproto/likes'
+import { hasSessionHintCookie } from '~/utils/atproto/session-hint'
+
+interface ToggleLikeOptions {
+  onOptimisticToggle?: (nextLiked: boolean) => void
+}
+
+export function usePackageLikes(packageName: MaybeRefOrGetter<string>) {
+  const pkgName = computed(() => toValue(packageName))
+  const { user } = useAtproto()
+  const authModal = useModal('auth-modal')
+
+  const { data: publicLikes, status: publicStatus } = useFetch<PublicPackageLikes>(
+    () => `/api/social/likes/${pkgName.value}`,
+    {
+      default: () => ({
+        totalLikes: 0,
+        topLikedRank: null,
+      }),
+      server: false,
+    },
+  )
+
+  const canFetchUserStatus = () =>
+    import.meta.client && (Boolean(user.value) || hasSessionHintCookie())
+
+  const {
+    data: userLikeData,
+    status: userLikeStatus,
+    execute: executeUserLikeStatus,
+    clear: clearUserLikeStatus,
+  } = useFetch<PackageLikeStatus>(() => `/api/social/like-status/${pkgName.value}`, {
+    server: false,
+    enabled: canFetchUserStatus,
+    immediate: canFetchUserStatus(),
+    watch: false,
+  })
+
+  const optimisticLike = shallowRef<{ totalLikes: number; userHasLiked: boolean } | null>(null)
+  const isLikeActionPending = shallowRef(false)
+  let mutationGeneration = 0
+
+  watch(pkgName, () => {
+    mutationGeneration++
+    optimisticLike.value = null
+    isLikeActionPending.value = false
+    clearUserLikeStatus()
+    if (canFetchUserStatus()) {
+      void executeUserLikeStatus()
+    }
+  })
+
+  watch(
+    () => user.value?.did ?? null,
+    (did, prevDid) => {
+      if (did === prevDid) return
+      mutationGeneration++
+      optimisticLike.value = null
+      isLikeActionPending.value = false
+      if (did) {
+        if (userLikeStatus.value === 'idle' || prevDid !== null) {
+          void executeUserLikeStatus()
+        }
+      } else {
+        clearUserLikeStatus()
+      }
+    },
+  )
+
+  const isLoading = computed(
+    () =>
+      publicStatus.value === 'pending' ||
+      publicStatus.value === 'idle' ||
+      userLikeStatus.value === 'pending',
+  )
+
+  const likesData = computed<PackageLikes>(() => {
+    const topLikedRank = publicLikes.value?.topLikedRank ?? null
+    if (optimisticLike.value) {
+      return {
+        totalLikes: optimisticLike.value.totalLikes,
+        userHasLiked: optimisticLike.value.userHasLiked,
+        topLikedRank,
+      }
+    }
+
+    return {
+      totalLikes: userLikeData.value?.totalLikes ?? publicLikes.value?.totalLikes ?? 0,
+      userHasLiked: userLikeData.value?.userHasLiked ?? false,
+      topLikedRank,
+    }
+  })
+
+  const toggleLike = async (options?: ToggleLikeOptions) => {
+    if (user.value?.handle == null) {
+      authModal.open()
+      return
+    }
+
+    if (isLikeActionPending.value || isLoading.value) return
+
+    const generation = ++mutationGeneration
+    const targetPackage = pkgName.value
+    const currentlyLiked = likesData.value.userHasLiked
+    const currentLikes = likesData.value.totalLikes
+    const nextLiked = !currentlyLiked
+
+    options?.onOptimisticToggle?.(nextLiked)
+
+    optimisticLike.value = {
+      totalLikes: currentlyLiked ? Math.max(currentLikes - 1, 0) : currentLikes + 1,
+      userHasLiked: nextLiked,
+    }
+
+    isLikeActionPending.value = true
+
+    try {
+      const result = await togglePackageLike(targetPackage, currentlyLiked, user.value?.handle)
+      if (generation !== mutationGeneration) return
+      if (result.success) {
+        userLikeData.value = {
+          userHasLiked: result.data.userHasLiked,
+          totalLikes: result.data.totalLikes,
+        }
+      }
+      optimisticLike.value = null
+    } catch {
+      if (generation === mutationGeneration) {
+        optimisticLike.value = null
+      }
+    } finally {
+      if (generation === mutationGeneration) {
+        isLikeActionPending.value = false
+      }
+    }
+  }
+
+  return {
+    likesData,
+    isLoading,
+    toggleLike,
+  }
+}

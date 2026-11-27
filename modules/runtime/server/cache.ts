@@ -19,6 +19,8 @@ import { createFetch } from 'ofetch'
 
 const VERBOSE = process.env.NUXT_TEST_FIXTURES_VERBOSE === 'true'
 
+const BLUESKY_EMBED_DID = 'did:plc:2gkh62xvzokhlf6li4ol3b3d'
+
 const FIXTURE_PATHS = {
   packument: 'npm-registry:packuments',
   search: 'npm-registry:search',
@@ -126,6 +128,49 @@ function getMockForUrl(url: string): MockResult | null {
     return { data: null }
   }
 
+  if (host === 'public.api.bsky.app') {
+    if (pathname === '/xrpc/com.atproto.identity.resolveHandle') {
+      return { data: { did: BLUESKY_EMBED_DID } }
+    }
+    if (pathname === '/xrpc/app.bsky.feed.getPosts') {
+      return {
+        data: {
+          posts: [
+            {
+              uri:
+                searchParams.get('uris') ||
+                `at://${BLUESKY_EMBED_DID}/app.bsky.feed.post/3md3cmrg56k2r`,
+              author: {
+                did: BLUESKY_EMBED_DID,
+                handle: 'danielroe.dev',
+                displayName: 'Daniel Roe',
+                avatar: `https://cdn.bsky.app/img/avatar/plain/${BLUESKY_EMBED_DID}/mock-avatar@jpeg`,
+              },
+              record: {
+                text: 'Mock Bluesky post for CSP coverage.',
+                createdAt: '2026-03-03T12:00:00.000Z',
+              },
+              embed: {
+                $type: 'app.bsky.embed.images#view',
+                images: [
+                  {
+                    thumb: `https://cdn.bsky.app/img/feed_thumbnail/plain/${BLUESKY_EMBED_DID}/mock-image@jpeg`,
+                    fullsize: `https://cdn.bsky.app/img/feed_fullsize/plain/${BLUESKY_EMBED_DID}/mock-image@jpeg`,
+                    alt: 'Mock Bluesky image',
+                    aspectRatio: { width: 1200, height: 630 },
+                  },
+                ],
+              },
+              likeCount: 42,
+              replyCount: 7,
+              repostCount: 3,
+            },
+          ],
+        },
+      }
+    }
+  }
+
   // UNGH (GitHub proxy) - return mock repo metadata
   if (host === 'ungh.cc') {
     const repoMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)$/)
@@ -194,6 +239,14 @@ function getMockForUrl(url: string): MockResult | null {
         cursor.setUTCDate(cursor.getUTCDate() + 1)
       }
       return { data: { downloads, start: startDate, end: endDate, package: packageName } }
+    }
+
+    // Registry-wide downloads point, used for the latest published day
+    if (/^\/downloads\/point\/[^/]+$/.test(pathname)) {
+      const yesterday = new Date()
+      yesterday.setUTCDate(yesterday.getUTCDate() - 1)
+      const day = yesterday.toISOString().slice(0, 10)
+      return { data: { downloads: 0, start: day, end: day } }
     }
   }
 
@@ -887,6 +940,8 @@ export default defineNitroPlugin(nitroApp => {
   Object.assign(fetchWrapper, {
     raw: $fetch.raw,
     create: $fetch.create,
+    // SSR requests from `useFetch` go through `native`, and relative paths only resolve there.
+    native: (original$fetch as any).native.bind(original$fetch),
   })
 
   // Replace globalThis.$fetch with our wrapper (must be done AFTER setting .raw/.create)

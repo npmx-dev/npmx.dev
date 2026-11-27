@@ -63,6 +63,97 @@ function mockNuxt(vulns: Array<Record<string, unknown> & { id: string }>) {
   )
 }
 
+interface OsvBatchQuery {
+  package: { name: string; ecosystem: string }
+  version: string
+  page_token?: string
+}
+
+function packageNames(count: number): string[] {
+  return Array.from({ length: count }, (_, i) => `pkg-${i}`)
+}
+
+function resolvedPackages(names: string[]) {
+  return new Map(
+    names.map(name => [
+      `${name}@1.0.0`,
+      {
+        name,
+        version: '1.0.0',
+        size: 100,
+        optional: false,
+        depth: 'transitive' as const,
+        path: ['root@1.0.0', `${name}@1.0.0`],
+        tarballUrl: `https://example.com/${name}-1.0.0.tgz`,
+      },
+    ]),
+  )
+}
+
+function batchQueries(options?: { body?: unknown }): OsvBatchQuery[] {
+  return (options?.body as { queries: OsvBatchQuery[] } | undefined)?.queries ?? []
+}
+
+interface OsvBatchPage {
+  results: Array<{ vulns?: Array<{ id: string; modified: string }>; next_page_token?: string }>
+}
+
+function mockPaginatedOsv(pages: OsvBatchPage[]): OsvBatchQuery[][] {
+  const calls: OsvBatchQuery[][] = []
+  $fetchMock.mockImplementation(async (url: string, request?: { body?: unknown }) => {
+    if (url === 'https://api.osv.dev/v1/query') {
+      const body = request?.body as { package: { name: string } }
+      return {
+        vulns: [
+          {
+            id: `GHSA-${body.package.name}`,
+            summary: 'A vulnerability',
+            database_specific: { severity: 'MEDIUM' },
+          },
+        ],
+      }
+    }
+    calls.push(batchQueries(request))
+    return pages[calls.length - 1] ?? { results: [] }
+  })
+  return calls
+}
+
+function mockBatchedOsv(
+  vulnerable: Set<string>,
+  options: { failChunk?: (call: number) => boolean } = {},
+): OsvBatchQuery[][] {
+  const calls: OsvBatchQuery[][] = []
+  $fetchMock.mockImplementation(async (url: string, request?: { body?: unknown }) => {
+    if (url === 'https://api.osv.dev/v1/querybatch') {
+      const queries = batchQueries(request)
+      calls.push(queries)
+      if (options.failChunk?.(calls.length)) throw new Error('OSV batch chunk failed')
+      return {
+        results: queries.map(query =>
+          vulnerable.has(query.package.name)
+            ? { vulns: [{ id: `GHSA-${query.package.name}`, modified: '2024-01-01' }] }
+            : { vulns: [] },
+        ),
+      }
+    }
+    if (url === 'https://api.osv.dev/v1/query') {
+      const body = request?.body as { package: { name: string } }
+      return {
+        vulns: [
+          {
+            id: `GHSA-${body.package.name}`,
+            summary: 'A vulnerability',
+            database_specific: { severity: 'HIGH' },
+          },
+        ],
+      }
+    }
+    throw new Error(`Unexpected fetch to ${url}`)
+  })
+  return calls
+}
+
 describe('dependency-analysis', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -1054,6 +1145,175 @@ describe('dependency-analysis', () => {
       expect(result.deprecatedPackages).toHaveLength(1)
       expect(result.deprecatedPackages[0]?.name).toBe('deprecated-pkg')
       expect(result.totalPackages).toBe(3)
+    })
+  })
+
+  describe('OSV batch chunking', () => {
+    it('sends a single request when the tree is under the limit', async () => {
+      const names = packageNames(10)
+      vi.mocked(resolveDependencyTree).mockResolvedValue(resolvedPackages(names))
+      const calls = mockBatchedOsv(new Set(['pkg-3']))
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(calls).toHaveLength(1)
+      expect(calls[0]).toHaveLength(10)
+      expect(result.vulnerablePackages.map(pkg => pkg.name)).toEqual(['pkg-3'])
+      expect(result.failedQueries).toBe(0)
+    })
+
+    it('sends a single request at the limit', async () => {
+      const names = packageNames(1000)
+      vi.mocked(resolveDependencyTree).mockResolvedValue(resolvedPackages(names))
+      const calls = mockBatchedOsv(new Set(['pkg-999']))
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(calls).toHaveLength(1)
+      expect(calls[0]).toHaveLength(1000)
+      expect(result.vulnerablePackages.map(pkg => pkg.name)).toEqual(['pkg-999'])
+      expect(result.failedQueries).toBe(0)
+    })
+
+    it('chunks trees over the limit and merges results in order', async () => {
+      const names = packageNames(1653)
+      vi.mocked(resolveDependencyTree).mockResolvedValue(resolvedPackages(names))
+      const calls = mockBatchedOsv(new Set(['pkg-0', 'pkg-1000', 'pkg-1652']))
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(calls.map(queries => queries.length)).toEqual([1000, 653])
+      expect(calls[1]?.[0]?.package.name).toBe('pkg-1000')
+      expect(result.totalPackages).toBe(1653)
+      expect(result.failedQueries).toBe(0)
+      expect(result.vulnerablePackages.map(pkg => pkg.name)).toEqual([
+        'pkg-0',
+        'pkg-1000',
+        'pkg-1652',
+      ])
+    })
+
+    it('keeps results from successful chunks when one chunk fails', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      const names = packageNames(1200)
+      vi.mocked(resolveDependencyTree).mockResolvedValue(resolvedPackages(names))
+      const calls = mockBatchedOsv(new Set(['pkg-3', 'pkg-1003']), {
+        failChunk: call => call === 1,
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(calls).toHaveLength(2)
+      expect(result.totalPackages).toBe(1200)
+      expect(result.failedQueries).toBe(1000)
+      expect(result.vulnerablePackages.map(pkg => pkg.name)).toEqual(['pkg-1003'])
+    })
+
+    it('keeps indices found before a continuation request fails', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      vi.mocked(resolveDependencyTree).mockResolvedValue(resolvedPackages(['a', 'b']))
+      const calls: OsvBatchQuery[][] = []
+      $fetchMock.mockImplementation(async (url: string, request?: { body?: unknown }) => {
+        if (url === 'https://api.osv.dev/v1/query') {
+          return {
+            vulns: [
+              {
+                id: 'GHSA-a',
+                summary: 'A vulnerability',
+                database_specific: { severity: 'MEDIUM' },
+              },
+            ],
+          }
+        }
+        calls.push(batchQueries(request))
+        if (calls.length === 1) {
+          return {
+            results: [
+              { vulns: [{ id: 'GHSA-a', modified: '2024-01-01' }] },
+              { vulns: [], next_page_token: 'page-2' },
+            ],
+          }
+        }
+        throw new Error('OSV batch chunk failed')
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(calls).toHaveLength(2)
+      expect(result.failedQueries).toBe(1)
+      expect(result.vulnerablePackages.map(pkg => pkg.name)).toEqual(['a'])
+    })
+
+    it('follows per-query pagination tokens across several pages', async () => {
+      vi.mocked(resolveDependencyTree).mockResolvedValue(resolvedPackages(['a', 'b']))
+      const calls = mockPaginatedOsv([
+        { results: [{ vulns: [] }, { vulns: [], next_page_token: 'page-2' }] },
+        { results: [{ vulns: [], next_page_token: 'page-3' }] },
+        { results: [{ vulns: [{ id: 'GHSA-b', modified: '2024-01-02' }] }] },
+      ])
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(calls).toHaveLength(3)
+      expect(calls[1]).toHaveLength(1)
+      expect(calls[1]?.[0]?.package.name).toBe('b')
+      expect(calls[1]?.[0]?.page_token).toBe('page-2')
+      expect(calls[1]?.[0]?.version).toBe('1.0.0')
+      expect(calls[2]).toHaveLength(1)
+      expect(calls[2]?.[0]?.package.name).toBe('b')
+      expect(calls[2]?.[0]?.page_token).toBe('page-3')
+      expect(result.vulnerablePackages.map(pkg => pkg.name)).toEqual(['b'])
+    })
+
+    it('does not duplicate packages whose vulnerabilities span pages', async () => {
+      vi.mocked(resolveDependencyTree).mockResolvedValue(resolvedPackages(['a', 'b']))
+      const calls = mockPaginatedOsv([
+        {
+          results: [
+            { vulns: [{ id: 'GHSA-a', modified: '2024-01-01' }], next_page_token: 'page-2' },
+            { vulns: [] },
+          ],
+        },
+        { results: [{ vulns: [{ id: 'GHSA-a-2', modified: '2024-01-02' }] }] },
+      ])
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(calls).toHaveLength(2)
+      expect(result.vulnerablePackages.map(pkg => pkg.name)).toEqual(['a'])
+    })
+
+    it('stops paginating after the page cap', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+      vi.mocked(resolveDependencyTree).mockResolvedValue(resolvedPackages(['a']))
+      const calls: OsvBatchQuery[][] = []
+      $fetchMock.mockImplementation(async (url: string, request?: { body?: unknown }) => {
+        if (url === 'https://api.osv.dev/v1/querybatch') {
+          calls.push(batchQueries(request))
+          return {
+            results: [
+              {
+                vulns: [{ id: 'GHSA-a', modified: '2024-01-01' }],
+                next_page_token: 'another-page',
+              },
+            ],
+          }
+        }
+        return {
+          vulns: [
+            { id: 'GHSA-a', summary: 'A vulnerability', database_specific: { severity: 'MEDIUM' } },
+          ],
+        }
+      })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(calls).toHaveLength(5)
+      expect(result.vulnerablePackages.map(pkg => pkg.name)).toEqual(['a'])
+      expect(result.failedQueries).toBe(0)
     })
   })
 })

@@ -19,7 +19,7 @@ export class RedisCacheAdapter implements CacheAdapter {
   async get<T>(key: string): Promise<T | undefined> {
     const formattedKey = this.formatKey(key)
     const value = await this.redis.get<T>(formattedKey)
-    if (!value) return
+    if (value === null || value === undefined) return
     return value
   }
 

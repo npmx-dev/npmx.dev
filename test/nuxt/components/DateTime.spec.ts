@@ -1,16 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import DateTime from '~/components/DateTime.vue'
+import { useSettings } from '~/composables/useSettings'
 
-// Mock the useRelativeDates composable
-const mockRelativeDates = shallowRef(false)
-vi.mock('~/composables/useSettings', () => ({
-  useRelativeDates: () => mockRelativeDates,
-  useSettings: () => ({
-    settings: ref({ relativeDates: mockRelativeDates.value }),
-  }),
-  useAccentColor: () => ({}),
-}))
+function setRelativeDates(value: boolean) {
+  useSettings().settings.value.relativeDates = value
+}
 
 describe('DateTime', () => {
   const testDate = '2024-01-15T12:00:00.000Z'
@@ -18,7 +13,7 @@ describe('DateTime', () => {
   const testYear = testDateObject.getUTCFullYear()
 
   beforeEach(() => {
-    mockRelativeDates.value = false
+    setRelativeDates(false)
   })
 
   describe('props handling', () => {
@@ -92,7 +87,7 @@ describe('DateTime', () => {
 
   describe('relative dates setting', () => {
     it('renders absolute date when relativeDates is false', async () => {
-      mockRelativeDates.value = false
+      setRelativeDates(false)
       const component = await mountSuspended(DateTime, {
         props: {
           datetime: testDate,
@@ -105,24 +100,37 @@ describe('DateTime', () => {
     })
 
     it('renders with relative prop when relativeDates is true', async () => {
-      mockRelativeDates.value = true
+      setRelativeDates(true)
       const component = await mountSuspended(DateTime, {
         props: { datetime: testDate },
       })
-      // Component should still render a time element
-      expect(component.html()).toContain('time')
+      expect(component.find('time').text()).toMatch(/ ago$/)
+    })
+
+    it('keeps relative dates updating after relativeDates is enabled', async () => {
+      const component = await mountSuspended(DateTime, {
+        props: { datetime: new Date(Date.now() - 10_000) },
+      })
+
+      setRelativeDates(true)
+      await vi.waitFor(() => expect(component.find('time').text()).toMatch(/seconds? ago/))
+      const initial = component.find('time').text()
+
+      await vi.waitFor(() => expect(component.find('time').text()).not.toBe(initial), {
+        timeout: 3000,
+      })
     })
 
     it('always preserves title attribute for accessibility regardless of mode', async () => {
       // Test with relative dates off
-      mockRelativeDates.value = false
+      setRelativeDates(false)
       let component = await mountSuspended(DateTime, {
         props: { datetime: testDate },
       })
       expect(component.find('time').attributes('title')).toContain(testYear)
 
       // Test with relative dates on
-      mockRelativeDates.value = true
+      setRelativeDates(true)
       component = await mountSuspended(DateTime, {
         props: { datetime: testDate },
       })

@@ -24,6 +24,15 @@ export async function fetchNpmDownloadsRange(
   ).data
 }
 
+/**
+ * Fetch the latest day npm has published download counts for.
+ * A day lands some hours after it ends (UTC), until then ranges return 0 for it.
+ */
+export async function fetchNpmLatestDownloadsDay(): Promise<string> {
+  const { $npmApi } = useNuxtApp()
+  return (await $npmApi<{ end: string }>('/downloads/point/last-day')).data.end
+}
+
 // ============================================================================
 // Package Versions
 // ============================================================================

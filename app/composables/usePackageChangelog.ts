@@ -5,12 +5,20 @@ const KEY = 'changelog:has:info'
 export function usePackageChangelog(
   packageName: MaybeRefOrGetter<string>,
   version?: MaybeRefOrGetter<string | null | undefined>,
+  { lazy = true, server = true }: { lazy?: boolean; server?: boolean } = {},
 ) {
-  return useLazyFetch<ChangelogInfo | null>(() => {
-    const name = toValue(packageName)
-    const ver = toValue(version)
-    return `/api/changelog/info/${name}/v/${ver || 'latest'}`
-  })
+  return useFetch<ChangelogInfo | null>(
+    () => {
+      const name = toValue(packageName)
+      const ver = toValue(version)
+      return `/api/changelog/info/${name}/v/${ver || 'latest'}`
+    },
+    {
+      lazy,
+      server,
+      enabled: () => Boolean(toValue(packageName)),
+    },
+  )
 }
 
 /**

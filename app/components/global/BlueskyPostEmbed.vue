@@ -96,7 +96,12 @@ async function resolveAtUri(): Promise<string | null> {
 
 const cacheKey = computed(() => `bsky-post-${props.uri || props.url}`)
 
-const { data: post, status } = useAsyncData(
+const {
+  data: post,
+  status,
+  error,
+  refresh,
+} = useAsyncData(
   cacheKey.value,
   async (): Promise<BlueskyPost | null> => {
     const atUri = await resolveAtUri()
@@ -108,8 +113,19 @@ const { data: post, status } = useAsyncData(
     )
     return response.posts[0] ?? null
   },
-  { lazy: true, server: false },
+  { lazy: true },
 )
+
+onMounted(() => {
+  if (error.value) refresh()
+})
+
+const embedRoot = useTemplateRef<HTMLElement>('embedRoot')
+const { stop } = useIntersectionObserver(embedRoot, ([entry]) => {
+  if (!entry?.isIntersecting) return
+  stop()
+  refresh()
+})
 
 const postUrl = computed(() => {
   // Prefer the explicit URL prop if provided
@@ -140,19 +156,24 @@ const quotedPostUri = computed(() => {
 
 <template>
   <div
-    v-if="status === 'pending'"
+    v-if="status === 'pending' && !post"
     class="rounded-lg border border-border bg-bg-subtle p-6 text-center text-fg-subtle text-sm"
   >
     <span class="i-svg-spinners:90-ring-with-bg h-5 w-5 inline-block" />
   </div>
 
-  <div class="not-prose relative bg-bg-subtle p-4 sm:p-5 my-4 sm:my-5" v-else-if="post">
+  <div
+    ref="embedRoot"
+    class="not-prose relative bg-bg-subtle p-4 sm:p-5 my-4 sm:my-5"
+    v-else-if="post"
+  >
     <a
       :href="postUrl ?? '#'"
       target="_blank"
       rel="noopener noreferrer"
       class="before:(absolute content-[''] inset-0 hover:border-border-hover border border-border transition-colors duration-200 rounded-lg) block no-underline group"
       :title="$t('blog.atproto.view_on_bluesky')"
+      :aria-label="$t('blog.atproto.view_on_bluesky')"
     >
       <!-- Bluesky icon -->
       <span

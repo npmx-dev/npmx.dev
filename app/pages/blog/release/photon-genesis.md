@@ -13,14 +13,14 @@ tags: ['OpenSource', 'Release']
 excerpt: 'More than 5 million visits a month, and npmx keeps getting faster. This release brings performance work down to every millisecond, more readable UI, smarter charts, and support for more tools and providers.'
 date: '2026-10-29'
 slug: 'release/photon-genesis'
-image: 'https://npmx.dev/blog/og/release-photon-genesis.png'
+image: 'https://npmx.dev/blog/assets/release/photon-genesis/og.png'
 description: 'More than 5 million visits a month, and npmx keeps getting faster. This release brings performance work down to every millisecond, more readable UI, smarter charts, and support for more tools and providers.'
 draft: false
 ---
 
 # npmx photon genesis
 
-![npmx photon genesis](/blog/og/release-photon-genesis.png)
+![npmx photon genesis](/blog/assets/release/photon-genesis/og.png)
 
 One of npmx’s greatest strengths is, of course, its people. First and foremost, the people who help us build and improve the experience day after day. But also those who talk with us and share their problems, observations, ideas, and experiences.
 
@@ -47,7 +47,7 @@ We’re continually looking for ways to make npmx faster, down to every millisec
 - Caching normalized, trimmed packuments instead of raw responses ([#3320](https://github.com/npmx-dev/npmx.dev/pull/3320))
 - Fix a bug resulting in many fetch responses not being cached ([#3325](https://github.com/npmx-dev/npmx.dev/pull/3325))
 
-![Time to First Byte percentiles in early October and late October: P99 dropped from 9.67s to 2.95s while traffic keep growing](/blog/ttfb-photon-genesis.png)
+![Time to First Byte percentiles in early October and late October: P99 dropped from 9.67s to 2.95s while traffic keep growing](/blog/assets/release/photon-genesis/ttfb.png)
 
 As a result, TTFB for the slowest requests improved more than threefold, so npmx stays responsive even on a slow connection. That said, a good experience is about more than speed - it’s also about making every part of the service convenient and accessible.
 
@@ -55,7 +55,7 @@ As a result, TTFB for the slowest requests improved more than threefold, so npmx
 
 One of the most frequent requests was to improve the site’s readability. In previous releases, we’d already increased contrast and added the option to choose a background. That significantly improved the experience, but the site’s contrast still felt a little too muted for our taste. Now you can choose the level of text contrast you want, and it will apply to both text and interactive elements.
 
-![The nuxt package page with the default and the highest foreground shade](/blog/contrast-photon-genesis.png)
+![The nuxt package page with the default and the highest foreground shade](/blog/assets/release/photon-genesis/contrast.png)
 
 <details>
 <summary>PRs</summary>
@@ -66,7 +66,7 @@ One of the most frequent requests was to improve the site’s readability. In pr
 
 Another thing we’re actively thinking about is how to present the key content without unnecessary noise. We’re experimenting together and looking for ways to make the page more focused. One such improvement is a redesign of the install block.
 
-![The vite package page before and after the install block redesign](/blog/install-block-photon-genesis.png)
+![The vite package page before and after the install block redesign](/blog/assets/release/photon-genesis/install-block.png)
 
 <details>
 <summary>PRs</summary>
@@ -77,7 +77,7 @@ Another thing we’re actively thinking about is how to present the key content 
 
 Of course, we also added new categories of information, such as provenance in the version history.
 
-![Provenance icons in the nuxt version history](/blog/provenance-photon-genesis.png)
+![Provenance icons in the nuxt version history](/blog/assets/release/photon-genesis/provenance.png)
 
 <details>
 <summary>PRs</summary>
@@ -111,7 +111,7 @@ You can also filter the timeline by semver to compare only the versions and rele
 
 Alongside adding new information, we’re improving the charts themselves and how they look. For example, version distribution now uses a horizontal bar chart, making it easier to analyze packages with thousands of versions as well as with just two.
 
-![The nuxt version distribution as a horizontal bar chart](/blog/version-distribution-photon-genesis.png)
+![The nuxt version distribution as a horizontal bar chart](/blog/assets/release/photon-genesis/version-distribution.png)
 
 Now, drag-to-zoom makes filtering charts faster, so you can get to the insights you need in fewer steps.
 
@@ -169,7 +169,7 @@ Perhaps one of the most important contributions from our wonderful community is 
 
 Another way we can expand how we help users is by letting them scan their own projects. You can now upload your `package.json` to [npmx.dev](https://npmx.dev) and view detailed information about each project dependency. This tool is the first in the Tools section, and we’ll share more about the section in future releases.
 
-![The dependencies of an uploaded package.json with details for gray-matter](/blog/tools-photon-genesis.png)
+![The dependencies of an uploaded package.json with details for gray-matter](/blog/assets/release/photon-genesis/tools.png)
 
 <details>
 <summary>PRs</summary>
