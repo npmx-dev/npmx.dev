@@ -169,15 +169,21 @@ const stickyStyle = computed(() => {
     <div class="flex" dir="ltr">
       <!-- Sidebar TOC -->
       <aside
-        v-if="docsData?.toc && !showEmptyState"
+        v-if="showLoading || (docsData?.toc && !showEmptyState)"
         class="hidden lg:block w-64 xl:w-72 shrink-0 border-ie border-border"
       >
         <div class="docs-sidebar sticky overflow-y-auto p-4">
           <h2 class="text-xs font-semibold text-fg-subtle uppercase tracking-wider mb-4">
             {{ $t('package.docs.contents') }}
           </h2>
+          <div v-if="showLoading" class="space-y-3">
+            <SkeletonBlock class="h-4 w-24 rounded" />
+            <SkeletonBlock class="h-3 w-32 rounded ms-3" />
+            <SkeletonBlock class="h-3 w-28 rounded ms-3" />
+            <SkeletonBlock class="h-3 w-36 rounded ms-3" />
+          </div>
           <!-- eslint-disable vue/no-v-html -->
-          <div class="toc-content" v-html="docsData.toc" />
+          <div v-else class="toc-content" v-html="docsData?.toc" />
         </div>
       </aside>
 
@@ -188,6 +194,12 @@ const stickyStyle = computed(() => {
           <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-5/6 max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-3/4 max-w-2xl rounded" />
+          <template v-for="n in 3" :key="n">
+            <SkeletonBlock class="h-6 w-48 mt-6 rounded" />
+            <SkeletonBlock class="h-24 w-full max-w-2xl rounded-lg" />
+            <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
+            <SkeletonBlock class="h-4 w-2/3 max-w-2xl rounded" />
+          </template>
         </div>
 
         <div v-else-if="showEmptyState" class="container mx-auto py-6 sm:py-8 lg:py-12">

@@ -69,6 +69,7 @@ const paginationMode = computed(() =>
 )
 const currentPage = computed(() => props.currentPage ?? 1)
 const pageSize = computed(() => props.pageSize ?? 25)
+const skeletonRows = computed(() => Math.min(pageSize.value, 25))
 // Numeric page size for virtual scroll and arithmetic (use 25 as default)
 const numericPageSize = computed(() => pageSize.value)
 
@@ -157,6 +158,7 @@ defineExpose({
         :columns="columns"
         v-model:sort-option="sortOption"
         :is-loading="isLoading"
+        :skeleton-rows="skeletonRows"
         @click-keyword="emit('clickKeyword', $event)"
       />
     </template>

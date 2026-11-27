@@ -285,10 +285,13 @@ defineOgImage(
           <p v-if="status === 'success'" class="text-fg-muted text-sm mt-1">
             {{ $t('org.public_packages', { count: $n(packageCount) }, packageCount) }}
           </p>
+          <p v-else-if="status === 'pending'" class="mt-1">
+            <SkeletonInline class="block! h-5 w-36" />
+          </p>
         </div>
 
         <!-- Link to npmjs.com org page + vanity downloads -->
-        <div class="ms-auto text-end">
+        <div class="ms-auto min-w-44 text-end">
           <nav aria-label="External links">
             <a
               :href="`https://www.npmjs.com/org/${orgName}`"
@@ -305,10 +308,13 @@ defineOgImage(
             class="text-fg-subtle text-xs mt-1 flex items-center gap-1.5 justify-end cursor-help"
             :title="$t('common.vanity_downloads_hint', { count: filteredCount }, filteredCount)"
           >
-            <span class="i-lucide:chart-line w-3.5 h-3.5" aria-hidden="true" />
-            <span class="font-mono"
-              >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
-            >
+            <SkeletonInline v-if="status === 'pending'" class="h-4 w-32" />
+            <template v-else>
+              <span class="i-lucide:chart-line w-3.5 h-3.5" aria-hidden="true" />
+              <span class="font-mono"
+                >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
+              >
+            </template>
           </p>
         </div>
       </div>
@@ -352,7 +358,33 @@ defineOgImage(
     </ClientOnly>
 
     <!-- Loading state -->
-    <LoadingSpinner v-if="status === 'pending'" :text="$t('common.loading_packages')" />
+    <section v-if="status === 'pending'" :aria-label="$t('org.page.packages_title')">
+      <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+        {{ $t('org.page.packages_title') }}
+      </h2>
+      <div class="space-y-3 mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+          <SkeletonBlock class="h-5 w-24 rounded" />
+          <div class="flex-1" />
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <SkeletonBlock class="h-10 w-58 sm:w-51 rounded-md" />
+            <SkeletonBlock class="h-10 w-20.5 rounded-md" />
+          </div>
+        </div>
+        <SkeletonBlock class="h-11.5 rounded-lg" />
+      </div>
+      <PackageList
+        v-if="viewMode === 'table'"
+        :results="[]"
+        view-mode="table"
+        :columns="viewColumns"
+        :filters="filters"
+        :page-size="pageSize"
+        is-loading
+        selectable
+      />
+      <PackageListSkeleton v-else />
+    </section>
 
     <!-- Error state -->
     <div v-else-if="status === 'error'" role="alert" class="py-12 text-center">

@@ -103,4 +103,19 @@ describe('PackageHeader version display', () => {
 
     expect(wrapper.get('h1').text()).toContain('3.5.0')
   })
+
+  it('registers only the copy name command while the package and version are loading', async () => {
+    setRoute()
+
+    wrapper = await mountSuspended(PackageHeader, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      props: { ...baseProps, pkg: null, resolvedVersion: null, displayVersion: null } as any,
+    })
+
+    const commandIds = useCommandPalette()
+      .contextCommands.value.flatMap(entry => entry.commands)
+      .map(command => command.id)
+    expect(commandIds).toContain('package-copy-name')
+    expect(commandIds).not.toContain('package-copy-version')
+  })
 })
