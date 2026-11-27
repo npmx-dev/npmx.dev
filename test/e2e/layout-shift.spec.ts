@@ -16,6 +16,7 @@ const PAGES = [
 ] as const
 
 const BLOG_POSTS_WITH_MEDIA = [
+  '/blog/alpha-release',
   '/blog/release/0.8',
   '/blog/release/rainbow-comet',
   '/blog/release/crystal-chronicle',
@@ -121,6 +122,15 @@ test.describe('Layout shift', () => {
     expect(await collectLayoutShifts(page)).toEqual([])
   })
 
+  test('1280x800 /~qwerzl with a short package list', async ({ page, goto }) => {
+    await page.setViewportSize({ width: 1280, height: 800 })
+    await observeLayoutShifts(page)
+    await goto('/~qwerzl', { waitUntil: 'hydration' })
+
+    await expect(page.getByText('End of results')).toBeInViewport()
+    expect(await collectLayoutShifts(page)).toEqual([])
+  })
+
   for (const path of BLOG_POSTS_WITH_MEDIA) {
     test(`1280x800 ${path} with slow images`, async ({ page, goto }) => {
       await page.setViewportSize({ width: 1280, height: 800 })
@@ -139,6 +149,20 @@ test.describe('Layout shift', () => {
             .map(el => el.getAttribute('src') ?? el.getAttribute('poster')),
         )
       expect(unsized).toEqual([])
+
+      const aspectRatios = await page.locator('article video[poster]').evaluateAll(videos =>
+        Promise.all(
+          (videos as HTMLVideoElement[]).map(async video => {
+            const poster = new Image()
+            poster.src = video.poster
+            await poster.decode()
+            return [video.width / video.height, poster.naturalWidth / poster.naturalHeight] as const
+          }),
+        ),
+      )
+      for (const [video, poster] of aspectRatios) {
+        expect(poster).toBeCloseTo(video, 2)
+      }
       expect(await collectLayoutShifts(page)).toEqual([])
     })
   }
