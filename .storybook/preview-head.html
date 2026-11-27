@@ -3,52 +3,17 @@
      which is disabled in Storybook at this time) */
   @font-face {
     font-family: 'Geist';
-    font-weight: 400;
+    font-weight: 100 900;
     font-style: normal;
     font-display: swap;
-    src: url('/fonts/Geist-Regular.ttf') format('truetype');
-  }
-  @font-face {
-    font-family: 'Geist';
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-    src: url('/fonts/Geist-Medium.ttf') format('truetype');
-  }
-  @font-face {
-    font-family: 'Geist';
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
-    src: url('/fonts/Geist-SemiBold.ttf') format('truetype');
-  }
-  @font-face {
-    font-family: 'Geist';
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-    src: url('/fonts/Geist-Bold.ttf') format('truetype');
+    src: url('/fonts/Geist-Variable.woff2') format('woff2');
   }
   @font-face {
     font-family: 'Geist Mono';
-    font-weight: 400;
+    font-weight: 100 900;
     font-style: normal;
     font-display: swap;
-    src: url('/fonts/GeistMono-Regular.ttf') format('truetype');
-  }
-  @font-face {
-    font-family: 'Geist Mono';
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-    src: url('/fonts/GeistMono-Medium.ttf') format('truetype');
-  }
-  @font-face {
-    font-family: 'Geist Mono';
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-    src: url('/fonts/GeistMono-Bold.ttf') format('truetype');
+    src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
   }
   html {
     -webkit-font-smoothing: antialiased;
@@ -61,6 +26,18 @@
     background-color: var(--bg, oklch(0.171 0 0)) !important;
   }
 </style>
+<script>
+  // Nuxt 4.7 reads `window.__NUXT__.config.app` from the generated paths module while the preview
+  // bundle is importing, and the addon only writes that payload when a story renders. The shape
+  // matches `createNuxtPayload()` in @storybook-vue/nuxt, so its `window.__NUXT__ ||=` keeps this value
+  // until a story replaces it with the real runtime config.
+  window.__NUXT__ ??= {
+    config: { app: { baseURL: '/' }, public: {} },
+    data: {},
+    serverRendered: false,
+    state: {},
+  }
+</script>
 <script>
   // related: https://github.com/npmx-dev/npmx.dev/blob/1431d24be555bca5e1ae6264434d49ca15173c43/test/nuxt/setup.ts#L12-L26
   // Stub Nuxt specific globals

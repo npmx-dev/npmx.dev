@@ -355,7 +355,7 @@ const config = computed<VueUiSparklineConfig>(() => {
           :title="$t('package.trends.title')"
           classicon="i-lucide:chart-line"
         />
-        <span v-else-if="isLoadingWeeklyDownloads" class="min-w-6 min-h-6 -m-1 p-1" />
+        <span v-else-if="isLoadingWeeklyDownloads" class="block size-8 -m-1" />
       </template>
 
       <div class="w-full h-[76px] egg-pulse-target" :class="{ 'egg-pulse': eggPulse }">

@@ -17,7 +17,11 @@ const config = {
     name: '@storybook-vue/nuxt',
     options: { docgen: { plugin: 'vue-component-meta', tsconfig: '.nuxt/tsconfig.app.json' } },
   },
-  staticDirs: ['./.public', { from: '../public', to: '/' }],
+  staticDirs: [
+    './.public',
+    { from: '../public', to: '/' },
+    { from: '../assets/fonts', to: '/fonts' },
+  ],
   features: {
     backgrounds: false,
   },

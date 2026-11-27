@@ -5,7 +5,6 @@ import { NPMX_DOCS_SITE } from '#shared/utils/constants'
 
 const discord = useDiscordLink()
 const { open: openCommandPalette } = useCommandPalette()
-const { commandPaletteShortcutLabel } = usePlatformModifierKey()
 
 withDefaults(
   defineProps<{
@@ -284,7 +283,8 @@ useShortcuts({
           <kbd
             class="inline-flex items-center justify-center rounded border border-border bg-bg-muted px-1.5 py-0.5 font-mono text-[0.7rem] text-fg-muted"
           >
-            {{ commandPaletteShortcutLabel }}
+            <span data-platform-only="other">{{ $t('shortcuts.ctrl_key') }}+K</span>
+            <span data-platform-only="apple">⌘ K</span>
           </kbd>
         </span>
       </ButtonBase>

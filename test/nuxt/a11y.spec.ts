@@ -279,6 +279,7 @@ import {
   PackageKeywords,
   PackageList,
   PackageListControls,
+  PackageListSkeleton,
   PackageListToolbar,
   PackageMaintainers,
   PackageInstallDownloadTarball,
@@ -944,7 +945,6 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with the top-liked badge visible', async () => {
       registerEndpoint('/api/social/likes/lodash', () => ({
         totalLikes: 42,
-        userHasLiked: false,
         topLikedRank: 3,
       }))
 
@@ -2074,6 +2074,14 @@ describe('component accessibility audits', () => {
           },
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageListSkeleton', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageListSkeleton)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

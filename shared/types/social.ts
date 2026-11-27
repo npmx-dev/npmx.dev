@@ -1,13 +1,24 @@
 /**
+ * Public, cacheable like counts for a npm package on npmx
+ */
+export type PublicPackageLikes = {
+  totalLikes: number
+  topLikedRank: number | null
+}
+
+/**
+ * Per-user like status for a npm package on npmx
+ */
+export type PackageLikeStatus = {
+  userHasLiked: boolean
+  totalLikes?: number
+}
+
+/**
  * Likes for a npm package on npmx
  */
-export type PackageLikes = {
-  // The total likes found for the package
-  totalLikes: number
-  // If the logged in user has liked the package, false if not logged in
+export type PackageLikes = PublicPackageLikes & {
   userHasLiked: boolean
-  // Top-likes leaderboard rank if the package is in the top 10
-  topLikedRank: number | null
 }
 
 /**

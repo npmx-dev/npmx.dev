@@ -1,6 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
+import { SESSION_HINT_COOKIE, SESSION_HINT_VALUE } from '#shared/utils/constants'
 
 import ProfilePage from '~/pages/profile/[identity]/index.vue'
 
@@ -34,12 +35,14 @@ describe('Profile invite section', () => {
 
   beforeEach(() => {
     clearNuxtData()
+    document.cookie = `${SESSION_HINT_COOKIE}=${SESSION_HINT_VALUE}; Path=/`
     authSessionHandler = () => null
   })
 
   afterEach(() => {
     wrapper?.unmount()
     wrapper = undefined
+    document.cookie = `${SESSION_HINT_COOKIE}=; Path=/; Max-Age=0`
   })
 
   it('does not show invite section while auth is still loading', async () => {

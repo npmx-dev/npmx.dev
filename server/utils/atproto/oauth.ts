@@ -9,6 +9,11 @@ import type { EventHandlerRequest, H3Event, SessionManager } from 'h3'
 import { NodeOAuthClient, AtprotoDohHandleResolver } from '@atproto/oauth-client-node'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
+import {
+  clearSessionHintCookie,
+  hasServerSessionCookie,
+  useServerSession,
+} from '#server/utils/server-session'
 import { LIKES_SCOPE, PROFILE_SCOPE } from '#shared/utils/constants'
 import type { UserServerSession } from '#shared/types/userSession'
 // @ts-expect-error virtual file from oauth module
@@ -64,7 +69,7 @@ export function getOauthClientMetadata(pkAlg: string | undefined = undefined): O
 type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
   event: H3Event<T>,
   session: OAuthSession | undefined,
-  serverSession: SessionManager,
+  serverSession: SessionManager<UserServerSession> | undefined,
 ) => Promise<D>
 
 export async function getNodeOAuthClient(): Promise<NodeOAuthClient> {
@@ -100,8 +105,12 @@ export async function loadJWKs(): Promise<Keyset | undefined> {
 
 async function getOAuthSession(event: H3Event): Promise<{
   oauthSession: OAuthSession | undefined
-  serverSession: SessionManager<UserServerSession>
+  serverSession: SessionManager<UserServerSession> | undefined
 }> {
+  if (!hasServerSessionCookie(event)) {
+    return { oauthSession: undefined, serverSession: undefined }
+  }
+
   const serverSession = await useServerSession(event)
 
   try {
@@ -147,12 +156,13 @@ export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
 ) {
   return defineEventHandler(async event => {
     const { oauthSession, serverSession } = await getOAuthSession(event)
-    const publicData = serverSession.data.public
+    const publicData = serverSession?.data.public
     // User was authenticated at one point, but was not able to restore
     // the session to the PDS
     if (!oauthSession && publicData) {
       // cleans up our server side session store
-      await serverSession.clear()
+      await serverSession?.clear()
+      clearSessionHintCookie(event)
       throw createError({
         status: 401,
         message: 'User needs to re authenticate',

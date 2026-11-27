@@ -157,7 +157,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               $fetch<VulnerabilityTreeResult>(
                 `/api/registry/vulnerabilities/${encodePackageName(name)}${versionSuffix}`,
               ).catch(() => null),
-              $fetch<PackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
+              $fetch<PublicPackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
                 () => null,
               ),
               isGitHub

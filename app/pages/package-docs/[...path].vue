@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
-import { setResponseHeader } from 'h3'
 
 definePageMeta({
   name: 'docs',
@@ -15,33 +14,17 @@ const { t } = useI18n()
 
 const { packageName, requestedVersion } = usePackageRoute()
 
-// Validate package name on server-side for early error detection
-if (import.meta.server && packageName.value) {
-  assertValidPackageName(packageName.value)
-}
-
-const { data: pkg } = usePackage(packageName)
+const { data: pkg } = usePackage(packageName, null, { server: false })
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
 
 const latestVersion = computed(() => pkg.value?.['dist-tags']?.latest ?? null)
 
-if (import.meta.server && !requestedVersion.value && packageName.value) {
-  const app = useNuxtApp()
-  const version = await fetchLatestVersion(packageName.value)
-  if (version) {
-    setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
-    app.runWithContext(() =>
-      navigateTo(docsRoute(packageName.value, version), { redirectCode: 302 }),
-    )
-  }
-}
-
 watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      router.replace(docsRoute(name, latest))
+      router.replace({ path: router.resolve(docsRoute(name, latest)).path, hash: route.hash })
     }
   },
   { immediate: true },
@@ -96,7 +79,8 @@ if (import.meta.client) {
   watch(
     () => docsData.value?.html,
     html => {
-      if (html && route.hash) {
+      // Wait for the version redirect to land: navigating to the hash first would cancel it.
+      if (html && route.hash && requestedVersion.value) {
         navigateTo(route.hash, { replace: true })
       }
     },
@@ -130,24 +114,33 @@ const pageTitle = computed(() => {
   })
 })
 
+const pageDescription = computed(() => {
+  const name = resolvedVersion.value
+    ? `${packageName.value}@${resolvedVersion.value}`
+    : packageName.value
+  return `API documentation for ${name}`
+})
+
 useSeoMeta({
   title: () => pageTitle.value,
   ogTitle: () => t('package.docs.og_title', { name: packageName.value }),
   twitterTitle: () => pageTitle.value,
-  description: () => pkg.value?.license ?? '',
-  ogDescription: () => pkg.value?.license ?? '',
-  twitterDescription: () => pkg.value?.license ?? '',
+  description: () => pageDescription.value,
+  ogDescription: () => pageDescription.value,
+  twitterDescription: () => pageDescription.value,
 })
 
-defineOgImage(
-  'Package.takumi',
-  {
-    name: () => packageName.value,
-    version: () => resolvedVersion.value,
-    variant: 'function-tree',
-  },
-  { alt: () => `API documentation for ${packageName.value}` },
-)
+if (import.meta.server) {
+  defineOgImage(
+    'Package.takumi',
+    {
+      name: () => packageName.value,
+      version: () => requestedVersion.value,
+      variant: 'download-chart',
+    },
+    { alt: () => `npm package ${packageName.value} download chart and stats` },
+  )
+}
 
 const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),
@@ -176,15 +169,21 @@ const stickyStyle = computed(() => {
     <div class="flex" dir="ltr">
       <!-- Sidebar TOC -->
       <aside
-        v-if="docsData?.toc && !showEmptyState"
+        v-if="showLoading || (docsData?.toc && !showEmptyState)"
         class="hidden lg:block w-64 xl:w-72 shrink-0 border-ie border-border"
       >
         <div class="docs-sidebar sticky overflow-y-auto p-4">
           <h2 class="text-xs font-semibold text-fg-subtle uppercase tracking-wider mb-4">
             {{ $t('package.docs.contents') }}
           </h2>
+          <div v-if="showLoading" class="space-y-3">
+            <SkeletonBlock class="h-4 w-24 rounded" />
+            <SkeletonBlock class="h-3 w-32 rounded ms-3" />
+            <SkeletonBlock class="h-3 w-28 rounded ms-3" />
+            <SkeletonBlock class="h-3 w-36 rounded ms-3" />
+          </div>
           <!-- eslint-disable vue/no-v-html -->
-          <div class="toc-content" v-html="docsData.toc" />
+          <div v-else class="toc-content" v-html="docsData?.toc" />
         </div>
       </aside>
 
@@ -195,6 +194,12 @@ const stickyStyle = computed(() => {
           <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-5/6 max-w-2xl rounded" />
           <SkeletonBlock class="h-4 w-3/4 max-w-2xl rounded" />
+          <template v-for="n in 3" :key="n">
+            <SkeletonBlock class="h-6 w-48 mt-6 rounded" />
+            <SkeletonBlock class="h-24 w-full max-w-2xl rounded-lg" />
+            <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
+            <SkeletonBlock class="h-4 w-2/3 max-w-2xl rounded" />
+          </template>
         </div>
 
         <div v-else-if="showEmptyState" class="container mx-auto py-6 sm:py-8 lg:py-12">

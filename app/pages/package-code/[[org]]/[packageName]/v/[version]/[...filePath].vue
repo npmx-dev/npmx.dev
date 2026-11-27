@@ -66,7 +66,8 @@ function getCodeUrl(args: {
 }
 
 // Fetch package data for version list
-const { data: pkg } = usePackage(packageName)
+const packageRequest = usePackage(packageName, null, { lazy: false, server: false })
+const { data: pkg } = packageRequest
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
 
@@ -109,12 +110,19 @@ function codeVersionRoute(nextVersion: string): RouteLocationRaw {
 useCommandPaletteVersionCommands(commandPalettePackageContext, codeVersionRoute)
 
 // Fetch file tree
-const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>(
+const treeRequest = useFetch<PackageFileTreeResponse>(
   () => `/api/registry/files/${packageName.value}/v/${version.value}`,
   {
     immediate: !!version.value,
+    server: false,
   },
 )
+const { data: fileTree, status: treeStatus } = treeRequest
+
+// The page is rendered client-side only: wait for data on the first render to avoid layout shift.
+if (useNuxtApp().isHydrating) {
+  await Promise.all([packageRequest, treeRequest])
+}
 
 // Determine what to show based on the current path
 // Note: This needs fileTree to be loaded first
@@ -344,15 +352,13 @@ useSeoMeta({
   twitterDescription: () => `Browse source code for ${packageName.value}@${version.value}`,
 })
 
-defineOgImage(
-  'Package.takumi',
-  {
-    name: () => packageName.value,
-    version: () => version.value,
-    variant: 'code-tree',
-  },
-  { alt: () => `Source code file tree for ${packageName.value}@${version.value}` },
-)
+if (import.meta.server) {
+  defineOgImage(
+    'Package.takumi',
+    { name: () => packageName.value, version: () => version.value, variant: 'download-chart' },
+    { alt: () => `npm package ${packageName.value} download chart and stats` },
+  )
+}
 
 useCommandPaletteContextCommands(
   computed((): CommandPaletteContextCommandInput[] => {
@@ -426,15 +432,6 @@ useCommandPaletteContextCommands(
     return commands
   }),
 )
-
-onPrehydrate(el => {
-  const settingsSaved = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
-  const container = el.querySelector('#code-page-container')
-
-  if (settingsSaved?.codeContainerFull === true && container) {
-    container.classList.add('container-full')
-  }
-})
 </script>
 
 <template>
@@ -457,7 +454,10 @@ onPrehydrate(el => {
     </div>
 
     <!-- Loading state -->
-    <div v-else-if="treeStatus === 'pending'" class="container py-20 text-center">
+    <div
+      v-else-if="treeStatus === 'pending'"
+      class="container py-20 text-center md:min-h-[calc(100vh-10.5rem)]"
+    >
       <div class="i-svg-spinners:ring-resize w-8 h-8 mx-auto text-fg-muted" />
       <p class="mt-4 text-fg-muted">{{ $t('code.loading_tree') }}</p>
     </div>

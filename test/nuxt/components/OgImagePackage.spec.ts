@@ -59,7 +59,7 @@ describe('OgImagePackage', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     vi.spyOn(globalThis, '$fetch').mockImplementation(((url: string) => {
       if (typeof url === 'string' && url.includes('/api/social/likes/')) {
-        return Promise.resolve({ totalLikes: 0, userHasLiked: false })
+        return Promise.resolve({ totalLikes: 0, topLikedRank: null })
       }
       return Promise.resolve(null)
     }) as any)
@@ -92,7 +92,7 @@ describe('OgImagePackage', () => {
 
     registerEndpoint(`/api/social/likes/${packageName}`, () => ({
       totalLikes: 0,
-      userHasLiked: false,
+      topLikedRank: null,
     }))
   }
 

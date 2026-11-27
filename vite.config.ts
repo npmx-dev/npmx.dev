@@ -6,25 +6,35 @@ import { createRequire } from 'node:module'
 const rootDir = import.meta.dirname
 
 /**
- * Nuxt >= 4.5 auto-imports `$fetch` from a generated `fetch.mjs`, which copies
- * `globalThis.$fetch` into a module-scoped binding at import time. Component tests replace the
- * global with `vi.stubGlobal('$fetch', ...)` after the Nuxt app has been imported, so the binding
- * has to resolve the global on every call for those stubs to be visible to application code.
+ * The generated `#build/fetch` module binds `$fetch` to a module-scoped copy of `globalThis.$fetch`
+ * at import time. Component tests replace the global with `vi.stubGlobal('$fetch', ...)` after the
+ * Nuxt app has been imported, so the binding has to resolve the global on every call.
  */
 function liveDollarFetch() {
-  const SNAPSHOT_RE = /export const \$fetch = globalThis\.\$fetch/
-  return {
-    name: 'npmx:test:live-dollar-fetch',
-    transform(code: string, id: string) {
-      if (!id.startsWith('virtual:nuxt:') || !SNAPSHOT_RE.test(code)) return
-      return code.replace(
-        SNAPSHOT_RE,
-        `export const $fetch = new Proxy(function () {}, {
+  const CLIENT_BINDING_RE =
+    /export const \$fetch = \/\*#__PURE__\*\/ \(\(\) => globalThis\.\$fetch \|\|= _\$fetch\.create\(\{ baseURL: baseURL\(\) \}\)\)\(\)/
+  const SERVER_BINDING_RE = /export const \$fetch = globalThis\.\$fetch/
+  const RESOLVE_GLOBAL = `new Proxy(function () {}, {
   apply: (_target, _thisArg, args) => globalThis.$fetch(...args),
   get: (_target, property) => Reflect.get(globalThis.$fetch, property),
   has: (_target, property) => Reflect.has(globalThis.$fetch, property),
-})`,
-      )
+})`
+  return {
+    name: 'npmx:test:live-dollar-fetch',
+    transform(code: string, id: string) {
+      if (!id.startsWith('virtual:nuxt:')) return
+      if (CLIENT_BINDING_RE.test(code)) {
+        return code.replace(
+          CLIENT_BINDING_RE,
+          `export const $fetch = /*#__PURE__*/ (() => {
+  globalThis.$fetch ||= _$fetch.create({ baseURL: baseURL() })
+  return ${RESOLVE_GLOBAL}
+})()`,
+        )
+      }
+      if (SERVER_BINDING_RE.test(code)) {
+        return code.replace(SERVER_BINDING_RE, `export const $fetch = ${RESOLVE_GLOBAL}`)
+      }
     },
   }
 }

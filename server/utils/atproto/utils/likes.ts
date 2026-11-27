@@ -107,41 +107,31 @@ export class PackageLikesUtils {
   }
 
   /**
+   * Gets the total public like count for an npm package, reading from cache first.
+   */
+  async getTotalLikes(packageName: string): Promise<number> {
+    const totalLikesKey = CACHE_PACKAGE_TOTAL_KEY(packageName)
+    const cachedLikes = await this.cache.get<number>(totalLikesKey)
+    if (cachedLikes !== undefined) {
+      return cachedLikes
+    }
+
+    const totalLikes = await this.constellationLikes(packageSubjectRef(packageName))
+    await this.cache.set(totalLikesKey, totalLikes, CACHE_MAX_AGE)
+    return totalLikes
+  }
+
+  /**
    * Gets the likes for a npm package on npmx. Tries a local cache first; if not found, uses constellation
    * @param packageName
    * @param usersDid
    * @returns
    */
   async getLikes(packageName: string, usersDid?: string | undefined): Promise<PackageLikes> {
-    //TODO: May need to do some clean up on the package name, and maybe even hash it? some of the characters may be a bit odd as keys
-    const totalLikesKey = CACHE_PACKAGE_TOTAL_KEY(packageName)
-    const subjectRef = packageSubjectRef(packageName)
-
-    const cachedLikes = await this.cache.get<number>(totalLikesKey)
-    let totalLikes = 0
-    if (cachedLikes) {
-      totalLikes = cachedLikes
-    } else {
-      totalLikes = await this.constellationLikes(subjectRef)
-      await this.cache.set(totalLikesKey, totalLikes, CACHE_MAX_AGE)
-    }
-
-    let userHasLiked = false
-    if (usersDid) {
-      const userCachedLike = await this.cache.get<boolean>(
-        CACHE_USER_LIKES_KEY(packageName, usersDid),
-      )
-      if (userCachedLike) {
-        userHasLiked = userCachedLike
-      } else {
-        userHasLiked = await this.constellationUserHasLiked(subjectRef, usersDid)
-        await this.cache.set(
-          CACHE_USER_LIKES_KEY(packageName, usersDid),
-          userHasLiked,
-          CACHE_MAX_AGE,
-        )
-      }
-    }
+    const [totalLikes, userHasLiked] = await Promise.all([
+      this.getTotalLikes(packageName),
+      usersDid ? this.hasTheUserLikedThePackage(packageName, usersDid) : Promise.resolve(false),
+    ])
 
     return {
       totalLikes,
@@ -200,7 +190,7 @@ export class PackageLikesUtils {
     const usersBackLinkKey = CACHE_USERS_BACK_LINK(packageName, usersDid)
     await this.cache.set(usersBackLinkKey, backLink, CACHE_MAX_AGE)
     let totalLikes = await this.cache.get<number>(totalLikesKey)
-    if (!totalLikes) {
+    if (totalLikes === undefined) {
       totalLikes = await this.constellationLikes(subjectRef)
     }
     totalLikes = totalLikes + 1
@@ -268,7 +258,7 @@ export class PackageLikesUtils {
     const subjectRef = packageSubjectRef(packageName)
 
     let totalLikes = await this.cache.get<number>(totalLikesKey)
-    if (!totalLikes) {
+    if (totalLikes === undefined) {
       totalLikes = await this.constellationLikes(subjectRef)
     }
     totalLikes = Math.max(totalLikes - 1, 0)

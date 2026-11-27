@@ -5881,6 +5881,12 @@
     "changelog": {
       "type": "object",
       "properties": {
+        "page_title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
         "pre_release": {
           "type": "string"
         },

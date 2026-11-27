@@ -1,3 +1,5 @@
+import type { PublicPackageLikes } from '#shared/types/social'
+import { setResponseHeader } from 'h3'
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { packageSubjectRef } from '#shared/utils/constants'
@@ -6,9 +8,9 @@ import { getTopLikedRank } from '#server/utils/likes-leaderboard'
 /**
  * GET /api/social/likes/:name
  *
- * Gets the likes for a npm package on npmx
+ * Gets public like counts and leaderboard rank for an npm package.
  */
-export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
+export default defineEventHandler(async (event): Promise<PublicPackageLikes> => {
   const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
   const { rawPackageName } = parsePackageParams(pkgParamSegments)
 
@@ -25,13 +27,19 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
     })
 
     const likesUtil = new PackageLikesUtils()
-    const [likes, topLikedRank] = await Promise.all([
-      likesUtil.getLikes(packageName, oAuthSession?.did.toString()),
+    const [totalLikes, topLikedRank] = await Promise.all([
+      likesUtil.getTotalLikes(packageName),
       getTopLikedRank(event, packageSubjectRef(packageName)),
     ])
 
+    setResponseHeader(
+      event,
+      'Cache-Control',
+      'public, max-age=0, s-maxage=60, stale-while-revalidate=300',
+    )
+
     return {
-      ...likes,
+      totalLikes,
       topLikedRank,
     }
   } catch (error: unknown) {

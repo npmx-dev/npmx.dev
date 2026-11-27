@@ -227,13 +227,6 @@ export default defineNuxtConfig({
       fallback: 'json',
       allowQuery: [],
     }),
-    // infinite cache (versioned - doesn't change)
-    '/package-code/**': {
-      headers: { 'Cache-Control': 'public, s-maxage=31536000, stale-while-revalidate=31536000' },
-    },
-    '/package-docs/**': {
-      headers: { 'Cache-Control': 'public, s-maxage=31536000, stale-while-revalidate=31536000' },
-    },
     // static pages
     '/': { prerender: true },
     '/200.html': { prerender: true },
@@ -268,8 +261,11 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    // Implied by `staticRoutes`, but a root-level dynamic page means it can never apply.
+    early404: false,
     entryImportMap: false,
     payloadExtraction: 'client',
+    staticRoutes: true,
     typescriptPlugin: true,
     viteEnvironmentApi: !isStorybook,
     typedPages: true,
@@ -328,6 +324,9 @@ export default defineNuxtConfig({
   },
 
   fonts: {
+    local: {
+      dirs: ['assets/fonts'],
+    },
     providers: {
       fontshare: false,
     },
@@ -338,13 +337,24 @@ export default defineNuxtConfig({
       {
         name: 'Geist',
         provider: 'local',
-        weights: [400, 500, 600],
+        weights: ['100 900'],
+        display: 'optional',
+        fallbacks: [
+          'Arial',
+          'Helvetica Neue',
+          'Segoe UI',
+          'Roboto',
+          'Noto Sans',
+          'Liberation Sans',
+        ],
         global: true,
       },
       {
         name: 'Geist Mono',
         provider: 'local',
-        weights: [400, 500],
+        weights: ['100 900'],
+        display: 'optional',
+        fallbacks: ['Courier New', 'Roboto Mono', 'Noto Sans Mono', 'Liberation Mono'],
         global: true,
       },
       {
@@ -373,10 +383,9 @@ export default defineNuxtConfig({
     enabled: !isStorybook,
     cacheMaxAgeSeconds: 60 * 60 * 24, // 1 day, download counts change daily
     security: {
-      // Reuse image-proxy HMAC secret to avoid managing a second secret.
-      // Strict mode only activates when a secret is present (CI builds without one).
-      strict: !!process.env.NUXT_IMAGE_PROXY_SECRET,
-      secret: process.env.NUXT_IMAGE_PROXY_SECRET,
+      // Signing and strict mode only activate when a secret is present (CI builds without one).
+      strict: !!process.env.NUXT_APP_SECRET,
+      secret: process.env.NUXT_APP_SECRET ? undefined : false,
       // HMAC signing is sufficient; origin pinning blocks localhost e2e runs
       // and adds no meaningful security on top of signed URLs.
       restrictRuntimeImagesToOrigin: false,
@@ -472,8 +481,6 @@ export default defineNuxtConfig({
         'fast-npm-meta',
         '@floating-ui/vue',
         'algoliasearch/lite',
-        '@vue/devtools-core',
-        '@vue/devtools-kit',
       ],
     },
   },

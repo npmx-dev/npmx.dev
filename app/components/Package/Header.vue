@@ -14,7 +14,7 @@ const props = defineProps<{
   versionUrlPattern: string
 }>()
 
-const { requestedVersion, orgName } = usePackageRoute()
+const { packageName: routePackageName, requestedVersion, orgName } = usePackageRoute()
 const { scrollToTop } = useScrollToTop()
 const packageHeaderHeight = usePackageHeaderHeight()
 
@@ -60,7 +60,7 @@ const navExtraOffsetStyle = { '--package-nav-extra': '0px' }
 const { y: scrollY } = useScroll(window)
 const showScrollToTop = computed(() => scrollY.value > SCROLL_TO_TOP_THRESHOLD)
 
-const packageName = computed(() => props.pkg?.name ?? '')
+const packageName = computed(() => props.pkg?.name ?? routePackageName.value)
 const fundingUrl = computed(() => {
   let funding = props.displayVersion?.funding
   if (Array.isArray(funding)) funding = funding[0]
@@ -103,7 +103,10 @@ useCommandPaletteContextCommands(
           announce($t('command_palette.announcements.copied_to_clipboard'))
         },
       },
-      {
+    ]
+
+    if (props.resolvedVersion) {
+      commands.push({
         id: 'package-copy-version',
         group: 'package',
         label: $t('package.copy_version'),
@@ -113,8 +116,8 @@ useCommandPaletteContextCommands(
           copyPkgVersion()
           announce($t('command_palette.announcements.copied_to_clipboard'))
         },
-      },
-    ]
+      })
+    }
 
     if (fundingUrl.value) {
       commands.push({
@@ -133,16 +136,16 @@ useCommandPaletteContextCommands(
 
 // Docs URL: use our generated API docs
 const docsLink = computed((): RouteLocationRaw | null => {
-  if (!props.pkg?.name || !props.resolvedVersion) return null
+  if (!packageName.value || !props.resolvedVersion) return null
 
-  return docsRoute(props.pkg.name, props.resolvedVersion)
+  return docsRoute(packageName.value, props.resolvedVersion)
 })
 
 const codeLink = computed((): RouteLocationRaw | null => {
-  if (props.pkg == null || props.resolvedVersion == null) {
+  if (!packageName.value || props.resolvedVersion == null) {
     return null
   }
-  const split = props.pkg.name.split('/')
+  const split = packageName.value.split('/')
   return {
     name: 'code',
     params: {
@@ -155,10 +158,10 @@ const codeLink = computed((): RouteLocationRaw | null => {
 })
 
 const mainLink = computed((): RouteLocationRaw | null => {
-  if (props.pkg == null || props.resolvedVersion == null) {
+  if (!packageName.value || props.resolvedVersion == null) {
     return null
   }
-  return packageRoute(props.pkg.name, props.resolvedVersion)
+  return packageRoute(packageName.value, props.resolvedVersion)
 })
 
 const diffLink = computed((): RouteLocationRaw | null => {
@@ -182,22 +185,22 @@ const changelogLink = computed((): RouteLocationRaw | null => {
   if (
     // either changelog.value is available or current page is the changelog
     !(hasChangelog.value || props.page == 'changelog') ||
-    props.pkg == null ||
+    !packageName.value ||
     props.resolvedVersion == null
   ) {
     return null
   }
-  return changelogRoute(props.pkg.name, props.resolvedVersion)
+  return changelogRoute(packageName.value, props.resolvedVersion)
 })
 
 const timelineLink = computed((): RouteLocationRaw | null => {
-  if (props.pkg == null || props.resolvedVersion == null) return null
-  return packageTimelineRoute(props.pkg.name, props.resolvedVersion)
+  if (!packageName.value || props.resolvedVersion == null) return null
+  return packageTimelineRoute(packageName.value, props.resolvedVersion)
 })
 
 const statsLink = computed((): RouteLocationRaw | null => {
-  if (props.pkg == null || props.resolvedVersion == null) return null
-  return packageStatsRoute(props.pkg.name, props.resolvedVersion)
+  if (!packageName.value || props.resolvedVersion == null) return null
+  return packageStatsRoute(packageName.value, props.resolvedVersion)
 })
 
 useShortcuts({
@@ -218,7 +221,7 @@ useShortcuts({
     <div class="flex items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0">
       <h1
         class="flex flex-row items-start min-w-0 font-mono text-lg sm:text-3xl font-medium break-words"
-        :title="pkg?.name"
+        :title="packageName"
         dir="ltr"
       >
         <CopyToClipboardButton
@@ -231,7 +234,7 @@ useShortcuts({
           </LinkBase>
           <span v-if="orgName">/</span>
           <span :class="{ 'text-fg-muted': !requestedVersion }">
-            {{ orgName ? pkg?.name.replace(`@${orgName}/`, '') : pkg?.name }}
+            {{ orgName ? packageName.replace(`@${orgName}/`, '') : packageName }}
           </span>
         </CopyToClipboardButton>
         <template v-if="requestedVersion && resolvedVersion">
@@ -273,7 +276,7 @@ useShortcuts({
       class="w-full container flex flex-col md:flex-row-reverse items-baseline justify-between gap-x-2 gap-y-1 flex-wrap"
     >
       <div
-        class="flex items-center max-md:justify-between max-md:w-full max-md:flex-row-reverse gap-2"
+        class="flex items-center max-md:justify-between max-md:w-full max-md:flex-row-reverse md:grow md:justify-end gap-2"
       >
         <ButtonBase
           variant="secondary"
