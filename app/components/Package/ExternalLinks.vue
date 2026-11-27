@@ -162,7 +162,7 @@ useCommandPaletteContextCommands(
         <SkeletonInline class="h-4 w-[5ch]" />
       </span>
     </li>
-    <li v-if="repoMeta && forksLink">
+    <li v-if="repoMeta && forks && forksLink">
       <LinkBase :to="forksLink" classicon="i-lucide:git-fork">
         <span class="min-w-[5ch]">{{ compactNumberFormatter.format(forks) }}</span>
       </LinkBase>
