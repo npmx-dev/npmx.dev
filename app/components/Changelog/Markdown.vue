@@ -45,7 +45,9 @@ if (import.meta.client) {
       for (const item of toc) {
         const text = item.text.toLowerCase()
         if (text.toLowerCase().includes(lcRequestedVersion) && isMatching(text)) {
-          navigateTo(`#${item.id}`)
+          if (item !== toc[0]) {
+            navigateTo(`#${item.id}`)
+          }
           return
         }
       }

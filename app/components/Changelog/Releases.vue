@@ -71,12 +71,16 @@ if (import.meta.client) {
             match.tag.toLowerCase().includes(goToVersion) ||
             match.title.toLowerCase().includes(goToVersion)
           ) {
-            navigateTo(`#release-${slugify(match.title)}`, { replace: true })
+            if (match !== uReleases[0]) {
+              navigateTo(`#release-${slugify(match.title)}`, { replace: true })
+            }
             return
           }
         }
       }
-      navigateTo(`#date-${date}`, { replace: true })
+      if (uReleases[0]?.publishedAt?.slice(0, 10) !== date) {
+        navigateTo(`#date-${date}`, { replace: true })
+      }
     },
     { flush: 'post' },
   )
