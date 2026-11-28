@@ -2,7 +2,7 @@ import type { PublicPackageLikes } from '#shared/types/social'
 import { setResponseHeader } from 'h3'
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
-import { PACKAGE_SUBJECT_REF } from '#shared/utils/constants'
+import { packageSubjectRef } from '#shared/utils/constants'
 import { getTopLikedRank } from '#server/utils/likes-leaderboard'
 
 /**
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event): Promise<PublicPackageLikes> => 
     const likesUtil = new PackageLikesUtils()
     const [totalLikes, topLikedRank] = await Promise.all([
       likesUtil.getTotalLikes(packageName),
-      getTopLikedRank(event, PACKAGE_SUBJECT_REF(packageName)),
+      getTopLikedRank(event, packageSubjectRef(packageName)),
     ])
 
     setResponseHeader(

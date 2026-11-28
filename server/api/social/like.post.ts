@@ -26,7 +26,7 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
     return likesResult
   }
 
-  const subjectRef = PACKAGE_SUBJECT_REF(body.packageName)
+  const subjectRef = packageSubjectRef(body.packageName)
   const client = new Client(oAuthSession)
 
   const like = dev.npmx.feed.like.$build({

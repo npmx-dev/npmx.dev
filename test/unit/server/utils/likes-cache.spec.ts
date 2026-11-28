@@ -4,7 +4,7 @@ import { afterAll, describe, expect, it, vi } from 'vite-plus/test'
 import { RedisCacheAdapter } from '#server/utils/cache/redis'
 
 vi.stubGlobal('CACHE_MAX_AGE_ONE_MINUTE', 60)
-vi.stubGlobal('PACKAGE_SUBJECT_REF', (pkg: string) => `https://npmx.dev/package/${pkg}`)
+vi.stubGlobal('packageSubjectRef', (pkg: string) => `https://npmx.dev/package/${pkg}`)
 vi.stubGlobal('getCacheAdapter', vi.fn())
 vi.stubGlobal('Constellation', vi.fn())
 

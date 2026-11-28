@@ -116,7 +116,7 @@ export class PackageLikesUtils {
       return cachedLikes
     }
 
-    const totalLikes = await this.constellationLikes(PACKAGE_SUBJECT_REF(packageName))
+    const totalLikes = await this.constellationLikes(packageSubjectRef(packageName))
     await this.cache.set(totalLikesKey, totalLikes, CACHE_MAX_AGE)
     return totalLikes
   }
@@ -151,7 +151,7 @@ export class PackageLikesUtils {
     if (cached !== undefined) {
       return cached
     }
-    const subjectRef = PACKAGE_SUBJECT_REF(packageName)
+    const subjectRef = packageSubjectRef(packageName)
 
     const userHasLiked = await this.constellationUserHasLiked(subjectRef, usersDid)
     await this.cache.set(CACHE_USER_LIKES_KEY(packageName, usersDid), userHasLiked, CACHE_MAX_AGE)
@@ -171,7 +171,7 @@ export class PackageLikesUtils {
     atUri: string,
   ): Promise<PackageLikes> {
     const totalLikesKey = CACHE_PACKAGE_TOTAL_KEY(packageName)
-    const subjectRef = PACKAGE_SUBJECT_REF(packageName)
+    const subjectRef = packageSubjectRef(packageName)
 
     const splitAtUri = atUri.replace('at://', '').split('/')
     const collection = splitAtUri[1]
@@ -221,7 +221,7 @@ export class PackageLikesUtils {
       return backLink
     }
 
-    const subjectRef = PACKAGE_SUBJECT_REF(packageName)
+    const subjectRef = packageSubjectRef(packageName)
     const { data: userLikes } = await this.constellation.getBackLinks(
       subjectRef,
       likeNsid,
@@ -255,7 +255,7 @@ export class PackageLikesUtils {
    */
   async unlikeAPackageAndReturnLikes(packageName: string, usersDid: string): Promise<PackageLikes> {
     const totalLikesKey = CACHE_PACKAGE_TOTAL_KEY(packageName)
-    const subjectRef = PACKAGE_SUBJECT_REF(packageName)
+    const subjectRef = packageSubjectRef(packageName)
 
     let totalLikes = await this.cache.get<number>(totalLikesKey)
     if (totalLikes === undefined) {
@@ -309,7 +309,7 @@ export class PackageLikesUtils {
     const cached = await this.cache.get<Array<{ day: string; likes: number }>>(cacheKey)
     if (cached) return cached
 
-    const subjectRef = PACKAGE_SUBJECT_REF(packageName)
+    const subjectRef = packageSubjectRef(packageName)
     const allBacklinks: Backlink[] = []
     let cursor: string | undefined
 
