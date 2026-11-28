@@ -97,7 +97,7 @@ dialog {
   opacity: 0;
   transition: opacity 200ms ease;
   transition-behavior: allow-discrete;
-  scrollbar-gutter: stable;
+  scrollbar-gutter: stable both-edges;
 }
 
 dialog:modal {
