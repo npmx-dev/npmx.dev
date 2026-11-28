@@ -59,7 +59,8 @@ export async function createCodeHighlighter(): Promise<RendererApi['code']> {
 
   // Syntax highlighting for code blocks (uses shared highlighter)
   return ({ text, lang }: Tokens.Code) => {
-    const html = highlightCodeSync(shiki, text, lang || 'text')
+    const language = (lang || '').match(/^\S+/)?.[0] || 'text'
+    const html = highlightCodeSync(shiki, text, language)
     // Add copy button
     return `<div class="readme-code-block" >
   <button type="button" class="readme-copy-button" aria-label="Copy code" check-icon="i-lucide:check" copy-icon="i-lucide:copy" data-copy>
