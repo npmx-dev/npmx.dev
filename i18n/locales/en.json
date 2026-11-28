@@ -87,7 +87,10 @@
     "instant_search_off": "off",
     "instant_search_turn_on": "turn on",
     "instant_search_turn_off": "turn off",
-    "instant_search_advisory": "{label} {state} — {action}"
+    "instant_search_advisory": "{label} {state} — {action}",
+    "suggestions_label": "Package suggestions",
+    "suggestions_search_all": "Search all for \"{query}\"",
+    "suggestions_count": "No packages match \"{query}\" | 1 package suggested | {count} packages suggested"
   },
   "command_palette": {
     "title": "command palette",

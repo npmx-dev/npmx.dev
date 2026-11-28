@@ -311,6 +311,7 @@ import {
   ReadmeTocDropdown,
   SearchProviderToggle,
   SearchSuggestionCard,
+  SearchSuggestionsDropdown,
   SelectBase,
   SelectField,
   SettingsAccentColorPicker,
@@ -4250,6 +4251,26 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations for exact match', async () => {
       const component = await mountSuspended(SearchSuggestionCard, {
         props: { type: 'user', name: 'exactuser', isExactMatch: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SearchSuggestionsDropdown', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SearchSuggestionsDropdown, {
+        props: {
+          listId: 'test-suggestions',
+          options: [
+            { id: 'test-suggestions-0', kind: 'package', label: 'vue' },
+            { id: 'test-suggestions-all', kind: 'search', label: 'vue' },
+          ],
+          active: 0,
+          expanded: true,
+          pending: false,
+          query: 'vue',
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
