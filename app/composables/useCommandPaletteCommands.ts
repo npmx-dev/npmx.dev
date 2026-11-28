@@ -11,6 +11,7 @@ const GROUP_ORDER: CommandPaletteGroup[] = [
   'actions',
   'language',
   'package',
+  'collections',
   'navigation',
   'connections',
   'links',
@@ -54,6 +55,8 @@ export function useCommandPaletteCommands() {
         return packageName
           ? t('command_palette.groups.package_with_name', { name: packageName })
           : t('command_palette.groups.package')
+      case 'collections':
+        return t('command_palette.groups.collections')
       case 'navigation':
         return t('command_palette.groups.navigation')
       case 'connections':

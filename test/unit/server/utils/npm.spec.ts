@@ -7,10 +7,12 @@ vi.stubGlobal('$fetch', $fetchMock)
 vi.stubGlobal('encodePackageName', (name: string) => name.replace('/', '%2F'))
 vi.stubGlobal('NPM_REGISTRY', 'https://registry.npmjs.org')
 vi.stubGlobal('CACHE_MAX_AGE_FIVE_MINUTES', 300)
+vi.stubGlobal('CACHE_MAX_AGE_ONE_HOUR', 3600)
 vi.stubGlobal('CACHE_MAX_AGE_ONE_DAY', 86400)
 vi.stubGlobal('fetchLatestVersion', vi.fn())
 
-const { fetchNpmPackageAbbreviated, fetchNpmPackageVersionLibc } = await import('#server/utils/npm')
+const { fetchNpmPackageAbbreviated, fetchNpmPackageExists, fetchNpmPackageVersionLibc } =
+  await import('#server/utils/npm')
 
 describe('fetchNpmPackageAbbreviated', () => {
   beforeEach(() => {
@@ -51,5 +53,29 @@ describe('fetchNpmPackageVersionLibc', () => {
     $fetchMock.mockResolvedValue({})
 
     expect(await fetchNpmPackageVersionLibc('pkg', '1.0.0')).toBeUndefined()
+  })
+})
+
+describe('fetchNpmPackageExists', () => {
+  beforeEach(() => {
+    $fetchMock.mockReset()
+  })
+
+  it('returns true when the registry has the package', async () => {
+    $fetchMock.mockResolvedValue(undefined)
+    expect(await fetchNpmPackageExists('@scope/pkg')).toBe(true)
+    expect($fetchMock).toHaveBeenCalledWith('https://registry.npmjs.org/@scope%2Fpkg', {
+      method: 'HEAD',
+    })
+  })
+
+  it('returns false on 404', async () => {
+    $fetchMock.mockRejectedValue(Object.assign(new Error('Not Found'), { statusCode: 404 }))
+    expect(await fetchNpmPackageExists('nope')).toBe(false)
+  })
+
+  it('throws on other errors so they are not cached', async () => {
+    $fetchMock.mockRejectedValue(Object.assign(new Error('Bad Gateway'), { statusCode: 502 }))
+    await expect(fetchNpmPackageExists('zod')).rejects.toThrow('Bad Gateway')
   })
 })
