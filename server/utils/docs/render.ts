@@ -8,7 +8,15 @@
 
 import type { DenoDocNode, JsDocTag } from '#shared/types/deno-doc'
 import { highlightCodeBlock } from '../shiki'
-import { formatParams, formatType, getNodeSignature } from './format'
+import {
+  formatClassGetterSignature,
+  formatClassMethodSignature,
+  formatClassPropertySignature,
+  formatConstructorSignature,
+  formatInterfaceMethodSignature,
+  formatInterfacePropertySignature,
+  getNodeSignature,
+} from './format'
 import { groupMergedByKind } from './processing'
 import { createMemberId, createSymbolId, escapeHtml, parseJsDocLinks, renderMarkdown } from './text'
 import type { MergedSymbol, ProcessedEntry, SymbolLookup } from './types'
@@ -18,13 +26,13 @@ import type { MergedSymbol, ProcessedEntry, SymbolLookup } from './types'
 // =============================================================================
 
 /** Maximum number of overload signatures to display per symbol */
-const MAX_OVERLOAD_SIGNATURES = 5
+export const MAX_OVERLOAD_SIGNATURES = 5
 
 /** Maximum number of items to show in TOC per category before truncating */
 const MAX_TOC_ITEMS_PER_KIND = 50
 
 /** Order in which symbol kinds are displayed */
-const KIND_DISPLAY_ORDER = [
+export const KIND_DISPLAY_ORDER = [
   'function',
   'class',
   'interface',
@@ -35,7 +43,7 @@ const KIND_DISPLAY_ORDER = [
 ] as const
 
 /** Human-readable titles for symbol kinds */
-const KIND_TITLES: Record<string, string> = {
+export const KIND_TITLES: Record<string, string> = {
   function: 'Functions',
   class: 'Classes',
   interface: 'Interfaces',
@@ -367,30 +375,19 @@ function renderClassMembers(
     lines.push(`<div class="docs-members">`)
     lines.push(`<h4>Constructor</h4>`)
     for (const ctor of constructors) {
-      const params = formatParams(ctor.params)
       lines.push(
-        `<pre${renderIdAttribute(claimMemberId('constructor'))}><code>constructor(${escapeHtml(params)})</code></pre>`,
+        `<pre${renderIdAttribute(claimMemberId('constructor'))}><code>${escapeHtml(formatConstructorSignature(ctor))}</code></pre>`,
       )
     }
     lines.push(`</div>`)
   }
 
   if (properties && properties.length > 0) {
-    const propertyItems: DefinitionListItem[] = properties.map(prop => {
-      const modifiers: string[] = []
-      if (prop.isStatic) modifiers.push('static')
-      if (prop.readonly) modifiers.push('readonly')
-      const modStr = modifiers.length > 0 ? `${modifiers.join(' ')} ` : ''
-      const type = formatType(prop.tsType)
-      const opt = prop.optional ? '?' : ''
-      const typeStr = type ? `: ${type}` : ''
-
-      return {
-        id: claimMemberId(prop.name),
-        signature: `${modStr}${prop.name}${opt}${typeStr}`,
-        description: prop.jsDoc?.doc,
-      }
-    })
+    const propertyItems: DefinitionListItem[] = properties.map(prop => ({
+      id: claimMemberId(prop.name),
+      signature: formatClassPropertySignature(prop),
+      description: prop.jsDoc?.doc,
+    }))
 
     lines.push(renderMemberList('Properties', propertyItems, symbolLookup))
   }
@@ -399,32 +396,21 @@ function renderClassMembers(
   const regularMethods = methods?.filter(m => m.kind !== 'getter') || []
 
   if (getters.length > 0) {
-    const getterItems: DefinitionListItem[] = getters.map(getter => {
-      const ret = formatType(getter.functionDef?.returnType) || 'unknown'
-      const staticStr = getter.isStatic ? 'static ' : ''
-
-      return {
-        id: claimMemberId(getter.name),
-        signature: `${staticStr}get ${getter.name}: ${ret}`,
-        description: getter.jsDoc?.doc,
-      }
-    })
+    const getterItems: DefinitionListItem[] = getters.map(getter => ({
+      id: claimMemberId(getter.name),
+      signature: formatClassGetterSignature(getter),
+      description: getter.jsDoc?.doc,
+    }))
 
     lines.push(renderMemberList('Getters', getterItems, symbolLookup))
   }
 
   if (regularMethods.length > 0) {
-    const methodItems: DefinitionListItem[] = regularMethods.map(method => {
-      const params = formatParams(method.functionDef?.params)
-      const ret = formatType(method.functionDef?.returnType) || 'void'
-      const staticStr = method.isStatic ? 'static ' : ''
-
-      return {
-        id: claimMemberId(method.name),
-        signature: `${staticStr}${method.name}(${params}): ${ret}`,
-        description: method.jsDoc?.doc,
-      }
-    })
+    const methodItems: DefinitionListItem[] = regularMethods.map(method => ({
+      id: claimMemberId(method.name),
+      signature: formatClassMethodSignature(method),
+      description: method.jsDoc?.doc,
+    }))
 
     lines.push(renderMemberList('Methods', methodItems, symbolLookup))
   }
@@ -449,11 +435,8 @@ function renderInterfaceMembers(
     lines.push(`<h4>Properties</h4>`)
     lines.push(`<dl>`)
     for (const prop of properties) {
-      const type = formatType(prop.tsType)
-      const opt = prop.optional ? '?' : ''
-      const ro = prop.readonly ? 'readonly ' : ''
       lines.push(
-        `<dt${renderIdAttribute(claimMemberId(prop.name))}><code>${escapeHtml(ro)}${escapeHtml(prop.name)}${opt}: ${escapeHtml(type)}</code></dt>`,
+        `<dt${renderIdAttribute(claimMemberId(prop.name))}><code>${escapeHtml(formatInterfacePropertySignature(prop))}</code></dt>`,
       )
       if (prop.jsDoc?.doc) {
         lines.push(`<dd>${renderMemberDescription(prop.jsDoc.doc, symbolLookup)}</dd>`)
@@ -468,10 +451,8 @@ function renderInterfaceMembers(
     lines.push(`<h4>Methods</h4>`)
     lines.push(`<dl>`)
     for (const method of methods) {
-      const params = formatParams(method.params)
-      const ret = formatType(method.returnType) || 'void'
       lines.push(
-        `<dt${renderIdAttribute(claimMemberId(method.name))}><code>${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`,
+        `<dt${renderIdAttribute(claimMemberId(method.name))}><code>${escapeHtml(formatInterfaceMethodSignature(method))}</code></dt>`,
       )
       if (method.jsDoc?.doc) {
         lines.push(`<dd>${renderMemberDescription(method.jsDoc.doc, symbolLookup)}</dd>`)

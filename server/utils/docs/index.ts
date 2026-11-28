@@ -8,9 +8,10 @@
  * @module server/utils/docs
  */
 
-import type { DocsGenerationResult } from '#shared/types/deno-doc'
+import type { DenoDocResult, DocsGenerationResult } from '#shared/types/deno-doc'
 import { getDocNodes } from './client'
 import { buildSymbolLookup, flattenNamespaces, mergeOverloads } from './processing'
+import { renderEntriesMarkdown } from './markdown'
 import { renderEntries, renderEntriesToc } from './render'
 import { computeEntryPrefixes } from './text'
 import type { ProcessedEntry } from './types'
@@ -37,8 +38,39 @@ export async function generateDocsWithDeno(
   packageName: string,
   version: string,
 ): Promise<DocsGenerationResult | null> {
-  const result = await getDocNodes(packageName, version)
+  const processed = processEntries(await getDocNodes(packageName, version))
 
+  if (!processed) {
+    return null
+  }
+
+  return {
+    html: await renderEntries(processed),
+    toc: renderEntriesToc(processed),
+  }
+}
+
+/**
+ * Generate API documentation for an npm package as a single Markdown document.
+ *
+ * @param packageName - The npm package name (e.g., "react", "@types/lodash")
+ * @param version - The package version (e.g., "19.2.3")
+ * @returns The Markdown documentation or null if no types are available
+ */
+export async function generateDocsMarkdownWithDeno(
+  packageName: string,
+  version: string,
+): Promise<string | null> {
+  const processed = processEntries(await getDocNodes(packageName, version))
+
+  return processed ? renderEntriesMarkdown(packageName, processed) : null
+}
+
+/**
+ * Flatten, merge and prefix the doc nodes of every entry point, ready for rendering.
+ * Returns null when there is nothing to document.
+ */
+function processEntries(result: DenoDocResult): ProcessedEntry[] | null {
   if (result.entries.length === 0) {
     return null
   }
@@ -63,7 +95,7 @@ export async function generateDocsWithDeno(
   const prefixes =
     entries.length > 1 ? computeEntryPrefixes(entries.map(entry => entry.entryPoint)) : null
 
-  const processed: ProcessedEntry[] = entries.map(entry => {
+  return entries.map(entry => {
     const prefix = prefixes?.get(entry.entryPoint) ?? ''
     return {
       entryPoint: entry.entryPoint,
@@ -72,9 +104,4 @@ export async function generateDocsWithDeno(
       lookup: buildSymbolLookup(entry.nodes, prefix),
     }
   })
-
-  return {
-    html: await renderEntries(processed),
-    toc: renderEntriesToc(processed),
-  }
 }

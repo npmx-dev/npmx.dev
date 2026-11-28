@@ -557,6 +557,7 @@
     },
     "docs": {
       "contents": "Contents",
+      "copy_as_markdown": "Copy docs as Markdown",
       "default_not_available": "Docs are not available for this version.",
       "not_available": "Docs not available",
       "not_available_detail": "We could not generate docs for this version.",
