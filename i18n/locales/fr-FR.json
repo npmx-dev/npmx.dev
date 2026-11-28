@@ -388,11 +388,15 @@
     "delete_title": "Supprimer cette collection ?",
     "delete_body": "Cette action est irréversible.",
     "delete_error": "Impossible de supprimer la collection. Veuillez réessayer.",
+    "in_collections": "Dans {count} collection | Dans {count} collections",
+    "containing_package_title": "Collections avec {name}",
+    "including_title": "Collections qui incluent celle-ci",
     "includes": "Inclut",
     "package_unresolved": "Introuvable sur le registre npm",
     "unknown_item": "Élément non reconnu",
     "unavailable": {
-      "unresolvable": "Impossible de charger cette collection."
+      "unresolvable": "Impossible de charger cette collection.",
+      "hidden": "Cette collection est masquée."
     },
     "not_found": "Collection introuvable",
     "not_found_message": "Cette collection n'existe pas, a été supprimée ou est masquée.",
