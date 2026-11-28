@@ -1,7 +1,7 @@
 import { FetchError } from 'ofetch'
 import type { InferInput } from 'valibot'
 import type { CollectionBodySchema } from '#shared/schemas/social'
-import type { CollectionSummary, OwnCollection } from '#shared/types/social'
+import type { CollectionSummary, OwnCollection, ReactionState } from '#shared/types/social'
 import { authRedirect, handleAuthError } from '~/utils/atproto/helpers'
 
 export type CollectionBody = InferInput<typeof CollectionBodySchema>
@@ -72,6 +72,32 @@ export function deleteCollection(identifier: string, rkey: string, userHandle?: 
   return request(
     () => $fetch<{ uri: string }>(collectionPath(identifier, rkey), { method: 'DELETE' }),
     userHandle,
+  )
+}
+
+export type Reaction = 'like' | 'follow'
+
+export function toggleCollectionReaction(
+  identifier: string,
+  rkey: string,
+  reaction: Reaction,
+  currentlyOn: boolean,
+  userHandle?: string | null,
+) {
+  return request(
+    () =>
+      $fetch<ReactionState>(`${collectionPath(identifier, rkey)}/${reaction}`, {
+        method: currentlyOn ? 'DELETE' : 'POST',
+      }),
+    userHandle,
+  )
+}
+
+/** Collections the account follows, newest follow first. */
+export function fetchFollowedCollections(identifier: string, cursor?: string | null, limit = 20) {
+  return $fetch<{ cursor?: string; items: CollectionSummary[] }>(
+    `/api/social/profile/${encodeURIComponent(identifier)}/followed-collections`,
+    { query: { cursor: cursor ?? undefined, limit } },
   )
 }
 

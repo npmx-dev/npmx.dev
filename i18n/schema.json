@@ -1386,6 +1386,12 @@
         },
         "collections": {
           "type": "string"
+        },
+        "following_collections": {
+          "type": "string"
+        },
+        "no_following_collections": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -1421,6 +1427,12 @@
           "type": "string"
         },
         "item_count": {
+          "type": "string"
+        },
+        "like": {
+          "type": "string"
+        },
+        "unlike": {
           "type": "string"
         },
         "duplicate": {
@@ -1541,6 +1553,42 @@
               "type": "string"
             },
             "too_long": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "follow": {
+          "type": "string"
+        },
+        "following": {
+          "type": "string"
+        },
+        "follow_label": {
+          "type": "string"
+        },
+        "unfollow_label": {
+          "type": "string"
+        },
+        "followers": {
+          "type": "string"
+        },
+        "like_count": {
+          "type": "string"
+        },
+        "reaction_announcements": {
+          "type": "object",
+          "properties": {
+            "liked": {
+              "type": "string"
+            },
+            "unliked": {
+              "type": "string"
+            },
+            "followed": {
+              "type": "string"
+            },
+            "unfollowed": {
               "type": "string"
             }
           },
