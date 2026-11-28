@@ -1333,7 +1333,6 @@
       "search_label": "Søk etter pakker",
       "search_first": "Søk etter en pakke...",
       "search_add": "Legg til en annen pakke...",
-      "searching": "Søker...",
       "remove_package": "Fjern {package}",
       "packages_selected": "{count}/{max} pakker valgt.",
       "add_hint": "Legg til minst 2 pakker for å sammenligne."

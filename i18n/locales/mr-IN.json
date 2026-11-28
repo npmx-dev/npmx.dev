@@ -1055,7 +1055,6 @@
       "search_label": "पॅकेजेस शोधा",
       "search_first": "एखादे पॅकेज शोधा...",
       "search_add": "आणखी एक पॅकेज जोडा...",
-      "searching": "शोधत आहे...",
       "remove_package": "{package} काढा",
       "packages_selected": "{count}/{max} पॅकेजेस निवडली.",
       "add_hint": "तुलनेसाठी किमान 2 पॅकेजेस जोडा."

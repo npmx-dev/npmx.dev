@@ -1281,7 +1281,6 @@
       "search_label": "搜索包",
       "search_first": "搜索包…",
       "search_add": "添加另一个包…",
-      "searching": "搜索中…",
       "remove_package": "移除 {package}",
       "packages_selected": "已选择 {count}/{max} 个包。",
       "add_hint": "至少添加 2 个包以进行比较。"

@@ -838,10 +838,6 @@
       "sparkline_zoom_reset": {
         "title": "Скинути масштаб · двічі клацніть діаграму або натисніть Esc",
         "aria_label": "Скинути масштаб"
-      },
-      "downloads_heatmap": {
-        "legend": {},
-        "copy_alt": {}
       }
     },
     "downloads": {
@@ -1489,7 +1485,6 @@
       "search_label": "Пошук пакетів",
       "search_first": "Знайти пакет...",
       "search_add": "Додати ще пакет...",
-      "searching": "Пошук...",
       "remove_package": "Видалити {package}",
       "packages_selected": "Вибрано {count}/{max} пакетів.",
       "add_hint": "Додайте щонайменше 2 пакети для порівняння."
@@ -1925,7 +1920,6 @@
       "p2": "Спробуйте пізніше або {viewon}"
     },
     "version_unavailable": "Запитана версія недоступна.",
-    "copy_as_markdown": "Копіювати журнал змін як Markdown",
-    "ungh": {}
+    "copy_as_markdown": "Копіювати журнал змін як Markdown"
   }
 }

@@ -899,7 +899,6 @@
       "search_label": "ابحث عن حزم",
       "search_first": "ابحث عن حزمة…",
       "search_add": "أضف حزمة أخرى…",
-      "searching": "جارٍ البحث…",
       "remove_package": "إزالة {package}",
       "packages_selected": "{count}/{max} حزمة محددة.",
       "add_hint": "أضف حزمتين على الأقل للمقارنة."
