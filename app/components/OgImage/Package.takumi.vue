@@ -145,9 +145,9 @@ async function fetchFunctionTree() {
   const ver = resolvedVersion.value ?? version
   if (!ver) return
 
-  const resp = await requestFetch<{ toc: string | null }>(
-    `/api/registry/docs/${name}/v/${ver}`,
-  ).catch(() => null)
+  const resp = await requestFetch<{ toc: string | null }>(`/api/registry/docs/${name}/v/${ver}`, {
+    timeout: 3000,
+  }).catch(() => null)
   if (!resp?.toc) return
 
   const rows: SymbolRow[] = []
@@ -184,9 +184,11 @@ const fetchLikes = import.meta.test
     Promise.resolve().then(() => {
       totalLikes.value = 83
     })
-  : $fetch<{ totalLikes: number }>(`/api/social/likes/${name}`).then(d => {
-      totalLikes.value = d?.totalLikes ?? 0
-    })
+  : $fetch<{ totalLikes: number }>(`/api/social/likes/${name}`)
+      .then(d => {
+        totalLikes.value = d?.totalLikes ?? 0
+      })
+      .catch(() => null)
 
 try {
   await Promise.all([

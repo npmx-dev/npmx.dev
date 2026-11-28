@@ -16,6 +16,15 @@ useSeoMeta({
   twitterDescription: () => $t('blog.meta_description'),
 })
 
+defineOgImage(
+  'Page.takumi',
+  {
+    title: () => $t('blog.title'),
+    description: () => $t('blog.meta_description'),
+  },
+  { alt: () => `${$t('blog.title')} - npmx` },
+)
+
 useHead({
   link: [
     {
