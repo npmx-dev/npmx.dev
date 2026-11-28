@@ -1,4 +1,5 @@
 import { vercelAnalytics } from '#vercel-analytics'
+import { createWebAnalyticsFilter, getAnalyticsStorage } from '~/utils/web-analytics'
 
 export default defineNuxtPlugin({
   enforce: 'pre',
@@ -11,6 +12,15 @@ export default defineNuxtPlugin({
     window.va = function (...params: unknown[]) {
       ;(window.vaq = window.vaq || []).push(params)
     }
+
+    // The analytics script drains `vaq` when it loads, so the filter has to be queued first.
+    window.va(
+      'beforeSend',
+      createWebAnalyticsFilter({
+        storage: getAnalyticsStorage(),
+        webdriver: navigator.webdriver === true,
+      }),
+    )
 
     useScript({
       'src': vercelAnalytics.scriptSrc ?? '/_vercel/insights/script.js',
