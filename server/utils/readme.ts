@@ -236,6 +236,11 @@ function resolveUrl(
         }
         return url
       }
+      // Email addresses are URLs too (`mailto:tj@example.com`), but they point to
+      // a contact address, not to a file in the repository, so leave them as-is.
+      if (parsed.protocol === 'mailto:') {
+        return url
+      }
     } catch {
       // Invalid URL, fall through to resolve as relative
     }

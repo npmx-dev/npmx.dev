@@ -114,8 +114,11 @@ export function createLink(processLink: ProcessLinkFn): RendererApi['link'] {
     if (!resolvedHref) return resolvedText
 
     // prevents package@1.0.0 being made into an email
-    if (href.startsWith('mailto:') && !EMAIL_REGEX.test(plainText)) {
-      return resolvedText
+    if (href.startsWith('mailto:')) {
+      const email = href.slice('mailto:'.length).split('?')[0] ?? ''
+      if (!EMAIL_REGEX.test(email)) {
+        return resolvedText
+      }
     }
 
     return `<a href="${resolvedHref}"${titleAttr}${extraAttrs}>${resolvedText}</a>`
