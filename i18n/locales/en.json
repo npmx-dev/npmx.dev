@@ -1697,6 +1697,7 @@
     "filter_files_label": "Filter files by change type",
     "change_ratio": "Change ratio",
     "char_edits": "Char edits",
+    "copy_raw_diff": "Copy .diff",
     "diff_distance": "Diff distance",
     "diff_truncated": "Diff truncated for performance. Showing the first changed lines only.",
     "large_diff_mode": "Large file diff shown with inline edit merging disabled for performance.",
@@ -1708,6 +1709,7 @@
     "options": "Options",
     "view_file": "View file",
     "view_in_code_browser": "View in code browser",
+    "view_raw_diff": "View .diff",
     "word_wrap": "Word wrap"
   },
   "pds": {

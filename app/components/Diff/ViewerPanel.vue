@@ -60,6 +60,19 @@ const {
 
 const largeDiffMode = computed(() => diff.value?.meta.large ?? isLargeFile.value)
 
+const hasChanges = computed(() => !!diff.value?.hunks.length)
+const rawDiffUrl = computed(() => `${apiUrl.value}?format=diff`)
+
+const { copied: rawDiffCopied, copy } = useClipboard({ copiedDuring: 2000 })
+
+async function copyRawDiff() {
+  try {
+    await copy(() => $fetch<string>(rawDiffUrl.value, { responseType: 'text' }))
+  } catch {
+    // Nothing was copied, so `rawDiffCopied` stays false and the link is still available.
+  }
+}
+
 function calcPercent(value: number, min: number, max: number): number {
   if (max === min) return 0
   const percent = ((value - min) / (max - min)) * 100
@@ -119,6 +132,22 @@ useCommandPaletteContextCommands(
               ),
             }),
           )
+        },
+      })
+    }
+
+    if (hasChanges.value) {
+      commands.push({
+        id: 'diff-copy-raw-diff',
+        group: 'actions',
+        label: $t('compare.copy_raw_diff'),
+        keywords: [props.packageName, props.file.path],
+        iconClass: 'i-lucide:copy',
+        action: async () => {
+          await copyRawDiff()
+          if (rawDiffCopied.value) {
+            announce($t('command_palette.announcements.copied_to_clipboard'))
+          }
         },
       })
     }
@@ -356,6 +385,30 @@ useCommandPaletteContextCommands(
             </div>
           </Transition>
         </div>
+
+        <!-- Raw unified diff -->
+        <template v-if="hasChanges">
+          <NuxtLink
+            :to="rawDiffUrl"
+            external
+            target="_blank"
+            class="px-2 py-1 text-xs text-fg-muted hover:text-fg bg-bg-muted border border-border rounded transition-colors"
+          >
+            {{ $t('compare.view_raw_diff') }}
+          </NuxtLink>
+          <button
+            type="button"
+            class="px-2 py-1 text-xs text-fg-muted hover:text-fg bg-bg-muted border border-border rounded transition-colors flex items-center gap-1.5"
+            @click="copyRawDiff"
+          >
+            <span
+              :class="rawDiffCopied ? 'i-lucide:check' : 'i-lucide:copy'"
+              class="w-3.5 h-3.5"
+              aria-hidden="true"
+            />
+            {{ rawDiffCopied ? $t('common.copied') : $t('compare.copy_raw_diff') }}
+          </button>
+        </template>
 
         <!-- View in code browser -->
         <NuxtLink
