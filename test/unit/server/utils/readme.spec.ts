@@ -422,6 +422,51 @@ describe('Markdown File URL Resolution', () => {
     })
   })
 
+  describe('mailto links and email addresses', () => {
+    it('leaves autolinked email addresses unchanged with repository info', async () => {
+      const repoInfo = createRepoInfo({
+        owner: 'debug-js',
+        repo: 'debug',
+      })
+      const markdown = `Copyright (c) 2014-2017 TJ Holowaychuk <tj@vision-media.ca>`
+      const result = await renderReadmeHtml(markdown, 'debug', repoInfo)
+      expect(result.html).toContain('href="mailto:tj@vision-media.ca"')
+      expect(result.html).not.toContain('raw.githubusercontent.com')
+    })
+
+    it('leaves markdown mailto: links with custom text unchanged', async () => {
+      const repoInfo = createRepoInfo()
+      const markdown = `[Contact TJ](mailto:tj@vision-media.ca?subject=Hello)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg', repoInfo)
+      expect(result.html).toContain('href="mailto:tj@vision-media.ca?subject=Hello"')
+      expect(result.html).toContain('>Contact TJ</a>')
+      expect(result.html).not.toContain('raw.githubusercontent.com')
+    })
+
+    it('leaves raw HTML mailto: links unchanged with repository info', async () => {
+      const repoInfo = createRepoInfo()
+      const markdown = `<a href="mailto:tj@vision-media.ca">Email</a>`
+      const result = await renderReadmeHtml(markdown, 'test-pkg', repoInfo)
+      expect(result.html).toContain('href="mailto:tj@vision-media.ca"')
+      expect(result.html).not.toContain('raw.githubusercontent.com')
+    })
+
+    it('leaves mailto: links unchanged without repository info (no jsdelivr fallback)', async () => {
+      const markdown = `Contact <tj@vision-media.ca>`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+      expect(result.html).toContain('href="mailto:tj@vision-media.ca"')
+      expect(result.html).not.toContain('cdn.jsdelivr.net')
+    })
+
+    it('does not turn package@version into a mailto: link', async () => {
+      const repoInfo = createRepoInfo()
+      const markdown = `Install debug@4.3.4 to reproduce`
+      const result = await renderReadmeHtml(markdown, 'test-pkg', repoInfo)
+      expect(result.html).toContain('debug@4.3.4')
+      expect(result.html).not.toContain('mailto:')
+    })
+  })
+
   describe('different git providers', () => {
     it('uses correct blob URL format for GitLab', async () => {
       const repoInfo = createRepoInfo({

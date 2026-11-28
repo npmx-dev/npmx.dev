@@ -14,7 +14,7 @@ import {
   type ResolvedAuthor,
 } from '../shared/schemas/blog'
 import { isProduction } from '../config/env'
-import { BLUESKY_API } from '../shared/utils/constants'
+import { BLUESKY_API, BLUESKY_GET_PROFILES_MAX } from '../shared/utils/constants'
 import { glob, mkdir, writeFile } from 'node:fs/promises'
 import { existsSync, readFileSync } from 'node:fs'
 import { imageMeta } from 'image-meta'
@@ -32,23 +32,31 @@ async function fetchBlueskyAvatars(
   if (handles.length === 0) return avatarMap
 
   try {
-    const params = new URLSearchParams()
-    for (const handle of handles) {
-      params.append('actors', handle)
+    const profiles: Array<{ handle: string; avatar?: string }> = []
+
+    // getProfiles rejects the whole request above its actor limit, so fetch in batches
+    for (let i = 0; i < handles.length; i += BLUESKY_GET_PROFILES_MAX) {
+      const params = new URLSearchParams()
+      for (const handle of handles.slice(i, i + BLUESKY_GET_PROFILES_MAX)) {
+        params.append('actors', handle)
+      }
+
+      const response = await fetch(
+        `${BLUESKY_API}/xrpc/app.bsky.actor.getProfiles?${params.toString()}`,
+      )
+
+      if (!response.ok) {
+        console.warn(`[blog] Failed to fetch Bluesky profiles: ${response.status}`)
+        continue
+      }
+
+      const data = (await response.json()) as {
+        profiles: Array<{ handle: string; avatar?: string }>
+      }
+      profiles.push(...data.profiles)
     }
 
-    const response = await fetch(
-      `${BLUESKY_API}/xrpc/app.bsky.actor.getProfiles?${params.toString()}`,
-    )
-
-    if (!response.ok) {
-      console.warn(`[blog] Failed to fetch Bluesky profiles: ${response.status}`)
-      return avatarMap
-    }
-
-    const data = (await response.json()) as { profiles: Array<{ handle: string; avatar?: string }> }
-
-    for (const profile of data.profiles) {
+    for (const profile of profiles) {
       if (profile.avatar) {
         const hash = crypto.createHash('sha256').update(profile.avatar).digest('hex')
         const dest = join(imagesDir, `${hash}.png`)

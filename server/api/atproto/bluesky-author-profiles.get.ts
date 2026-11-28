@@ -1,6 +1,10 @@
 import * as v from 'valibot'
 import crypto from 'node:crypto'
-import { CACHE_MAX_AGE_ONE_DAY, BLUESKY_API } from '#shared/utils/constants'
+import {
+  CACHE_MAX_AGE_ONE_DAY,
+  BLUESKY_API,
+  BLUESKY_GET_PROFILES_MAX,
+} from '#shared/utils/constants'
 import { AuthorSchema } from '#shared/schemas/blog'
 import { Client } from '@atproto/lex'
 import type { Author, ResolvedAuthor } from '#shared/schemas/blog'
@@ -39,7 +43,7 @@ export default defineCachedEventHandler(
       return { authors: [] }
     }
 
-    const handles = authors.map(a => a.blueskyHandle).filter(handle => handle != null)
+    const handles = [...new Set(authors.map(a => a.blueskyHandle).filter(handle => handle != null))]
 
     if (handles.length === 0) {
       return {
@@ -47,14 +51,23 @@ export default defineCachedEventHandler(
       }
     }
 
+    // getProfiles rejects the whole request above its actor limit, so fetch in batches
     const client = new Client({ service: BLUESKY_API })
-    const response = await client
-      .call(app.bsky.actor.getProfiles, { actors: handles })
-      .catch(() => ({ profiles: [] }))
+    const batches: Promise<{ profiles: { handle: string; avatar?: string }[] }>[] = []
+    for (let i = 0; i < handles.length; i += BLUESKY_GET_PROFILES_MAX) {
+      const actors = handles.slice(i, i + BLUESKY_GET_PROFILES_MAX)
+      batches.push(
+        client.call(app.bsky.actor.getProfiles, { actors }).catch(error => {
+          console.warn('[bluesky-author-profiles] Failed to fetch profiles batch:', error)
+          return { profiles: [] }
+        }),
+      )
+    }
+    const profiles = (await Promise.all(batches)).flatMap(batch => batch.profiles)
 
     const avatarMap = new Map<string, string>()
 
-    for (const profile of response.profiles) {
+    for (const profile of profiles) {
       if (profile.avatar) {
         avatarMap.set(profile.handle, profile.avatar)
       }

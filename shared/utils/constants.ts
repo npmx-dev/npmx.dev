@@ -15,6 +15,8 @@ export const NPMX_SITE = 'https://npmx.dev'
 export const NPMX_DOCS_SITE = 'https://docs.npmx.dev'
 export const NPMX_DID = 'did:plc:u5zp7npt5kpueado77kuihyz'
 export const BLUESKY_API = 'https://public.api.bsky.app'
+/** Max actors per `app.bsky.actor.getProfiles` request; larger requests fail with a 400 */
+export const BLUESKY_GET_PROFILES_MAX = 25
 export const BLUESKY_COMMENTS_REQUEST = '/api/atproto/bluesky-comments'
 export const NPM_REGISTRY = 'https://registry.npmjs.org'
 export const NPM_API = 'https://api.npmjs.org'
