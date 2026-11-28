@@ -19,11 +19,11 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@nuxt/ui": "4.10.0",
-    "@nuxtjs/mdc": "0.23.1",
-    "better-sqlite3": "13.0.3",
-    "docus": "5.12.3",
+    "@nuxt/ui": "4.13.1",
+    "@nuxtjs/mdc": "0.23.4",
+    "better-sqlite3": "13.2.0",
+    "docus": "5.15.1",
     "nuxt": "4.7.0",
-    "tailwindcss": "4.3.3"
+    "tailwindcss": "4.3.5"
   }
 }

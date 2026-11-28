@@ -37,4 +37,4 @@ jobs:
           sfw: true
 
       - name: Generate Lunaria Overview
-        uses: lunariajs/action@e5ab09c3c8353fa80786d8c2149873ba3978a3a7 # v0.2.0
+        uses: lunariajs/action@fb6be638db02f58f6e5e5ec125f5505e208adde2 # v0.4.0
