@@ -13,27 +13,25 @@ import { cleanSymbolName, createMemberId, createSymbolId } from './text'
 
 /**
  * Flatten namespace elements into top-level nodes for easier display.
+ * Members of nested namespaces are inlined at any depth under qualified names.
  * Also filters out import/reference nodes that aren't useful for docs.
  */
-export function flattenNamespaces(nodes: DenoDocNode[]): DenoDocNode[] {
-  const result: DenoDocNode[] = []
-
+export function flattenNamespaces(
+  nodes: DenoDocNode[],
+  qualifier = '',
+  result: DenoDocNode[] = [],
+): DenoDocNode[] {
   for (const node of nodes) {
     // Skip internal nodes
     if (node.kind === 'import' || node.kind === 'reference') {
       continue
     }
 
-    result.push(node)
+    const name = `${qualifier}${node.name}`
+    result.push(qualifier ? { ...node, name } : node)
 
-    // Inline namespace members with qualified names
     if (node.kind === 'namespace' && node.namespaceDef?.elements) {
-      for (const element of node.namespaceDef.elements) {
-        result.push({
-          ...element,
-          name: `${node.name}.${element.name}`,
-        })
-      }
+      flattenNamespaces(node.namespaceDef.elements, `${name}.`, result)
     }
   }
 

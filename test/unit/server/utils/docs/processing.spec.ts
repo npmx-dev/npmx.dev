@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vite-plus/test'
-import { buildSymbolLookup } from '#server/utils/docs/processing'
+import { buildSymbolLookup, flattenNamespaces } from '#server/utils/docs/processing'
 import type { DenoDocNode } from '#shared/types/deno-doc'
 
 describe('buildSymbolLookup', () => {
@@ -79,5 +79,76 @@ describe('buildSymbolLookup', () => {
     expect(lookup.get('Options.level')).toBe('interface-Options--level')
     expect(lookup.has('Options.extra')).toBe(false)
     expect(lookup.get('Options.own')).toBe('class-Options--own')
+  })
+})
+
+describe('flattenNamespaces', () => {
+  it('skips imports and references', () => {
+    const nodes: DenoDocNode[] = [
+      { name: 'dep', kind: 'import' },
+      { name: 'types', kind: 'reference' },
+      { name: 'run', kind: 'function' },
+    ]
+
+    expect(flattenNamespaces(nodes).map(node => node.name)).toEqual(['run'])
+  })
+
+  it('keeps namespaces without elements', () => {
+    const nodes: DenoDocNode[] = [
+      { name: 'Empty', kind: 'namespace' },
+      { name: 'NoElements', kind: 'namespace', namespaceDef: {} },
+    ]
+
+    expect(flattenNamespaces(nodes).map(node => node.name)).toEqual(['Empty', 'NoElements'])
+  })
+
+  it('inlines namespace members under qualified names', () => {
+    const nodes: DenoDocNode[] = [
+      {
+        name: 'Util',
+        kind: 'namespace',
+        namespaceDef: { elements: [{ name: 'helper', kind: 'function' }] },
+      },
+    ]
+
+    expect(flattenNamespaces(nodes).map(node => [node.name, node.kind])).toEqual([
+      ['Util', 'namespace'],
+      ['Util.helper', 'function'],
+    ])
+  })
+
+  it('inlines members of nested namespaces at any depth', () => {
+    const nodes: DenoDocNode[] = [
+      {
+        name: 'Util',
+        kind: 'namespace',
+        namespaceDef: {
+          elements: [
+            {
+              name: 'Deep',
+              kind: 'namespace',
+              namespaceDef: {
+                elements: [
+                  { name: 'nested', kind: 'function' },
+                  {
+                    name: 'Deeper',
+                    kind: 'namespace',
+                    namespaceDef: { elements: [{ name: 'leaf', kind: 'variable' }] },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ]
+
+    expect(flattenNamespaces(nodes).map(node => node.name)).toEqual([
+      'Util',
+      'Util.Deep',
+      'Util.Deep.nested',
+      'Util.Deep.Deeper',
+      'Util.Deep.Deeper.leaf',
+    ])
   })
 })
