@@ -181,13 +181,11 @@ const hasChangelog = usePackageHasChangelog(
   () => requestedVersion.value || props.resolvedVersion,
   true,
 )
+const changelogAvailable = computed(() => hasChangelog.value || props.page === 'changelog')
+
+// Rendered even for packages without one, so the tab row does not change with the check.
 const changelogLink = computed((): RouteLocationRaw | null => {
-  if (
-    // either changelog.value is available or current page is the changelog
-    !(hasChangelog.value || props.page == 'changelog') ||
-    !packageName.value ||
-    props.resolvedVersion == null
-  ) {
+  if (!packageName.value || props.resolvedVersion == null) {
     return null
   }
   return changelogRoute(packageName.value, props.resolvedVersion)
@@ -208,7 +206,7 @@ useShortcuts({
   'm': () => mainLink.value,
   'd': () => docsLink.value,
   'f': () => diffLink.value,
-  '-': () => changelogLink.value,
+  '-': () => (changelogAvailable.value ? changelogLink.value : null),
   't': () => timelineLink.value,
   's': () => statsLink.value,
 })
@@ -395,9 +393,13 @@ useShortcuts({
         <LinkBase
           v-if="changelogLink"
           :to="changelogLink"
+          :disabled="!changelogAvailable"
           aria-keyshortcuts="-"
-          class="decoration-none border-b-2 p-1 hover:border-accent/50 focus-visible:[outline-offset:-2px]!"
-          :class="page === 'changelog' ? 'border-accent text-accent!' : 'border-transparent'"
+          class="decoration-none border-b-2 p-1 focus-visible:[outline-offset:-2px]!"
+          :class="[
+            page === 'changelog' ? 'border-accent text-accent!' : 'border-transparent',
+            changelogAvailable ? 'hover:border-accent/50' : 'text-fg-subtle cursor-default',
+          ]"
         >
           {{ $t('package.links.changelog') }}
         </LinkBase>

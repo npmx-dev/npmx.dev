@@ -87,6 +87,7 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
       'inline-flex': !block,
       'gap-x-1 items-center justify-center font-mono border border-transparent rounded-md':
         isButton,
+      'group/link gap-x-1 items-center justify-start font-mono text-fg-muted': isLink,
       'text-sm py-2': isButtonMedium && !iconOnly,
       'text-sm p-2': isButtonMedium && !!iconOnly,
       'px-4': isButtonMedium && !classicon && !iconOnly,
@@ -101,6 +102,15 @@ const keyboardShortcutsEnabled = useKeyboardShortcuts()
   >
     <span v-if="classicon" class="size-[1em]" :class="classicon" aria-hidden="true" />
     <slot />
+    <!-- Reserves the hint's space while disabled -->
+    <kbd
+      v-if="keyboardShortcutsEnabled && ariaKeyshortcuts"
+      data-kbd-hint
+      class="ms-2 hidden sm:inline-flex items-center justify-center size-4 text-xs text-fg bg-bg-muted border border-border rounded no-underline invisible"
+      aria-hidden="true"
+    >
+      {{ ariaKeyshortcuts }}
+    </kbd>
   </span>
   <NuxtLink
     v-bind="props"
