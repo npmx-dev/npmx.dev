@@ -417,19 +417,23 @@ function computeFacetValue(
     case 'packageSize': {
       // A size of zero is valid
       if (data.packageSize == null) return null
+      const isLarge = data.packageSize > 5 * 1024 * 1024
       return {
         raw: data.packageSize,
         display: formatBytes(data.packageSize),
-        status: data.packageSize > 5 * 1024 * 1024 ? 'warning' : 'neutral',
+        status: isLarge ? 'warning' : 'neutral',
+        tooltip: isLarge ? t('compare.facets.status.packageSize.warning') : undefined,
       }
     }
     case 'installSize': {
       // A size of zero is valid
       if (data.installSize == null) return null
+      const isLarge = data.installSize.totalSize > 50 * 1024 * 1024
       return {
         raw: data.installSize.totalSize,
         display: formatBytes(data.installSize.totalSize),
-        status: data.installSize.totalSize > 50 * 1024 * 1024 ? 'warning' : 'neutral',
+        status: isLarge ? 'warning' : 'neutral',
+        tooltip: isLarge ? t('compare.facets.status.installSize.warning') : undefined,
       }
     }
     case 'moduleFormat': {
@@ -443,10 +447,12 @@ function computeFacetValue(
         return null
       }
       const format = data.analysis.moduleFormat
+      const isModern = format === 'esm' || format === 'dual'
       return {
         raw: format,
         display: format === 'dual' ? 'ESM + CJS' : format.toUpperCase(),
-        status: format === 'esm' || format === 'dual' ? 'good' : 'neutral',
+        status: isModern ? 'good' : 'neutral',
+        tooltip: isModern ? t('compare.facets.status.moduleFormat.good') : undefined,
       }
     }
     case 'types': {
@@ -468,6 +474,7 @@ function computeFacetValue(
         return null
       }
       const types = data.analysis.types
+      const status = types.kind === 'included' ? 'good' : types.kind === '@types' ? 'info' : 'bad'
       return {
         raw: types.kind,
         display:
@@ -476,7 +483,13 @@ function computeFacetValue(
             : types.kind === '@types'
               ? '@types'
               : t('compare.facets.values.types_none'),
-        status: types.kind === 'included' ? 'good' : types.kind === '@types' ? 'info' : 'bad',
+        status,
+        tooltip:
+          status === 'good'
+            ? t('compare.facets.status.types.good')
+            : status === 'info'
+              ? t('compare.facets.status.types.info')
+              : t('compare.facets.status.types.bad'),
       }
     }
     case 'engines': {
@@ -512,6 +525,7 @@ function computeFacetValue(
       }
       const count = data.vulnerabilities.count
       const sev = data.vulnerabilities.severity
+      const status = count === 0 ? 'good' : sev.critical > 0 || sev.high > 0 ? 'bad' : 'warning'
       return {
         raw: count,
         display:
@@ -522,7 +536,13 @@ function computeFacetValue(
                 critical: sev.critical,
                 high: sev.high,
               }),
-        status: count === 0 ? 'good' : sev.critical > 0 || sev.high > 0 ? 'bad' : 'warning',
+        status,
+        tooltip:
+          status === 'good'
+            ? t('compare.facets.status.vulnerabilities.good')
+            : status === 'bad'
+              ? t('compare.facets.status.vulnerabilities.bad')
+              : t('compare.facets.status.vulnerabilities.warning'),
       }
     }
     case 'lastUpdated': {
@@ -531,10 +551,12 @@ function computeFacetValue(
       if (resolved) return { raw: 0, ...resolved }
       if (!lastUpdated) return null
       const date = new Date(lastUpdated)
+      const stale = isStale(date)
       return {
         raw: date.getTime(),
         display: lastUpdated,
-        status: isStale(date) ? 'warning' : 'neutral',
+        status: stale ? 'warning' : 'neutral',
+        tooltip: stale ? t('compare.facets.status.lastUpdated.warning') : undefined,
         type: 'date',
       }
     }
@@ -548,6 +570,7 @@ function computeFacetValue(
           raw: null,
           display: t('compare.facets.values.unknown'),
           status: 'warning',
+          tooltip: t('compare.facets.status.license.warning'),
         }
       }
       return {
@@ -559,10 +582,12 @@ function computeFacetValue(
     case 'dependencies': {
       const depCount = data.directDeps
       if (depCount == null) return null
+      const isMany = depCount > 10
       return {
         raw: depCount,
         display: formatNumber(depCount),
-        status: depCount > 10 ? 'warning' : 'neutral',
+        status: isMany ? 'warning' : 'neutral',
+        tooltip: isMany ? t('compare.facets.status.dependencies.warning') : undefined,
       }
     }
     case 'deprecated': {
@@ -573,15 +598,20 @@ function computeFacetValue(
           ? t('compare.facets.values.deprecated')
           : t('compare.facets.values.not_deprecated'),
         status: isDeprecated ? 'bad' : 'good',
+        tooltip: isDeprecated
+          ? t('compare.facets.status.deprecated.bad')
+          : t('compare.facets.status.deprecated.good'),
       }
     }
     case 'totalDependencies': {
       if (!data.installSize) return null
       const totalDepCount = data.installSize.dependencyCount
+      const isMany = totalDepCount > 50
       return {
         raw: totalDepCount,
         display: formatNumber(totalDepCount),
-        status: totalDepCount > 50 ? 'warning' : 'neutral',
+        status: isMany ? 'warning' : 'neutral',
+        tooltip: isMany ? t('compare.facets.status.totalDependencies.warning') : undefined,
       }
     }
     case 'githubStars': {

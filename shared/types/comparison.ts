@@ -120,7 +120,7 @@ export interface FacetValue<T = unknown> {
   status?: 'good' | 'info' | 'warning' | 'bad' | 'neutral' | 'muted'
   /** Value type for special rendering (e.g., dates use DateTime component) */
   type?: 'date'
-  /** Optional tooltip text to explain the value */
+  /** Optional tooltip text to explain the value or why its status color was assigned */
   tooltip?: string
 }
 
