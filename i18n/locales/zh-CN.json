@@ -13,6 +13,7 @@
   "trademark_disclaimer": "npm 是 npm, Inc. 的注册商标。本网站不与 npm, Inc. 有任何隶属关系。",
   "footer": {
     "about": "关于",
+    "sponsors": "赞助商",
     "blog": "博客",
     "docs": "文档",
     "source": "源码",
@@ -23,7 +24,9 @@
     "brand": "品牌",
     "resources": "资源",
     "features": "功能",
-    "other": "其它"
+    "tools": "工具",
+    "other": "其它",
+    "sponsored_by": "由 {list} 赞助"
   },
   "shortcuts": {
     "section": {
@@ -38,7 +41,9 @@
     "show_kbd_hints": "高亮键盘提示",
     "settings": "打开设置",
     "compare": "打开比较",
+    "deps_stats": "打开依赖统计工具",
     "compare_from_package": "打开比较（使用当前包预填充）",
+    "changelog": "打开更新日志",
     "navigate_results": "导航结果",
     "go_to_result": "跳转到结果",
     "open_code_view": "打开代码视图",
@@ -46,7 +51,8 @@
     "disable_shortcuts": "你可以在{settings}中禁用快捷键。",
     "open_main": "查看主要信息",
     "open_diff": "查看版本差异",
-    "open_timeline": "时间线"
+    "open_timeline": "时间线",
+    "open_stats": "查看统计"
   },
   "search": {
     "label": "搜索 npm 包",
@@ -98,6 +104,11 @@
     "current": "当前",
     "here": "你在这里",
     "connected": "已连接",
+    "keyboard_shortcuts": {
+      "navigate": "导航",
+      "select": "选择",
+      "close": "关闭"
+    },
     "state": {
       "on": "开启",
       "off": "关闭"
@@ -153,7 +164,9 @@
       "code": "代码",
       "diff": "差异",
       "compare": "比较此包",
-      "download": "下载 tarball"
+      "download": "下载 tarball",
+      "changelog": "更新日志",
+      "stats": "统计"
     },
     "code": {
       "copy_file": "复制文件内容"
@@ -177,6 +190,7 @@
       "theme_changed": "主题设置为 {theme}.",
       "accent_color_changed": "强调颜色设置为 {color}.",
       "background_theme_changed": "背景主题设置为 {theme}.",
+      "foreground_theme_changed": "前景色调设置为 {theme}。",
       "download_started": "下载 {package} tarball.",
       "copied_to_clipboard": "已复制到剪贴板。",
       "npm_disconnected": "npm CLI 断开连接。",
@@ -192,12 +206,53 @@
     "popular_packages": "热门软件包",
     "settings": "设置",
     "compare": "包对比",
+    "tools": "工具",
     "back": "返回",
     "menu": "菜单",
     "mobile_menu": "导航菜单",
     "open_menu": "打开菜单",
     "links": "链接",
     "tap_to_search": "点击搜索"
+  },
+  "tools": {
+    "title": "工具",
+    "tagline": "探索软件包和项目依赖的实用工具",
+    "meta_title": "工具 - npmx",
+    "meta_description": "浏览 npmx 工具，探索软件包和项目依赖",
+    "deps_stats": {
+      "name": "依赖统计",
+      "description": "上传 package.json，查看每个依赖项的统计信息"
+    }
+  },
+  "deps_stats": {
+    "title": "依赖统计",
+    "meta_title": "依赖统计 - npmx",
+    "meta_description": "上传 package.json，探索每个依赖项的统计信息",
+    "upload": {
+      "section": "package.json",
+      "label": "上传 package.json",
+      "hint": "将 package.json 拖放到此处，或选择文件。仅读取依赖字段——不会上传到任何服务器",
+      "clear": "清除",
+      "invalid_package_json": "无效的 package.json"
+    },
+    "dependencies": {
+      "title": "依赖项",
+      "count": "没有依赖 | 1 个依赖 | {count} 个依赖",
+      "filter_label": "筛选依赖项",
+      "filter_placeholder": "筛选依赖项…",
+      "empty": "此 package.json 中没有依赖项",
+      "no_matches": "没有符合筛选条件的依赖项",
+      "non_registry": "不是 npm 注册表软件包"
+    },
+    "stats": {
+      "empty_title": "选择一个依赖项",
+      "empty_description": "从列表中选择一个软件包，查看下载量、大小、漏洞、趋势等信息",
+      "non_registry_title": "本地或远程依赖项",
+      "non_registry_description": "此项指向文件、工作区、git 或 URL 依赖项，因此无法获取仓库统计信息",
+      "declared_range": "声明范围",
+      "resolved_version": "最新",
+      "open_full_stats": "打开完整统计"
+    }
   },
   "blog": {
     "title": "博客",
@@ -225,6 +280,32 @@
       "more_replies": "还有 {count} 条回复..."
     }
   },
+  "noodles": {
+    "title": "面条",
+    "meta_description": "npmx 上出现过的每根面条——季节性标志、彩蛋以及它们背后的故事。",
+    "latest": "最新面条",
+    "what_is": "什么是面条",
+    "what_is_body": "面条是我们在首页上展示的 npmx 标志趣味变体，用于纪念版本发布、节日、活动以及其他值得庆祝的时刻。可以把它们想象成 npm 软件包版的 Google Doodle。",
+    "empty": "还没有面条。",
+    "load_more": "再加载 {count} 个",
+    "dates": "活跃日期",
+    "shipped_in": "随 PR 发布",
+    "credits": "鸣谢",
+    "learn_more": "了解更多",
+    "carousel_prev": "上一张图片",
+    "carousel_next": "下一张图片",
+    "carousel_dots": "变体图片导航",
+    "carousel_jump": "跳转到第 {index} 张图片",
+    "lens_label": "{title} — 图片轮播",
+    "lens_slide": "第 {index} 张图片",
+    "lens_slide_position": "第 {index} 张，共 {total} 张",
+    "back_to_archive": "返回全部面条",
+    "missing": {
+      "title": "这根面条没能离开碗。",
+      "body": "菜单上没有名为“{slug}”的面条。可能它还在装盘，也可能从未被制作出来。总之——返回档案库吧。",
+      "empty_bowl": "空碗"
+    }
+  },
   "settings": {
     "title": "设置",
     "tagline": "定制你的 npmx 体验",
@@ -234,7 +315,8 @@
       "display": "显示",
       "search": "数据来源",
       "language": "语言",
-      "keyboard_shortcuts": "快捷键"
+      "keyboard_shortcuts": "快捷键",
+      "reset": "重置"
     },
     "data_source": {
       "label": "数据来源",
@@ -280,9 +362,20 @@
       "slate": "板岩灰",
       "black": "黑色"
     },
+    "foreground_themes": {
+      "label": "前景色调",
+      "contrast": "高对比",
+      "standard": "标准",
+      "muted": "柔和"
+    },
     "keyboard_shortcuts_enabled": "启用快捷键",
     "keyboard_shortcuts_enabled_description": "如果某些快捷键与其他浏览器或系统快捷键冲突，可以选择将其禁用。",
-    "enable_code_ligatures": "在代码中启用连字"
+    "enable_code_ligatures": "在代码中启用连字",
+    "enable_changelog_autoscroll": "自动滚动到所请求的版本",
+    "enable_changelog_autoscroll_description": "在软件包更新日志中自动滚动到或靠近所请求的版本",
+    "reset_settings": "重置所有设置",
+    "reset_settings_description": "将所有设置恢复为默认值。你的语言设置会保留。",
+    "reset_settings_confirm": "要将所有设置重置为默认值吗？"
   },
   "i18n": {
     "missing_keys": "{count} 项缺少翻译",
@@ -336,13 +429,17 @@
       "forgejo": "在 Forgejo 上查看",
       "gitea": "在 Gitea 上查看",
       "gitee": "在 Gitee 上查看",
+      "pushin": "在 Pushin 上查看",
       "radicle": "在 Radicle 上查看",
       "socket_dev": "在 socket.dev 上查看",
       "sourcehut": "在 SourceHut 上查看",
       "tangled": "在 Tangled 上查看"
     },
     "collapse": "收起",
-    "expand": "展开"
+    "expand": "展开",
+    "copy_section_link": "复制指向 {name} 的链接",
+    "section_link_copied": "链接已复制",
+    "copyMdError": "加载 Markdown 失败，请稍后再试"
   },
   "profile": {
     "display_name": "显示名称",
@@ -368,6 +465,7 @@
     "verified_provenance": "已验证来源",
     "navigation": "包导航",
     "copy_name": "复制包名",
+    "copy_version": "复制软件包版本",
     "deprecation": {
       "package": "此包已废弃。",
       "version": "此版本已废弃。",
@@ -392,6 +490,8 @@
       "example": "示例：",
       "native": "该功能自 Node.js {nodeVersion} 起已被内置，可直接使用 {replacement} 替代。",
       "native_no_version": "此包可直接使用 {replacement} 替代。",
+      "simple": "此软件包已被标记为多余，建议使用：{replacement}",
+      "documented": "此软件包已被标记为存在性能更佳的替代方案。",
       "none": "此包已被标记为不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
       "learn_more_above": "在上方了解更多。",
@@ -408,8 +508,13 @@
       "inspect_dependency_tree": "查看依赖树",
       "size_tooltip": {
         "unpacked": "未打包大小（当前包)：{size}",
-        "total": "总未打包大小（包括 {count} 个依赖项）：{size}"
-      }
+        "total": "总未打包大小（包括 {count} 个依赖项）：{size}",
+        "frozen": "{size} 总解压大小（截至下一个版本发布前）"
+      },
+      "main_information": "主要信息",
+      "trends": "趋势",
+      "version_distribution": "版本分布",
+      "daily_downloads_heatmap": "每日下载量热力图"
     },
     "skills": {
       "title": "代理技能",
@@ -439,7 +544,9 @@
       "docs": "文档",
       "fund": "资助",
       "compare": "比较",
-      "timeline": "时间线"
+      "timeline": "时间线",
+      "stats": "统计",
+      "changelog": "更新日志"
     },
     "likes": {
       "like": "点赞此包",
@@ -464,8 +571,12 @@
       "pm_label": "包管理器",
       "copy_command": "复制安装命令",
       "copy_dev_command": "复制开发依赖安装命令",
+      "copy_types_command": "复制类型安装命令",
       "dev_dependency_hint": "通常作为开发依赖项安装",
-      "view_types": "查看 {package}"
+      "view_types": "查看 {package}",
+      "types_label": "类型",
+      "collapse_commands": "收起其他命令",
+      "expand_commands": "显示其他命令"
     },
     "create": {
       "title": "创建新项目",
@@ -474,7 +585,16 @@
     },
     "run": {
       "title": "运行",
-      "locally": "本地运行"
+      "locally": "本地运行",
+      "copy_command": "复制本地运行命令"
+    },
+    "command": {
+      "copied_install": "安装命令已复制",
+      "copied_dev_install": "开发依赖安装命令已复制",
+      "copied_run": "运行命令已复制",
+      "copied_create": "创建命令已复制",
+      "copied_execute": "执行命令已复制",
+      "copied_skills": "Skills 命令已复制"
     },
     "readme": {
       "title": "自述文件",
@@ -506,6 +626,7 @@
       "description_to_none_provenance": "此版本发布时未包含 {provenance}。",
       "description_to_none_trustedPublisher": "此版本发布时未包含 {trustedPublishing}。",
       "description_to_provenance_trustedPublisher": "此版本使用了 {provenance} 但未包含 {trustedPublishing}。",
+      "description_to_trustedPublisher_without_provenance": "此版本使用了 {trustedPublishing}，但发布时未使用 {provenance}。",
       "fallback_install_provenance": "安装命令已锁定为 {version}，这是最后一个具有来源的版本。",
       "fallback_install_trustedPublisher": "安装命令已锁定为 {version}，这是最后一个具有可信发布的版本。",
       "provenance_link_text": "来源",
@@ -519,6 +640,7 @@
       "weekly_downloads": "每周下载量",
       "keywords": "关键词",
       "license": "许可证",
+      "version": "版本",
       "select": "选择软件包",
       "select_maximum": "最多可选择 {count} 个软件包"
     },
@@ -549,6 +671,7 @@
       "grouping_usage_about": "关于使用率分组",
       "grouping_usage_all": "全部",
       "grouping_usage_most_used": "最常用",
+      "order_by_downloads": "按下载量排序",
       "recent_versions_only_tooltip": "仅显示在过去一年内发布的版本。",
       "show_low_usage_tooltip": "包括下载量低于 1% 的版本组。",
       "y_axis_label": "下载量",
@@ -570,8 +693,10 @@
       "no_match_filter": "没有与“{filter}”匹配的版本"
     },
     "timeline": {
+      "load_newer": "加载更新的版本",
       "load_more": "加载更多",
       "load_error": "加载时间线失败，请稍后再试。",
+      "no_stable_versions": "没有可显示的稳定版本。关闭“仅稳定版”以包含预发布版本。",
       "size_increase": "安装体积增加了 {percent}%（增加了 {size}）",
       "size_decrease": "安装体积减少了 {percent}%（减少了 {size}）",
       "dep_increase": "新增了 {count} 个依赖",
@@ -588,13 +713,24 @@
       "deprecated": "已弃用",
       "chart": {
         "tab_aria_label": "指标选择",
+        "dependency_size": "依赖大小",
+        "other_dependencies": "其他",
         "base_scale": "Y 轴从 0 开始",
         "zoom": "缩放",
         "reset_minimap": "重置缩略图",
+        "ordered_versions": "仅稳定版",
+        "frozen_history": "冻结历史",
+        "sort_label": "排序方式",
+        "sort_time": "发布时间",
+        "sort_semver": "语义化版本",
         "copy_alt": {
           "key_changes": "关键变更：{version_events}。",
           "version_events": "版本 {version}：{events}",
-          "general_description": "折线图展示了 {package} 包从版本 {first} 到 {last} 的 {metric} 变化情况。版本 {first} 的 {metric} 为 {first_value}，版本 {last} 为 {last_value}（整体变化 {overall_progress_percentage}%）。{key_changes} {watermark}。"
+          "general_description": "折线图展示了 {package} 包从版本 {first} 到 {last} 的 {metric} 变化情况。版本 {first} 的 {metric} 为 {first_value}，版本 {last} 为 {last_value}（整体变化 {overall_progress_percentage}%）。{key_changes} {watermark}。",
+          "stackbar_segment_share": "{segment}：{value}（{percentage}）",
+          "stackbar_top_segments": "在 {version} 中，占比最大的部分是 {segments}。",
+          "stackbar_largest_increase": "增幅最大的是 {segment}，增加了 {delta}。",
+          "stackbar_largest_decrease": "降幅最大的是 {segment}，减少了 {delta}。"
         }
       }
     },
@@ -608,7 +744,8 @@
       "outdated_minor": "落后 {count} 个次要版本（最新：{latest}）",
       "outdated_patch": "有可用的补丁更新（最新：{latest}）",
       "has_replacement": "该依赖有推荐的替代包。",
-      "vulnerabilities_count": "{count} 个漏洞"
+      "vulnerabilities_count": "{count} 个漏洞",
+      "aliased_to": "别名指向 {name}"
     },
     "peer_dependencies": {
       "title": "对等依赖（{count} 个）",
@@ -652,16 +789,20 @@
       "granularity_yearly": "每年",
       "start_date": "开始",
       "end_date": "结束",
+      "last_recorded_value": "* 最后记录值",
       "loading": "加载中…",
       "date_range": "{start} 至 {end}",
       "date_range_multiline": "{start}\n至 {end}",
       "download_file": "下载 {fileType}",
+      "copy_file": "复制 {fileType}",
       "toggle_annotator": "切换标注工具",
+      "toggle_fullscreen": "切换全屏",
       "toggle_stack_mode": "切换堆叠模式",
       "open_options": "展开选项",
       "close_options": "收起选项",
       "legend_estimation": "估算值",
       "no_data": "无可用数据",
+      "no_data_short": "无数据",
       "y_axis_label": "{granularity} {facet}",
       "facet": "维度",
       "title": "趋势",
@@ -690,6 +831,7 @@
         "trend_undefined": "未知（数据不足）",
         "button_label": "复制替代文本",
         "watermark": "底部有水印 \"./npmx a fast, modern browser for the npm registry\"",
+        "watermark_top": "顶部水印显示“./npmx a fast, modern browser for the npm registry”",
         "analysis": "{package_name} 的下载量从{start_value}，变为{end_value}，变化趋势{trend}（平均每期变化{downloads_slope}次）",
         "estimation": "（注：最终值为基于部分数据的估算）",
         "estimations": "（注：最终值为基于部分数据的估算）",
@@ -698,6 +840,35 @@
         "general_description": "Y 轴表示下载量，X 轴表示日期范围（{start_date} 至 {end_date}），统计周期为{granularity}。{estimation_notice} {packages_analysis}。{watermark}。",
         "facet_bar_general_description": "水平条形图：{packages} 的 {facet} 对比（{description}）。{facet_analysis} {watermark}",
         "facet_bar_analysis": "{package_name}：{value}"
+      },
+      "embedding": {
+        "chart": "嵌入此图表",
+        "copy_url": "复制此 URL，将图表嵌入你的网站",
+        "preview": "预览",
+        "tip": "如果 URL 中未提供 startDate 和 endDate，图表将默认显示最近 12 个月的数据。"
+      },
+      "sparkline_zoom_reset": {
+        "title": "重置缩放 · 双击图表或按 Esc",
+        "aria_label": "重置缩放"
+      },
+      "downloads_heatmap": {
+        "title": "每日下载量：最近 52 周，从 {from} 到 {to}",
+        "legend": {
+          "anomalies": "下载量缺失或异常的天数",
+          "max": "最大值：{date} 的 {value} 次下载",
+          "min": "最小值：{date} 的 {value} 次下载"
+        },
+        "nav_hint": "使用 ← → ↑ ↓",
+        "copy_alt": {
+          "introduction": "{package_name} 软件包的每日下载量热力图。{date_range}。",
+          "no_data": "此时间段内没有可靠的下载数据。",
+          "summary": "在 {days} 天内共记录了 {total} 次下载，平均每天 {average} 次。",
+          "peak": "单日下载量最高出现在 {date}，共 {downloads} 次下载。",
+          "busiest_weekday": "一周中最繁忙的是 {weekday}，平均 {average} 次下载。",
+          "weekday_comparison": "工作日平均每天 {weekdays} 次下载，周末为 {weekends} 次。",
+          "weekly_trend": "在首个和最后一个有可靠数据的完整周之间，周下载量变化了 {change}，从 {first} 变为 {last}。",
+          "excluded_days": "由于数据缺失、异常或尚不可用，有 {count} 个日历日未纳入统计。"
+        }
       }
     },
     "downloads": {
@@ -1017,12 +1188,17 @@
     },
     "file_path": "文件路径",
     "binary_file": "二进制文件",
-    "binary_rendering_warning": "暂不支持预览“{contentType}”类型的文件。"
+    "binary_rendering_warning": "暂不支持预览“{contentType}”类型的文件。",
+    "possibly_unnecessary": "在已发布的软件包中可能不需要"
   },
   "badges": {
     "provenance": {
       "verified": "已验证",
       "verified_title": "已验证来源"
+    },
+    "staged_publish": {
+      "label": "暂存发布",
+      "title": "通过带 2FA 审批的暂存发布流程发布"
     },
     "jsr": {
       "title": "也适用于 JSR"
@@ -1163,13 +1339,18 @@
       }
     },
     "sponsors": {
-      "title": "赞助商"
+      "title": "赞助商",
+      "gold": "金牌赞助商",
+      "silver": "银牌赞助商"
     },
     "oss_partners": {
       "title": "开源合作伙伴"
     },
     "team": {
       "title": "团队",
+      "core": "核心",
+      "maintainers": "维护者",
+      "role_core": "核心",
       "role_steward": "管理者",
       "role_maintainer": "维护者",
       "sponsor": "赞助",
@@ -1203,6 +1384,64 @@
         "title": "保持更新",
         "description": "了解 npmx 的最新动态。",
         "cta": "在 Bluesky 上关注"
+      }
+    }
+  },
+  "sponsors_page": {
+    "title": "赞助商",
+    "heading": "赞助商",
+    "meta_description": "支持 npmx，帮助我们加速围绕安全、信任、优化和研究开展的生态工作。",
+    "intro": "支持 npmx，帮助我们壮大为开发者和维护者开展的生态工作。",
+    "what_we_do": {
+      "title": "我们做什么",
+      "description": "我们正在构建一个生态系统，为日常开发中使用的工具解决安全、信任、优化和研究方面的问题——快速、便捷且高质量。这个项目由开发者构建，为开发者服务。作为广泛使用的库的作者，我们了解团队需求，并积极研究维护者和项目最需要什么。"
+    },
+    "what_support_means": {
+      "title": "支持意味着什么",
+      "description": "我们的计划和联系不断增加，同时我们也希望分享所构建的内容并向他人学习。你的支持将帮助资助项目、外部演讲、会议以及更广泛的生态系统，最重要的是，让我们能够持续壮大社区。"
+    },
+    "cta": "查看赞助级别",
+    "community_growth_footnote": "* 根据 {link} 2026 年第一季度的研究。",
+    "what_this_means_for_you": {
+      "title": "这对你意味着什么",
+      "description": "npmx 不仅致力于改善开发者体验和填补关键日常空白。在最初的六个月里，我们已经成为数千个团队和大量开发者的默认来源。你不仅能为团队获得更稳定的工具，还能在持续壮大的顶尖工程师群体面前获得曝光。",
+      "cards": {
+        "people": {
+          "contributors": "贡献者",
+          "community_members": "社区成员"
+        },
+        "visitors": {
+          "description": "每月独立访客"
+        },
+        "stars": {
+          "title": "星标"
+        },
+        "community": {
+          "title": "快速增长",
+          "description": "我们是生态系统中增长最快的社区之一"
+        },
+        "adoption": {
+          "title": "采用",
+          "description": "会议、演讲和文章中的图表都依赖我们的数据"
+        },
+        "default_source": {
+          "title": "默认来源",
+          "description": "pnpm 将 npmx 设为默认来源，许多软件包已配置链接到 npmx"
+        }
+      }
+    },
+    "tiers": {
+      "title": "赞助级别",
+      "per_month": "/月",
+      "custom": "定制",
+      "silver": {
+        "name": "银牌"
+      },
+      "gold": {
+        "name": "金牌"
+      },
+      "platinum": {
+        "name": "铂金"
       }
     }
   },
@@ -1284,7 +1523,8 @@
       "searching": "搜索中…",
       "remove_package": "移除 {package}",
       "packages_selected": "已选择 {count}/{max} 个包。",
-      "add_hint": "至少添加 2 个包以进行比较。"
+      "add_hint": "至少添加 2 个包以进行比较。",
+      "version_hint": "使用 {syntax} 比较特定版本。例如，输入 {first} 并按回车，然后添加 {second}。"
     },
     "scatter_chart": {
       "title": "对比 {x} 与 {y}",
@@ -1380,6 +1620,10 @@
           "label": "GitHub 星标",
           "description": "GitHub 仓库的星标数量"
         },
+        "githubForks": {
+          "label": "GitHub Fork 数",
+          "description": "GitHub 仓库的 Fork 数量"
+        },
         "githubIssues": {
           "label": "GitHub 问题数",
           "description": "GitHub 仓库的问题数量"
@@ -1447,6 +1691,9 @@
     "change_ratio": "更改比例",
     "char_edits": "字符编辑",
     "diff_distance": "差异距离",
+    "diff_truncated": "为提升性能，差异内容已截断，仅显示首批更改的行。",
+    "large_diff_mode": "为提升性能，已禁用行内编辑合并，并显示大型文件差异。",
+    "large_diff_options_disabled": "大型文件模式为提升性能已禁用行内编辑合并。",
     "loading_diff": "加载差异...",
     "loading_diff_error": "加载差异失败",
     "merge_modified_lines": "合并修改的行",
@@ -1652,7 +1899,8 @@
   "logo_menu": {
     "copy_svg": "复制 SVG 格式的 Logo",
     "copied": "已复制",
-    "browse_brand": "浏览品牌素材包"
+    "browse_brand": "浏览品牌素材包",
+    "open_new_tab": "在新标签页中打开 npmx"
   },
   "brand": {
     "title": "品牌",
@@ -1699,5 +1947,21 @@
       "discord_link_text": "chat.npmx.dev"
     }
   },
-  "alt_logo_kawaii": "一个圆润可爱、色彩活泼的 npmx logo 版本。"
+  "alt_logo_kawaii": "一个圆润可爱、色彩活泼的 npmx logo 版本。",
+  "changelog": {
+    "pre_release": "预发布",
+    "draft": "草稿",
+    "no_logs": "抱歉，此软件包未发布更新日志，或其更新日志格式不受支持。",
+    "error": {
+      "p1": "抱歉，无法加载 {package} 的更新日志",
+      "p2": "请稍后再试，或{viewon}"
+    },
+    "version_unavailable": "所请求的版本不可用。",
+    "copy_as_markdown": "将更新日志复制为 Markdown",
+    "ungh": {
+      "rate_limit": "抱歉，GitHub 的速率限制已达到，请稍后再试",
+      "hint": "你可以通过安装 UNGH GitHub 应用来帮助提高速率限制配额",
+      "install": "安装 UNGH GitHub 应用"
+    }
+  }
 }
