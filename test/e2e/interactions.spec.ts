@@ -91,6 +91,29 @@ test.describe('Compare Page', () => {
   })
 })
 
+test('package stats recover from an unknown tag without losing the date range', async ({
+  page,
+  goto,
+}) => {
+  await goto('/package-stats/vue/v/llatest?end=2026-11-16&start=2025-11-18', {
+    waitUntil: 'hydration',
+  })
+
+  const message = page.getByText('No version or tag “llatest” found for vue.')
+  await expect(message).toBeVisible()
+  await page.getByRole('link', { name: 'View latest stats' }).click()
+
+  await expect(page).toHaveURL(
+    url =>
+      url.pathname === '/package-stats/vue/v/latest' &&
+      url.searchParams.get('start') === '2025-11-18' &&
+      url.searchParams.get('end') === '2026-11-16',
+  )
+  const mainInfo = page.getByRole('heading', { name: 'Main Information' }).locator('..')
+  await expect(mainInfo.getByText('MIT', { exact: true })).toBeVisible()
+  await expect(message).toHaveCount(0)
+})
+
 test.describe('Package Page', () => {
   test('CopyToClipboardButton is fully unoccluded', async ({ page, goto }) => {
     await goto('/package/vue', { waitUntil: 'hydration' })

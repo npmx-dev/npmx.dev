@@ -14,7 +14,10 @@ const packageName = computed(() =>
 )
 const version = computed(() => route.params.version)
 
-const { data: pkg } = usePackage(packageName, version)
+const { data: pkg, status: packageStatus } = usePackage(packageName, version)
+const versionUnavailable = computed(
+  () => packageStatus.value === 'success' && pkg.value && !pkg.value.requestedVersion,
+)
 const { versions: commandPaletteVersions, ensureLoaded: ensureCommandPaletteVersionsLoaded } =
   useCommandPalettePackageVersions(packageName)
 
@@ -101,7 +104,24 @@ useSeoMeta({
 
     <section class="container w-full py-8">
       <h2 class="text-fg-muted mb-2 uppercase">{{ $t('package.stats.main_information') }}</h2>
+      <div v-if="versionUnavailable" class="border-y border-y-border py-2 text-sm">
+        <p class="text-fg-muted">
+          {{ $t('package.stats.version_unavailable', { version, package: packageName }) }}
+        </p>
+        <LinkBase
+          v-if="latestVersion"
+          class="mt-2"
+          :to="{
+            name: 'stats',
+            params: { ...route.params, version: 'latest' },
+            query: route.query,
+          }"
+        >
+          {{ $t('package.stats.view_latest') }}
+        </LinkBase>
+      </div>
       <dl
+        v-else
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-y-2 gap-x-4 border-y-border border-y py-2"
       >
         <div v-for="row in facetRows" :key="row.id" class="py-1">
