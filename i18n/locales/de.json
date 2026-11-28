@@ -1718,8 +1718,6 @@
       "p2": "Bitte versuche es später noch einmal oder {viewon}"
     },
     "version_unavailable": "Die gewünschte Version ist nicht verfügbar.",
-    "ungh": {
-      "rate_limit": "Entschuldigung, die Zugriffsbeschränkung von GitHub wurde erreicht. Bitte versuche es in einem Moment erneut."
-    }
+    "rate_limit": "Entschuldigung, die Zugriffsbeschränkung von GitHub wurde erreicht. Bitte versuche es in einem Moment erneut."
   }
 }

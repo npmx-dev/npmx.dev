@@ -7,6 +7,7 @@
 
 import type { FetchOptions } from 'ofetch'
 import { withBase, withQuery } from 'ufo'
+import { FORGES_PROXY_URL } from './git-providers'
 import {
   CONSTELLATION_HOST,
   LIKES_LEADERBOARD_API_URL,
@@ -27,7 +28,7 @@ export const FETCH_CACHE_ALLOWED_DOMAINS = [
   'jsr.io', // JSR package metadata
 
   // Git hosting providers (for repo metadata)
-  'ungh.cc', // GitHub proxy (avoids rate limits)
+  new URL(FORGES_PROXY_URL).host, // forges-proxy, for GitHub (avoids rate limits)
   'api.github.com', // GitHub API
   'gitlab.com', // GitLab API
   'api.bitbucket.org', // Bitbucket API
@@ -53,7 +54,7 @@ export const FETCH_CACHE_DEFAULT_TTL = 60 * 5 // 5 minutes
  * Cache key version prefix.
  * Increment this to invalidate all cached entries (e.g., after format changes).
  */
-export const FETCH_CACHE_VERSION = 'v1'
+export const FETCH_CACHE_VERSION = 'v2'
 
 /**
  * Storage key prefix for fetch cache entries.

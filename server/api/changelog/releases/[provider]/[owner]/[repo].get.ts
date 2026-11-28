@@ -2,12 +2,10 @@ import type { ProviderId, RepoRef } from '~~/shared/utils/git-providers'
 import type { ReleaseData } from '~~/shared/types/changelog'
 import * as v from 'valibot'
 import { ForgeApiError } from 'forges'
-import { FetchError } from 'ofetch'
 import {
   ERROR_CHANGELOG_RELEASES_FAILED,
   ERROR_THROW_INCOMPLETE_PARAM,
 } from '~~/shared/utils/constants'
-import { GithubReleaseCollectionSchama } from '~~/shared/schemas/changelog/release'
 import { createForgeProvider, toForgeRepoRef } from '~~/shared/utils/forges'
 import { changelogRenderer } from '~~/server/utils/changelog/markdown'
 import { createRepoInfo } from '~~/server/utils/changelog/mdRepoInfo'
@@ -32,11 +30,6 @@ export default defineCachedEventHandler(
     const { host } = v.parse(v.object({ host: validateHostWithValibot(provider) }), rawQuery)
 
     try {
-      // GitHub is read through ungh.cc to stay clear of its anonymous rate limits;
-      // TODO(serhalp): use `forges` once it can read GitHub through ungh.
-      if (provider === 'github') {
-        return await getReleasesFromGithub(owner, repo)
-      }
       // No disconnect signal: a cached handler cannot tell a client leaving from
       // an SWR revalidation, and aborting would kill the refresh for everyone.
       return await getReleasesViaForges(provider, owner, repo, host || undefined)
@@ -67,59 +60,6 @@ export default defineCachedEventHandler(
   },
 )
 
-async function getReleasesFromGithub(owner: string, repo: string) {
-  try {
-    const data = await $fetch(`https://ungh.cc/repos/${owner}/${repo}/releases`, {
-      headers: {
-        'Accept': '*/*',
-        'User-Agent': 'npmx.dev',
-      },
-      // with 403/429, the specific token from ungh could be exhausted, so we retry in case a different one does work
-      retryDelay: 300,
-      retry: 3,
-      // only 403 has been added, others status codes are defaults from ofetch
-      retryStatusCodes: [403, 408, 409, 425, 429, 500, 502, 503, 504],
-      timeout: TIMEOUT_MS,
-    })
-
-    const { releases } = v.parse(GithubReleaseCollectionSchama, data)
-
-    const repoInfo = createRepoInfo({ provider: 'github', owner, repo })
-    if (!repoInfo) {
-      throw createError({
-        status: 404,
-        statusMessage: ERROR_CHANGELOG_NOT_FOUND,
-      })
-    }
-    const render = await changelogRenderer(repoInfo)
-
-    return releases.map(r => {
-      const { html, toc } = render(r.markdown, r.id)
-      return {
-        id: r.id,
-        // replace single \n within <p> like with Vue's releases
-        html: html?.replace(/(?<!>)\n/g, '<br>') ?? null,
-        title: r.name || r.tag,
-        draft: r.draft,
-        prerelease: r.prerelease,
-        toc,
-        publishedAt: r.publishedAt,
-        link: `https://github.com/${owner}/${repo}/releases/tag/${r.tag}`,
-        tag: r.tag,
-      } satisfies ReleaseData
-    })
-  } catch (error) {
-    if (error instanceof FetchError && (error.statusCode == 403 || error.statusCode == 429)) {
-      throw createError({
-        statusCode: 502,
-        message: ERROR_UNGH_API_KEY_EXHAUSTED,
-        statusMessage: ERROR_UNGH_API_KEY_EXHAUSTED,
-      })
-    }
-    throw error
-  }
-}
-
 async function getReleasesViaForges(
   provider: ProviderId,
   owner: string,
@@ -127,7 +67,7 @@ async function getReleasesViaForges(
   host?: string,
 ) {
   const ref: RepoRef = { provider, owner, repo, host }
-  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_MS })
+  const forgeProvider = await createForgeProvider(ref, { timeout: TIMEOUT_MS, viaProxy: true })
   if (!forgeProvider?.can('releases.list')) {
     throw createError({
       status: 404,

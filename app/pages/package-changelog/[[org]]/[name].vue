@@ -224,16 +224,9 @@ if (nuxtApp.isHydrating && !resolvingError.value) {
 
       <!-- error handling -->
       <template v-else-if="!showChangelogLoading">
-        <div v-if="isUnghRateLimitError(changelogError)" class="items-center flex flex-col">
-          <p class="mt-5">{{ $t('changelog.ungh.rate_limit') }}</p>
-          <p>{{ $t('changelog.ungh.hint') }}</p>
-          <LinkBase
-            variant="button-secondary"
-            to="https://github.com/apps/ungh-app"
-            classicon="i-simple-icons:github"
-            >{{ $t('changelog.ungh.install') }}</LinkBase
-          >
-        </div>
+        <p v-if="isGithubRateLimitError(changelogError)" class="mt-5">
+          {{ $t('changelog.rate_limit') }}
+        </p>
         <p class="mt-5" v-else-if="!version || !pkg?.versions[version]">
           {{ $t('changelog.version_unavailable') }}
         </p>

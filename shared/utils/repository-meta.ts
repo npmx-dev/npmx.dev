@@ -3,11 +3,10 @@ import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 import type { ProviderId, RepoRef } from '#shared/utils/git-providers'
 import { GIT_PROVIDER_API_ORIGINS } from '#shared/utils/git-providers'
 import { createForgeProvider, forgeWeb, toForgeRepoRef } from '#shared/utils/forges'
+import type { ForgeBridgeOptions } from '#shared/utils/forges'
 
 // TTL for git repo metadata (10 minutes - repo stats don't change frequently)
 const REPO_META_TTL = 60 * 10
-// Other TTLs for known sources
-const UNGH_REPO_META_TTL = 60 * 60 * 3 // 3 hours (ungh caches 6 hours server-side, but we run it half more frequently)
 
 type RepoMetaLinks = {
   repo: string
@@ -27,13 +26,6 @@ export type RepoMeta = {
 export type TangledStats = {
   stars?: number
   forks?: number
-}
-
-type UnghRepoResponse = {
-  repo: {
-    stars?: number
-    forks?: number
-  } | null
 }
 
 /** Radicle API response for project details. */
@@ -62,48 +54,17 @@ function linksFor(ref: RepoRef): RepoMetaLinks {
   }
 }
 
-const githubAdapter: ProviderAdapter = {
-  links: linksFor,
-
-  async fetchMeta(cachedFetch, ref, links, options = {}) {
-    // Using UNGH to avoid API limitations of the GitHub API
-    // TODO(serhalp): refactor to use `forges` once it can read GitHub through a
-    // proxy; ungh is here only to stay under GitHub's anonymous rate limit.
-    let res: UnghRepoResponse | null = null
-    try {
-      const { data } = await cachedFetch<UnghRepoResponse>(
-        `${GIT_PROVIDER_API_ORIGINS.github}/repos/${ref.owner}/${ref.repo}`,
-        { ...options, headers: { 'User-Agent': 'npmx', ...options.headers } },
-        UNGH_REPO_META_TTL,
-      )
-      res = data
-    } catch {
-      return null
-    }
-
-    const repo = res?.repo
-    if (!repo) return null
-
-    return {
-      provider: 'github',
-      url: links.repo,
-      stars: repo.stars,
-      forks: repo.forks,
-      links,
-    }
-  },
-}
-
 /**
- * Metadata from `forges`. GitHub (ungh), Sourcehut (token), Tangled (server) and
- * Radicle have their own adapters.
+ * Metadata from `forges`. Sourcehut (token), Tangled (server) and Radicle have
+ * their own adapters.
  */
-function forgeAdapter(): ProviderAdapter {
+function forgeAdapter(bridge: Pick<ForgeBridgeOptions, 'viaProxy'> = {}): ProviderAdapter {
   return {
     links: linksFor,
     async fetchMeta(cachedFetch, ref, links, options = {}) {
       try {
         const provider = await createForgeProvider(ref, {
+          ...bridge,
           fetch: cachedFetchAsFetchLike(cachedFetch, REPO_META_TTL),
         })
         if (!provider) return null
@@ -234,6 +195,9 @@ const radicleAdapter: ProviderAdapter = {
 }
 
 const pushinAdapter = forgeAdapter()
+
+// GitHub through forges-proxy, whose token keeps npmx under the anonymous rate limit.
+const githubAdapter = forgeAdapter({ viaProxy: true })
 
 // Providers that fetch their metadata through `forges`.
 const gitlabAdapter = forgeAdapter()

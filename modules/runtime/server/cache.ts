@@ -1,6 +1,7 @@
 import process from 'node:process'
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
 import { parsePackageSpec } from '#shared/utils/parse-package-param'
+import { FORGES_PROXY_URL } from '#shared/utils/git-providers'
 import { createFetch } from 'ofetch'
 
 /**
@@ -171,19 +172,19 @@ function getMockForUrl(url: string): MockResult | null {
     }
   }
 
-  // UNGH (GitHub proxy) - return mock repo metadata
-  if (host === 'ungh.cc') {
-    const repoMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)$/)
-    if (repoMatch?.[1] && repoMatch?.[2]) {
+  // forges-proxy (GitHub) - mock repo metadata for GitHub's `repos.get`
+  if (host === new URL(FORGES_PROXY_URL).host) {
+    if (pathname === '/github/github.com/repos.get') {
+      const [repo] = JSON.parse(searchParams.get('args') ?? '[]') as [
+        { owner?: string; name?: string }?,
+      ]
       return {
         data: {
-          repo: {
-            description: `${repoMatch[1]}/${repoMatch[2]} - mock repo description`,
-            stars: 1000,
-            forks: 100,
-            watchers: 50,
-            defaultBranch: 'main',
-          },
+          description: `${repo?.owner}/${repo?.name} - mock repo description`,
+          stars: 1000,
+          forks: 100,
+          watchers: 50,
+          defaultBranch: 'main',
         },
       }
     }

@@ -1947,10 +1947,6 @@
     },
     "version_unavailable": "De gevraagde versie is niet beschikbaar.",
     "copy_as_markdown": "Kopieer wijzigingen als Markdown",
-    "ungh": {
-      "rate_limit": "Sorry, de opvraaglimiet (rate limit) van GitHub is bereikt. Probeer het later opnieuw.",
-      "hint": "U kunt helpen de opvraaglimiet te verhogen door de UNGH GitHub-app te installeren.",
-      "install": "Installeer UNGH GitHub-app"
-    }
+    "rate_limit": "Sorry, de opvraaglimiet (rate limit) van GitHub is bereikt. Probeer het later opnieuw."
   }
 }

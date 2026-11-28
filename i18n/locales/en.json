@@ -1967,10 +1967,6 @@
     },
     "version_unavailable": "The requested version is not available.",
     "copy_as_markdown": "Copy changelog as Markdown",
-    "ungh": {
-      "rate_limit": "Sorry, Github's rate limit has been hit, try again in a moment",
-      "hint": "You can help increase the rate limit quota by installing the UNGH GitHub app",
-      "install": "Install UNGH GitHub app"
-    }
+    "rate_limit": "Sorry, Github's rate limit has been hit, try again in a moment"
   }
 }

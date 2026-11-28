@@ -1768,8 +1768,6 @@
       "p2": "Prøv igjen senere eller {viewon}"
     },
     "version_unavailable": "Den forespurte versjonen er ikke tilgjengelig.",
-    "ungh": {
-      "rate_limit": "Beklager, GitHubs rate limit er nådd, prøv igjen om et øyeblikk"
-    }
+    "rate_limit": "Beklager, GitHubs rate limit er nådd, prøv igjen om et øyeblikk"
   }
 }

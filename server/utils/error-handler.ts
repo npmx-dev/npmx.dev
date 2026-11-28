@@ -1,7 +1,9 @@
 import { isError, createError } from 'h3'
+import { RateLimitedError } from 'forges'
 import { FetchError } from 'ofetch'
 import * as v from 'valibot'
 import type { ErrorOptions } from '#shared/types/error'
+import { ERROR_GITHUB_RATE_LIMITED } from '#shared/utils/constants'
 
 /**
  * Generic error handler for Nitro routes
@@ -17,6 +19,15 @@ export function handleApiError(error: unknown, fallback: ErrorOptions): never {
       error.statusMessage = fallback.statusMessage
     }
     throw error
+  }
+
+  // The changelog page explains this one rather than showing a generic failure.
+  if (error instanceof RateLimitedError && error.forge === 'github') {
+    throw createError({
+      statusCode: 502,
+      message: ERROR_GITHUB_RATE_LIMITED,
+      statusMessage: ERROR_GITHUB_RATE_LIMITED,
+    })
   }
 
   if (error instanceof FetchError && error.statusCode) {

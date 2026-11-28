@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { PackageComparisonData } from '~/composables/usePackageComparison'
+import { FORGES_PROXY_URL } from '#shared/utils/git-providers'
+import { forgesProxyRepo } from '../../fixtures/forges-proxy'
 
 interface FetchOptions {
   baseURL?: string
@@ -267,8 +269,8 @@ describe('usePackageComparison', () => {
               ),
             )
           }
-          if (fullUrl.includes('ungh.cc/repos/owner/repo')) {
-            return Promise.resolve({ repo: { stars: 1500, forks: 100 } })
+          if (forgesProxyRepo(fullUrl) === 'owner/repo') {
+            return Promise.resolve({ stars: 1500, forks: 100 })
           }
           if (fullUrl.includes('/api/github/issues/owner/repo')) {
             return Promise.resolve({ issues: 50 })
@@ -312,9 +314,9 @@ describe('usePackageComparison', () => {
               ),
             )
           }
-          if (fullUrl.includes('ungh.cc/repos/owner/repo')) {
+          if (forgesProxyRepo(fullUrl) === 'owner/repo') {
             // Return malformed data (stars missing)
-            return Promise.resolve({ repo: {} })
+            return Promise.resolve({})
           }
           if (fullUrl.includes('/api/github/issues/owner/repo')) {
             // Return non-numeric data
@@ -362,7 +364,7 @@ describe('usePackageComparison', () => {
         expect(status.value).toBe('success')
       })
 
-      expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining('ungh.cc'))
+      expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining(FORGES_PROXY_URL))
       expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining('/api/github/issues'))
 
       expect(getFacetValues('githubStars')[0]).toBeNull()
