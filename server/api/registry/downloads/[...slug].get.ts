@@ -1,5 +1,6 @@
 import * as v from 'valibot'
 import { hash } from 'ohash'
+import { validPackageParams } from '#server/utils/package-params'
 import { fetchNpmVersionDownloadsFromApi } from '#server/utils/npm-website-versions'
 
 /**
@@ -113,6 +114,8 @@ export default defineCachedEventHandler(
         message: 'Package name is required',
       })
     }
+
+    validPackageParams(event, { packageName: rawPackageName })
 
     try {
       const query = getQuery(event)

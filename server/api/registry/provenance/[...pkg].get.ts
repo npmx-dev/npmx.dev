@@ -1,5 +1,4 @@
-import * as v from 'valibot'
-import { PackageRouteParamsSchema } from '#shared/schemas/package'
+import { validPackageParams } from '#server/utils/package-params'
 
 /**
  * GET /api/registry/provenance/:name/v/:version
@@ -21,7 +20,7 @@ export default defineCachedEventHandler(
     }
 
     try {
-      const parsed = v.parse(PackageRouteParamsSchema, {
+      const parsed = validPackageParams(event, {
         packageName: rawPackageName,
         version: rawVersion,
       }) as { packageName: string; version: string }

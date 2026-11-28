@@ -1,11 +1,10 @@
-import * as v from 'valibot'
-import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import type {
   PackageAnalysis,
   ExtendedPackageJson,
   CreatePackageInfo,
 } from '#shared/utils/package-analysis'
 import { analyzePackage, getCreatePackageName } from '#shared/utils/package-analysis'
+import { validPackageParams } from '#server/utils/package-params'
 import {
   getDevDependencySuggestion,
   type DevDependencySuggestion,
@@ -29,8 +28,8 @@ export default defineCachedEventHandler(
     const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
 
     try {
-      const { packageName, version } = v.parse(PackageRouteParamsSchema, {
-        packageName: decodeURIComponent(rawPackageName),
+      const { packageName, version } = validPackageParams(event, {
+        packageName: rawPackageName,
         version: rawVersion,
       })
       const { pkg, typesPackage, files } = await fetchPackageWithTypesAndFiles(packageName, version)

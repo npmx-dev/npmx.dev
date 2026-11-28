@@ -1,5 +1,6 @@
 import { describe, expect, it, vi, beforeEach, afterAll } from 'vite-plus/test'
 import { createError, type H3Event } from 'h3'
+import { INVALID_PACKAGE_PARAM_CACHE_CONTROL } from '#server/utils/package-params'
 import type { Packument, PackumentLicense, PackumentVersion } from '#shared/types/npm-registry'
 
 const fetchNpmPackageMock = vi.fn()
@@ -31,7 +32,16 @@ function makePackument(opts: {
   } as Packument
 }
 
-const fakeEvent = {} as H3Event
+const headers: Record<string, string> = {}
+const fakeEvent = {
+  node: {
+    res: {
+      setHeader: (name: string, value: string) => {
+        headers[name] = value
+      },
+    },
+  },
+} as unknown as H3Event
 
 afterAll(() => {
   vi.unstubAllGlobals()
@@ -44,9 +54,10 @@ describe('license-change API', () => {
     queryParams = {}
   })
 
-  it('throws 400 when package name param is missing', async () => {
+  it('throws a cacheable 404 when package name param is missing', async () => {
     routerParam = undefined
-    await expect(handler(fakeEvent)).rejects.toMatchObject({ statusCode: 400 })
+    await expect(handler(fakeEvent)).rejects.toMatchObject({ statusCode: 404 })
+    expect(headers['Cache-Control']).toBe(INVALID_PACKAGE_PARAM_CACHE_CONTROL)
   })
 
   it('reports no change for a new package with a single version (issue #2720)', async () => {

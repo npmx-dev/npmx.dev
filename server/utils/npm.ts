@@ -1,8 +1,24 @@
 import { getVersions } from 'fast-npm-meta'
+import { createError } from 'h3'
 import { findMaxSatisfying } from 'verkit'
+import * as v from 'valibot'
+import { VersionSchema } from '#shared/schemas/package'
+import { assertValidPackageName } from '#shared/utils/npm'
+
+/**
+ * Refuses coordinates that cannot exist, so a junk package URL never reaches the
+ * registry even if a caller forgot to validate it first.
+ */
+function assertValidCoordinates(name: string, version?: string): void {
+  assertValidPackageName(name)
+  if (version !== undefined && !v.is(VersionSchema, version)) {
+    throw createError({ statusCode: 404, message: 'Invalid version' })
+  }
+}
 
 export const fetchNpmPackage = defineCachedFunction(
   async (name: string): Promise<Packument> => {
+    assertValidCoordinates(name)
     const encodedName = encodePackageName(name)
     return await $fetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
   },
@@ -25,6 +41,7 @@ const NPM_INSTALL_V1 = 'application/vnd.npm.install-v1+json'
  */
 export const fetchNpmPackageAbbreviated = defineCachedFunction(
   async (name: string): Promise<AbbreviatedPackument> => {
+    assertValidCoordinates(name)
     const encodedName = encodePackageName(name)
     return await $fetch<AbbreviatedPackument>(`${NPM_REGISTRY}/${encodedName}`, {
       headers: { accept: NPM_INSTALL_V1 },
@@ -45,6 +62,7 @@ export const fetchNpmPackageAbbreviated = defineCachedFunction(
  */
 export const fetchNpmPackageVersionsMeta = defineCachedFunction(
   async (name: string) => {
+    assertValidCoordinates(name)
     const { versions, time, distTags } = await getVersions(name)
     return { versions, time, distTags }
   },
@@ -63,6 +81,7 @@ export const fetchNpmPackageVersionsMeta = defineCachedFunction(
  */
 export const fetchNpmPackageVersionLibc = defineCachedFunction(
   async (name: string, version: string): Promise<string[] | undefined> => {
+    assertValidCoordinates(name, version)
     const encodedName = encodePackageName(name)
     const manifest = await $fetch<{ libc?: string[] }>(
       `${NPM_REGISTRY}/${encodedName}/${encodeURIComponent(version)}`,

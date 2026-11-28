@@ -40,7 +40,7 @@ function makePackument(opts: {
   } as unknown as Packument
 }
 
-const fakeEvent = {} as H3Event
+const fakeEvent = { node: { res: { setHeader: () => {} } } } as unknown as H3Event
 
 afterAll(() => {
   vi.unstubAllGlobals()

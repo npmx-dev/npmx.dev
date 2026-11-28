@@ -21,6 +21,15 @@ const standardReadmeFilenames = [
 const standardReadmePattern = /^readme(?:\.md|\.markdown)?$/i
 const JSDELIVR_README_FETCH_BATCH_SIZE = 3
 
+/** Router params arrive percent-encoded; a malformed escape is left alone so the schema rejects it. */
+function decodeParam(param: string): string {
+  try {
+    return decodeURIComponent(param)
+  } catch {
+    return param
+  }
+}
+
 export function isStandardReadme(filename: string | undefined): boolean {
   return !!filename && standardReadmePattern.test(filename)
 }
@@ -99,8 +108,8 @@ export const resolvePackageReadmeSource = defineCachedFunction(
     const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
 
     const { packageName, version } = v.parse(PackageRouteParamsSchema, {
-      packageName: rawPackageName,
-      version: rawVersion,
+      packageName: decodeParam(rawPackageName),
+      version: rawVersion == null ? undefined : decodeParam(rawVersion),
     })
 
     const packageData = await fetchNpmPackage(packageName)

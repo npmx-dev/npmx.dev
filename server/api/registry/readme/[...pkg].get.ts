@@ -1,5 +1,7 @@
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
+import { parsePackageParam } from '#shared/utils/parse-package-param'
 import { resolvePackageReadmeSource } from '#server/utils/readme-loaders'
+import { validPackageParams } from '#server/utils/package-params'
 
 /**
  * Returns rendered README HTML for a package.
@@ -12,8 +14,10 @@ import { resolvePackageReadmeSource } from '#server/utils/readme-loaders'
  */
 export default defineCachedEventHandler(
   async event => {
+    const packagePath = getRouterParam(event, 'pkg') ?? ''
+    validPackageParams(event, parsePackageParam(packagePath))
+
     try {
-      const packagePath = getRouterParam(event, 'pkg') ?? ''
       const { packageName, markdown, repoInfo, revision } =
         await resolvePackageReadmeSource(packagePath)
 

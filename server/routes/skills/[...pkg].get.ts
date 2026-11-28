@@ -1,8 +1,7 @@
 import type { H3Event } from 'h3'
 import * as v from 'valibot'
-import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { SkillNameSchema } from '#shared/schemas/skills'
-
+import { validPackageParams } from '#server/utils/package-params'
 import {
   CACHE_MAX_AGE_ONE_HOUR,
   CACHE_MAX_AGE_ONE_YEAR,
@@ -33,7 +32,7 @@ export default defineCachedEventHandler(
     const { packageName, version: rawVersion, rest } = parsePackageParam(pkgParam)
 
     try {
-      const validated = v.parse(PackageRouteParamsSchema, { packageName, version: rawVersion })
+      const validated = validPackageParams(event, { packageName, version: rawVersion })
 
       let version = validated.version
       let isVersioned = !!version

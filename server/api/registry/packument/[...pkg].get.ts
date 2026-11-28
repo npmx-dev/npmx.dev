@@ -1,5 +1,6 @@
 import { transformPackument } from '#shared/utils/packument'
 import { CACHE_MAX_AGE_FIVE_MINUTES, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
+import { validPackageParams } from '#server/utils/package-params'
 
 /**
  * Returns an already-trimmed ("slim") packument for a package page render.
@@ -22,14 +23,13 @@ import { CACHE_MAX_AGE_FIVE_MINUTES, ERROR_NPM_FETCH_FAILED } from '#shared/util
  */
 export default defineCachedEventHandler(
   async event => {
-    const pkgParam = getRouterParam(event, 'pkg')
-    if (!pkgParam) {
-      throw createError({ statusCode: 404, message: 'Package name is required' })
-    }
-
-    const packageName = decodeURIComponent(pkgParam)
     const rawVersion = getQuery(event).version
     const requestedVersion = typeof rawVersion === 'string' ? rawVersion : null
+
+    const { packageName } = validPackageParams(event, {
+      packageName: getRouterParam(event, 'pkg'),
+      version: requestedVersion,
+    })
 
     try {
       const packument = await fetchNpmPackage(packageName)

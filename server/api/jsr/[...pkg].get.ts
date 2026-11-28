@@ -1,7 +1,6 @@
-import * as v from 'valibot'
-import { PackageNameSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_JSR_FETCH_FAILED } from '#shared/utils/constants'
 import type { JsrPackageInfo } from '#shared/types/jsr'
+import { validPackageParams } from '#server/utils/package-params'
 
 /**
  * Check if an npm package exists on JSR.
@@ -16,7 +15,7 @@ export default defineCachedEventHandler<Promise<JsrPackageInfo>>(
     const pkgPath = getRouterParam(event, 'pkg')
 
     try {
-      const packageName = v.parse(PackageNameSchema, pkgPath)
+      const { packageName } = validPackageParams(event, { packageName: pkgPath })
 
       return await fetchJsrPackageInfo(packageName)
     } catch (error: unknown) {

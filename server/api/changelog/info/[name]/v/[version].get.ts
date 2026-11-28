@@ -1,8 +1,7 @@
 import type { ExtendedPackageJson } from '#shared/utils/package-analysis'
-import { VersionSchema, PackageNameSchema } from '#shared/schemas/package'
 import { ERROR_PACKAGE_DETECT_CHANGELOG, NPM_REGISTRY } from '#shared/utils/constants'
-import * as v from 'valibot'
 import { detectChangelog } from '~~/server/utils/changelog/detectChangelog'
+import { validPackageParams } from '#server/utils/package-params'
 
 function getChangelogRouteParams(event: Parameters<typeof getRouterParam>[0]) {
   const org = getRouterParam(event, 'org')
@@ -29,8 +28,10 @@ export default defineCachedEventHandler(async event => {
   const { rawPackageName, rawVersion } = getChangelogRouteParams(event)
 
   try {
-    const packageName = v.parse(PackageNameSchema, rawPackageName)
-    const version = v.parse(v.optional(VersionSchema), rawVersion)
+    const { packageName, version } = validPackageParams(event, {
+      packageName: rawPackageName,
+      version: rawVersion,
+    })
     const encodedName = encodePackageName(packageName)
     const versionSuffix = version ? `/${version}` : '/latest'
     const pkg = await $fetch<ExtendedPackageJson>(`${NPM_REGISTRY}/${encodedName}${versionSuffix}`)

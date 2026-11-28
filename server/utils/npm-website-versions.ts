@@ -1,3 +1,5 @@
+import { assertValidPackageName } from '#shared/utils/npm'
+
 export interface NpmWebsiteVersionDownload {
   version: string
   downloads: number
@@ -10,6 +12,7 @@ interface NpmApiVersionDownloadsResponse {
 export async function fetchNpmVersionDownloadsFromApi(
   packageName: string,
 ): Promise<NpmWebsiteVersionDownload[]> {
+  assertValidPackageName(packageName)
   const encodedName = encodePackageName(packageName)
 
   const versionsResponse = await fetch(`https://api.npmjs.org/versions/${encodedName}/last-week`)
