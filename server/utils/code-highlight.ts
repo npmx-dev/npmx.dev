@@ -54,6 +54,25 @@ const EXTENSION_MAP: Record<string, string> = {
   gql: 'graphql',
   diff: 'diff',
   patch: 'diff',
+
+  // JVM, native, and build sources
+  java: 'java',
+  kt: 'kotlin',
+  kts: 'kotlin',
+  groovy: 'groovy',
+  gradle: 'groovy',
+  swift: 'swift',
+  m: 'objective-c',
+  mm: 'objective-cpp',
+  c: 'c',
+  h: 'c',
+  cpp: 'cpp',
+  cc: 'cpp',
+  cxx: 'cpp',
+  hpp: 'cpp',
+  hh: 'cpp',
+  cmake: 'cmake',
+  properties: 'properties',
 }
 
 // Special filenames that have specific languages
@@ -72,6 +91,7 @@ const FILENAME_MAP: Record<string, string> = {
   'bun.lock': 'jsonc',
   'Makefile': 'bash',
   'Dockerfile': 'bash',
+  'CMakeLists.txt': 'cmake',
   'LICENSE': 'text',
   'LICENCE': 'text',
   'CHANGELOG': 'markdown',

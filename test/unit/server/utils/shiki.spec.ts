@@ -78,6 +78,16 @@ describe('highlightCodeBlock', () => {
     expect(html).toContain('shiki')
   })
 
+  it('should highlight kotlin and groovy source', async () => {
+    const kotlin = await highlightCodeBlock('fun main() { val name = "npmx" }', 'kotlin')
+    const groovy = await highlightCodeBlock('plugins { id "com.android.library" }', 'groovy')
+
+    expect(kotlin).toContain('shiki')
+    expect(kotlin).toContain('fun')
+    expect(groovy).toContain('shiki')
+    expect(groovy).toContain('plugins')
+  })
+
   it('should encode > in arrow functions', async () => {
     const code = 'const fn = () => 5'
     const html = await highlightCodeBlock(code, 'typescript')
