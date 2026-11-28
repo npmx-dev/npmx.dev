@@ -71,10 +71,7 @@ export default defineCachedEventHandler(
         const packageNames = normalizePackages(parsed.packages)
 
         if (packageNames.length === 0) {
-          return {
-            packages: [],
-            timestamp: new Date().toISOString(),
-          }
+          return { packages: [] }
         }
 
         try {
@@ -85,10 +82,7 @@ export default defineCachedEventHandler(
             })),
           )
 
-          return {
-            packages,
-            timestamp: new Date().toISOString(),
-          }
+          return { packages }
         } catch (error: unknown) {
           handleApiError(error, {
             statusCode: 502,
@@ -152,7 +146,6 @@ export default defineCachedEventHandler(
         mode,
         totalDownloads,
         groups,
-        timestamp: new Date().toISOString(),
       }
 
       if (filterOldVersionsBool) {

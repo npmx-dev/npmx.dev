@@ -1,6 +1,12 @@
 import * as v from 'valibot'
 import { PackageFileDiffQuerySchema } from '#shared/schemas/package'
-import { countDiffStats, createDiff, insertSkipBlocks, truncateDiffHunks } from '#shared/utils/diff'
+import {
+  countDiffStats,
+  createDiff,
+  insertSkipBlocks,
+  parseDiffOptionsQuery,
+  truncateDiffHunks,
+} from '#shared/utils/diff'
 import type { DiffHunk, DiffSkipBlock } from '#shared/types/compare'
 
 const CACHE_VERSION = 3
@@ -170,14 +176,7 @@ export default defineCachedEventHandler(
       const timeoutId = setTimeout(() => controller.abort(), DIFF_TIMEOUT)
 
       try {
-        // Get diff options from query params
-        const query = getQuery(event)
-        const diffOptions = {
-          mergeModifiedLines: query.mergeModifiedLines !== 'false',
-          maxChangeRatio: parseFloat(query.maxChangeRatio as string) || 0.45,
-          maxDiffDistance: parseInt(query.maxDiffDistance as string, 10) || 30,
-          inlineMaxCharEdits: parseInt(query.inlineMaxCharEdits as string, 10) || 2,
-        }
+        const diffOptions = parseDiffOptionsQuery(getQuery(event))
 
         // Fetch file contents in parallel
         const [fromContent, toContent] = await Promise.all([
@@ -328,14 +327,13 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      const query = getQuery(event)
-      // Normalize option values to prevent cache pollution from arbitrary floats.
-      // These match the parsing logic used in the handler body.
-      const merge = query.mergeModifiedLines !== 'false'
-      const ratio = Math.round((parseFloat(query.maxChangeRatio as string) || 0.45) * 100)
-      const distance = parseInt(query.maxDiffDistance as string, 10) || 30
-      const charEdits = parseInt(query.inlineMaxCharEdits as string, 10) || 2
-      const optionsKey = `${merge}:${ratio}:${distance}:${charEdits}`
+      const options = parseDiffOptionsQuery(getQuery(event))
+      const optionsKey = [
+        options.mergeModifiedLines,
+        Math.round(options.maxChangeRatio * 100),
+        options.maxDiffDistance,
+        options.inlineMaxCharEdits,
+      ].join(':')
       return `compare-file:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}:${optionsKey}`
     },
   },

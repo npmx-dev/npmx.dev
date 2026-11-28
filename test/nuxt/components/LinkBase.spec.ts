@@ -10,10 +10,11 @@ async function getPrefetchOn(to: string) {
 describe('LinkBase', () => {
   it('prefetches cached payload routes on interaction only', async () => {
     expect(await getPrefetchOn('/package/vue')).toBe('interaction')
-    expect(await getPrefetchOn('/package/@vue/core/v/3.5.0')).toBe('interaction')
+    expect(await getPrefetchOn('/package/@vue/core')).toBe('interaction')
   })
 
   it('keeps the default prefetch behaviour for other routes', async () => {
+    expect(await getPrefetchOn('/package/@vue/core/v/3.5.0')).toBeUndefined()
     expect(await getPrefetchOn('/org/vue')).toBeUndefined()
     expect(await getPrefetchOn('/about')).toBeUndefined()
   })
