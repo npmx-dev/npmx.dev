@@ -1605,21 +1605,21 @@
           "label": "Kwetsbaarheden",
           "description": "Bekende beveiliging kwetsbaarheden"
         },
-        "githubStars": {
-          "label": "GitHub Sterren",
-          "description": "Aantal sterren van de GitHub-repository"
-        },
-        "githubForks": {
-          "label": "GitHub Forks",
-          "description": "Aantal forks van de GitHub-repository"
-        },
-        "githubIssues": {
-          "label": "GitHub Issues",
-          "description": "Aantal issues van de GitHub-repository"
-        },
         "createdAt": {
           "label": "Aangemaakt op",
           "description": "Wanneer het pakket is aangemaakt"
+        },
+        "stars": {
+          "label": "GitHub Sterren",
+          "description": "Aantal sterren van de GitHub-repository"
+        },
+        "forks": {
+          "label": "GitHub Forks",
+          "description": "Aantal forks van de GitHub-repository"
+        },
+        "issues": {
+          "label": "GitHub Issues",
+          "description": "Aantal issues van de GitHub-repository"
         }
       },
       "values": {

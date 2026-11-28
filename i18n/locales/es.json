@@ -1499,21 +1499,21 @@
           "label": "Vulnerabilidades",
           "description": "Vulnerabilidades de seguridad conocidas"
         },
-        "githubStars": {
-          "label": "Estrellas de GitHub",
-          "description": "Número de estrellas en el repositorio de GitHub"
-        },
-        "githubForks": {
-          "label": "Bifurcaciones de GitHub",
-          "description": "Número de bifurcaciones (forks) en el repositorio de GitHub"
-        },
-        "githubIssues": {
-          "label": "Incidencias de GitHub",
-          "description": "Número de incidencias en el repositorio de GitHub"
-        },
         "createdAt": {
           "label": "Fecha de creación",
           "description": "Cuándo se creó el paquete"
+        },
+        "stars": {
+          "label": "Estrellas de GitHub",
+          "description": "Número de estrellas en el repositorio de GitHub"
+        },
+        "forks": {
+          "label": "Bifurcaciones de GitHub",
+          "description": "Número de bifurcaciones (forks) en el repositorio de GitHub"
+        },
+        "issues": {
+          "label": "Incidencias de GitHub",
+          "description": "Número de incidencias en el repositorio de GitHub"
         }
       },
       "values": {
