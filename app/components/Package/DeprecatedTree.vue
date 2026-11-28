@@ -11,25 +11,20 @@ const { data: analysisData, status } = useDependencyAnalysis(
 
 const isExpanded = shallowRef(false)
 
+const deprecatedDependencies = computed(
+  () => analysisData.value?.deprecatedPackages?.filter(pkg => pkg.depth !== 'root') ?? [],
+)
 const {
   visibleItems: visiblePackages,
   hasMore: hasMorePackages,
   expand: expandPackages,
-} = useVisibleItems(() => analysisData.value?.deprecatedPackages ?? [], 5)
-
-const hasDeprecated = computed(
-  () => analysisData.value?.deprecatedPackages && analysisData.value.deprecatedPackages.length > 0,
-)
+} = useVisibleItems(deprecatedDependencies, 5)
 
 // Banner color - purple for deprecated
 const bannerColor = 'border-purple-600/40 bg-purple-500/10 text-purple-700 dark:text-purple-400'
 
 // Styling for each depth level
 const depthStyles = {
-  root: {
-    bg: 'bg-purple-500/5 border-is-2 border-is-purple-600',
-    text: 'text-fg',
-  },
   direct: {
     bg: 'bg-purple-500/5 border-is-2 border-is-purple-500',
     text: 'text-fg-muted',
@@ -41,12 +36,12 @@ const depthStyles = {
 } as const
 
 function getDepthStyle(depth: DependencyDepth) {
-  return depthStyles[depth] || depthStyles.transitive
+  return depth === 'direct' ? depthStyles.direct : depthStyles.transitive
 }
 </script>
 
 <template>
-  <section v-if="status === 'success' && hasDeprecated" class="relative">
+  <section v-if="status === 'success' && deprecatedDependencies.length" class="relative">
     <div class="rounded-lg border overflow-hidden" :class="bannerColor">
       <!-- Header -->
       <button
@@ -59,7 +54,7 @@ function getDepthStyle(depth: DependencyDepth) {
         <span class="flex items-center gap-2 min-w-0">
           <span class="i-lucide:octagon-alert w-4 h-4 shrink-0" aria-hidden="true" />
           <span class="font-mono text-sm font-medium truncate">
-            {{ $t('package.deprecated.tree_found', analysisData!.deprecatedPackages.length) }}
+            {{ $t('package.deprecated.tree_found', deprecatedDependencies.length) }}
           </span>
         </span>
         <span
@@ -107,9 +102,7 @@ function getDepthStyle(depth: DependencyDepth) {
           class="w-full px-4 py-2 text-xs font-mono text-fg-muted hover:text-fg border-t border-border transition-colors duration-200"
           @click="expandPackages"
         >
-          {{
-            $t('package.deprecated.show_all', { count: analysisData!.deprecatedPackages.length })
-          }}
+          {{ $t('package.deprecated.show_all', { count: deprecatedDependencies.length }) }}
         </button>
       </div>
     </div>
