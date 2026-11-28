@@ -166,8 +166,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0(@types/node@24.13.3)
       '@vite-pwa/nuxt':
-        specifier: 1.1.1
-        version: 1.1.1(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(supports-color@10.2.2)(workbox-build@7.4.1)(workbox-window@7.4.1)
+        specifier: 2.0.4
+        version: 2.0.4(@nuxt/schema@4.7.0)(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(confbox@0.2.4)(dotenv@17.4.2)(giget@3.3.0)(jiti@2.7.0)(magic-string@1.4.5)(magicast@0.5.5)(mlly@1.8.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(unplugin@3.7.0)(webpack@5.108.4)
       '@vueuse/core':
         specifier: 15.0.0
         version: 15.0.0(vue@3.5.46)
@@ -4172,8 +4172,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@rolldown/pluginutils@1.0.1':
-    resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
+  '@rolldown/pluginutils@1.1.1':
+    resolution: {integrity: sha512-glFIJDvLNDtJhT9qrMFWLPbvS+skxgt4L0K8Ei2YtnhPysAJnsI7nyxSJxKj4ADeKX0OLjC4ntRkwpLOoS3rwA==}
 
   '@rollup/plugin-alias@6.0.1':
     resolution: {integrity: sha512-08wjv2HEuyxIuriLELnksoX+so83XnJ5E4hbVeCHkWlwOcaRQaHYxpUTAplnZjrlh/l5mZgvH1itNC9kcTfTTA==}
@@ -5331,6 +5331,43 @@ packages:
     peerDependencies:
       webpack: ^5
 
+  '@unplugin-pwa/core@0.0.8':
+    resolution: {integrity: sha512-2DTx1YE4VYMZ+Vz7idpFD3tgD7rp5T/Yw6KfwitkF0wkVGhgapPmNx+nysWx7N1tOCztOl11incecCASjqFsPA==}
+    engines: {node: '>=22.14.0'}
+    peerDependencies:
+      '@vite-pwa/assets-generator': ^1.0.0 || ^2.0.0
+      rolldown: ^1.0.0-0
+      vite: ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+    peerDependenciesMeta:
+      '@vite-pwa/assets-generator':
+        optional: true
+      rolldown:
+        optional: true
+      vite:
+        optional: true
+
+  '@unplugin-pwa/inspector@0.0.8':
+    resolution: {integrity: sha512-jCBGYa0W5j/5ayO/wjfIGBN1HSP9/LNQtwvpGG1D9+ucfCZYWRHs6xWPVp5TpAsO+fwKI4N+fh0npvUylZBUJg==}
+    engines: {node: '>=22.14.0'}
+
+  '@unplugin-pwa/vite@0.0.8':
+    resolution: {integrity: sha512-k+mSZL/Mk+dUZmPfi5HjdSmYPpuS3Lnj9nIl9UUpV9dlEnTiRJOj9hdbtG6lIZ0pCDKFtp6AaHFVGvbr17iGYA==}
+    engines: {node: '>=22.14.0'}
+    peerDependencies:
+      '@vite-pwa/assets-generator': ^1.0.0 || ^2.0.0
+      magicast: ^0.5.0
+      rolldown: ^1.0.0-0
+      vite: ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+    peerDependenciesMeta:
+      '@vite-pwa/assets-generator':
+        optional: true
+      magicast:
+        optional: true
+      rolldown:
+        optional: true
+      vite:
+        optional: true
+
   '@upstash/redis@1.38.2':
     resolution: {integrity: sha512-RZ+JaRCVIS+ZTGnjOnDMr+/0aqDxsBb5rV6aW+Pys4SGELwr5lwE3UbLHRCHqMQ5Ulxj0b/CFBHfbmE175Otog==}
 
@@ -5379,13 +5416,63 @@ packages:
     engines: {node: '>=20.19.0'}
     hasBin: true
 
-  '@vite-pwa/nuxt@1.1.1':
-    resolution: {integrity: sha512-8RkdxNJ3NubtwmS96bPVvDclFmysH3VADKWqlaBaUu6PLsoHM3Wq7ThdYBsAT6EpqzWS+iFC2SF6lkJ4xDhKLA==}
+  '@vite-pwa/nuxt-core@2.0.4':
+    resolution: {integrity: sha512-4u4JghHXirF5zOQut7PSeYHFVuLTIY+AYtiAX/CW15DyEcKzy+8wMx4hga4DdC4HGZ1D4NYZbE5kKvnCHtEU2g==}
+
+  '@vite-pwa/nuxt-vite@2.0.4':
+    resolution: {integrity: sha512-DAL0vtwDSdkhCyYiu9MQ5AjddTpYVwEhwimyb5bY33/mmr4S4yk+I7+Vpbw7+7tQbdtAv71O1HYmvk1sxuHRsg==}
     peerDependencies:
-      '@vite-pwa/assets-generator': ^1.0.0
+      '@vite-pwa/assets-generator': ^1.0.0 || ^2.0.0
+      magicast: ^0.5.0
+      rolldown: ^1.0.0-0
     peerDependenciesMeta:
       '@vite-pwa/assets-generator':
         optional: true
+      magicast:
+        optional: true
+      rolldown:
+        optional: true
+
+  '@vite-pwa/nuxt@2.0.4':
+    resolution: {integrity: sha512-X25uEN5j7yL7FyxlvydDa6m0xyMiZvBxoZvKo4aHJ5LCwcHng5fCSzxO2RC0gwomgsyOBqvboKXUg+2/o7zhBw==}
+    peerDependencies:
+      '@vite-pwa/assets-generator': ^1.0.0 || ^2.0.0
+      magicast: ^0.5.0
+      rolldown: ^1.0.0-0
+    peerDependenciesMeta:
+      '@vite-pwa/assets-generator':
+        optional: true
+      magicast:
+        optional: true
+      rolldown:
+        optional: true
+
+  '@vite-pwa/workbox-build@8.0.15':
+    resolution: {integrity: sha512-4CjOeJ8RjHokAAss20ilrjDXlA3mFgKEXY1YEp2jCWJ81ebakZx8fpwY0TUHwe4GCHTHdeobyB8ACseLL6RtDA==}
+    engines: {node: '>=22.14.0'}
+    peerDependencies:
+      '@rspack/core': ^1.0.0 || ^2.0.0
+      magicast: ^0.5.0
+      rolldown: ^1.0.0-0
+      vite: ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+      webpack: ^5.91.0
+    peerDependenciesMeta:
+      '@rspack/core':
+        optional: true
+      magicast:
+        optional: true
+      rolldown:
+        optional: true
+      vite:
+        optional: true
+      webpack:
+        optional: true
+
+  '@vite-pwa/workbox-swkit@8.0.15':
+    resolution: {integrity: sha512-AunMF5+ye+tMiqTqektZcSHPcV0MXw7VeY/xXOiQ54fNxSWg17USW4BY8aj16Xxlz24QBIHl759xxLhkY1K/aA==}
+
+  '@vite-pwa/workbox-window@8.0.15':
+    resolution: {integrity: sha512-iA3z/yl3Jp1EXKmeLEg/KjyTdm6ZQZEM7YTI72lQv4ImuDlz7cGUu06Kafm7Un3/Pggci+RMrVwGZxoq9jkm4g==}
 
   '@vitejs/devtools-kit@0.8.3':
     resolution: {integrity: sha512-CDmcjJg3vPnXCka0s7KC9EYRD3/pFu011Bi1tGv0YRPAXHnjyfabukumZFVUcIs+U/ei9O5EpqDvxr6Jatybzg==}
@@ -7755,6 +7842,9 @@ packages:
   idb@7.1.1:
     resolution: {integrity: sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==}
 
+  idb@8.0.4:
+    resolution: {integrity: sha512-jd0ITCrN+Zah4J7R/Z2jnR3W7A4BXDAjmo62MwWuSjxCiueUAf7X5rbodEdidWzeknwXHmLpdZkoiiCppNi30Q==}
+
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
 
@@ -9266,9 +9356,6 @@ packages:
   path-to-regexp@8.4.2:
     resolution: {integrity: sha512-qRcuIdP69NPm4qbACK+aDogI5CBDMi1jKe0ry5rSQJz8JVLsC7jV8XpiJjGRLLol3N+R5ihGYcrPLTno6pAdBA==}
 
-  pathe@1.1.2:
-    resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
-
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
 
@@ -9395,6 +9482,10 @@ packages:
   prompts@2.4.2:
     resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
     engines: {node: '>= 6'}
+
+  proper-tags@2.0.2:
+    resolution: {integrity: sha512-rpgQb3JC9uWAogm9J3G6heeg7n/Gq82GZKaFt080JPVbydKvGW6ECj9Ui1a6taTFv9Oa+dq9GMhHeOJyxxaURA==}
+    engines: {node: '>=12.0.0'}
 
   property-information@7.2.0:
     resolution: {integrity: sha512-IAtzIB6sUiWaJYrX9smp3V46pBGbBeLFRGdh25kg1334VcBlD8HzhPeNIWQH9zhGmo2itIe25EHt9dQP7G5hmg==}
@@ -9825,8 +9916,8 @@ packages:
     resolution: {integrity: sha512-1gnZf7DFcoIcajTjTwjwuDjzuz4PPcY2StKPlsGAQ1+YH20IRVrBaXSWmdjowTJ6u8Rc01PoYOGHXfP1mYcZNQ==}
     engines: {node: '>= 18'}
 
-  serialize-javascript@7.0.7:
-    resolution: {integrity: sha512-YAy8Od6KV+uuwUuU50np8fGB/Aues6Y0nAhA9y/hId74PlKUcme4pXcBD46NWKr1Q4osN/iseZ17YqO1XfmI8g==}
+  serialize-javascript@7.1.4:
+    resolution: {integrity: sha512-FqlEuoTq/zRmA4Lg6aOqyH3lCHbUtCB0bmHCeFniX2GBdDqMJM3FwdvEhlE5Pim1dlt2FfBdVPmUNNiGhhKqpw==}
     engines: {node: '>=20.0.0'}
 
   seroval@1.8.2:
@@ -10747,6 +10838,14 @@ packages:
       typescript:
         optional: true
 
+  valibot@1.5.0:
+    resolution: {integrity: sha512-nil6AkP2TChWL43Z5uJ6GTxX01CUA+g8LWUM+N/rB9NBbkUMaUsi9PUNzlUPgoKASgmx9f7eGOYpJ04/fSa6FQ==}
+    peerDependencies:
+      typescript: '>=5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   validate-npm-package-name@8.0.0:
     resolution: {integrity: sha512-SCv6OOV6Xj2/3cXy3dGmADluJTNcL3o7hZAglNPTe+WYuEuvxgJzxPrSDLZhF+CwyQOubqgecjMmTJGMVLWjYQ==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
@@ -10844,18 +10943,6 @@ packages:
       typescript:
         optional: true
       vue-tsc:
-        optional: true
-
-  vite-plugin-pwa@1.3.0:
-    resolution: {integrity: sha512-c5kMgN+ITrOtHXp8PAtk2uOIEea6XjP/unCGxOWWBzQ6qa65qj/awHg0wf+QF9E/2u9vh86LqxPwzEPNbM2r5A==}
-    engines: {node: '>=16.0.0'}
-    peerDependencies:
-      '@vite-pwa/assets-generator': ^1.0.0
-      vite: ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
-      workbox-build: ^7.4.1
-      workbox-window: ^7.4.1
-    peerDependenciesMeta:
-      '@vite-pwa/assets-generator':
         optional: true
 
   vite-plugin-pwa@2.0.0:
@@ -16074,7 +16161,7 @@ snapshots:
   '@rolldown/binding-win32-x64-msvc@1.2.4':
     optional: true
 
-  '@rolldown/pluginutils@1.0.1': {}
+  '@rolldown/pluginutils@1.1.1': {}
 
   '@rollup/plugin-alias@6.0.1(rollup@4.68.8)':
     optionalDependencies:
@@ -16135,7 +16222,7 @@ snapshots:
 
   '@rollup/plugin-terser@1.0.2(rollup@4.68.8)':
     dependencies:
-      serialize-javascript: 7.0.7
+      serialize-javascript: 7.1.4
       smob: 1.6.2
       terser: 5.51.4
     optionalDependencies:
@@ -17382,6 +17469,41 @@ snapshots:
       - unloader
       - vite
 
+  '@unplugin-pwa/core@0.0.8(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)':
+    dependencies:
+      '@vite-pwa/workbox-build': 8.0.15(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      '@vite-pwa/workbox-window': 8.0.15
+      hookable: 6.1.2
+    optionalDependencies:
+      '@vite-pwa/assets-generator': 2.0.0(@types/node@24.13.3)
+      rolldown: 1.2.4
+      vite: '@voidzero-dev/vite-plus-core@1.4.0(@types/node@24.13.3)(@vitejs/devtools@0.8.3)(@volar/typescript@2.4.28)(@vue/language-core@3.3.13)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vue-tsc@3.3.10)(yaml@2.9.1)'
+    transitivePeerDependencies:
+      - '@rspack/core'
+      - magicast
+      - typescript
+      - webpack
+
+  '@unplugin-pwa/inspector@0.0.8': {}
+
+  '@unplugin-pwa/vite@0.0.8(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)':
+    dependencies:
+      '@rolldown/pluginutils': 1.1.1
+      '@unplugin-pwa/core': 0.0.8(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      '@unplugin-pwa/inspector': 0.0.8
+      '@vite-pwa/workbox-build': 8.0.15(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      '@vite-pwa/workbox-swkit': 8.0.15
+      '@vite-pwa/workbox-window': 8.0.15
+    optionalDependencies:
+      '@vite-pwa/assets-generator': 2.0.0(@types/node@24.13.3)
+      magicast: 0.5.5
+      rolldown: 1.2.4
+      vite: '@voidzero-dev/vite-plus-core@1.4.0(@types/node@24.13.3)(@vitejs/devtools@0.8.3)(@volar/typescript@2.4.28)(@vue/language-core@3.3.13)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vue-tsc@3.3.10)(yaml@2.9.1)'
+    transitivePeerDependencies:
+      - '@rspack/core'
+      - typescript
+      - webpack
+
   '@upstash/redis@1.38.2':
     dependencies:
       uncrypto: 0.1.3
@@ -17430,20 +17552,101 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@vite-pwa/nuxt@1.1.1(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(supports-color@10.2.2)(workbox-build@7.4.1)(workbox-window@7.4.1)':
+  '@vite-pwa/nuxt-core@2.0.4(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)':
     dependencies:
-      '@nuxt/kit': 3.21.10(magicast@0.5.5)
-      pathe: 1.1.2
-      ufo: 1.6.4
-      vite-plugin-pwa: 1.3.0(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(supports-color@10.2.2)(workbox-build@7.4.1)(workbox-window@7.4.1)
+      '@unplugin-pwa/core': 0.0.8(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      '@vite-pwa/workbox-build': 8.0.15(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+    transitivePeerDependencies:
+      - '@rspack/core'
+      - '@vite-pwa/assets-generator'
+      - magicast
+      - rolldown
+      - typescript
+      - vite
+      - webpack
+
+  '@vite-pwa/nuxt-vite@2.0.4(@nuxt/schema@4.7.0)(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(confbox@0.2.4)(dotenv@17.4.2)(giget@3.3.0)(jiti@2.7.0)(magic-string@1.4.5)(magicast@0.5.5)(mlly@1.8.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(unplugin@3.7.0)(webpack@5.108.4)':
+    dependencies:
+      '@nuxt/kit': 4.7.0(@nuxt/schema@4.7.0)(confbox@0.2.4)(dotenv@17.4.2)(giget@3.3.0)(jiti@2.7.0)(magic-string@1.4.5)(mlly@1.8.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(unplugin@3.7.0)
+      '@rolldown/pluginutils': 1.1.1
+      '@unplugin-pwa/core': 0.0.8(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      '@unplugin-pwa/vite': 0.0.8(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      '@vite-pwa/nuxt-core': 2.0.4(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      '@vite-pwa/workbox-build': 8.0.15(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      verkit: 0.5.0
     optionalDependencies:
       '@vite-pwa/assets-generator': 2.0.0(@types/node@24.13.3)
+      magicast: 0.5.5
+      rolldown: 1.2.4
     transitivePeerDependencies:
-      - magicast
-      - supports-color
+      - '@nuxt/schema'
+      - '@rspack/core'
+      - confbox
+      - dotenv
+      - giget
+      - jiti
+      - magic-string
+      - mlly
+      - oxc-parser
+      - typescript
+      - unplugin
       - vite
-      - workbox-build
-      - workbox-window
+      - webpack
+
+  '@vite-pwa/nuxt@2.0.4(@nuxt/schema@4.7.0)(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(confbox@0.2.4)(dotenv@17.4.2)(giget@3.3.0)(jiti@2.7.0)(magic-string@1.4.5)(magicast@0.5.5)(mlly@1.8.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(unplugin@3.7.0)(webpack@5.108.4)':
+    dependencies:
+      '@nuxt/kit': 4.7.0(@nuxt/schema@4.7.0)(confbox@0.2.4)(dotenv@17.4.2)(giget@3.3.0)(jiti@2.7.0)(magic-string@1.4.5)(mlly@1.8.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(unplugin@3.7.0)
+      '@unplugin-pwa/core': 0.0.8(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      '@vite-pwa/nuxt-core': 2.0.4(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      '@vite-pwa/nuxt-vite': 2.0.4(@nuxt/schema@4.7.0)(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(confbox@0.2.4)(dotenv@17.4.2)(giget@3.3.0)(jiti@2.7.0)(magic-string@1.4.5)(magicast@0.5.5)(mlly@1.8.2)(oxc-parser@0.144.0)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(unplugin@3.7.0)(webpack@5.108.4)
+      '@vite-pwa/workbox-build': 8.0.15(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)
+      defu: 6.1.7
+      verkit: 0.5.0
+    optionalDependencies:
+      '@vite-pwa/assets-generator': 2.0.0(@types/node@24.13.3)
+      magicast: 0.5.5
+      rolldown: 1.2.4
+    transitivePeerDependencies:
+      - '@nuxt/schema'
+      - '@rspack/core'
+      - confbox
+      - dotenv
+      - giget
+      - jiti
+      - magic-string
+      - mlly
+      - oxc-parser
+      - typescript
+      - unplugin
+      - vite
+      - webpack
+
+  '@vite-pwa/workbox-build@8.0.15(@voidzero-dev/vite-plus-core@1.4.0)(magicast@0.5.5)(rolldown@1.2.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(webpack@5.108.4)':
+    dependencies:
+      '@jridgewell/remapping': 2.3.5
+      '@vite-pwa/workbox-swkit': 8.0.15
+      '@vite-pwa/workbox-window': 8.0.15
+      magic-string: 1.4.5
+      proper-tags: 2.0.2
+      serialize-javascript: 7.1.4
+      tinyglobby: 0.2.17
+      valibot: 1.5.0(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
+      verkit: 0.5.0
+    optionalDependencies:
+      magicast: 0.5.5
+      rolldown: 1.2.4
+      vite: '@voidzero-dev/vite-plus-core@1.4.0(@types/node@24.13.3)(@vitejs/devtools@0.8.3)(@volar/typescript@2.4.28)(@vue/language-core@3.3.13)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vue-tsc@3.3.10)(yaml@2.9.1)'
+      webpack: 5.108.4(cssnano@9.9.0)(csso@5.0.5)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.33)
+    transitivePeerDependencies:
+      - typescript
+
+  '@vite-pwa/workbox-swkit@8.0.15':
+    dependencies:
+      idb: 8.0.4
+
+  '@vite-pwa/workbox-window@8.0.15':
+    dependencies:
+      '@types/trusted-types': 2.0.7
 
   '@vitejs/devtools-kit@0.8.3(@devframes/agentic@1.4.0)(@voidzero-dev/vite-plus-core@1.4.0)(cac@7.1.1)(crossws@0.4.17)(srvx@1.0.8)':
     dependencies:
@@ -17492,7 +17695,7 @@ snapshots:
       '@babel/core': 7.29.7(supports-color@10.2.2)
       '@babel/plugin-syntax-typescript': 7.29.7(@babel/core@7.29.7)
       '@babel/plugin-transform-typescript': 7.29.7(@babel/core@7.29.7)(supports-color@10.2.2)
-      '@rolldown/pluginutils': 1.0.1
+      '@rolldown/pluginutils': 1.1.1
       '@vue/babel-plugin-jsx': 2.0.1(@babel/core@7.29.7)(supports-color@10.2.2)
       vite: '@voidzero-dev/vite-plus-core@1.4.0(@types/node@24.13.3)(@vitejs/devtools@0.8.3)(@volar/typescript@2.4.28)(@vue/language-core@3.3.13)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vue-tsc@3.3.10)(yaml@2.9.1)'
       vue: 3.5.46(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
@@ -17501,7 +17704,7 @@ snapshots:
 
   '@vitejs/plugin-vue@6.0.11(@voidzero-dev/vite-plus-core@1.4.0)(vue@3.5.46)':
     dependencies:
-      '@rolldown/pluginutils': 1.0.1
+      '@rolldown/pluginutils': 1.1.1
       vite: '@voidzero-dev/vite-plus-core@1.4.0(@types/node@24.13.3)(@vitejs/devtools@0.8.3)(@volar/typescript@2.4.28)(@vue/language-core@3.3.13)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vue-tsc@3.3.10)(yaml@2.9.1)'
       vue: 3.5.46(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
 
@@ -20223,6 +20426,8 @@ snapshots:
 
   idb@7.1.1: {}
 
+  idb@8.0.4: {}
+
   ieee754@1.2.1: {}
 
   ignore@5.3.2: {}
@@ -22668,8 +22873,6 @@ snapshots:
 
   path-to-regexp@8.4.2: {}
 
-  pathe@1.1.2: {}
-
   pathe@2.0.3: {}
 
   pathval@2.0.1: {}
@@ -22775,6 +22978,8 @@ snapshots:
     dependencies:
       kleur: 3.0.3
       sisteransi: 1.0.5
+
+  proper-tags@2.0.2: {}
 
   property-information@7.2.0: {}
 
@@ -23237,7 +23442,7 @@ snapshots:
   rolldown@1.2.19:
     dependencies:
       '@oxc-project/types': 0.156.0
-      '@rolldown/pluginutils': 1.0.1
+      '@rolldown/pluginutils': 1.1.1
     optionalDependencies:
       '@rolldown/binding-android-arm-eabi': 1.2.19
       '@rolldown/binding-android-arm64': 1.2.19
@@ -23259,7 +23464,7 @@ snapshots:
   rolldown@1.2.4:
     dependencies:
       '@oxc-project/types': 0.144.0
-      '@rolldown/pluginutils': 1.0.1
+      '@rolldown/pluginutils': 1.1.1
     optionalDependencies:
       '@rolldown/binding-android-arm64': 1.2.4
       '@rolldown/binding-darwin-arm64': 1.2.4
@@ -23433,7 +23638,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  serialize-javascript@7.0.7: {}
+  serialize-javascript@7.1.4: {}
 
   seroval@1.8.2: {}
 
@@ -24463,7 +24668,7 @@ snapshots:
   unplugin@3.7.0(@voidzero-dev/vite-plus-core@1.4.0)(esbuild@0.28.2)(rolldown@1.2.19)(rollup@4.68.8)(webpack@5.108.4):
     dependencies:
       '@jridgewell/remapping': 2.3.5
-      '@rolldown/pluginutils': 1.0.1
+      '@rolldown/pluginutils': 1.1.1
       picomatch: 4.0.7
       webpack-virtual-modules: 0.6.2
     optionalDependencies:
@@ -24476,7 +24681,7 @@ snapshots:
   unplugin@3.7.0(@voidzero-dev/vite-plus-core@1.4.0)(esbuild@0.28.2)(rolldown@1.2.4)(rollup@4.68.8)(webpack@5.108.4):
     dependencies:
       '@jridgewell/remapping': 2.3.5
-      '@rolldown/pluginutils': 1.0.1
+      '@rolldown/pluginutils': 1.1.1
       picomatch: 4.0.7
       webpack-virtual-modules: 0.6.2
     optionalDependencies:
@@ -24555,6 +24760,10 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   valibot@1.4.2(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2):
+    optionalDependencies:
+      typescript: typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2
+
+  valibot@1.5.0(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2):
     optionalDependencies:
       typescript: typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2
 
@@ -24641,19 +24850,6 @@ snapshots:
       oxlint: 1.89.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.4.0)
       typescript: typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2
       vue-tsc: 3.3.10(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)
-
-  vite-plugin-pwa@1.3.0(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(supports-color@10.2.2)(workbox-build@7.4.1)(workbox-window@7.4.1):
-    dependencies:
-      debug: 4.4.3(supports-color@10.2.2)
-      pretty-bytes: 6.1.1
-      tinyglobby: 0.2.17
-      vite: '@voidzero-dev/vite-plus-core@1.4.0(@types/node@24.13.3)(@vitejs/devtools@0.8.3)(@volar/typescript@2.4.28)(@vue/language-core@3.3.13)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.4)(typescript-native-bridge@6.0.3-bridge.13.tsgo.7.0.2)(vue-tsc@3.3.10)(yaml@2.9.1)'
-      workbox-build: 7.4.1(supports-color@10.2.2)
-      workbox-window: 7.4.1
-    optionalDependencies:
-      '@vite-pwa/assets-generator': 2.0.0(@types/node@24.13.3)
-    transitivePeerDependencies:
-      - supports-color
 
   vite-plugin-pwa@2.0.0(@vite-pwa/assets-generator@2.0.0)(@voidzero-dev/vite-plus-core@1.4.0)(supports-color@10.2.2)(workbox-build@7.4.1)(workbox-window@7.4.1):
     dependencies:
