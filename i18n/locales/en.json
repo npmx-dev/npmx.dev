@@ -167,7 +167,8 @@
       "compare": "Compare this package",
       "download": "Download tarball",
       "changelog": "Changelog",
-      "stats": "Stats"
+      "stats": "Stats",
+      "add_to_collection": "Add to collection"
     },
     "code": {
       "copy_file": "Copy file contents"
@@ -492,6 +493,18 @@
     "load_failed": "Couldn't load this collection",
     "load_failed_message": "The server that stores it didn't respond. Try again in a moment.",
     "sign_in_to_create": "Connect your Atmosphere account to create a collection.",
+    "picker": {
+      "title": "Add to collection",
+      "packages": "{count} package | {count} packages",
+      "none_yet": "You don't have any collections yet. Name one below to start.",
+      "full": "Full",
+      "full_reason": "A collection holds up to {max} items.",
+      "save_error": "Couldn't update this collection. Please try again.",
+      "create_error": "Couldn't create the collection. Please try again.",
+      "name_placeholder": "Name",
+      "create": "Create",
+      "created": "Created {name}"
+    },
     "editor": {
       "public_notice": "Collections are saved to your Atmosphere account and are public. Anyone can see them, in npmx or any other app.",
       "name": "Name",

@@ -36,6 +36,7 @@ const { data, pending } = useAsyncData(
         >
           {{ $t('package.links.compare') }}
         </LinkBase>
+        <CollectionAddButton :packages="selectedPackages" />
       </div>
     </header>
 
