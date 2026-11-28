@@ -19,6 +19,7 @@ const { scrollToTop } = useScrollToTop()
 const packageHeaderHeight = usePackageHeaderHeight()
 
 const header = useTemplateRef('header')
+const shareRef = useTemplateRef('shareRef')
 const isHeaderPinned = shallowRef(false)
 const { height: headerHeight } = useElementBounding(header)
 
@@ -80,6 +81,8 @@ const { copied: copiedPkgVersion, copy: copyPkgVersion } = useClipboard({
   copiedDuring: 2000,
 })
 
+const canShare = import.meta.client ? 'share' in navigator : false
+
 const publishTrustStatus = computed(
   () =>
     (props.resolvedVersion && props.pkg?.versions[props.resolvedVersion]?.trustStatus) || undefined,
@@ -116,6 +119,17 @@ useCommandPaletteContextCommands(
           copyPkgVersion()
           announce($t('command_palette.announcements.copied_to_clipboard'))
         },
+      })
+    }
+
+    if (canShare) {
+      commands.push({
+        id: 'package-share',
+        group: 'package',
+        label: $t('package.links.share'),
+        keywords: [packageName.value, 'share'],
+        iconClass: 'i-lucide:share-2',
+        action: () => shareRef.value?.sharePackage(),
       })
     }
 
@@ -253,6 +267,12 @@ useShortcuts({
       <!-- Package metrics -->
       <div class="flex gap-2 flex-wrap items-stretch">
         <PackageLikes :packageName />
+
+        <PackageShareButton
+          ref="shareRef"
+          :package-name="packageName"
+          :description="displayVersion?.description"
+        />
 
         <LinkBase
           variant="button-secondary"
